@@ -1,4 +1,5 @@
 import { copy, fuelle } from '../content/copy'
+import { useOverlays } from '../overlays'
 import { gewerke, zahlwort } from '../content/gewerke'
 import { Hilfekarte } from './Hilfekarte'
 import { LeistungKarte } from './LeistungKarte'
@@ -6,6 +7,7 @@ import { Button } from './ui/Button'
 import { Icon } from './ui/Icon'
 
 export function Leistungen() {
+  const { oeffnePreise } = useOverlays()
   return (
     <section id="leistungen" aria-labelledby="leistungen-titel" className="bg-kalk">
       <div className="wrapper pt-section pb-section-end">
@@ -20,7 +22,7 @@ export function Leistungen() {
           </div>
           <Button
             art="hell"
-            data-preisuebersicht
+            onClick={(e) => oeffnePreise(e.currentTarget)}
             className="min-h-[50px] w-full px-s4 text-btn nav:min-h-[48px] nav:w-auto"
           >
             <Icon name="ui-richtpreis" className="size-[20px]" />

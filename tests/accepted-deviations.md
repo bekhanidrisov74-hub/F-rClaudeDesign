@@ -46,3 +46,9 @@ Entschiedene Standards:
 - So funktioniert's: eine Spalte bis 919 px, drei ab 920 px.
 - Fuß: Abstände gerundet, am Handy oben 40 statt 48 px, am Desktop vor der unteren Zeile 56 statt 48 px.
 - Preis in den Leistungskarten in Bricolage 800 wie im Entwurf.
+
+## Phase 3 (Interaktion)
+
+Neu: Preisrechner (nach So funktioniert's), Preisübersicht als Dialog ab 640 px bzw. Bottom-Sheet darunter, Handy-Menü. Das Anfrage-Formular fehlt weiterhin (Phase 5), ebenso Luna (Phase 4). Im Screenshot folgt deshalb auf den Preisrechner direkt der Fuß.
+- Der Hintergrund hinter Dialog, Sheet und Menü ist die echte Seite, nicht der Entwurfsausschnitt. Dass dort andere Teile der Seite zu sehen sind, ist kein Befund.
+- Im Handy-Menü ist „Preisübersicht“ ein Knopf. Er öffnet das Sheet, die Optik ist wie bei den Links.

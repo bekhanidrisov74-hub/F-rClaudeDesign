@@ -39,8 +39,8 @@ vi.mock('../../src/content/gewerke', async (original) => {
 
 describe('ein sechstes Gewerk', () => {
   test('erscheint mit einem Eintrag überall auf der Startseite', async () => {
-    const { Startseite } = await import('../../src/components/Startseite')
-    const html = renderToString(<Startseite />)
+    const { App } = await import('../../src/App')
+    const html = renderToString(<App pfad="/" />)
     // Schnellwahl-Kachel und Leistungskarte („… anfragen“)
     expect(html.match(/data-gewerk="dach"/g)?.length ?? 0).toBeGreaterThanOrEqual(2)
     expect(html).toContain('Dachdecker anfragen')

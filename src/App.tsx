@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { copy } from './content/copy'
+import { OverlayProvider } from './overlays'
 import { Startseite } from './components/Startseite'
 import { LegalPage } from './components/LegalPage'
 
@@ -41,5 +42,5 @@ export function normalisiere(pfad: string): string {
 }
 
 export function App({ pfad }: { pfad: string }) {
-  return seiten[normalisiere(pfad)].inhalt()
+  return <OverlayProvider>{seiten[normalisiere(pfad)].inhalt()}</OverlayProvider>
 }

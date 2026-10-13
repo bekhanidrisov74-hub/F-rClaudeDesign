@@ -40,6 +40,7 @@ export function Header({ aufStartseite = true }: { aufStartseite?: boolean }) {
           aria-label={copy.kopf.menueOeffnen}
           aria-expanded={false}
           aria-controls="menue"
+          id="menue-knopf"
           className="-mr-s2 flex size-[44px] shrink-0 cursor-pointer items-center justify-center rounded-chip text-tiefsee nav:hidden"
         >
           <Icon name="ui-menue" className="size-[24px]" />

@@ -179,8 +179,9 @@
     outline-offset: 3px;
   }
 
-  /* Modale Dialoge sperren die Seite im Hintergrund */
-  html:has(dialog:modal) {
+  /* Modale Dialoge und das offene Handy-Menü sperren die Seite im Hintergrund */
+  html:has(dialog:modal),
+  html:has(#menue[data-offen]) {
     overflow: hidden;
   }
 }

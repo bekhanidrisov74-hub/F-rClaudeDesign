@@ -116,6 +116,77 @@ export const copy = {
     preise: 'Alle Preise sind Richtpreise der Fachbetriebe.',
   },
 
+  rechner: {
+    titel: 'Was kostet der Einsatz ungefähr?',
+    lead: 'Richtpreise der Fachbetriebe. Den genauen Preis vereinbaren Sie mit dem Betrieb.',
+    gewerk: 'Gewerk',
+    arbeitszeit: 'Arbeitszeit',
+    weniger: 'Eine Stunde weniger',
+    mehr: 'Eine Stunde mehr',
+    stundenHinweis: '1 bis 12 Stunden. Beim Schlüsseldienst gilt ein Preis pro Einsatz.',
+    einsatz: {
+      titel: 'Preis pro Einsatz',
+      text: 'Der Schlüsseldienst rechnet nicht nach Stunden ab. Die Arbeitszeit entfällt deshalb.',
+    },
+    zuschlag: 'Zuschlag',
+    zuschlaege: [
+      { id: 'sonntag', name: 'Sonntag' },
+      { id: 'feiertag', name: 'Feiertag' },
+      { id: 'nacht', name: 'Nacht' },
+    ],
+    plus100: '+100 %',
+    hinweisEiner: 'Es zählt höchstens ein Zuschlag, auch wenn mehrere zutreffen.',
+    hinweisMehrereFett: 'Es zählt nur ein Zuschlag.',
+    /** {namen} = „Sonntag und Nacht“ */
+    hinweisMehrere: '{namen} treffen beide zu, berechnet wird trotzdem nur einmal +100 %.',
+    // nicht im Design: drei Zuschläge gleichzeitig
+    hinweisAlle: '{namen} treffen alle zu, berechnet wird trotzdem nur einmal +100 %.',
+    ergebnis: {
+      titel: 'Ihre Richtpreis-Spanne',
+      arbeit: 'Arbeit',
+      einsatz: 'Einsatz',
+      anfahrt: 'Anfahrt',
+      zuschlag: 'Zuschlag',
+      keiner: 'keiner',
+      zuschlagAktiv: 'Zuschlag +100 %',
+      zuschlagUnterzeile: 'auf die Arbeit, nur einmal',
+      gesamt: 'Gesamt',
+      hinweis: 'Richtpreis. Den genauen Preis vereinbaren Sie mit dem Betrieb.',
+      proEinsatz: 'pro Einsatz',
+      keinZuschlag: 'kein Zuschlag',
+      preisuebersicht: 'Preisübersicht öffnen',
+    },
+  },
+
+  preisuebersicht: {
+    titel: 'Richtpreise im Überblick',
+    lead: 'Richtpreise der Fachbetriebe. Den genauen Preis vereinbaren Sie mit dem Betrieb.',
+    schliessen: 'Preisübersicht schließen',
+    spalten: { gewerk: 'Gewerk', richtpreis: 'Richtpreis', anfahrt: 'Anfahrt' },
+    anfahrt: 'Anfahrt',
+    /** Dialog ab 640 px (Screen 03) */
+    hinweiseDialog: [
+      'Zuschlag für Sonntag, Feiertag oder Nacht: +100 % auf die Arbeit. Es zählt höchstens ein Zuschlag.',
+      `Die Vermittlung ist kostenlos. Alle Preise ${UST_HINWEIS}, Richtpreise der Betriebe.`,
+    ],
+    /** Bottom-Sheet unter 640 px (Screen 04) */
+    hinweisSheet: `Zuschlag für Sonntag, Feiertag oder Nacht: +100 % auf die Arbeit, höchstens einer. Alle Preise ${UST_HINWEIS}. Die Vermittlung ist kostenlos.`,
+    zumRechner: 'Zum Preisrechner',
+  },
+
+  menue: {
+    label: 'Menü',
+    links: [
+      { text: 'Leistungen', href: '#leistungen' },
+      { text: "So funktioniert's", href: '#ablauf' },
+      { text: 'Preisrechner', href: '#preisrechner' },
+      { text: 'Preisübersicht', href: null },
+      { text: 'Anfrage senden', href: '#anfrage' },
+    ],
+    kontaktTitel: 'Rund um die Uhr erreichbar',
+    whatsapp: 'Per WhatsApp schreiben',
+  },
+
   luna: {
     oeffnen: 'Chat mit Luna öffnen',
   },
@@ -125,7 +196,7 @@ export const copy = {
     impressum: { titel: 'Impressum', text: '[Impressum folgt]' },
     datenschutz: { titel: 'Datenschutz', text: '[Datenschutzerklärung folgt]' },
     agb: { titel: 'AGB', text: '[AGB folgen]' },
-    zurueck: 'Zur Startseite',
+    zurueck: 'Zur Startseite', // nicht im Design
   },
 } as const
 

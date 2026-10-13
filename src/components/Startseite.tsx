@@ -1,23 +1,18 @@
 import { Ablauf } from './Ablauf'
-import { Footer } from './Footer'
-import { Header } from './Header'
 import { Hero } from './Hero'
 import { Leistungen } from './Leistungen'
-import { MobileMenu } from './MobileMenu'
+import { Preisrechner } from './Preisrechner'
+import { Seitenrahmen } from './Seitenrahmen'
 import { Vertrauensleiste } from './Vertrauensleiste'
 
 export function Startseite() {
   return (
-    <>
-      <Header />
-      <MobileMenu />
-      <main>
-        <Hero />
-        <Vertrauensleiste />
-        <Leistungen />
-        <Ablauf />
-      </main>
-      <Footer />
-    </>
+    <Seitenrahmen>
+      <Hero />
+      <Vertrauensleiste />
+      <Leistungen />
+      <Ablauf />
+      <Preisrechner />
+    </Seitenrahmen>
   )
 }
