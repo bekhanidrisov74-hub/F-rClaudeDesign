@@ -57,3 +57,14 @@ Neu: Preisrechner (nach So funktioniert's), Preisübersicht als Dialog ab 640 px
 - Preisübersicht: Sheet-Titel 30 px (`--fx-h2-s`), im Entwurf 29 px. Innenabstände und Blockabstände auf Token-Stufen gerundet (Dialog 32 statt 36 px innen, 24–32 px zwischen den Blöcken). Das Sheet ist dadurch etwa 25 px niedriger, der Dialog etwa 16 px höher als im Entwurf.
 - Rechner: Der Textlink „Preisübersicht öffnen“ hat eine Trefferfläche von 44 px. Der Abstand zum Kartenrand verschiebt sich dadurch am Handy um etwa 10 px.
 - Menü: Zwischen 640 und 919 px nimmt die Kontaktkarte die volle Inhaltsbreite ein (kein Entwurf).
+
+## Phase 4 (Luna)
+
+Neu: Luna-Knopf, Anstupser, Chat als Fenster (ab 640 px) bzw. Vollbild (darunter), Zusammenfassung, Erfolg, Sendefehler. Das Anfrage-Formular fehlt weiterhin (Phase 5).
+- Die Screenshots zeigen echte Testdaten: „Maria Huber, 0664 1234567“ statt „[Ihre Nummer]“, eine echte Anfragenummer „F247-…“ statt „[Nummer]“.
+- Erfolg: „Danke, Maria Huber. Ihre Anfrage ist unterwegs.“ statt „Danke, Frau Huber.“ (Entscheidung 2, Luna fragt kein Geschlecht ab).
+- Die Einwilligung startet leer (DSGVO). In Screen 08 und 12 ist sie bereits angehakt. Der Zusammenfassungs-Screenshot zeigt sie deshalb leer.
+- Fensterhöhe: Auf niedrigen Bildschirmen endet das Fenster immer unter dem Seitenkopf (Entscheidung 3). Bei 1024 × 768 ist es deshalb niedriger als 680 px.
+- Der Verlauf im Fenster scrollt und zeigt unten die neueste Nachricht. Im Entwurf ist er oben abgeschnitten.
+- Größe der Luna-Glyphe wie in den Seitenentwürfen (32 px im 64-px-Knopf, 29 px im 58-px-Knopf).
+- Der Hintergrund hinter dem Fenster ist die echte Seite.

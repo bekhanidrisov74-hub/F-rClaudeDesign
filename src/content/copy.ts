@@ -10,6 +10,14 @@ export const AUFTRAG_AUFGEGEBEN = 'Auftrag aufgegeben'
 export const UST_HINWEIS = '[inkl. 20 % USt.]'
 export const WEISS_NICHT = 'Weiß ich nicht'
 
+/** Dringlichkeit in Luna: Chip, Zusammenfassung (Screen 08) und Kurzfassung (Screen 10) */
+export const dringlichkeit = [
+  { id: 'sofort', chip: 'Sofort, es ist ein Notfall', zusammenfassung: 'Sofort, Notfall', kurz: 'sofort' },
+  // nicht im Design: Zusammenfassung und Kurzfassung für „heute“ und „tage“ (Entscheidung 2)
+  { id: 'heute', chip: 'Heute noch', zusammenfassung: 'Heute noch', kurz: 'heute' },
+  { id: 'tage', chip: 'In den nächsten Tagen', zusammenfassung: 'In den nächsten Tagen', kurz: 'in den nächsten Tagen' },
+] as const
+
 export const copy = {
   meta: {
     // nicht im Design: Titel und Beschreibung aus Sätzen der Startseite zusammengesetzt
@@ -43,6 +51,8 @@ export const copy = {
   einheit: { stunde: 'pro Stunde', einsatz: 'pro Einsatz' },
   /** Bindewort für Aufzählungen: „Sonntag und Nacht“ */
   und: 'und',
+  /** Ort, den Luna aus der PLZ ableitet (Entscheidung 2: nur Wien) */
+  orte: { wien: 'Wien' },
 
   hero: {
     h1: ['Handwerker-', 'Notdienst.', 'Rund um die Uhr.'],
@@ -198,6 +208,64 @@ export const copy = {
 
   luna: {
     oeffnen: 'Chat mit Luna öffnen',
+    dialogLabel: 'Chat mit Luna',
+    name: 'Luna',
+    rolle: 'Digitale Assistentin',
+    schliessen: 'Chat schließen',
+    minimieren: 'Chat minimieren',
+    anstupser: { fett: 'Notfall?', text: 'Ich helfe Ihnen in einer Minute.', schliessen: 'Hinweis schließen' },
+    /** {x}, {n} */
+    fortschritt: 'Frage {x} von {n}',
+    fragen: {
+      gewerk:
+        'Hallo, ich bin Luna, die digitale Assistentin von fixit247. Ich gebe Ihre Anfrage an einen Fachbetrieb in Ihrer Nähe weiter. Worum geht es?',
+      problem: 'Verstanden. Was ist passiert?',
+      /** {tipp} = Sicherheitstipp des Gewerks mit Leerzeichen dahinter, sonst leer */
+      plz: 'Danke. {tipp}Wie lautet Ihre Postleitzahl?',
+      dringlichkeit: 'Wie dringend ist es?',
+      kontakt: 'Wie heißen Sie, und unter welcher Nummer erreicht Sie der Betrieb?',
+    },
+    plzFehler: 'Bitte geben Sie eine österreichische Postleitzahl mit vier Ziffern ein, zum Beispiel 1020.',
+    // nicht im Design: Nachfragen, wenn Nummer oder Name fehlt
+    telefonFehlt: 'Unter welcher Nummer erreicht Sie der Betrieb?',
+    nameFehlt: 'Und wie heißen Sie?',
+    // nicht im Design: Name der Chip-Gruppe in Schritt 1
+    auswahlGewerk: 'Gewerk wählen',
+    auswahlDringlichkeit: 'Dringlichkeit wählen',
+    eingabe: {
+      label: 'Nachricht an Luna',
+      mitAuswahl: 'Oder selbst schreiben',
+      ohneAuswahl: 'Nachricht schreiben',
+      senden: 'Nachricht senden',
+    },
+    zusammenfassung: {
+      titel: 'Ihre Anfrage',
+      felder: { gewerk: 'Gewerk', problem: 'Problem', ort: 'Ort', dringlichkeit: 'Dringlichkeit', name: 'Name', telefon: 'Telefon' },
+      richtpreis: 'Richtpreis',
+      anfahrt: 'Anfahrt',
+      einwilligung: 'Ich bin einverstanden, dass fixit247 meine Angaben zur Vermittlung an einen Fachbetrieb weitergibt.',
+      datenschutz: 'Datenschutz',
+      einwilligungFehlt: 'Bitte stimmen Sie der Weitergabe zu, sonst können wir keinen Betrieb vermitteln.',
+      hinweis: 'Die Vermittlung ist kostenlos. Der Vertrag kommt direkt mit dem Betrieb zustande.',
+      aendern: 'Angaben ändern',
+      sendend: 'Wird gesendet …',
+    },
+    erfolg: {
+      /** Entscheidung 2: voller Name statt „Frau Huber“ (Luna fragt kein Geschlecht ab) */
+      titel: 'Danke, {name}. Ihre Anfrage ist unterwegs.',
+      text: 'Wir geben sie jetzt an einen passenden {betrieb} in Ihrer Nähe weiter. Der Betrieb ruft Sie unter {telefon} zurück.',
+      betriebUnbekannt: 'Fachbetrieb', // nicht im Design: bei „Weiß ich nicht“
+      nummer: 'Anfragenummer: {nummer}',
+      tippTitel: 'Bis der Betrieb kommt:',
+      anrufen: 'Fragen? Jetzt anrufen',
+      schliessen: 'Chat schließen',
+    },
+    fehler: {
+      titel: 'Die Anfrage wurde nicht gesendet.',
+      text: 'Bitte prüfen Sie Ihre Internetverbindung und versuchen Sie es noch einmal. Ihre Angaben bleiben erhalten.',
+      anrufen: 'Stattdessen anrufen',
+      erneut: 'Erneut senden',
+    },
   },
 
   rechtliches: {

@@ -1,6 +1,18 @@
 // npm run shots → tests/screens-actual/<zustand>-<breite>.png (Vergleichstabelle in PLAN.md, Abschnitt 4).
 import { test, type Page } from '../e2e/test'
-import { oeffneMenue, oeffnePreisuebersicht, rechner, schalteZuschlag, waehleGewerk } from '../e2e/hilfen'
+import {
+  chat,
+  lunaAbsenden,
+  lunaBisFrage4,
+  lunaBisZusammenfassung,
+  oeffneMenue,
+  oeffnePreisuebersicht,
+  rechner,
+  schalteZuschlag,
+  waehleGewerk,
+  zeigeAnstupser,
+} from '../e2e/hilfen'
+import { expect } from '../e2e/test'
 
 const HOEHE: Record<number, number> = { 390: 844, 1024: 768, 1440: 900 }
 const ALLE = [390, 1024, 1440]
@@ -13,6 +25,8 @@ interface Zustand {
   vorbereiten?: (page: Page) => Promise<unknown>
   /** Nur dieses Element fotografieren (z. B. den Rechner wie in Screen 13) */
   element?: (page: Page) => ReturnType<Page['locator']>
+  /** Playwright-Uhr installieren (Anstupser nach 8 s) */
+  uhr?: boolean
 }
 
 // Jede Phase ergänzt hier ihre Zustände.
@@ -32,12 +46,32 @@ const ZUSTAENDE: Zustand[] = [
       await schalteZuschlag(p, 'Nacht')
     },
   },
+  { name: 'luna-anstupser', pfad: '/', uhr: true, vorbereiten: zeigeAnstupser },
+  { name: 'luna-gespraech', pfad: '/', vorbereiten: lunaBisFrage4 },
+  { name: 'luna-zusammenfassung', pfad: '/', vorbereiten: lunaBisZusammenfassung },
+  {
+    name: 'luna-erfolg',
+    pfad: '/',
+    vorbereiten: async (p) => {
+      await lunaAbsenden(p)
+      await expect(chat(p).getByText(/Anfragenummer/)).toBeVisible()
+    },
+  },
+  {
+    name: 'luna-sendefehler',
+    pfad: '/?fehler=1',
+    vorbereiten: async (p) => {
+      await lunaAbsenden(p)
+      await expect(chat(p).getByRole('alert')).toBeVisible()
+    },
+  },
 ]
 
 for (const z of ZUSTAENDE)
   for (const breite of z.breiten ?? ALLE)
     test(`${z.name}-${breite}`, async ({ page }) => {
       await page.setViewportSize({ width: breite, height: HOEHE[breite] })
+      if (z.uhr) await page.clock.install()
       await page.goto(z.pfad)
       await page.evaluate(() => document.fonts.ready)
       await z.vorbereiten?.(page)
