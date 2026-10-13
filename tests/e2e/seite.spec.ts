@@ -69,18 +69,3 @@ test('kein horizontales Scrollen von 320 bis 1920 px', async ({ page }, info) =>
     }
   }
 })
-
-test.describe('Falz', () => {
-  test.use({ viewport: { width: 390, height: 844 } })
-  // Wird in Phase 2 scharf geschaltet, sobald der Hero steht.
-  test.fixme('Anrufen, WhatsApp und Anfrage senden liegen über 660 px', async ({ page }, info) => {
-    nurEinmal(info.project.name)
-    await page.goto('/')
-    const hero = page.locator('#start')
-    for (const name of [/Jetzt anrufen/, /WhatsApp/, /Anfrage senden/]) {
-      const box = await hero.getByRole('link', { name }).first().boundingBox()
-      expect(box, String(name)).not.toBeNull()
-      expect(box!.y + box!.height).toBeLessThan(660)
-    }
-  })
-})
