@@ -26,9 +26,16 @@ const DIALOG = [
   'backdrop:bg-transparent',
 ].join(' ')
 
-/** Fokus auf die erste Auswahl (Chip), sonst in die Eingabe. */
+/**
+ * Fokus auf die erste Auswahl (Chip), sonst in die Eingabe, zuletzt (Eingabe gesperrt) auf den ersten sichtbaren Knopf.
+ * Elemente, die ausgeblendet sind (Kopf-Knöpfe der anderen Form), nehmen den Fokus nicht an und werden übersprungen.
+ */
 function fokussiereStart(dialog: HTMLElement) {
-  dialog.querySelector<HTMLElement>('[data-auswahl] button, input:not(:disabled)')?.focus()
+  for (const selektor of ['[data-auswahl] button', '#luna-eingabe:not(:disabled)', 'button'])
+    for (const el of dialog.querySelectorAll<HTMLElement>(selektor)) {
+      el.focus()
+      if (document.activeElement === el) return
+    }
 }
 
 export function LunaChat() {
@@ -119,13 +126,16 @@ export function LunaChat() {
 
   const sende = async () => {
     setSendend(true)
+    let ergebnis: { anfragenummer: string } | null = null
     try {
-      setLuna(gesendet(luna, await submitLead(zuLead(luna))))
+      ergebnis = await submitLead(zuLead(luna))
     } catch {
-      setLuna(gesendet(luna, null))
-    } finally {
-      setSendend(false)
+      // Der Fehler wird als Karte „Anfrage nicht gesendet“ gezeigt, die Angaben bleiben erhalten.
     }
+    // Der gedrückte Knopf verschwindet mit der Zusammenfassung bzw. der Fehlerkarte: Fokus nicht verlieren.
+    fokusNachAntwort.current = true
+    setLuna(gesendet(luna, ergebnis))
+    setSendend(false)
   }
 
   const absenden = () => {

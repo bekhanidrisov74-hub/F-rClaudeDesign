@@ -53,22 +53,27 @@ export function Verlauf({ luna, ref, onAntwort, zusammenfassung, sendend, onErne
               <Blase von="nutzer">{AUFTRAG_AUFGEGEBEN}</Blase>
               <Erfolg angaben={luna.angaben} anfragenummer={luna.anfragenummer} onSchliessen={onSchliessen} />
             </>
-          ) : luna.schritt === 'fehler' ? (
-            <>
-              <Kurzfassung angaben={luna.angaben} />
-              <Sendefehler sendend={sendend} onErneut={onErneut} />
-            </>
           ) : (
-            <>
-              {luna.verlauf.map((n, i) => (
-                <Blase key={i} von={n.von}>
-                  {n.text}
-                </Blase>
-              ))}
-              {luna.schritt === 'zusammenfassung' && <Zusammenfassung angaben={luna.angaben} {...zusammenfassung} />}
-            </>
+            luna.schritt !== 'fehler' && (
+              <>
+                {luna.verlauf.map((n, i) => (
+                  <Blase key={i} von={n.von}>
+                    {n.text}
+                  </Blase>
+                ))}
+                {luna.schritt === 'zusammenfassung' && <Zusammenfassung angaben={luna.angaben} {...zusammenfassung} />}
+              </>
+            )
           )}
         </div>
+
+        {/* Der Fehler meldet sich selbst per role="alert", deshalb steht er außerhalb der höflichen Region */}
+        {luna.schritt === 'fehler' && (
+          <>
+            <Kurzfassung angaben={luna.angaben} />
+            <Sendefehler sendend={sendend} onErneut={onErneut} />
+          </>
+        )}
 
         {chips.length > 0 && (
           <div
