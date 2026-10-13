@@ -193,6 +193,52 @@ export const copy = {
     zumRechner: 'Zum Preisrechner',
   },
 
+  anfrage: {
+    titel: 'Anfrage senden',
+    lead: 'Wir geben Ihre Anfrage sofort an einen passenden Fachbetrieb in Ihrer Region weiter. Der Betrieb ruft Sie zurück.',
+    felder: {
+      name: { label: 'Name', platzhalter: 'Vor- und Nachname' },
+      telefon: { label: 'Telefon', platzhalter: 'Für den Rückruf' },
+      plzOrt: { label: 'PLZ und Ort', platzhalter: 'z. B. 1020 Wien' },
+      gewerk: { label: 'Gewerk', bitteWaehlen: 'Bitte wählen' },
+      beschreibung: { label: 'Kurze Beschreibung', platzhalter: 'Was ist passiert? Zum Beispiel: Unter der Spüle tritt Wasser aus.' },
+    },
+    /** Sternchen hinter Pflichtfeldern */
+    pflichtZeichen: '*',
+    einwilligung: {
+      text: 'Ich bin einverstanden, dass fixit247 meine Angaben zur Vermittlung an einen passenden Fachbetrieb weitergibt. Mehr dazu in der',
+      link: 'Datenschutzerklärung',
+    },
+    senden: 'Anfrage senden',
+    sendend: 'Wird gesendet …',
+    pflicht: '* Pflichtfeld. Die Vermittlung ist kostenlos.',
+    fehler: {
+      name: 'Bitte geben Sie Ihren Namen ein.',
+      telefon: 'Bitte geben Sie eine Telefonnummer für den Rückruf ein.',
+      plzOrt: 'Bitte geben Sie Postleitzahl und Ort ein, zum Beispiel 1020 Wien.',
+      gewerk: 'Bitte wählen Sie ein Gewerk.',
+      einwilligung: 'Bitte stimmen Sie der Weitergabe zu, sonst können wir keinen Betrieb vermitteln.',
+    },
+    erfolg: {
+      titel: 'Danke. Ihre Anfrage ist unterwegs.',
+      // nicht im Design: Text wie in der Luna-Erfolgskarte (Entscheidung 2)
+      text: 'Wir geben sie jetzt an einen passenden {betrieb} in Ihrer Nähe weiter. Der Betrieb ruft Sie unter {telefon} zurück.',
+      nummer: 'Anfragenummer: {nummer}',
+    },
+    // nicht im Design: Texte wie in der Luna-Fehlerkarte (Entscheidung 2)
+    sendefehler: {
+      titel: 'Die Anfrage wurde nicht gesendet.',
+      text: 'Bitte prüfen Sie Ihre Internetverbindung und versuchen Sie es noch einmal. Ihre Angaben bleiben erhalten.',
+      anrufen: 'Stattdessen anrufen',
+    },
+    seitenkasten: {
+      titel: 'Lieber sofort sprechen?',
+      text: 'Wir sind rund um die Uhr erreichbar, auch an Sonn- und Feiertagen.',
+      whatsapp: 'Per WhatsApp schreiben',
+      hinweis: 'Per WhatsApp können Sie gleich ein Foto vom Schaden mitschicken.',
+    },
+  },
+
   menue: {
     label: 'Menü', // nicht im Design: Name der Menü-Fläche (aria-label)
     links: [
