@@ -1,11 +1,15 @@
 // npm run shots → tests/screens-actual/<zustand>-<breite>.png (Vergleichstabelle in PLAN.md, Abschnitt 4).
 import { test, type Page } from '../e2e/test'
 import {
+  anfrage,
   chat,
+  formularErfolg,
+  formularSendefehler,
   lunaAbsenden,
   lunaBisFrage4,
   lunaBisZusammenfassung,
   oeffneMenue,
+  sendeLeer,
   oeffnePreisuebersicht,
   rechner,
   schalteZuschlag,
@@ -65,6 +69,9 @@ const ZUSTAENDE: Zustand[] = [
       await expect(chat(p).getByRole('alert')).toBeVisible()
     },
   },
+  { name: 'formular-fehler', pfad: '/#anfrage', element: anfrage, vorbereiten: sendeLeer },
+  { name: 'formular-erfolg', pfad: '/#anfrage', element: anfrage, vorbereiten: formularErfolg },
+  { name: 'formular-sendefehler', pfad: '/?fehler=1#anfrage', element: anfrage, vorbereiten: formularSendefehler },
 ]
 
 for (const z of ZUSTAENDE)

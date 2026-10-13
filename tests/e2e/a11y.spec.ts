@@ -2,10 +2,13 @@ import AxeBuilder from '@axe-core/playwright'
 import { expect, test, type Page } from './test'
 import {
   chat,
+  formularErfolg,
+  formularSendefehler,
   lunaAbsenden,
   lunaBisFrage4,
   lunaBisZusammenfassung,
   oeffneMenue,
+  sendeLeer,
   oeffnePreisuebersicht,
   schalteZuschlag,
   waehleGewerk,
@@ -55,6 +58,9 @@ const ZUSTAENDE: Zustand[] = [
       await expect(chat(p).getByRole('alert')).toBeVisible()
     },
   },
+  { name: 'formular-fehler', pfad: '/#anfrage', vorbereiten: sendeLeer },
+  { name: 'formular-erfolg', pfad: '/#anfrage', vorbereiten: formularErfolg },
+  { name: 'formular-sendefehler', pfad: '/?fehler=1#anfrage', vorbereiten: formularSendefehler },
 ]
 
 for (const z of ZUSTAENDE)

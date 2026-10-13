@@ -82,3 +82,36 @@ export async function zeigeAnstupser(page: Page) {
   await page.clock.fastForward(9000)
   await expect(page.getByRole('status').filter({ hasText: 'Notfall?' })).toBeVisible()
 }
+
+// ── Anfrage-Formular ──
+export const anfrage = (page: Page) => page.locator('#anfrage')
+
+export async function fuelleFormular(page: Page) {
+  const a = anfrage(page)
+  await a.getByLabel(/^Name/).fill('Maria Huber')
+  await a.getByLabel(/^Telefon/).fill('0664 1234567')
+  await a.getByLabel(/^PLZ und Ort/).fill('1020 Wien')
+  await a.getByLabel(/^Gewerk/).selectOption({ label: 'Installateur' })
+  await a.getByLabel(/^Kurze Beschreibung/).fill('Unter der Spüle tritt Wasser aus.')
+  await a.getByRole('checkbox').check()
+}
+
+export async function sendeLeer(page: Page) {
+  await anfrage(page).getByRole('button', { name: 'Anfrage senden' }).click()
+  await expect(anfrage(page).getByText('Bitte geben Sie Ihren Namen ein.')).toBeVisible()
+}
+
+export async function sendeFormular(page: Page) {
+  await fuelleFormular(page)
+  await anfrage(page).getByRole('button', { name: 'Anfrage senden' }).click()
+}
+
+export async function formularErfolg(page: Page) {
+  await sendeFormular(page)
+  await expect(anfrage(page).getByText(/Anfragenummer/)).toBeVisible()
+}
+
+export async function formularSendefehler(page: Page) {
+  await sendeFormular(page)
+  await expect(anfrage(page).getByRole('alert')).toBeVisible()
+}
