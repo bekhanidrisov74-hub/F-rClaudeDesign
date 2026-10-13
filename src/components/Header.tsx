@@ -1,13 +1,15 @@
 import { copy } from '../content/copy'
+import { useOverlays } from '../overlays'
 import { CallButton } from './ui/CallButton'
 import { Icon } from './ui/Icon'
 
 /**
  * Sticky Seitenkopf (Screen 01/02): Wortmarke, Navigation ab 920 px, Anrufen, darunter der Menü-Knopf.
  * aufStartseite=false (Rechtsseiten): Anker zeigen auf „/#…“, das Logo auf „/“.
- * Der Menü-Knopf bekommt seine Funktion in Phase 3 (MobileMenu).
+ * Der Menü-Knopf (nur unter 920 px) öffnet und schließt das Handy-Menü (MobileMenu, Screen 05).
  */
 export function Header({ aufStartseite = true }: { aufStartseite?: boolean }) {
+  const { menueOffen, setMenueOffen } = useOverlays()
   const anker = (href: string) => (aufStartseite ? href : `/${href}`)
 
   return (
@@ -37,13 +39,16 @@ export function Header({ aufStartseite = true }: { aufStartseite?: boolean }) {
 
         <button
           type="button"
-          aria-label={copy.kopf.menueOeffnen}
-          aria-expanded={false}
+          aria-label={menueOffen ? copy.kopf.menueSchliessen : copy.kopf.menueOeffnen}
+          aria-expanded={menueOffen}
           aria-controls="menue"
           id="menue-knopf"
-          className="-mr-s2 flex size-[44px] shrink-0 cursor-pointer items-center justify-center rounded-chip text-tiefsee nav:hidden"
+          onClick={() => setMenueOffen(!menueOffen)}
+          className={`-mr-s2 flex size-[44px] shrink-0 cursor-pointer items-center justify-center rounded-chip text-tiefsee nav:hidden ${
+            menueOffen ? 'rahmen border-rand bg-weiss' : ''
+          }`}
         >
-          <Icon name="ui-menue" className="size-[24px]" />
+          <Icon name={menueOffen ? 'ui-schliessen' : 'ui-menue'} className={menueOffen ? 'size-[22px]' : 'size-[24px]'} />
         </button>
       </div>
     </header>
