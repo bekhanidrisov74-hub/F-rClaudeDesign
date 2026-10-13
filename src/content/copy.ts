@@ -13,8 +13,8 @@ export const WEISS_NICHT = 'Weiß ich nicht'
 export const copy = {
   meta: {
     // nicht im Design: Titel und Beschreibung aus Sätzen der Startseite zusammengesetzt
-    titel: 'fixit247 – Handwerker-Notdienst rund um die Uhr',
-    /** Titel der Unterseiten: „Impressum – fixit247“ */
+    titel: 'fixit247 – Vermittlung von Handwerker-Notdiensten rund um die Uhr',
+    /** nicht im Design: Titel der Unterseiten, „Impressum – fixit247“ */
     unterseite: '{seite} – fixit247',
     beschreibung:
       'Rohrbruch, ausgesperrt, Strom weg? Wir vermitteln Ihnen sofort einen geprüften Fachbetrieb aus Ihrer Region. Die Vermittlung ist kostenlos.',
@@ -130,7 +130,7 @@ export const copy = {
     weniger: 'Eine Stunde weniger',
     mehr: 'Eine Stunde mehr',
     stundenHinweis: '1 bis 12 Stunden. Beim Schlüsseldienst gilt ein Preis pro Einsatz.',
-    stunde: 'Stunde',
+    stunde: 'Stunde', // nicht im Design: Einzahl bei 1 Stunde
     stunden: 'Stunden',
     /** vor dem Gesamtpreis: „ca. 219,90 € – 309,90 €“ */
     ca: 'ca.',
