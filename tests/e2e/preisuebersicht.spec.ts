@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test'
+import { expect, test } from './test'
 import { oeffnePreisuebersicht, preisDialog } from './hilfen'
 import { gewerke } from '../../src/content/gewerke'
 
@@ -40,9 +40,11 @@ test('Fokus auf Schließen, Fokusfalle, Esc, Fokus zurück, Seite gesperrt', asy
   // showModal(): modal, aria-modal implizit
   expect(await dialog.evaluate((d) => d.matches(':modal'))).toBe(true)
   expect(await page.evaluate(() => getComputedStyle(document.documentElement).overflow)).toBe('hidden')
+  // Modaler Dialog: Die Seite ist inert. Tab läuft durch den Dialog und höchstens kurz in die Browserleiste (body).
   for (let i = 0; i < 25; i++) {
     await page.keyboard.press('Tab')
-    expect(await dialog.evaluate((d) => d.contains(document.activeElement)), `Tab ${i}`).toBe(true)
+    const drin = await dialog.evaluate((d) => d.contains(document.activeElement) || document.activeElement === document.body)
+    expect(drin, `Tab ${i}`).toBe(true)
   }
   await page.keyboard.press('Escape')
   await expect(dialog).toBeHidden()

@@ -1,4 +1,4 @@
-import { expect, test, type Page } from '@playwright/test'
+import { expect, test, type Page } from './test'
 import { oeffnePreisuebersicht, preisDialog } from './hilfen'
 
 // Erlaubte Dauern laut tokens.css: 120 (Hover/Fokus), 160 (Dialog, Anstupser), 200 (Chat), 240 (Sheet).

@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test'
+import { expect, test } from './test'
 import { ergebnis, rechner, schalteZuschlag, setzeStunden, waehleGewerk } from './hilfen'
 
 test.beforeEach(async ({ page }) => {
@@ -46,11 +46,12 @@ test('Stepper bleibt zwischen 1 und 12', async ({ page }) => {
   const weniger = rechner(page).getByRole('button', { name: 'Eine Stunde weniger' })
   const mehr = rechner(page).getByRole('button', { name: 'Eine Stunde mehr' })
   await weniger.click()
-  await weniger.click()
   await expect(ausgabe).toHaveText('1 Stunde')
   await expect(weniger).toHaveAttribute('aria-disabled', 'true')
+  await weniger.click({ force: true }) // an der Grenze: aria-disabled, Fokus bleibt
+  await expect(ausgabe).toHaveText('1 Stunde')
   await setzeStunden(page, 12)
-  await mehr.click()
+  await mehr.click({ force: true })
   await expect(ausgabe).toHaveText('12 Stunden')
   await expect(mehr).toHaveAttribute('aria-disabled', 'true')
 })
@@ -65,7 +66,7 @@ test('Schlüsseldienst: Stepper weg, Hinweis „Preis pro Einsatz“, Zeile „E
 })
 
 test('Zuschläge: Hinweis wechselt bei zwei oder mehr', async ({ page }) => {
-  const status = rechner(page).getByRole('status')
+  const status = rechner(page).getByRole('group', { name: 'Zuschlag' }).getByRole('status')
   await expect(status).toHaveText('Es zählt höchstens ein Zuschlag, auch wenn mehrere zutreffen.')
   await schalteZuschlag(page, 'Sonntag')
   await expect(status).toHaveText('Es zählt höchstens ein Zuschlag, auch wenn mehrere zutreffen.')
@@ -82,9 +83,10 @@ test('Gesamt bleibt einzeilig, auch bei 320 px und vierstelligen Beträgen', asy
   test.skip(info.project.name !== 'm390', 'setzt die Breite selbst')
   for (const breite of [320, 390, 1024, 1440]) {
     await page.setViewportSize({ width: breite, height: 900 })
-    await page.goto('/#preisrechner')
+    await page.goto(`/?breite=${breite}#preisrechner`) // neue URL: sonst bleibt der Zustand der letzten Runde
     await waehleGewerk(page, 'Elektro')
     await setzeStunden(page, 12)
+    await schalteZuschlag(page, 'Feiertag')
     const gesamt = ergebnis(page).getByText('ca. 2.189,90 € – 3.389,90 €')
     const mass = await gesamt.evaluate((el) => {
       const s = getComputedStyle(el)

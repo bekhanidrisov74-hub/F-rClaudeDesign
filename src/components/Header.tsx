@@ -17,6 +17,7 @@ export function Header({ aufStartseite = true }: { aufStartseite?: boolean }) {
       <div className="wrapper flex h-kopf items-center gap-s2 nav:gap-s6">
         <a
           href={aufStartseite ? '#start' : '/'}
+          onClick={() => setMenueOffen(false)}
           aria-label={copy.kopf.logoLabel}
           className="flex min-h-[44px] items-center font-display text-logo leading-none font-extrabold tracking-[-0.035em] text-tiefsee"
         >

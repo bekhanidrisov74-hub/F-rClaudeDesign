@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import { useEffect, type ReactNode } from 'react'
 import { copy } from './content/copy'
 import { OverlayProvider } from './overlays'
 import { Startseite } from './components/Startseite'
@@ -42,5 +42,9 @@ export function normalisiere(pfad: string): string {
 }
 
 export function App({ pfad }: { pfad: string }) {
+  // Markiert das Ende der Hydration (für Tests; vorher gehen Klicks auf vorgerenderte Knöpfe ins Leere).
+  useEffect(() => {
+    document.documentElement.dataset.hydriert = ''
+  }, [])
   return <OverlayProvider>{seiten[normalisiere(pfad)].inhalt()}</OverlayProvider>
 }

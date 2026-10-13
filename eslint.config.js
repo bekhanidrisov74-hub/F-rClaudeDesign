@@ -14,4 +14,9 @@ export default tseslint.config(
     files: ['scripts/**/*.mjs', '*.config.{js,ts}', 'tests/**/*.ts'],
     languageOptions: { globals: { ...globals.node } },
   },
+  {
+    // Playwright-Fixtures heißen `use`, sind aber keine React-Hooks.
+    files: ['tests/e2e/**/*.ts', 'tests/shots/**/*.ts'],
+    rules: { 'react-hooks/rules-of-hooks': 'off' },
+  },
 )

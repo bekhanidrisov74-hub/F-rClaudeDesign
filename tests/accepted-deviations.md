@@ -52,3 +52,7 @@ Entschiedene Standards:
 Neu: Preisrechner (nach So funktioniert's), Preisübersicht als Dialog ab 640 px bzw. Bottom-Sheet darunter, Handy-Menü. Das Anfrage-Formular fehlt weiterhin (Phase 5), ebenso Luna (Phase 4). Im Screenshot folgt deshalb auf den Preisrechner direkt der Fuß.
 - Der Hintergrund hinter Dialog, Sheet und Menü ist die echte Seite, nicht der Entwurfsausschnitt. Dass dort andere Teile der Seite zu sehen sind, ist kein Befund.
 - Im Handy-Menü ist „Preisübersicht“ ein Knopf. Er öffnet das Sheet, die Optik ist wie bei den Links.
+- Rechner: Bei vierstelligen Summen wird der Gesamtpreis kleiner, damit er einzeilig bleibt (z. B. 26 statt 30 px bei 1440, 19 px bei 320). Passen Zuschlag-Label und Betrag bei 320 px nicht nebeneinander, steht der Betrag rechtsbündig darunter.
+- Rechner und Preisübersicht: Beträge in den Zeilen in Atkinson 700 wie im Entwurf, nur „x Stunden“ und Gesamt in Bricolage.
+- Preisübersicht: Sheet-Titel 30 px (`--fx-h2-s`), im Entwurf 29 px. Innenabstände auf Token-Stufen gerundet (Dialog 32 statt 36 px), dadurch ist das Sheet etwa 25 px und der Dialog etwa 15 px niedriger als im Entwurf.
+- Menü: Zwischen 640 und 919 px nimmt die Kontaktkarte die volle Inhaltsbreite ein (kein Entwurf).

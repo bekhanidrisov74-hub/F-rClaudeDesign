@@ -1,5 +1,5 @@
 // npm run shots → tests/screens-actual/<zustand>-<breite>.png (Vergleichstabelle in PLAN.md, Abschnitt 4).
-import { test, type Page } from '@playwright/test'
+import { test, type Page } from '../e2e/test'
 import { oeffneMenue, oeffnePreisuebersicht, rechner, schalteZuschlag, waehleGewerk } from '../e2e/hilfen'
 
 const HOEHE: Record<number, number> = { 390: 844, 1024: 768, 1440: 900 }

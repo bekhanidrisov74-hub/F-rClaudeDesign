@@ -1,0 +1,54 @@
+# Bewusste Abweichungen (für den visual-reviewer)
+
+Diese Punkte sind entschieden und gelten **nicht** als Abweichung. Quelle: PLAN.md, Abschnitte 7 und 8.
+
+## Immer
+
+- Bildflächen sind leere türkisblaue Flächen **ohne** Text. Die Bildbrief-Texte, „Bild N: …“ und die Marke „Platzhalter“ aus den Entwürfen erscheinen nie auf der Website.
+- Die Wortmarke „fixit247“ steht in Bricolage 800, nicht 900.
+- Schriftgrößen, Radien, Abstände und Schatten kommen nur aus `src/styles/tokens.css`. Halbe Pixel aus den Entwürfen (13,5 / 14,5 / 15,5 px) sind auf die nächste Token-Stufe gerundet, ebenso Abstände (10/14/18/20/22 px) auf die `--fx-s-*`-Stufen. Unterschiede bis 2 px bei Schriftgrößen und bis 4 px bei Abständen sind deshalb gewollt.
+- Telefonnummer, WhatsApp, E-Mail, Firmenname und Domain zeigen die Klammer-Platzhalter wie in den Entwürfen.
+- Für 1024 px gibt es keinen Entwurf. Dort gilt das Desktop-Layout aus Screen 02 (Navigation sichtbar).
+- Board-Beschriftungen in den Screens 12 und 13 (Überschriften über den Rahmen) gehören nicht zur Website.
+
+## Phase 1 (Gerüst)
+
+Die Startseite ist nur ein Gerüst: H1 und Unterzeile des Hero ohne Kopf, Knöpfe, Bild und weitere Abschnitte. Zu prüfen sind nur:
+- Schriften (Bricolage für die H1, Breite 96 %, Gewicht 700, Atkinson für die Unterzeile)
+- Farben (Kalk-Hintergrund, Tiefsee-Schrift, Schiefer-Unterzeile)
+- Größe der H1 (44 px bei 390, 62 px bei 1440)
+- Fokusrahmen (3 px Türkis, Abstand 3 px)
+
+Verglichen wird mit Screen 01/02 (Hero-Text) und Screen 14 (Token-Board). Alle übrigen Abschnitte fehlen absichtlich.
+
+## Phase 2 (statische Abschnitte)
+
+Gebaut sind Kopf, Hero mit Schnellwahl und Bild 1, Vertrauensleiste, Leistungen, So funktioniert's, Fuß und die Platzhalterseiten. Bewusst noch nicht da:
+- Preisrechner, Preisübersicht und Handy-Menü (Phase 3). Der Menü-Knopf und „Alle Richtpreise im Überblick“ haben noch keine Funktion.
+- Luna-Knopf und Anstupser (Phase 4).
+- Anfrage-Formular (Phase 5).
+
+Im Screenshot folgt deshalb auf „So funktioniert's“ direkt der Fuß.
+
+Entschiedene Standards:
+- Handy wie Screen 01, Desktop wie Screen 02 (Entscheidung 5):
+  - Schnellwahl-Kacheln am Handy ohne Unterzeile, Luna-Kachel „Nicht sicher? Luna fragen“
+  - Fuß-Kontakt am Handy ohne „Telefon“-Präfix und „WhatsApp“ ohne Nummer
+- Leistungen sind auf allen Breiten ein Raster (`auto-fill` ab 340 px) mit 24 px Abstand. Im Entwurf hat die Handy-Spalte 20 px.
+- Kartenradius 22 px (`--fx-r-card-lg`) auf allen Breiten, im Entwurf am Handy 20 px.
+- Zweitknöpfe im Hero (WhatsApp, Anfrage senden) haben auf allen Breiten Radius 16 px (`--fx-r-btn-lg`), im Entwurf am Handy 14 px.
+- Abstände sind auf `--fx-s-*` gerundet, z. B. Hero oben 72 statt 76 px und Überlappung der Kacheln 96 statt 104 px.
+- Zwischen 560 und 920 px gibt es keinen Entwurf: Dort gilt der kompakte Handy-Kopf (64 px) mit Menü-Knopf, Bild 1 steht nach der Schnellwahl.
+- Kopf ab 920 px: Abstand zwischen den Navigations-Links 24 statt 32 px und zum Anruf-Knopf 32 statt 40 px. So bleibt die Zeile bei 920 px einzeilig.
+- Schnellwahl ab 920 px: Kacheln mindestens 176 statt 160 px breit, damit „Haushaltsgeräte“ bei 19 px Titelgröße passt. Bei 1024 px stehen 5 Kacheln in der ersten Reihe, die Luna-Kachel allein darunter. Für 1024 gibt es keinen Entwurf.
+- Schnellwahl-Titel „Was ist passiert?“ in `text-h4` (22 px bei 1440, Entwurf 24 px). Kachel-, Vertrauens- und Spaltentitel in `text-h5` (19 px bei 1440, Entwurf 18 px).
+- Zwischen 640 und 919 px: Schnellwahl mit 3 Spalten, Vertrauensleiste mit 2 Spalten, Fuß im Handy-Layout (kein Entwurf).
+- So funktioniert's: eine Spalte bis 919 px, drei ab 920 px.
+- Fuß: Abstände gerundet, am Handy oben 40 statt 48 px, am Desktop vor der unteren Zeile 56 statt 48 px.
+- Preis in den Leistungskarten in Bricolage 800 wie im Entwurf.
+
+## Phase 3 (Interaktion)
+
+Neu: Preisrechner (nach So funktioniert's), Preisübersicht als Dialog ab 640 px bzw. Bottom-Sheet darunter, Handy-Menü. Das Anfrage-Formular fehlt weiterhin (Phase 5), ebenso Luna (Phase 4). Im Screenshot folgt deshalb auf den Preisrechner direkt der Fuß.
+- Der Hintergrund hinter Dialog, Sheet und Menü ist die echte Seite, nicht der Entwurfsausschnitt. Dass dort andere Teile der Seite zu sehen sind, ist kein Befund.
+- Im Handy-Menü ist „Preisübersicht“ ein Knopf. Er öffnet das Sheet, die Optik ist wie bei den Links.
