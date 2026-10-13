@@ -1,4 +1,5 @@
 import { cent, euro } from '../lib/preis'
+import { copy } from './copy'
 
 // Gewerke: eine Quelle für Schnellwahl, Leistungen, Rechner, Preisübersicht, Formular und Luna.
 // Ein neuer Eintrag erscheint überall. Preise in Euro wie im Briefing (SPEC 2); gerechnet wird in Cent.
@@ -119,7 +120,7 @@ export const gewerke: Gewerk[] = [
 /** Anzeige der Richtpreis-Spanne in ganzen Euro, z. B. „95–140 €“ (Leistungen, Preisübersicht, Luna). */
 export const spanne = (g: Gewerk) => `${g.min}–${g.max} €`
 /** „pro Stunde“ bzw. „pro Einsatz“ */
-export const einheit = (g: Gewerk) => (g.abrechnung === 'einsatz' ? 'pro Einsatz' : 'pro Stunde')
+export const einheit = (g: Gewerk) => copy.einheit[g.abrechnung]
 /** Anfahrt mit zwei Nachkommastellen, z. B. „29,90 €“ */
 export const anfahrtText = (g: Gewerk) => euro(cent(g.anfahrt))
 

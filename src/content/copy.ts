@@ -14,6 +14,8 @@ export const copy = {
   meta: {
     // nicht im Design: Titel und Beschreibung aus Sätzen der Startseite zusammengesetzt
     titel: 'fixit247 – Handwerker-Notdienst rund um die Uhr',
+    /** Titel der Unterseiten: „Impressum – fixit247“ */
+    unterseite: '{seite} – fixit247',
     beschreibung:
       'Rohrbruch, ausgesperrt, Strom weg? Wir vermitteln Ihnen sofort einen geprüften Fachbetrieb aus Ihrer Region. Die Vermittlung ist kostenlos.',
   },
@@ -36,6 +38,11 @@ export const copy = {
   anruf: {
     jetzt: 'Jetzt anrufen',
   },
+
+  /** Abrechnungseinheiten (Leistungen, Preisübersicht, Rechner, Luna) */
+  einheit: { stunde: 'pro Stunde', einsatz: 'pro Einsatz' },
+  /** Bindewort für Aufzählungen: „Sonntag und Nacht“ */
+  und: 'und',
 
   hero: {
     h1: ['Handwerker-', 'Notdienst.', 'Rund um die Uhr.'],
@@ -155,7 +162,6 @@ export const copy = {
       zuschlagUnterzeile: 'auf die Arbeit, nur einmal',
       gesamt: 'Gesamt',
       hinweis: 'Richtpreis. Den genauen Preis vereinbaren Sie mit dem Betrieb.',
-      proEinsatz: 'pro Einsatz',
       keinZuschlag: 'kein Zuschlag',
       preisuebersicht: 'Preisübersicht öffnen',
     },

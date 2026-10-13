@@ -1,5 +1,5 @@
 import { useEffect, type ReactNode } from 'react'
-import { copy } from './content/copy'
+import { copy, fuelle } from './content/copy'
 import { OverlayProvider } from './overlays'
 import { Startseite } from './components/Startseite'
 import { LegalPage } from './components/LegalPage'
@@ -16,19 +16,19 @@ const { rechtliches } = copy
 export const seiten: Record<string, Seite> = {
   '/': { titel: copy.meta.titel, beschreibung: copy.meta.beschreibung, inhalt: () => <Startseite /> },
   '/impressum': {
-    titel: `${rechtliches.impressum.titel} – fixit247`,
+    titel: fuelle(copy.meta.unterseite, { seite: rechtliches.impressum.titel }),
     beschreibung: copy.meta.beschreibung,
     noindex: true,
     inhalt: () => <LegalPage seite="impressum" />,
   },
   '/datenschutz': {
-    titel: `${rechtliches.datenschutz.titel} – fixit247`,
+    titel: fuelle(copy.meta.unterseite, { seite: rechtliches.datenschutz.titel }),
     beschreibung: copy.meta.beschreibung,
     noindex: true,
     inhalt: () => <LegalPage seite="datenschutz" />,
   },
   '/agb': {
-    titel: `${rechtliches.agb.titel} – fixit247`,
+    titel: fuelle(copy.meta.unterseite, { seite: rechtliches.agb.titel }),
     beschreibung: copy.meta.beschreibung,
     noindex: true,
     inhalt: () => <LegalPage seite="agb" />,
