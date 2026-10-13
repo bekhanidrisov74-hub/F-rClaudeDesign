@@ -39,3 +39,10 @@ Entschiedene Standards:
 - Zweitknöpfe im Hero (WhatsApp, Anfrage senden) haben auf allen Breiten Radius 16 px (`--fx-r-btn-lg`), im Entwurf am Handy 14 px.
 - Abstände sind auf `--fx-s-*` gerundet, z. B. Hero oben 72 statt 76 px und Überlappung der Kacheln 96 statt 104 px.
 - Zwischen 560 und 920 px gibt es keinen Entwurf: Dort gilt der kompakte Handy-Kopf (64 px) mit Menü-Knopf, Bild 1 steht nach der Schnellwahl.
+- Kopf ab 920 px: Abstand zwischen den Navigations-Links 24 statt 32 px und zum Anruf-Knopf 32 statt 40 px. So bleibt die Zeile bei 920 px einzeilig.
+- Schnellwahl ab 920 px: Kacheln mindestens 176 statt 160 px breit, damit „Haushaltsgeräte“ bei 19 px Titelgröße passt. Bei 1024 px stehen 5 Kacheln in der ersten Reihe, die Luna-Kachel allein darunter. Für 1024 gibt es keinen Entwurf.
+- Schnellwahl-Titel „Was ist passiert?“ in `text-h4` (22 px bei 1440, Entwurf 24 px). Kachel-, Vertrauens- und Spaltentitel in `text-h5` (19 px bei 1440, Entwurf 18 px).
+- Zwischen 640 und 919 px: Schnellwahl mit 3 Spalten, Vertrauensleiste mit 2 Spalten, Fuß im Handy-Layout (kein Entwurf).
+- So funktioniert's: eine Spalte bis 919 px, drei ab 920 px.
+- Fuß: Abstände gerundet, am Handy oben 40 statt 48 px, am Desktop vor der unteren Zeile 56 statt 48 px.
+- Preis in den Leistungskarten in Bricolage 800 wie im Entwurf.

@@ -87,7 +87,7 @@ test('Gewerke-Icons: Petrol bzw. Orange, ohne Fläche', async ({ page }) => {
 test('Bild 1 reicht am Desktop bis zum rechten Rand', async ({ page }, info) => {
   test.skip(info.project.name !== 'd1440', 'nur Desktop')
   await page.goto('/')
-  const box = await page.locator('#start [data-bild="1"]:visible').boundingBox()
+  const box = await page.locator('[data-bild="1"]:visible').boundingBox()
   expect(box).not.toBeNull()
   expect(Math.round(box!.x + box!.width)).toBe(1440)
 })

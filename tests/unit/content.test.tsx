@@ -15,7 +15,7 @@ describe('Gewerke-Daten', () => {
   })
 })
 
-const SECHSTES: Gewerk = {
+const SECHSTES: Gewerk = vi.hoisted(() => ({
   id: 'dach',
   name: 'Dachdecker',
   kategorie: 'handwerk',
@@ -30,7 +30,7 @@ const SECHSTES: Gewerk = {
   betrieb: 'Dachdecker',
   tipp: 'Tipp',
   tippErfolg: 'Tipp',
-}
+}))
 
 vi.mock('../../src/content/gewerke', async (original) => {
   const echt = await original<typeof import('../../src/content/gewerke')>()
