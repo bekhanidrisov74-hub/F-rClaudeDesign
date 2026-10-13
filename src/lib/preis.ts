@@ -19,14 +19,14 @@ export const euro = (betragCent: number) => `${zahl(betragCent)} €`
 export const spanneZeile = (min: number, max: number) => `${zahl(min)}–${euro(max)}`
 
 /** Gesamt: „ca. 219,90 € – 309,90 €“ */
-export const spanneGesamt = (min: number, max: number) => `ca. ${euro(min)} – ${euro(max)}`
+export const spanneGesamt = (min: number, max: number) => `${copy.rechner.ca} ${euro(min)} – ${euro(max)}`
 
 /** „Sonntag“, „Sonntag und Nacht“, „Sonntag, Feiertag und Nacht“ */
 export const aufzaehlung = (teile: readonly string[]) =>
   teile.length < 2 ? (teile[0] ?? '') : `${teile.slice(0, -1).join(', ')} und ${teile[teile.length - 1]}`
 
 export const STUNDEN = { min: 1, max: 12, start: 2 } as const
-export const stundenText = (n: number) => `${n} ${n === 1 ? 'Stunde' : 'Stunden'}`
+export const stundenText = (n: number) => `${n} ${n === 1 ? copy.rechner.stunde : copy.rechner.stunden}`
 
 export type ZuschlagId = (typeof copy.rechner.zuschlaege)[number]['id']
 

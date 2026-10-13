@@ -30,8 +30,7 @@ export const copy = {
     ],
     anrufen: 'Anrufen',
     menueOeffnen: 'Menü öffnen',
-    // nicht im Design: Label des Menü-Knopfs im offenen Zustand
-    menueSchliessen: 'Menü schließen',
+    menueSchliessen: 'Menü schließen', // Screen 05
   },
 
   anruf: {
@@ -124,6 +123,10 @@ export const copy = {
     weniger: 'Eine Stunde weniger',
     mehr: 'Eine Stunde mehr',
     stundenHinweis: '1 bis 12 Stunden. Beim Schlüsseldienst gilt ein Preis pro Einsatz.',
+    stunde: 'Stunde',
+    stunden: 'Stunden',
+    /** vor dem Gesamtpreis: „ca. 219,90 € – 309,90 €“ */
+    ca: 'ca.',
     einsatz: {
       titel: 'Preis pro Einsatz',
       text: 'Der Schlüsseldienst rechnet nicht nach Stunden ab. Die Arbeitszeit entfällt deshalb.',
@@ -175,7 +178,7 @@ export const copy = {
   },
 
   menue: {
-    label: 'Menü',
+    label: 'Menü', // nicht im Design: Name der Menü-Fläche (aria-label)
     links: [
       { text: 'Leistungen', href: '#leistungen' },
       { text: "So funktioniert's", href: '#ablauf' },

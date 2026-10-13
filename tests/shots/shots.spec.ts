@@ -42,6 +42,10 @@ for (const z of ZUSTAENDE)
       await page.evaluate(() => document.fonts.ready)
       await z.vorbereiten?.(page)
       const pfad = `tests/screens-actual/${z.name}-${breite}.png`
-      if (z.element) await z.element(page).screenshot({ path: pfad, animations: 'disabled' })
+      if (z.element) {
+        // Der sticky Kopf würde den oberen Rand des Elements verdecken.
+        await page.addStyleTag({ content: 'header { position: static !important; }' })
+        await z.element(page).screenshot({ path: pfad, animations: 'disabled' })
+      }
       else await page.screenshot({ path: pfad, fullPage: z.ganzeSeite, animations: 'disabled' })
     })
