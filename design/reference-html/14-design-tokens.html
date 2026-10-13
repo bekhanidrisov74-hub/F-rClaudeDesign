@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="de-AT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Design-Tokens</title>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;700&amp;family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F2F7F9}
+</style>
+</head>
+<body>
+
+<div style="position: relative; width: 1440px; min-height: 4470px; overflow: hidden; background: #F2F7F9; color: #001B2A; font-family: 'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', Tahoma, Verdana, sans-serif; font-size: 17px; line-height: 1.5">
+<div style="box-sizing: border-box; padding: 72px 72px 96px; display: flex; flex-direction: column; gap: 64px">
+
+<header style="display: flex; flex-direction: column; gap: 12px; max-width: 820px">
+<h1 style="margin: 0; font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 700; font-stretch: 96%; font-size: 64px; line-height: 0.95; letter-spacing: -0.02em">Design-Tokens</h1>
+<p style="margin: 0; font-size: 19px; line-height: 1.5; color: #4B5E69">Richtung B in Türkisblau. Alle Werte stammen aus den Entwürfen auf dieser Seite und lassen sich direkt als CSS-Variablen übernehmen.</p>
+</header>
+
+<section aria-labelledby="t-farben" style="display: flex; flex-direction: column; gap: 24px">
+<h2 id="t-farben" style="margin: 0; font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 700; font-stretch: 96%; font-size: 34px; line-height: 1; letter-spacing: -0.012em">Farben</h2>
+<div style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 16px">
+<div style="display: flex; flex-direction: column; border-radius: 18px; overflow: hidden; background: #FFFFFF; border: 1px solid #D6E0E4">
+<div aria-hidden="true" style="box-sizing: border-box; height: 104px; padding: 14px 16px; background: #3AA8B8; color: #001B2A; display: flex; align-items: flex-end; justify-content: space-between"><span style="font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 800; font-stretch: 100%; font-size: 30px; line-height: 1">Aa</span><span style="font-weight: 700; font-size: 14px; line-height: 1">6,3&nbsp;:&nbsp;1</span></div>
+<div style="padding: 14px 16px 18px; display: flex; flex-direction: column; gap: 3px">
+<span style="font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 750; font-stretch: 100%; font-size: 19px; line-height: 1.25">Türkisblau</span>
+<span style="font-weight: 700; font-size: 15px; line-height: 1.4">#3AA8B8</span>
+<span style="font-size: 14px; line-height: 1.4; color: #4B5E69">--fx-tuerkis</span>
+<span style="margin-top: 6px; font-size: 14.5px; line-height: 1.45; color: #4B5E69">Signalfarbe. Anruf-Knopf, Bildflächen, Icon-Flächen der Bedienung. Schrift darauf immer Tiefsee.</span>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; border-radius: 18px; overflow: hidden; background: #FFFFFF; border: 1px solid #D6E0E4">
+<div aria-hidden="true" style="box-sizing: border-box; height: 104px; padding: 14px 16px; background: #3F7D88; color: #001B2A; display: flex; align-items: flex-end; justify-content: space-between"></div>
+<div style="padding: 14px 16px 18px; display: flex; flex-direction: column; gap: 3px">
+<span style="font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 750; font-stretch: 100%; font-size: 19px; line-height: 1.25">Petrol</span>
+<span style="font-weight: 700; font-size: 15px; line-height: 1.4">#3F7D88</span>
+<span style="font-size: 14px; line-height: 1.4; color: #4B5E69">--fx-icon-technik</span>
+<span style="margin-top: 6px; font-size: 14.5px; line-height: 1.45; color: #4B5E69">Icon-Farbe der Technik-Gewerke: Heizung &amp; Klima, Elektro, Haushaltsgeräte. 4,7&nbsp;:&nbsp;1 auf Weiß.</span>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; border-radius: 18px; overflow: hidden; background: #FFFFFF; border: 1px solid #D6E0E4">
+<div aria-hidden="true" style="box-sizing: border-box; height: 104px; padding: 14px 16px; background: #E8842A; color: #001B2A; display: flex; align-items: flex-end; justify-content: space-between"></div>
+<div style="padding: 14px 16px 18px; display: flex; flex-direction: column; gap: 3px">
+<span style="font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 750; font-stretch: 100%; font-size: 19px; line-height: 1.25">Orange</span>
+<span style="font-weight: 700; font-size: 15px; line-height: 1.4">#E8842A</span>
+<span style="font-size: 14px; line-height: 1.4; color: #4B5E69">--fx-icon-handwerk</span>
+<span style="margin-top: 6px; font-size: 14.5px; line-height: 1.45; color: #4B5E69">Icon-Farbe der Handwerks-Gewerke: Installateur, Schlüsseldienst. Nie für Knöpfe oder Schrift.</span>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; border-radius: 18px; overflow: hidden; background: #FFFFFF; border: 1px solid #D6E0E4">
+<div aria-hidden="true" style="box-sizing: border-box; height: 104px; padding: 14px 16px; background: #001B2A; color: #F2F7F9; display: flex; align-items: flex-end; justify-content: space-between"><span style="font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 800; font-stretch: 100%; font-size: 30px; line-height: 1">Aa</span><span style="font-weight: 700; font-size: 14px; line-height: 1">16,3&nbsp;:&nbsp;1</span></div>
+<div style="padding: 14px 16px 18px; display: flex; flex-direction: column; gap: 3px">
+<span style="font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 750; font-stretch: 100%; font-size: 19px; line-height: 1.25">Tiefsee</span>
+<span style="font-weight: 700; font-size: 15px; line-height: 1.4">#001B2A</span>
+<span style="font-size: 14px; line-height: 1.4; color: #4B5E69">--fx-tiefsee</span>
+<span style="margin-top: 6px; font-size: 14.5px; line-height: 1.45; color: #4B5E69">Text, Primärknöpfe, gewählte Chips, dunkle Abschnitte, Luna.</span>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; border-radius: 18px; overflow: hidden; background: #FFFFFF; border: 1px solid #D6E0E4">
+<div aria-hidden="true" style="box-sizing: border-box; height: 104px; padding: 14px 16px; background: #0F2C3C; color: #B7CBD4; display: flex; align-items: flex-end; justify-content: space-between"><span style="font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 800; font-stretch: 100%; font-size: 30px; line-height: 1">Aa</span><span style="font-weight: 700; font-size: 14px; line-height: 1">8,7&nbsp;:&nbsp;1</span></div>
+<div style="padding: 14px 16px 18px; display: flex; flex-direction: column; gap: 3px">
+<span style="font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 750; font-stretch: 100%; font-size: 19px; line-height: 1.25">Tiefsee 2</span>
+<span style="font-weight: 700; font-size: 15px; line-height: 1.4">#0F2C3C</span>
+<span style="font-size: 14px; line-height: 1.4; color: #4B5E69">--fx-tiefsee-2</span>
+<span style="margin-top: 6px; font-size: 14.5px; line-height: 1.45; color: #4B5E69">Trennlinien und Flächen innerhalb von Tiefsee.</span>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; border-radius: 18px; overflow: hidden; background: #FFFFFF; border: 1px solid #D6E0E4">
+<div aria-hidden="true" style="box-sizing: border-box; height: 104px; padding: 14px 16px; background: #F2F7F9; border-bottom: 1px solid #D6E0E4; color: #001B2A; display: flex; align-items: flex-end; justify-content: space-between"><span style="font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 800; font-stretch: 100%; font-size: 30px; line-height: 1">Aa</span><span style="font-weight: 700; font-size: 14px; line-height: 1">16,3&nbsp;:&nbsp;1</span></div>
+<div style="padding: 14px 16px 18px; display: flex; flex-direction: column; gap: 3px">
+<span style="font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 750; font-stretch: 100%; font-size: 19px; line-height: 1.25">Kalk</span>
+<span style="font-weight: 700; font-size: 15px; line-height: 1.4">#F2F7F9</span>
+<span style="font-size: 14px; line-height: 1.4; color: #4B5E69">--fx-kalk</span>
+<span style="margin-top: 6px; font-size: 14.5px; line-height: 1.45; color: #4B5E69">Seitenhintergrund, Chat-Verlauf, Hinweisflächen in Karten.</span>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; border-radius: 18px; overflow: hidden; background: #FFFFFF; border: 1px solid #D6E0E4">
+<div aria-hidden="true" style="box-sizing: border-box; height: 104px; padding: 14px 16px; background: #FFFFFF; border-bottom: 1px solid #D6E0E4; color: #001B2A; display: flex; align-items: flex-end; justify-content: space-between"><span style="font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 800; font-stretch: 100%; font-size: 30px; line-height: 1">Aa</span><span style="font-weight: 700; font-size: 14px; line-height: 1">17,6&nbsp;:&nbsp;1</span></div>
+<div style="padding: 14px 16px 18px; display: flex; flex-direction: column; gap: 3px">
+<span style="font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 750; font-stretch: 100%; font-size: 19px; line-height: 1.25">Weiß</span>
+<span style="font-weight: 700; font-size: 15px; line-height: 1.4">#FFFFFF</span>
+<span style="font-size: 14px; line-height: 1.4; color: #4B5E69">--fx-weiss</span>
+<span style="margin-top: 6px; font-size: 14.5px; line-height: 1.45; color: #4B5E69">Karten, Formularfelder, Sprechblasen von Luna.</span>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; border-radius: 18px; overflow: hidden; background: #FFFFFF; border: 1px solid #D6E0E4">
+<div aria-hidden="true" style="box-sizing: border-box; height: 104px; padding: 14px 16px; background: #4B5E69; color: #FFFFFF; display: flex; align-items: flex-end; justify-content: space-between"><span style="font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 800; font-stretch: 100%; font-size: 30px; line-height: 1">Aa</span><span style="font-weight: 700; font-size: 14px; line-height: 1">6,8&nbsp;:&nbsp;1</span></div>
+<div style="padding: 14px 16px 18px; display: flex; flex-direction: column; gap: 3px">
+<span style="font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 750; font-stretch: 100%; font-size: 19px; line-height: 1.25">Schiefer</span>
+<span style="font-weight: 700; font-size: 15px; line-height: 1.4">#4B5E69</span>
+<span style="font-size: 14px; line-height: 1.4; color: #4B5E69">--fx-schiefer</span>
+<span style="margin-top: 6px; font-size: 14.5px; line-height: 1.45; color: #4B5E69">Zweittext auf Hell. Auf Kalk 6,3&nbsp;:&nbsp;1.</span>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; border-radius: 18px; overflow: hidden; background: #FFFFFF; border: 1px solid #D6E0E4">
+<div aria-hidden="true" style="box-sizing: border-box; height: 104px; padding: 14px 16px; background: #72838D; color: #001B2A; display: flex; align-items: flex-end; justify-content: space-between"></div>
+<div style="padding: 14px 16px 18px; display: flex; flex-direction: column; gap: 3px">
+<span style="font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 750; font-stretch: 100%; font-size: 19px; line-height: 1.25">Rand</span>
+<span style="font-weight: 700; font-size: 15px; line-height: 1.4">#72838D</span>
+<span style="font-size: 14px; line-height: 1.4; color: #4B5E69">--fx-rand</span>
+<span style="margin-top: 6px; font-size: 14.5px; line-height: 1.45; color: #4B5E69">Umrandung von Feldern, Chips und Zweitknöpfen. 3,9&nbsp;:&nbsp;1 auf Weiß, 3,6&nbsp;:&nbsp;1 auf Kalk.</span>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; border-radius: 18px; overflow: hidden; background: #FFFFFF; border: 1px solid #D6E0E4">
+<div aria-hidden="true" style="box-sizing: border-box; height: 104px; padding: 14px 16px; background: #D6E0E4; color: #001B2A; display: flex; align-items: flex-end; justify-content: space-between"></div>
+<div style="padding: 14px 16px 18px; display: flex; flex-direction: column; gap: 3px">
+<span style="font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 750; font-stretch: 100%; font-size: 19px; line-height: 1.25">Linie</span>
+<span style="font-weight: 700; font-size: 15px; line-height: 1.4">#D6E0E4</span>
+<span style="font-size: 14px; line-height: 1.4; color: #4B5E69">--fx-linie</span>
+<span style="margin-top: 6px; font-size: 14.5px; line-height: 1.45; color: #4B5E69">Trennlinien und Kartenränder. Gliedert nur, trägt keine Information.</span>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; border-radius: 18px; overflow: hidden; background: #FFFFFF; border: 1px solid #D6E0E4">
+<div aria-hidden="true" style="box-sizing: border-box; height: 104px; padding: 14px 16px; background: #B7CBD4; color: #001B2A; display: flex; align-items: flex-end; justify-content: space-between"><span style="font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 800; font-stretch: 100%; font-size: 30px; line-height: 1">Aa</span><span style="font-weight: 700; font-size: 14px; line-height: 1">10,5&nbsp;:&nbsp;1</span></div>
+<div style="padding: 14px 16px 18px; display: flex; flex-direction: column; gap: 3px">
+<span style="font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 750; font-stretch: 100%; font-size: 19px; line-height: 1.25">Nebel</span>
+<span style="font-weight: 700; font-size: 15px; line-height: 1.4">#B7CBD4</span>
+<span style="font-size: 14px; line-height: 1.4; color: #4B5E69">--fx-nebel</span>
+<span style="margin-top: 6px; font-size: 14.5px; line-height: 1.45; color: #4B5E69">Zweittext auf Tiefsee, 10,5&nbsp;:&nbsp;1.</span>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; border-radius: 18px; overflow: hidden; background: #FFFFFF; border: 1px solid #D6E0E4">
+<div aria-hidden="true" style="box-sizing: border-box; height: 104px; padding: 14px 16px; background: rgba(0, 27, 42, 0.64); color: #001B2A; display: flex; align-items: flex-end; justify-content: space-between"></div>
+<div style="padding: 14px 16px 18px; display: flex; flex-direction: column; gap: 3px">
+<span style="font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 750; font-stretch: 100%; font-size: 19px; line-height: 1.25">Abdunklung</span>
+<span style="font-weight: 700; font-size: 15px; line-height: 1.4">Tiefsee, 64 %</span>
+<span style="font-size: 14px; line-height: 1.4; color: #4B5E69">--fx-abdunklung</span>
+<span style="margin-top: 6px; font-size: 14.5px; line-height: 1.45; color: #4B5E69">Hinter Preis-Dialog und Bottom-Sheet. rgba(0, 27, 42, 0.64)</span>
+</div>
+</div>
+</div>
+<p style="margin: 0; max-width: 62em; font-size: 17px; line-height: 1.5">Der Anruf-Knopf ist überall Türkisblau mit Tiefsee-Schrift und bleibt die auffälligste Fläche der Seite. Türkisblau und Orange tragen nie Schrift auf hellem Grund. Gewerke-Icons wie in der App direkt eingefärbt, ohne Fläche: Technik in Petrol, Handwerk in Orange. Sie stehen immer neben ihrem Namen, die Farbe trägt keine Information allein. Alle Textpaare erfüllen WCAG AA, Umrandungen von Bedienelementen mindestens 3&nbsp;:&nbsp;1.</p>
+</section>
+
+<section aria-labelledby="t-schrift" style="display: flex; flex-direction: column; gap: 24px">
+<h2 id="t-schrift" style="margin: 0; font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 700; font-stretch: 96%; font-size: 34px; line-height: 1; letter-spacing: -0.012em">Schrift</h2>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; align-items: start">
+<div style="display: flex; flex-direction: column; gap: 24px">
+<div style="box-sizing: border-box; padding: 28px; border-radius: 22px; background: #FFFFFF; border: 1px solid #D6E0E4; display: flex; flex-direction: column; gap: 18px">
+<span aria-hidden="true" style="font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 700; font-stretch: 96%; font-size: 68px; line-height: 0.95; letter-spacing: -0.02em">Handwerker-<br>Notdienst.</span>
+<div style="display: flex; flex-direction: column; gap: 4px">
+<h3 style="margin: 0; font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 750; font-stretch: 100%; font-size: 22px; line-height: 1.2">Bricolage Grotesque</h3>
+<p style="margin: 0; font-size: 15.5px; line-height: 1.5; color: #4B5E69">Freundliche Grotesk mit Charakter, frei unter der SIL Open Font License (Google Fonts). Für Überschriften, Knöpfe, Chips und große Preise. Überschriften in Breite 96&nbsp;% und Stärke 700, das wirkt ruhig und nahbar wie in der App.</p>
+</div>
+</div>
+<div style="box-sizing: border-box; padding: 28px; border-radius: 22px; background: #FFFFFF; border: 1px solid #D6E0E4; display: flex; flex-direction: column; gap: 18px">
+<span aria-hidden="true" style="font-size: 21px; line-height: 1.5">Rohrbruch, ausgesperrt, Strom weg? Wir vermitteln Ihnen sofort einen geprüften Fachbetrieb aus Ihrer Region. 1020 Wien, 0800 000 000.</span>
+<div style="display: flex; flex-direction: column; gap: 4px">
+<h3 style="margin: 0; font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 750; font-stretch: 100%; font-size: 22px; line-height: 1.2">Atkinson Hyperlegible Next</h3>
+<p style="margin: 0; font-size: 15.5px; line-height: 1.5; color: #4B5E69">Vom Braille Institute für Lesbarkeit entwickelt, frei unter der SIL Open Font License. Für Fließtext, Formulare und Preislisten, Schnitte 400 und 700. Die Null ist durchgestrichen, Telefonnummern und Postleitzahlen bleiben eindeutig.</p>
+</div>
+</div>
+</div>
+<div style="box-sizing: border-box; padding: 28px; border-radius: 22px; background: #FFFFFF; border: 1px solid #D6E0E4; display: flex; flex-direction: column; gap: 14px">
+<h3 style="margin: 0; font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 750; font-stretch: 100%; font-size: 22px; line-height: 1.2">Schriftgrößen in px</h3>
+<table style="width: 100%; border-collapse: collapse; font-size: 15.5px; line-height: 1.4">
+<thead><tr><th scope="col" style="padding: 0 12px 10px 0; text-align: left; font-weight: 400; color: #4B5E69">Stil</th><th scope="col" style="padding: 0 12px 10px 0; text-align: left; font-weight: 400; color: #4B5E69">Handy</th><th scope="col" style="padding: 0 12px 10px 0; text-align: left; font-weight: 400; color: #4B5E69">Desktop</th><th scope="col" style="padding: 0 0 10px; text-align: left; font-weight: 400; color: #4B5E69">Schnitt</th></tr></thead>
+<tbody>
+<tr style="border-top: 1px solid #D6E0E4"><th scope="row" style="padding: 10px 12px 10px 0; text-align: left; font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 700; font-size: 16px; white-space: nowrap">H1 Hero</th><td style="padding: 10px 12px 10px 0; white-space: nowrap">44 / 0,95</td><td style="padding: 10px 12px 10px 0; white-space: nowrap">62 / 0,95</td><td style="padding: 10px 0; color: #4B5E69">Bricolage 700, Breite 96 %</td></tr>
+<tr style="border-top: 1px solid #D6E0E4"><th scope="row" style="padding: 10px 12px 10px 0; text-align: left; font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 700; font-size: 16px; white-space: nowrap">H2 Abschnitt</th><td style="padding: 10px 12px 10px 0; white-space: nowrap">34 / 1,0</td><td style="padding: 10px 12px 10px 0; white-space: nowrap">44 / 1,0</td><td style="padding: 10px 0; color: #4B5E69">Bricolage 700, Breite 96 %</td></tr>
+<tr style="border-top: 1px solid #D6E0E4"><th scope="row" style="padding: 10px 12px 10px 0; text-align: left; font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 700; font-size: 16px; white-space: nowrap">H3 Karte</th><td style="padding: 10px 12px 10px 0; white-space: nowrap">23–26 / 1,15</td><td style="padding: 10px 12px 10px 0; white-space: nowrap">26–28 / 1,15</td><td style="padding: 10px 0; color: #4B5E69">Bricolage 750</td></tr>
+<tr style="border-top: 1px solid #D6E0E4"><th scope="row" style="padding: 10px 12px 10px 0; text-align: left; font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 700; font-size: 16px; white-space: nowrap">Gesamtpreis</th><td style="padding: 10px 12px 10px 0; white-space: nowrap">30 / 1,1</td><td style="padding: 10px 12px 10px 0; white-space: nowrap">30 / 1,1</td><td style="padding: 10px 0; color: #4B5E69">Bricolage 700</td></tr>
+<tr style="border-top: 1px solid #D6E0E4"><th scope="row" style="padding: 10px 12px 10px 0; text-align: left; font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 700; font-size: 16px; white-space: nowrap">Hero-Anruf</th><td style="padding: 10px 12px 10px 0; white-space: nowrap">23</td><td style="padding: 10px 12px 10px 0; white-space: nowrap">25</td><td style="padding: 10px 0; color: #4B5E69">Bricolage 800</td></tr>
+<tr style="border-top: 1px solid #D6E0E4"><th scope="row" style="padding: 10px 12px 10px 0; text-align: left; font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 700; font-size: 16px; white-space: nowrap">Knopf, Chip</th><td style="padding: 10px 12px 10px 0; white-space: nowrap">16–17</td><td style="padding: 10px 12px 10px 0; white-space: nowrap">16–18</td><td style="padding: 10px 0; color: #4B5E69">Bricolage 700 bis 800</td></tr>
+<tr style="border-top: 1px solid #D6E0E4"><th scope="row" style="padding: 10px 12px 10px 0; text-align: left; font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 700; font-size: 16px; white-space: nowrap">Einleitung</th><td style="padding: 10px 12px 10px 0; white-space: nowrap">17 / 1,5</td><td style="padding: 10px 12px 10px 0; white-space: nowrap">20 / 1,5</td><td style="padding: 10px 0; color: #4B5E69">Atkinson 400</td></tr>
+<tr style="border-top: 1px solid #D6E0E4"><th scope="row" style="padding: 10px 12px 10px 0; text-align: left; font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 700; font-size: 16px; white-space: nowrap">Text</th><td style="padding: 10px 12px 10px 0; white-space: nowrap">16–17 / 1,5</td><td style="padding: 10px 12px 10px 0; white-space: nowrap">17 / 1,5</td><td style="padding: 10px 0; color: #4B5E69">Atkinson 400, fett 700</td></tr>
+<tr style="border-top: 1px solid #D6E0E4"><th scope="row" style="padding: 10px 12px 10px 0; text-align: left; font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 700; font-size: 16px; white-space: nowrap">Klein</th><td style="padding: 10px 12px 10px 0; white-space: nowrap">15 / 1,45</td><td style="padding: 10px 12px 10px 0; white-space: nowrap">15 / 1,45</td><td style="padding: 10px 0; color: #4B5E69">Atkinson 400</td></tr>
+<tr style="border-top: 1px solid #D6E0E4"><th scope="row" style="padding: 10px 12px 10px 0; text-align: left; font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 700; font-size: 16px; white-space: nowrap">Hinweis</th><td style="padding: 10px 12px 10px 0; white-space: nowrap">13–14 / 1,45</td><td style="padding: 10px 12px 10px 0; white-space: nowrap">13–14 / 1,45</td><td style="padding: 10px 0; color: #4B5E69">Atkinson 400, nie kleiner als 13</td></tr>
+</tbody>
+</table>
+<p style="margin: 0; font-size: 15.5px; line-height: 1.5; color: #4B5E69">Größe / Zeilenhöhe. Laufweite H1 −2 %, H2 −1,2 %. H1 und H2 wachsen fließend zwischen 390 und 1440 px: clamp(44px, calc(1.71vw + 37.3px), 62px) und clamp(34px, calc(0.95vw + 30.3px), 44px). Zeilenlänge im Fließtext höchstens etwa 70 Zeichen.</p>
+</div>
+</div>
+</section>
+
+<section aria-labelledby="t-radien" style="box-sizing: border-box; padding: 28px; border-radius: 22px; background: #FFFFFF; border: 1px solid #D6E0E4; display: flex; flex-direction: column; gap: 20px">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<h2 id="t-radien" style="margin: 0; font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 700; font-stretch: 96%; font-size: 34px; line-height: 1.05">Radien in px</h2>
+<p style="margin: 0; font-size: 15.5px; line-height: 1.5; color: #4B5E69">Je größer die Fläche, desto runder. Als Knopf ist nur Anrufen eine Pille.</p>
+</div>
+<ul style="margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 18px">
+<li style="display: flex; flex-direction: column; gap: 8px">
+<span aria-hidden="true" style="box-sizing: border-box; height: 64px; border-radius: 999px; background: #3AA8B8"></span>
+<span style="margin-top: 4px; font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 800; font-stretch: 100%; font-size: 24px; line-height: 1">999</span>
+<span style="font-weight: 700; font-size: 15px; line-height: 1.35">Pille</span><span style="font-size: 14px; line-height: 1.4; color: #4B5E69">Anrufen, runder Luna-Knopf</span>
+</li>
+<li style="display: flex; flex-direction: column; gap: 8px">
+<span aria-hidden="true" style="box-sizing: border-box; height: 64px; border-radius: 24px; background: #FFFFFF; border: 1.5px solid #72838D"></span>
+<span style="margin-top: 4px; font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 800; font-stretch: 100%; font-size: 24px; line-height: 1">24</span>
+<span style="font-weight: 700; font-size: 15px; line-height: 1.35">Dialog, Bottom-Sheet</span>
+</li>
+<li style="display: flex; flex-direction: column; gap: 8px">
+<span aria-hidden="true" style="box-sizing: border-box; height: 64px; border-radius: 22px; background: #FFFFFF; border: 1.5px solid #72838D"></span>
+<span style="margin-top: 4px; font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 800; font-stretch: 100%; font-size: 24px; line-height: 1">22</span>
+<span style="font-weight: 700; font-size: 15px; line-height: 1.35">Große Karten, Rechner, Chat-Fenster</span>
+</li>
+<li style="display: flex; flex-direction: column; gap: 8px">
+<span aria-hidden="true" style="box-sizing: border-box; height: 64px; border-radius: 18px 18px 18px 6px; background: #FFFFFF; border: 1.5px solid #72838D"></span>
+<span style="margin-top: 4px; font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 800; font-stretch: 100%; font-size: 24px; line-height: 1">18</span>
+<span style="font-weight: 700; font-size: 15px; line-height: 1.35">Kacheln, Chat-Karten, Sprechblasen</span><span style="font-size: 14px; line-height: 1.4; color: #4B5E69">Sprechecke 6, Kacheln am Handy 16</span>
+</li>
+<li style="display: flex; flex-direction: column; gap: 8px">
+<span aria-hidden="true" style="box-sizing: border-box; height: 64px; border-radius: 16px; background: #FFFFFF; border: 1.5px solid #72838D"></span>
+<span style="margin-top: 4px; font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 800; font-stretch: 100%; font-size: 24px; line-height: 1">16</span>
+<span style="font-weight: 700; font-size: 15px; line-height: 1.35">Große Zweitknöpfe</span><span style="font-size: 14px; line-height: 1.4; color: #4B5E69">WhatsApp, Anfrage</span>
+</li>
+<li style="display: flex; flex-direction: column; gap: 8px">
+<span aria-hidden="true" style="box-sizing: border-box; height: 64px; border-radius: 14px; background: #001B2A"></span>
+<span style="margin-top: 4px; font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 800; font-stretch: 100%; font-size: 24px; line-height: 1">14</span>
+<span style="font-weight: 700; font-size: 15px; line-height: 1.35">Knöpfe, Chat-Eingabe</span>
+</li>
+<li style="display: flex; flex-direction: column; gap: 8px">
+<span aria-hidden="true" style="box-sizing: border-box; height: 64px; border-radius: 12px; background: #FFFFFF; border: 1.5px solid #72838D"></span>
+<span style="margin-top: 4px; font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 800; font-stretch: 100%; font-size: 24px; line-height: 1">12</span>
+<span style="font-weight: 700; font-size: 15px; line-height: 1.35">Chips, Felder, Icon-Knöpfe</span>
+</li>
+<li style="display: flex; flex-direction: column; gap: 8px">
+<span aria-hidden="true" style="box-sizing: border-box; height: 64px; border-radius: 12px; background: #3AA8B8"></span>
+<span style="margin-top: 4px; font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 800; font-stretch: 100%; font-size: 24px; line-height: 1">10–13</span>
+<span style="font-weight: 700; font-size: 15px; line-height: 1.35">Icon-Flächen</span>
+</li>
+</ul>
+</section>
+
+<section aria-labelledby="t-schatten" style="box-sizing: border-box; padding: 28px; border-radius: 22px; background: #FFFFFF; border: 1px solid #D6E0E4; display: flex; flex-direction: column; gap: 20px">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<h2 id="t-schatten" style="margin: 0; font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 700; font-stretch: 96%; font-size: 34px; line-height: 1.05">Schatten</h2>
+<p style="margin: 0; font-size: 15.5px; line-height: 1.5; color: #4B5E69">Karten bekommen keinen Schatten, nur Ränder. Ein Schatten heißt: schwebt über der Seite. Schattenfarbe immer Tiefsee.</p>
+</div>
+<div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px">
+<div style="display: flex; flex-direction: column; gap: 12px">
+<div aria-hidden="true" style="height: 150px; border-radius: 16px; background: #F2F7F9; display: flex; align-items: center; justify-content: center; overflow: hidden"><span style="box-sizing: border-box; width: 150px; height: 56px; border-radius: 18px 18px 6px 18px; background: #FFFFFF; border: 1px solid #D6E0E4; box-shadow: 0 12px 28px rgba(0, 27, 42, 0.18)"></span></div>
+<span style="display: flex; flex-direction: column; gap: 2px"><span style="font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 750; font-stretch: 100%; font-size: 18px; line-height: 1.25">Klein: Anstupser</span><span style="font-size: 14px; line-height: 1.4; color: #4B5E69">0 12px 28px rgba(0, 27, 42, 0.18)</span></span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 12px">
+<div aria-hidden="true" style="height: 150px; border-radius: 16px; background: #F2F7F9; display: flex; align-items: center; justify-content: center; overflow: hidden"><span style="box-sizing: border-box; width: 64px; height: 64px; border-radius: 999px; background: #001B2A; box-shadow: 0 10px 24px rgba(0, 27, 42, 0.28)"></span></div>
+<span style="display: flex; flex-direction: column; gap: 2px"><span style="font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 750; font-stretch: 100%; font-size: 18px; line-height: 1.25">Mittel: Luna-Knopf</span><span style="font-size: 14px; line-height: 1.4; color: #4B5E69">0 10px 24px rgba(0, 27, 42, 0.28)</span></span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 12px">
+<div aria-hidden="true" style="height: 150px; border-radius: 16px; background: #F2F7F9; display: flex; align-items: center; justify-content: center; overflow: hidden"><span style="box-sizing: border-box; width: 150px; height: 96px; border-radius: 22px; background: #FFFFFF; border: 1px solid #D6E0E4; box-shadow: 0 24px 60px rgba(0, 27, 42, 0.3)"></span></div>
+<span style="display: flex; flex-direction: column; gap: 2px"><span style="font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 750; font-stretch: 100%; font-size: 18px; line-height: 1.25">Groß: Chat-Fenster, Preis-Dialog</span><span style="font-size: 14px; line-height: 1.4; color: #4B5E69">0 24px 60px rgba(0, 27, 42, 0.3)</span></span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 12px">
+<div aria-hidden="true" style="height: 150px; border-radius: 16px; background: #F2F7F9; display: flex; align-items: center; justify-content: center; overflow: hidden"><span style="box-sizing: border-box; width: 150px; height: 56px; margin-top: 40px; border-radius: 24px 24px 0 0; background: #FFFFFF; box-shadow: 0 -12px 40px rgba(0, 27, 42, 0.3)"></span></div>
+<span style="display: flex; flex-direction: column; gap: 2px"><span style="font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 750; font-stretch: 100%; font-size: 18px; line-height: 1.25">Nach oben: Bottom-Sheet</span><span style="font-size: 14px; line-height: 1.4; color: #4B5E69">0 −12px 40px rgba(0, 27, 42, 0.3)</span></span>
+</div>
+</div>
+</section>
+
+<section aria-labelledby="t-abstaende" style="box-sizing: border-box; padding: 28px; border-radius: 22px; background: #FFFFFF; border: 1px solid #D6E0E4; display: flex; flex-wrap: wrap; gap: 24px 48px; align-items: flex-end">
+<div style="flex: 1 1 380px; display: flex; flex-direction: column; gap: 6px">
+<h2 id="t-abstaende" style="margin: 0; font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 700; font-stretch: 96%; font-size: 34px; line-height: 1.05">Abstände in px</h2>
+<p style="margin: 0; font-size: 15.5px; line-height: 1.5; color: #4B5E69">Raster in 4-px-Schritten. Seitenrand 16 px am Handy, 24 px am Desktop. Abschnitte 56 bis 64 px am Handy, 96 bis 104 px am Desktop. Karten innen 16 bis 32 px, Lücken im Raster 12 bis 24 px.</p>
+</div>
+<ul style="flex: 0 1 auto; margin: 0; padding: 0; list-style: none; display: flex; align-items: flex-end; gap: 20px">
+<li style="display: flex; flex-direction: column; align-items: center; gap: 10px">
+<span aria-hidden="true" style="width: 4px; height: 4px; border-radius: 2px; background: #0F2C3C"></span>
+<span style="font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 800; font-stretch: 100%; font-size: 18px; line-height: 1">4</span>
+</li>
+<li style="display: flex; flex-direction: column; align-items: center; gap: 10px">
+<span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 2px; background: #0F2C3C"></span>
+<span style="font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 800; font-stretch: 100%; font-size: 18px; line-height: 1">8</span>
+</li>
+<li style="display: flex; flex-direction: column; align-items: center; gap: 10px">
+<span aria-hidden="true" style="width: 12px; height: 12px; border-radius: 2px; background: #0F2C3C"></span>
+<span style="font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 800; font-stretch: 100%; font-size: 18px; line-height: 1">12</span>
+</li>
+<li style="display: flex; flex-direction: column; align-items: center; gap: 10px">
+<span aria-hidden="true" style="width: 16px; height: 16px; border-radius: 2px; background: #0F2C3C"></span>
+<span style="font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 800; font-stretch: 100%; font-size: 18px; line-height: 1">16</span>
+</li>
+<li style="display: flex; flex-direction: column; align-items: center; gap: 10px">
+<span aria-hidden="true" style="width: 24px; height: 24px; border-radius: 2px; background: #0F2C3C"></span>
+<span style="font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 800; font-stretch: 100%; font-size: 18px; line-height: 1">24</span>
+</li>
+<li style="display: flex; flex-direction: column; align-items: center; gap: 10px">
+<span aria-hidden="true" style="width: 32px; height: 32px; border-radius: 2px; background: #0F2C3C"></span>
+<span style="font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 800; font-stretch: 100%; font-size: 18px; line-height: 1">32</span>
+</li>
+<li style="display: flex; flex-direction: column; align-items: center; gap: 10px">
+<span aria-hidden="true" style="width: 40px; height: 40px; border-radius: 2px; background: #0F2C3C"></span>
+<span style="font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 800; font-stretch: 100%; font-size: 18px; line-height: 1">40</span>
+</li>
+<li style="display: flex; flex-direction: column; align-items: center; gap: 10px">
+<span aria-hidden="true" style="width: 56px; height: 56px; border-radius: 2px; background: #0F2C3C"></span>
+<span style="font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 800; font-stretch: 100%; font-size: 18px; line-height: 1">56</span>
+</li>
+<li style="display: flex; flex-direction: column; align-items: center; gap: 10px">
+<span aria-hidden="true" style="width: 72px; height: 72px; border-radius: 2px; background: #0F2C3C"></span>
+<span style="font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 800; font-stretch: 100%; font-size: 18px; line-height: 1">72</span>
+</li>
+<li style="display: flex; flex-direction: column; align-items: center; gap: 10px">
+<span aria-hidden="true" style="width: 96px; height: 96px; border-radius: 2px; background: #0F2C3C"></span>
+<span style="font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 800; font-stretch: 100%; font-size: 18px; line-height: 1">96</span>
+</li>
+</ul>
+</section>
+
+<section aria-labelledby="t-raster" style="box-sizing: border-box; padding: 28px; border-radius: 22px; background: #FFFFFF; border: 1px solid #D6E0E4; display: flex; flex-direction: column; gap: 16px">
+<h2 id="t-raster" style="margin: 0; font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 700; font-stretch: 96%; font-size: 34px; line-height: 1.05">Raster und Umbrüche</h2>
+<dl style="margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 40px">
+<div style="display: grid; grid-template-columns: 116px minmax(0, 1fr); gap: 14px; padding: 12px 0; border-top: 1px solid #D6E0E4"><dt style="font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 750; font-stretch: 100%; font-size: 16.5px; line-height: 1.4">Container</dt><dd style="margin: 0; font-size: 15.5px; line-height: 1.45">1140 px Inhalt, mit 24 px Rand 1188 px. Desktop-Entwurf 1440 px, Handy-Entwurf 390 px.</dd></div>
+<div style="display: grid; grid-template-columns: 116px minmax(0, 1fr); gap: 14px; padding: 12px 0; border-top: 1px solid #D6E0E4"><dt style="font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 750; font-stretch: 100%; font-size: 16.5px; line-height: 1.4">920 px</dt><dd style="margin: 0; font-size: 15.5px; line-height: 1.45">Darunter wird die Navigation zum Menü-Knopf. Anrufen bleibt im Kopf.</dd></div>
+<div style="display: grid; grid-template-columns: 116px minmax(0, 1fr); gap: 14px; padding: 12px 0; border-top: 1px solid #D6E0E4"><dt style="font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 750; font-stretch: 100%; font-size: 16.5px; line-height: 1.4">560 px</dt><dd style="margin: 0; font-size: 15.5px; line-height: 1.45">Darunter fällt die Telefonnummer im Kopf weg, der Knopf heißt nur noch „Anrufen“.</dd></div>
+<div style="display: grid; grid-template-columns: 116px minmax(0, 1fr); gap: 14px; padding: 12px 0; border-top: 1px solid #D6E0E4"><dt style="font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 750; font-stretch: 100%; font-size: 16.5px; line-height: 1.4">Leistungen</dt><dd style="margin: 0; font-size: 15.5px; line-height: 1.45">Raster auto-fill mit Spalten ab 340 px: drei Spalten am Desktop, eine am Handy. Weitere Gewerke reihen sich ohne Umbau ein.</dd></div>
+<div style="display: grid; grid-template-columns: 116px minmax(0, 1fr); gap: 14px; padding: 12px 0; border-top: 1px solid #D6E0E4"><dt style="font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 750; font-stretch: 100%; font-size: 16.5px; line-height: 1.4">Schnellwahl</dt><dd style="margin: 0; font-size: 15.5px; line-height: 1.45">Kacheln ab 160 px, zwei Spalten am Handy, sechs am Desktop.</dd></div>
+<div style="display: grid; grid-template-columns: 116px minmax(0, 1fr); gap: 14px; padding: 12px 0; border-top: 1px solid #D6E0E4"><dt style="font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 750; font-stretch: 100%; font-size: 16.5px; line-height: 1.4">Falz Handy</dt><dd style="margin: 0; font-size: 15.5px; line-height: 1.45">Anrufen, WhatsApp und Anfrage enden bei etwa 490 px, deutlich über dem Falz von etwa 660 px.</dd></div>
+<div style="display: grid; grid-template-columns: 116px minmax(0, 1fr); gap: 14px; padding: 12px 0; border-top: 1px solid #D6E0E4"><dt style="font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 750; font-stretch: 100%; font-size: 16.5px; line-height: 1.4">Touch-Ziele</dt><dd style="margin: 0; font-size: 15.5px; line-height: 1.45">Mindestens 44 × 44 px, Hauptknöpfe 54 bis 76 px hoch.</dd></div>
+<div style="display: grid; grid-template-columns: 116px minmax(0, 1fr); gap: 14px; padding: 12px 0; border-top: 1px solid #D6E0E4"><dt style="font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 750; font-stretch: 100%; font-size: 16.5px; line-height: 1.4">Luna-Fenster</dt><dd style="margin: 0; font-size: 15.5px; line-height: 1.45">380 × 680 px, höchstens Fensterhöhe minus 136 px. Rechts 28 px, unten 108 px. Am Handy Vollbild.</dd></div>
+</dl>
+</section>
+
+<div style="display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 24px; align-items: start">
+<section aria-labelledby="t-bewegung" style="box-sizing: border-box; padding: 28px; border-radius: 22px; background: #FFFFFF; border: 1px solid #D6E0E4; display: flex; flex-direction: column; gap: 14px">
+<h2 id="t-bewegung" style="margin: 0; font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 700; font-stretch: 96%; font-size: 34px; line-height: 1.05">Bewegung</h2>
+<p style="margin: 0; font-size: 15.5px; line-height: 1.5; color: #4B5E69">Sparsam und nur als Antwort auf eine Handlung. Kurve cubic-bezier(0.2, 0, 0, 1). Bei prefers-reduced-motion entfällt jede Bewegung, alles erscheint sofort.</p>
+<table style="width: 100%; border-collapse: collapse; font-size: 15.5px; line-height: 1.4">
+<tbody>
+<tr style="border-top: 1px solid #D6E0E4"><th scope="row" style="padding: 10px 12px 10px 0; text-align: left; font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 700; font-size: 16px; white-space: nowrap">Chat öffnen, schließen</th><td style="padding: 10px 12px 10px 0; white-space: nowrap; font-weight: 700">200 ms</td><td style="padding: 10px 0; color: #4B5E69">Aus dem Luna-Knopf: Größe 96 auf 100 %, Deckkraft 0 auf 1.</td></tr>
+<tr style="border-top: 1px solid #D6E0E4"><th scope="row" style="padding: 10px 12px 10px 0; text-align: left; font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 700; font-size: 16px; white-space: nowrap">Preis-Dialog</th><td style="padding: 10px 12px 10px 0; white-space: nowrap; font-weight: 700">160 ms</td><td style="padding: 10px 0; color: #4B5E69">Einblenden, Abdunklung gleichzeitig.</td></tr>
+<tr style="border-top: 1px solid #D6E0E4"><th scope="row" style="padding: 10px 12px 10px 0; text-align: left; font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 700; font-size: 16px; white-space: nowrap">Bottom-Sheet</th><td style="padding: 10px 12px 10px 0; white-space: nowrap; font-weight: 700">240 ms</td><td style="padding: 10px 0; color: #4B5E69">Gleitet von unten herein.</td></tr>
+<tr style="border-top: 1px solid #D6E0E4"><th scope="row" style="padding: 10px 12px 10px 0; text-align: left; font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 700; font-size: 16px; white-space: nowrap">Anstupser</th><td style="padding: 10px 12px 10px 0; white-space: nowrap; font-weight: 700">160 ms</td><td style="padding: 10px 0; color: #4B5E69">Einmal pro Besuch, nach etwa 8 s, blendet ein.</td></tr>
+<tr style="border-top: 1px solid #D6E0E4"><th scope="row" style="padding: 10px 12px 10px 0; text-align: left; font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 700; font-size: 16px; white-space: nowrap">Luna-Fortschritt</th><td style="padding: 10px 12px 10px 0; white-space: nowrap; font-weight: 700">200 ms</td><td style="padding: 10px 0; color: #4B5E69">Balken wächst zur nächsten Frage.</td></tr>
+<tr style="border-top: 1px solid #D6E0E4"><th scope="row" style="padding: 10px 12px 10px 0; text-align: left; font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 700; font-size: 16px; white-space: nowrap">Hover, Fokus</th><td style="padding: 10px 12px 10px 0; white-space: nowrap; font-weight: 700">120 ms</td><td style="padding: 10px 0; color: #4B5E69">Nur Farbe, keine Bewegung.</td></tr>
+</tbody>
+</table>
+</section>
+<section aria-labelledby="t-luna" style="box-sizing: border-box; padding: 28px; border-radius: 22px; background: #FFFFFF; border: 1px solid #D6E0E4; display: flex; flex-direction: column; gap: 18px">
+<h2 id="t-luna" style="margin: 0; font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 700; font-stretch: 96%; font-size: 34px; line-height: 1.05">Luna-Signet</h2>
+<div style="display: flex; align-items: flex-end; gap: 24px; flex-wrap: wrap">
+<span style="display: flex; flex-direction: column; align-items: center; gap: 10px"><span aria-hidden="true" style="width: 96px; height: 96px; border-radius: 999px; background: #001B2A; display: flex; align-items: center; justify-content: center"><svg width="58" height="58" viewBox="0 0 32 32"><path fill="#F2F7F9" d="M13.63 4.24A12 12 0 1 0 27.27 20.14A11 11 0 0 1 13.63 4.24Z"></path><circle cx="24.5" cy="8.5" r="2.4" fill="#3AA8B8"></circle></svg></span><span style="font-size: 14px; color: #4B5E69">96 px</span></span>
+<span style="display: flex; flex-direction: column; align-items: center; gap: 10px"><span aria-hidden="true" style="width: 64px; height: 64px; border-radius: 999px; background: #001B2A; display: flex; align-items: center; justify-content: center"><svg width="38" height="38" viewBox="0 0 32 32"><path fill="#F2F7F9" d="M13.63 4.24A12 12 0 1 0 27.27 20.14A11 11 0 0 1 13.63 4.24Z"></path><circle cx="24.5" cy="8.5" r="2.4" fill="#3AA8B8"></circle></svg></span><span style="font-size: 14px; color: #4B5E69">64 px</span></span>
+<span style="display: flex; flex-direction: column; align-items: center; gap: 10px"><span aria-hidden="true" style="width: 58px; height: 58px; border-radius: 999px; background: #001B2A; display: flex; align-items: center; justify-content: center"><svg width="34" height="34" viewBox="0 0 32 32"><path fill="#F2F7F9" d="M13.63 4.24A12 12 0 1 0 27.27 20.14A11 11 0 0 1 13.63 4.24Z"></path><circle cx="24.5" cy="8.5" r="2.4" fill="#3AA8B8"></circle></svg></span><span style="font-size: 14px; color: #4B5E69">58 px</span></span>
+<span style="display: flex; flex-direction: column; align-items: center; gap: 10px"><span aria-hidden="true" style="width: 40px; height: 40px; border-radius: 999px; background: #001B2A; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 32 32"><path fill="#F2F7F9" d="M13.63 4.24A12 12 0 1 0 27.27 20.14A11 11 0 0 1 13.63 4.24Z"></path><circle cx="24.5" cy="8.5" r="2.4" fill="#3AA8B8"></circle></svg></span><span style="font-size: 14px; color: #4B5E69">40 px</span></span>
+</div>
+<p style="margin: 0; font-size: 15.5px; line-height: 1.5; color: #4B5E69">Mondsichel und Stern: Luna ist auch nachts erreichbar. Kein Gesicht, keine Figur, damit sie ruhig und sachlich wirkt. Kreis Tiefsee, Sichel Kalk, Stern Türkisblau, gezeichnet im 32er Raster. 64 px Knopf am Desktop, 58 px am Handy, 40 px im Chat-Kopf.</p>
+</section>
+</div>
+
+<section aria-labelledby="t-icons" style="box-sizing: border-box; padding: 28px; border-radius: 22px; background: #FFFFFF; border: 1px solid #D6E0E4; display: flex; flex-direction: column; gap: 22px">
+<h2 id="t-icons" style="margin: 0; font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 700; font-stretch: 96%; font-size: 34px; line-height: 1.05">Icons</h2>
+<p style="margin: 0; font-size: 15.5px; line-height: 1.5; color: #4B5E69">Gefüllte Formen mit leicht gerundeten Ecken, keine Linien-Icons. Gewerke im 32er Raster, direkt eingefärbt: Technik Petrol, Handwerk Orange; Bedienung im 24er Raster in Tiefsee. Ein Icon steht nie allein: immer mit Text oder aria-label. Für WhatsApp das offizielle Logo aus den Markenrichtlinien von Meta einsetzen, die Sprechblase hier ist ein Platzhalter.</p>
+<div style="display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 32px; align-items: start">
+<ul aria-label="Gewerke" style="margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px 16px">
+<li style="display: flex; flex-direction: column; align-items: flex-start; gap: 10px"><span aria-hidden="true" style="width: 64px; height: 64px; display: flex; align-items: center; justify-content: flex-start; color: #E8842A"><svg width="56" height="56" viewBox="0 0 32 32" fill="currentColor"><path d="M2 9.5A1.5 1.5 0 0 1 3.5 8H5.5V19H3.5A1.5 1.5 0 0 1 2 17.5Z"></path><path d="M5.5 10.5H24A6 6 0 0 1 30 16.5V19.5H25V16.5A1 1 0 0 0 24 15.5H5.5Z"></path><path d="M8.5 4H19.5A1.75 1.75 0 0 1 19.5 7.5H15.75V10.5H12.25V7.5H8.5A1.75 1.75 0 0 1 8.5 4Z"></path><path d="M27.5 21.6C27.5 21.6 24.9 24.7 24.9 26.6A2.6 2.6 0 0 0 30.1 26.6C30.1 24.7 27.5 21.6 27.5 21.6Z"></path></svg></span><span style="font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 700; font-size: 15.5px; line-height: 1.25">Installateur</span></li>
+<li style="display: flex; flex-direction: column; align-items: flex-start; gap: 10px"><span aria-hidden="true" style="width: 64px; height: 64px; display: flex; align-items: center; justify-content: flex-start; color: #3F7D88"><svg width="56" height="56" viewBox="0 0 32 32" fill="currentColor"><path fill-rule="evenodd" d="M12 2H20A4 4 0 0 1 24 6V16A3 3 0 0 1 21 19H11A3 3 0 0 1 8 16V6A4 4 0 0 1 12 2ZM11.25 5.75A0.75 0.75 0 0 1 12.75 5.75V15.25A0.75 0.75 0 0 1 11.25 15.25ZM15.25 5.75A0.75 0.75 0 0 1 16.75 5.75V15.25A0.75 0.75 0 0 1 15.25 15.25ZM19.25 5.75A0.75 0.75 0 0 1 20.75 5.75V15.25A0.75 0.75 0 0 1 19.25 15.25Z"></path><path d="M12 19H20V21.5H12ZM6.5 21.5H25.5A1.5 1.5 0 0 1 27 23V27.5A1.5 1.5 0 0 1 25.5 29H6.5A1.5 1.5 0 0 1 5 27.5V23A1.5 1.5 0 0 1 6.5 21.5ZM1.5 23H5V27.5H1.5ZM27 23H30.5V27.5H27Z"></path></svg></span><span style="font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 700; font-size: 15.5px; line-height: 1.25">Heizung &amp; Klima</span></li>
+<li style="display: flex; flex-direction: column; align-items: flex-start; gap: 10px"><span aria-hidden="true" style="width: 64px; height: 64px; display: flex; align-items: center; justify-content: flex-start; color: #E8842A"><svg width="56" height="56" viewBox="0 0 32 32" fill="currentColor"><path d="M4.5 3H8.5A2.5 2.5 0 0 1 11 5.5V26.5A2.5 2.5 0 0 1 8.5 29H4.5A2.5 2.5 0 0 1 2 26.5V5.5A2.5 2.5 0 0 1 4.5 3Z"></path><path d="M11 13.5H21.5V18.5H19.5V21H17V18.5H15.5V21H13V18.5H11Z"></path><path fill-rule="evenodd" d="M25.5 10A6 6 0 1 1 25.5 22A6 6 0 1 1 25.5 10ZM25.5 13.8A2.2 2.2 0 1 0 25.5 18.2A2.2 2.2 0 1 0 25.5 13.8Z"></path></svg></span><span style="font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 700; font-size: 15.5px; line-height: 1.25">Schlüsseldienst</span></li>
+<li style="display: flex; flex-direction: column; align-items: flex-start; gap: 10px"><span aria-hidden="true" style="width: 64px; height: 64px; display: flex; align-items: center; justify-content: flex-start; color: #3F7D88"><svg width="56" height="56" viewBox="0 0 32 32" fill="currentColor"><path fill-rule="evenodd" d="M9.5 2H22.5A2.5 2.5 0 0 1 25 4.5V27.5A2.5 2.5 0 0 1 22.5 30H9.5A2.5 2.5 0 0 1 7 27.5V4.5A2.5 2.5 0 0 1 9.5 2ZM12 10.5H20A1.5 1.5 0 0 1 21.5 12V20A1.5 1.5 0 0 1 20 21.5H12A1.5 1.5 0 0 1 10.5 20V12A1.5 1.5 0 0 1 12 10.5ZM14.4 6.2A1.6 1.6 0 1 0 17.6 6.2A1.6 1.6 0 1 0 14.4 6.2ZM14.4 25.8A1.6 1.6 0 1 0 17.6 25.8A1.6 1.6 0 1 0 14.4 25.8Z"></path><path d="M13.5 12H18.5A1 1 0 0 1 19.5 13V16.5A1 1 0 0 1 18.5 17.5H13.5A1 1 0 0 1 12.5 16.5V13A1 1 0 0 1 13.5 12Z"></path></svg></span><span style="font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 700; font-size: 15.5px; line-height: 1.25">Elektro</span></li>
+<li style="display: flex; flex-direction: column; align-items: flex-start; gap: 10px"><span aria-hidden="true" style="width: 64px; height: 64px; display: flex; align-items: center; justify-content: flex-start; color: #3F7D88"><svg width="56" height="56" viewBox="0 0 32 32" fill="currentColor"><path fill-rule="evenodd" d="M15 3A13 13 0 1 1 15 29A13 13 0 1 1 15 3ZM15 7.2A8.8 8.8 0 1 0 15 24.8A8.8 8.8 0 1 0 15 7.2Z"></path><path d="M7.67 17Q9.5 15.4 11.33 17T15 17T18.67 17T22.33 17A7.4 7.4 0 0 1 7.67 17Z"></path><path d="M26.5 12.5H28.5A1.5 1.5 0 0 1 30 14V18A1.5 1.5 0 0 1 28.5 19.5H26.5Z"></path></svg></span><span style="font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 700; font-size: 15.5px; line-height: 1.25">Haushaltsgeräte</span></li>
+</ul>
+<ul aria-label="Bedienung" style="margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 20px 8px">
+<li style="display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center"><span aria-hidden="true" style="width: 52px; height: 52px; border-radius: 12px; background: #F2F7F9; color: #001B2A; display: flex; align-items: center; justify-content: center"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M6.5 2.9C7.2 2.3 8.2 2.4 8.8 3.1L10.9 5.6C11.5 6.3 11.4 7.3 10.8 7.9L9.6 9C10.5 11.1 12.9 13.5 15 14.4L16.1 13.2C16.7 12.6 17.7 12.5 18.4 13.1L20.9 15.2C21.6 15.8 21.7 16.8 21.1 17.5L19.6 19.3C18.7 20.4 17.2 20.8 15.8 20.3C10.4 18.3 5.7 13.6 3.7 8.2C3.2 6.8 3.6 5.3 4.7 4.4Z"></path></svg></span><span style="font-size: 13.5px; line-height: 1.3; color: #4B5E69">Anrufen</span></li>
+<li style="display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center"><span aria-hidden="true" style="width: 52px; height: 52px; border-radius: 12px; background: #F2F7F9; color: #001B2A; display: flex; align-items: center; justify-content: center"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M5 3.5H19A3 3 0 0 1 22 6.5V14.5A3 3 0 0 1 19 17.5H11.6L7 21.1C6.5 21.5 5.8 21.1 5.8 20.5V17.5H5A3 3 0 0 1 2 14.5V6.5A3 3 0 0 1 5 3.5ZM6.6 10.5A1.4 1.4 0 1 0 9.4 10.5A1.4 1.4 0 1 0 6.6 10.5ZM10.6 10.5A1.4 1.4 0 1 0 13.4 10.5A1.4 1.4 0 1 0 10.6 10.5ZM14.6 10.5A1.4 1.4 0 1 0 17.4 10.5A1.4 1.4 0 1 0 14.6 10.5Z"></path></svg></span><span style="font-size: 13.5px; line-height: 1.3; color: #4B5E69">Chat</span></li>
+<li style="display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center"><span aria-hidden="true" style="width: 52px; height: 52px; border-radius: 12px; background: #F2F7F9; color: #001B2A; display: flex; align-items: center; justify-content: center"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M6.5 2H14L19.5 7.5V19.5A2.5 2.5 0 0 1 17 22H6.5A2.5 2.5 0 0 1 4 19.5V4.5A2.5 2.5 0 0 1 6.5 2ZM7.5 10.6V12.4H16V10.6ZM7.5 14.2V16H16V14.2ZM7.5 17.8V19.6H12.5V17.8Z"></path></svg></span><span style="font-size: 13.5px; line-height: 1.3; color: #4B5E69">Formular</span></li>
+<li style="display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center"><span aria-hidden="true" style="width: 52px; height: 52px; border-radius: 12px; background: #F2F7F9; color: #001B2A; display: flex; align-items: center; justify-content: center"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M3 5.5H21V7.7H3ZM3 10.9H21V13.1H3ZM3 16.3H21V18.5H3Z"></path></svg></span><span style="font-size: 13.5px; line-height: 1.3; color: #4B5E69">Menü</span></li>
+<li style="display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center"><span aria-hidden="true" style="width: 52px; height: 52px; border-radius: 12px; background: #F2F7F9; color: #001B2A; display: flex; align-items: center; justify-content: center"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M6.4 5L12 10.6L17.6 5L19 6.4L13.4 12L19 17.6L17.6 19L12 13.4L6.4 19L5 17.6L10.6 12L5 6.4Z"></path></svg></span><span style="font-size: 13.5px; line-height: 1.3; color: #4B5E69">Schließen</span></li>
+<li style="display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center"><span aria-hidden="true" style="width: 52px; height: 52px; border-radius: 12px; background: #F2F7F9; color: #001B2A; display: flex; align-items: center; justify-content: center"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M9.5 16.2L5.3 12L6.7 10.6L9.5 13.4L17.3 5.6L18.7 7L9.5 16.2Z"></path></svg></span><span style="font-size: 13.5px; line-height: 1.3; color: #4B5E69">Häkchen</span></li>
+<li style="display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center"><span aria-hidden="true" style="width: 52px; height: 52px; border-radius: 12px; background: #F2F7F9; color: #001B2A; display: flex; align-items: center; justify-content: center"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M10.9 5H13.1V10.9H19V13.1H13.1V19H10.9V13.1H5V10.9H10.9Z"></path></svg></span><span style="font-size: 13.5px; line-height: 1.3; color: #4B5E69">Plus</span></li>
+<li style="display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center"><span aria-hidden="true" style="width: 52px; height: 52px; border-radius: 12px; background: #F2F7F9; color: #001B2A; display: flex; align-items: center; justify-content: center"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M5 11H19V13.2H5Z"></path></svg></span><span style="font-size: 13.5px; line-height: 1.3; color: #4B5E69">Minus</span></li>
+<li style="display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center"><span aria-hidden="true" style="width: 52px; height: 52px; border-radius: 12px; background: #F2F7F9; color: #001B2A; display: flex; align-items: center; justify-content: center"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M6.4 8.6L12 14.2L17.6 8.6L19 10L12 17L5 10Z"></path></svg></span><span style="font-size: 13.5px; line-height: 1.3; color: #4B5E69">Aufklappen</span></li>
+<li style="display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center"><span aria-hidden="true" style="width: 52px; height: 52px; border-radius: 12px; background: #F2F7F9; color: #001B2A; display: flex; align-items: center; justify-content: center"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M8.6 17.6L14.2 12L8.6 6.4L10 5L17 12L10 19Z"></path></svg></span><span style="font-size: 13.5px; line-height: 1.3; color: #4B5E69">Weiter</span></li>
+<li style="display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center"><span aria-hidden="true" style="width: 52px; height: 52px; border-radius: 12px; background: #F2F7F9; color: #001B2A; display: flex; align-items: center; justify-content: center"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M3 20.5V14L13 12L3 10V3.5L22 12Z"></path></svg></span><span style="font-size: 13.5px; line-height: 1.3; color: #4B5E69">Senden</span></li>
+<li style="display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center"><span aria-hidden="true" style="width: 52px; height: 52px; border-radius: 12px; background: #F2F7F9; color: #001B2A; display: flex; align-items: center; justify-content: center"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 2.5L22.5 21H1.5ZM11 9V14.5H13V9ZM11 16.3V18.3H13V16.3Z"></path></svg></span><span style="font-size: 13.5px; line-height: 1.3; color: #4B5E69">Warnung</span></li>
+<li style="display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center"><span aria-hidden="true" style="width: 52px; height: 52px; border-radius: 12px; background: #F2F7F9; color: #001B2A; display: flex; align-items: center; justify-content: center"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 2A10 10 0 1 1 12 22A10 10 0 1 1 12 2ZM10.9 10.4V17.2H13.1V10.4ZM10.9 6.8V9H13.1V6.8Z"></path></svg></span><span style="font-size: 13.5px; line-height: 1.3; color: #4B5E69">Info</span></li>
+<li style="display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center"><span aria-hidden="true" style="width: 52px; height: 52px; border-radius: 12px; background: #F2F7F9; color: #001B2A; display: flex; align-items: center; justify-content: center"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 2A10 10 0 1 1 12 22A10 10 0 1 1 12 2ZM11.1 6H12.9V11.1H17V12.9H11.1Z"></path></svg></span><span style="font-size: 13.5px; line-height: 1.3; color: #4B5E69">Rund um die Uhr</span></li>
+<li style="display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center"><span aria-hidden="true" style="width: 52px; height: 52px; border-radius: 12px; background: #F2F7F9; color: #001B2A; display: flex; align-items: center; justify-content: center"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 2C7.9 2 4.8 5.1 4.8 9.1C4.8 14.2 12 22 12 22S19.2 14.2 19.2 9.1C19.2 5.1 16.1 2 12 2ZM12 6.3A2.8 2.8 0 1 1 12 11.9A2.8 2.8 0 1 1 12 6.3Z"></path></svg></span><span style="font-size: 13.5px; line-height: 1.3; color: #4B5E69">Region</span></li>
+<li style="display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center"><span aria-hidden="true" style="width: 52px; height: 52px; border-radius: 12px; background: #F2F7F9; color: #001B2A; display: flex; align-items: center; justify-content: center"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M3 12.6V4.5A1.5 1.5 0 0 1 4.5 3H12.6L21 11.4A1.5 1.5 0 0 1 21 13.5L13.5 21A1.5 1.5 0 0 1 11.4 21ZM7.8 6.2A1.6 1.6 0 1 0 7.8 9.4A1.6 1.6 0 1 0 7.8 6.2Z"></path></svg></span><span style="font-size: 13.5px; line-height: 1.3; color: #4B5E69">Richtpreis</span></li>
+<li style="display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center"><span aria-hidden="true" style="width: 52px; height: 52px; border-radius: 12px; background: #F2F7F9; color: #001B2A; display: flex; align-items: center; justify-content: center"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M9 6A6 6 0 1 1 9 18A6 6 0 1 1 9 6ZM9 8.4A3.6 3.6 0 1 0 9 15.6A3.6 3.6 0 1 0 9 8.4Z"></path><path fill-rule="evenodd" d="M15 6A6 6 0 1 1 15 18A6 6 0 1 1 15 6ZM15 8.4A3.6 3.6 0 1 0 15 15.6A3.6 3.6 0 1 0 15 8.4Z"></path></svg></span><span style="font-size: 13.5px; line-height: 1.3; color: #4B5E69">Vermittlung</span></li>
+</ul>
+</div>
+</section>
+
+</div>
+</div>
+</body>
+</html>

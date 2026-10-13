@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="de-AT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Luna Desktop-Fenster: Zusammenfassung, Erfolg, Fehler</title>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;700&amp;family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#FFFFFF}
+a{color:#001B2A;text-decoration:none}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #3AA8B8;outline-offset:3px}
+input::placeholder{color:#4B5E69;opacity:1}
+</style>
+</head>
+<body>
+
+<div style="position: relative; width: 1320px; height: 860px; overflow: hidden; box-sizing: border-box; padding: 40px 60px 0; background: #FFFFFF; color: #001B2A; font-family: 'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', Tahoma, Verdana, sans-serif; font-size: 17px; line-height: 1.5; display: flex; gap: 30px; align-items: flex-start">
+
+<div style="flex: none; width: 380px; display: flex; flex-direction: column; gap: 18px">
+<div style="min-height: 72px; display: flex; flex-direction: column; gap: 4px">
+<h2 style="margin: 0; font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 750; font-stretch: 100%; font-size: 21px; line-height: 1.2">Zusammenfassung</h2>
+<p style="margin: 0; font-size: 15px; line-height: 1.45; color: #4B5E69">Alle Angaben auf einen Blick, bevor die Anfrage abgeschickt wird.</p>
+</div>
+<section role="dialog" aria-label="Chat mit Luna: Zusammenfassung" style="position: relative; box-sizing: border-box; width: 380px; height: 680px; border-radius: 22px; overflow: hidden; background: #F2F7F9; border: 1px solid #D6E0E4; box-shadow: 0 24px 60px rgba(0, 27, 42, 0.3); display: flex; flex-direction: column">
+<header style="flex: none; box-sizing: border-box; height: 68px; padding: 0 8px 0 16px; display: flex; align-items: center; gap: 10px; background: #FFFFFF; border-bottom: 1px solid #D6E0E4">
+<span aria-hidden="true" style="flex: none; width: 40px; height: 40px; border-radius: 999px; background: #001B2A; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 32 32"><path fill="#F2F7F9" d="M13.63 4.24A12 12 0 1 0 27.27 20.14A11 11 0 0 1 13.63 4.24Z"></path><circle cx="24.5" cy="8.5" r="2.4" fill="#3AA8B8"></circle></svg></span>
+<span style="display: flex; flex-direction: column"><span style="font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 750; font-size: 18px; line-height: 1.2">Luna</span><span style="font-size: 13px; line-height: 1.3; color: #4B5E69">Digitale Assistentin</span></span>
+<button type="button" aria-label="Chat minimieren" style="margin-left: auto; flex: none; width: 44px; height: 44px; padding: 0; border: 0; border-radius: 12px; background: transparent; color: #001B2A; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.4 8.6L12 14.2L17.6 8.6L19 10L12 17L5 10Z"></path></svg></button>
+</header>
+<div role="progressbar" aria-label="Frage 5 von 5" aria-valuemin="0" aria-valuemax="5" aria-valuenow="5" style="flex: none; height: 4px; background: #001B2A"></div>
+<div aria-live="polite" style="flex: 1; min-height: 0; overflow: hidden; box-sizing: border-box; padding: 14px; display: flex; flex-direction: column; justify-content: flex-end; gap: 10px; font-size: 15.5px; line-height: 1.45">
+<div style="flex: none; align-self: flex-start; max-width: 86%; box-sizing: border-box; padding: 11px 13px; border-radius: 18px 18px 18px 6px; background: #FFFFFF; border: 1px solid #D6E0E4">Wie heißen Sie, und unter welcher Nummer erreicht Sie der Betrieb?</div>
+<div style="flex: none; align-self: flex-end; max-width: 80%; box-sizing: border-box; padding: 10px 13px; border-radius: 18px 18px 6px 18px; background: #001B2A; color: #F2F7F9">Maria Huber, [Ihre Nummer]</div>
+<section aria-labelledby="f1-titel" style="flex: none; box-sizing: border-box; padding: 14px 14px 12px; border-radius: 18px; background: #FFFFFF; border: 1px solid #D6E0E4; display: flex; flex-direction: column; gap: 10px">
+<h3 id="f1-titel" style="margin: 0; font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 700; font-stretch: 96%; font-size: 20px; line-height: 1.2">Ihre Anfrage</h3>
+<dl style="margin: 0; display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 5px 10px; font-size: 14.5px; line-height: 1.4">
+<dt style="color: #4B5E69">Gewerk</dt><dd style="margin: 0; font-weight: 700">Installateur</dd>
+<dt style="color: #4B5E69">Problem</dt><dd style="margin: 0; font-weight: 700">Unter der Spüle tritt Wasser aus.</dd>
+<dt style="color: #4B5E69">Ort</dt><dd style="margin: 0; font-weight: 700">1020 Wien</dd>
+<dt style="color: #4B5E69">Dringlichkeit</dt><dd style="margin: 0; font-weight: 700">Sofort, Notfall</dd>
+<dt style="color: #4B5E69">Name</dt><dd style="margin: 0; font-weight: 700">Maria Huber</dd>
+<dt style="color: #4B5E69">Telefon</dt><dd style="margin: 0; font-weight: 700">[Ihre Nummer]</dd>
+</dl>
+<p style="margin: 0; box-sizing: border-box; padding: 9px 12px; border-radius: 12px; background: #F2F7F9; font-size: 14px; line-height: 1.45"><span style="display: block">Richtpreis <span style="font-weight: 700">95–140 € pro Stunde</span></span><span style="display: block">Anfahrt 29,90 €</span></p>
+<div style="display: flex; gap: 10px; align-items: flex-start"><input id="f1-ok" type="checkbox" checked style="flex: none; width: 22px; height: 22px; margin: 0; accent-color: #001B2A"><label for="f1-ok" style="font-size: 13.5px; line-height: 1.45">Ich bin einverstanden, dass fixit247 meine Angaben zur Vermittlung an einen Fachbetrieb weitergibt. <a href="#datenschutz" style="color: #001B2A; text-decoration: underline; text-underline-offset: 3px">Datenschutz</a></label></div>
+<p style="margin: 0; font-size: 13px; line-height: 1.45; color: #4B5E69">Die Vermittlung ist kostenlos. Der Vertrag kommt direkt mit dem Betrieb zustande.</p>
+<div style="display: flex; gap: 8px">
+<button type="button" style="flex: 1 1 auto; min-height: 50px; padding: 0 12px; border-radius: 14px; border: 1.5px solid #72838D; background: #FFFFFF; color: #001B2A; font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 700; font-stretch: 100%; font-size: 15.5px; white-space: nowrap; cursor: pointer">Angaben ändern</button>
+<button type="button" style="flex: 1 1 auto; min-height: 50px; padding: 0 12px; border: 0; border-radius: 14px; background: #001B2A; color: #F2F7F9; font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 750; font-stretch: 100%; font-size: 16px; white-space: nowrap; cursor: pointer">Auftrag aufgeben</button>
+</div>
+</section>
+</div>
+<div style="flex: none; box-sizing: border-box; padding: 10px 10px 12px; background: #FFFFFF; border-top: 1px solid #D6E0E4; display: flex; gap: 8px; align-items: center">
+<label for="f1-eingabe" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap">Nachricht an Luna</label>
+<input id="f1-eingabe" type="text" placeholder="Nachricht schreiben" style="flex: 1; min-width: 0; box-sizing: border-box; height: 46px; padding: 0 12px; border-radius: 14px; border: 1.5px solid #72838D; background: #FFFFFF; color: #001B2A; font-family: 'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', Tahoma, Verdana, sans-serif; font-size: 15.5px">
+<button type="button" aria-label="Nachricht senden" style="flex: none; width: 46px; height: 46px; padding: 0; border: 0; border-radius: 14px; background: #001B2A; color: #F2F7F9; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 20.5V14L13 12L3 10V3.5L22 12Z"></path></svg></button>
+</div>
+</section>
+</div>
+
+<div style="flex: none; width: 380px; display: flex; flex-direction: column; gap: 18px">
+<div style="min-height: 72px; display: flex; flex-direction: column; gap: 4px">
+<h2 style="margin: 0; font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 750; font-stretch: 100%; font-size: 21px; line-height: 1.2">Erfolg</h2>
+<p style="margin: 0; font-size: 15px; line-height: 1.45; color: #4B5E69">Bestätigung mit Anfragenummer und einem Tipp für die Wartezeit.</p>
+</div>
+<section role="dialog" aria-label="Chat mit Luna: Anfrage gesendet" style="position: relative; box-sizing: border-box; width: 380px; height: 680px; border-radius: 22px; overflow: hidden; background: #F2F7F9; border: 1px solid #D6E0E4; box-shadow: 0 24px 60px rgba(0, 27, 42, 0.3); display: flex; flex-direction: column">
+<header style="flex: none; box-sizing: border-box; height: 68px; padding: 0 8px 0 16px; display: flex; align-items: center; gap: 10px; background: #FFFFFF; border-bottom: 1px solid #D6E0E4">
+<span aria-hidden="true" style="flex: none; width: 40px; height: 40px; border-radius: 999px; background: #001B2A; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 32 32"><path fill="#F2F7F9" d="M13.63 4.24A12 12 0 1 0 27.27 20.14A11 11 0 0 1 13.63 4.24Z"></path><circle cx="24.5" cy="8.5" r="2.4" fill="#3AA8B8"></circle></svg></span>
+<span style="display: flex; flex-direction: column"><span style="font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 750; font-size: 18px; line-height: 1.2">Luna</span><span style="font-size: 13px; line-height: 1.3; color: #4B5E69">Digitale Assistentin</span></span>
+<button type="button" aria-label="Chat minimieren" style="margin-left: auto; flex: none; width: 44px; height: 44px; padding: 0; border: 0; border-radius: 12px; background: transparent; color: #001B2A; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.4 8.6L12 14.2L17.6 8.6L19 10L12 17L5 10Z"></path></svg></button>
+</header>
+<div aria-live="polite" style="flex: 1; min-height: 0; overflow: hidden; box-sizing: border-box; padding: 14px; display: flex; flex-direction: column; justify-content: flex-end; gap: 10px; font-size: 15.5px; line-height: 1.45">
+<section aria-label="Ihre Anfrage" style="flex: none; box-sizing: border-box; padding: 14px; border-radius: 18px; background: #FFFFFF; border: 1px solid #D6E0E4; display: flex; flex-direction: column; gap: 6px">
+<span style="font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 700; font-stretch: 96%; font-size: 18px; line-height: 1.2">Ihre Anfrage</span>
+<span style="font-size: 14.5px; line-height: 1.45; color: #4B5E69">Installateur, 1020 Wien, sofort. Unter der Spüle tritt Wasser aus. Maria Huber, [Ihre Nummer]</span>
+</section>
+<div style="flex: none; align-self: flex-end; max-width: 80%; box-sizing: border-box; padding: 10px 13px; border-radius: 18px 18px 6px 18px; background: #001B2A; color: #F2F7F9">Auftrag aufgegeben</div>
+<section aria-labelledby="f2-titel" style="flex: none; box-sizing: border-box; padding: 18px 16px 16px; border-radius: 18px; background: #FFFFFF; border: 1px solid #D6E0E4; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; gap: 12px; align-items: flex-start">
+<span aria-hidden="true" style="flex: none; width: 44px; height: 44px; border-radius: 999px; background: #001B2A; color: #F2F7F9; display: flex; align-items: center; justify-content: center"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M9.5 16.2L5.3 12L6.7 10.6L9.5 13.4L17.3 5.6L18.7 7L9.5 16.2Z"></path></svg></span>
+<h3 id="f2-titel" style="margin: 0; font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 700; font-stretch: 96%; font-size: 23px; line-height: 1.12">Danke, Frau Huber. Ihre Anfrage ist unterwegs.</h3>
+</div>
+<p style="margin: 0; font-size: 15.5px; line-height: 1.5">Wir geben sie jetzt an einen passenden Installateur in Ihrer Nähe weiter. Der Betrieb ruft Sie unter [Ihre Nummer] zurück.</p>
+<p style="margin: 0; font-size: 14px; color: #4B5E69">Anfragenummer: [Nummer]</p>
+<p style="margin: 0; box-sizing: border-box; padding: 11px 13px; border-radius: 12px; background: #F2F7F9; font-size: 14.5px; line-height: 1.5"><span style="font-weight: 700">Bis der Betrieb kommt:</span> Drehen Sie, wenn möglich, den Hauptwasserhahn zu und halten Sie Abstand zu nassen Steckdosen.</p>
+<a href="tel:" style="box-sizing: border-box; display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 54px; border-radius: 999px; background: #3AA8B8; color: #001B2A; text-decoration: none; font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 800; font-size: 17px"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.5 2.9C7.2 2.3 8.2 2.4 8.8 3.1L10.9 5.6C11.5 6.3 11.4 7.3 10.8 7.9L9.6 9C10.5 11.1 12.9 13.5 15 14.4L16.1 13.2C16.7 12.6 17.7 12.5 18.4 13.1L20.9 15.2C21.6 15.8 21.7 16.8 21.1 17.5L19.6 19.3C18.7 20.4 17.2 20.8 15.8 20.3C10.4 18.3 5.7 13.6 3.7 8.2C3.2 6.8 3.6 5.3 4.7 4.4Z"></path></svg><span>Fragen? Jetzt anrufen</span></a>
+</section>
+</div>
+<div style="flex: none; box-sizing: border-box; padding: 10px 10px 12px; background: #FFFFFF; border-top: 1px solid #D6E0E4; display: flex; gap: 8px; align-items: center">
+<label for="f2-eingabe" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap">Nachricht an Luna</label>
+<input id="f2-eingabe" type="text" placeholder="Nachricht schreiben" style="flex: 1; min-width: 0; box-sizing: border-box; height: 46px; padding: 0 12px; border-radius: 14px; border: 1.5px solid #72838D; background: #FFFFFF; color: #001B2A; font-family: 'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', Tahoma, Verdana, sans-serif; font-size: 15.5px">
+<button type="button" aria-label="Nachricht senden" style="flex: none; width: 46px; height: 46px; padding: 0; border: 0; border-radius: 14px; background: #001B2A; color: #F2F7F9; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 20.5V14L13 12L3 10V3.5L22 12Z"></path></svg></button>
+</div>
+</section>
+</div>
+
+<div style="flex: none; width: 380px; display: flex; flex-direction: column; gap: 18px">
+<div style="min-height: 72px; display: flex; flex-direction: column; gap: 4px">
+<h2 style="margin: 0; font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 750; font-stretch: 100%; font-size: 21px; line-height: 1.2">Sendefehler</h2>
+<p style="margin: 0; font-size: 15px; line-height: 1.45; color: #4B5E69">Die Angaben bleiben erhalten. Anrufen ist der schnellste Ausweg.</p>
+</div>
+<section role="dialog" aria-label="Chat mit Luna: Sendefehler" style="position: relative; box-sizing: border-box; width: 380px; height: 680px; border-radius: 22px; overflow: hidden; background: #F2F7F9; border: 1px solid #D6E0E4; box-shadow: 0 24px 60px rgba(0, 27, 42, 0.3); display: flex; flex-direction: column">
+<header style="flex: none; box-sizing: border-box; height: 68px; padding: 0 8px 0 16px; display: flex; align-items: center; gap: 10px; background: #FFFFFF; border-bottom: 1px solid #D6E0E4">
+<span aria-hidden="true" style="flex: none; width: 40px; height: 40px; border-radius: 999px; background: #001B2A; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 32 32"><path fill="#F2F7F9" d="M13.63 4.24A12 12 0 1 0 27.27 20.14A11 11 0 0 1 13.63 4.24Z"></path><circle cx="24.5" cy="8.5" r="2.4" fill="#3AA8B8"></circle></svg></span>
+<span style="display: flex; flex-direction: column"><span style="font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 750; font-size: 18px; line-height: 1.2">Luna</span><span style="font-size: 13px; line-height: 1.3; color: #4B5E69">Digitale Assistentin</span></span>
+<button type="button" aria-label="Chat minimieren" style="margin-left: auto; flex: none; width: 44px; height: 44px; padding: 0; border: 0; border-radius: 12px; background: transparent; color: #001B2A; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.4 8.6L12 14.2L17.6 8.6L19 10L12 17L5 10Z"></path></svg></button>
+</header>
+<div style="flex: 1; min-height: 0; overflow: hidden; box-sizing: border-box; padding: 14px; display: flex; flex-direction: column; justify-content: flex-end; gap: 10px; font-size: 15.5px; line-height: 1.45">
+<div style="flex: none; align-self: flex-start; max-width: 86%; box-sizing: border-box; padding: 11px 13px; border-radius: 18px 18px 18px 6px; background: #FFFFFF; border: 1px solid #D6E0E4">Wie heißen Sie, und unter welcher Nummer erreicht Sie der Betrieb?</div>
+<div style="flex: none; align-self: flex-end; max-width: 80%; box-sizing: border-box; padding: 10px 13px; border-radius: 18px 18px 6px 18px; background: #001B2A; color: #F2F7F9">Maria Huber, [Ihre Nummer]</div>
+<section aria-label="Ihre Anfrage" style="flex: none; box-sizing: border-box; padding: 14px; border-radius: 18px; background: #FFFFFF; border: 1px solid #D6E0E4; display: flex; flex-direction: column; gap: 6px">
+<span style="font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 700; font-stretch: 96%; font-size: 18px; line-height: 1.2">Ihre Anfrage</span>
+<span style="font-size: 14.5px; line-height: 1.45; color: #4B5E69">Installateur, 1020 Wien, sofort. Unter der Spüle tritt Wasser aus. Maria Huber, [Ihre Nummer]</span>
+</section>
+<div role="alert" style="flex: none; box-sizing: border-box; padding: 16px 14px 14px; border-radius: 18px; background: #FFFFFF; border: 2px solid #001B2A; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; gap: 12px; align-items: flex-start">
+<svg width="28" height="28" viewBox="0 0 24 24" fill="#001B2A" aria-hidden="true" style="flex: none"><path fill-rule="evenodd" d="M12 2.5L22.5 21H1.5ZM11 9V14.5H13V9ZM11 16.3V18.3H13V16.3Z"></path></svg>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<h3 style="margin: 0; font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 700; font-stretch: 96%; font-size: 22px; line-height: 1.15">Die Anfrage wurde nicht gesendet.</h3>
+<p style="margin: 0; font-size: 15px; line-height: 1.5">Bitte prüfen Sie Ihre Internetverbindung und versuchen Sie es noch einmal. Ihre Angaben bleiben erhalten.</p>
+</div>
+</div>
+<a href="tel:" style="box-sizing: border-box; display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 54px; border-radius: 999px; background: #3AA8B8; color: #001B2A; text-decoration: none; font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 800; font-size: 17px"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.5 2.9C7.2 2.3 8.2 2.4 8.8 3.1L10.9 5.6C11.5 6.3 11.4 7.3 10.8 7.9L9.6 9C10.5 11.1 12.9 13.5 15 14.4L16.1 13.2C16.7 12.6 17.7 12.5 18.4 13.1L20.9 15.2C21.6 15.8 21.7 16.8 21.1 17.5L19.6 19.3C18.7 20.4 17.2 20.8 15.8 20.3C10.4 18.3 5.7 13.6 3.7 8.2C3.2 6.8 3.6 5.3 4.7 4.4Z"></path></svg><span>Stattdessen anrufen</span></a>
+<button type="button" style="min-height: 50px; border: 0; border-radius: 14px; background: #001B2A; color: #F2F7F9; font-family: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif; font-weight: 750; font-size: 16px; cursor: pointer">Erneut senden</button>
+</div>
+</div>
+<div style="flex: none; box-sizing: border-box; padding: 10px 10px 12px; background: #FFFFFF; border-top: 1px solid #D6E0E4; display: flex; gap: 8px; align-items: center">
+<label for="f3-eingabe" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap">Nachricht an Luna</label>
+<input id="f3-eingabe" type="text" placeholder="Nachricht schreiben" style="flex: 1; min-width: 0; box-sizing: border-box; height: 46px; padding: 0 12px; border-radius: 14px; border: 1.5px solid #72838D; background: #FFFFFF; color: #001B2A; font-family: 'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', Tahoma, Verdana, sans-serif; font-size: 15.5px">
+<button type="button" aria-label="Nachricht senden" style="flex: none; width: 46px; height: 46px; padding: 0; border: 0; border-radius: 14px; background: #001B2A; color: #F2F7F9; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 20.5V14L13 12L3 10V3.5L22 12Z"></path></svg></button>
+</div>
+</section>
+</div>
+
+</div>
+</body>
+</html>

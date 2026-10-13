@@ -1,0 +1,10 @@
+node_modules/
+dist/
+dist-ssr/
+.lighthouseci/
+test-results/
+playwright-report/
+tests/screens-actual/
+.env
+.env.local
+*.log
