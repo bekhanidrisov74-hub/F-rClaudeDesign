@@ -8,3 +8,4 @@ tests/screens-actual/
 .env
 .env.local
 *.log
+.claude/worktrees/
