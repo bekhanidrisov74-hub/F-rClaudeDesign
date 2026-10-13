@@ -1,3 +1,8 @@
+import { useId } from 'react'
+import { Button } from '../../components/ui/Button'
+import { CallButton } from '../../components/ui/CallButton'
+import { Icon } from '../../components/ui/Icon'
+import { copy, fuelle } from '../../content/copy'
 import type { Angaben } from '../flow'
 
 export interface ErfolgProps {
@@ -7,8 +12,39 @@ export interface ErfolgProps {
   onSchliessen: () => void
 }
 
-// Platzhalter aus Phase 4: wird vom ui-builder ersetzt.
-export function Erfolg(props: ErfolgProps) {
-  void props
-  return null
+const t = copy.luna.erfolg
+
+// Screen 09 (Handy: Kreis über der Überschrift) und Screen 12 Mitte (Fenster: Kreis links daneben).
+export function Erfolg({ angaben, anfragenummer, onSchliessen }: ErfolgProps) {
+  const titelId = `${useId()}-titel`
+  const gewerk = angaben.gewerk
+
+  return (
+    <section aria-labelledby={titelId} className="flex flex-col gap-s3 rounded-card border border-linie bg-weiss p-s4">
+      <div className="flex flex-col gap-s3 dialog:flex-row dialog:items-start">
+        <div className="flex size-[48px] shrink-0 items-center justify-center rounded-pill bg-tiefsee text-weiss">
+          <Icon name="ui-haekchen" className="size-[28px]" />
+        </div>
+        <h2 id={titelId} className="font-display text-h3-karte font-[750] [font-stretch:100%] dialog:text-h4">
+          {fuelle(t.titel, { name: angaben.name })}
+        </h2>
+      </div>
+
+      <p className="text-text">
+        {fuelle(t.text, { betrieb: gewerk?.betrieb ?? t.betriebUnbekannt, telefon: angaben.telefon })}
+      </p>
+      <p className="text-note text-schiefer">{fuelle(t.nummer, { nummer: anfragenummer })}</p>
+
+      {gewerk && (
+        <p className="rounded-chip bg-kalk px-s4 py-s3 text-small">
+          <span className="font-bold">{t.tippTitel}</span> {gewerk.tippErfolg}
+        </p>
+      )}
+
+      <CallButton variante="block" label={t.anrufen} />
+      <Button art="textlink" onClick={onSchliessen} className="min-h-[44px] px-s4 text-btn dialog:hidden">
+        {t.schliessen}
+      </Button>
+    </section>
+  )
 }
