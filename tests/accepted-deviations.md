@@ -20,3 +20,22 @@ Die Startseite ist nur ein Gerüst: H1 und Unterzeile des Hero ohne Kopf, Knöpf
 - Fokusrahmen (3 px Türkis, Abstand 3 px)
 
 Verglichen wird mit Screen 01/02 (Hero-Text) und Screen 14 (Token-Board). Alle übrigen Abschnitte fehlen absichtlich.
+
+## Phase 2 (statische Abschnitte)
+
+Gebaut sind Kopf, Hero mit Schnellwahl und Bild 1, Vertrauensleiste, Leistungen, So funktioniert's, Fuß und die Platzhalterseiten. Bewusst noch nicht da:
+- Preisrechner, Preisübersicht und Handy-Menü (Phase 3). Der Menü-Knopf und „Alle Richtpreise im Überblick“ haben noch keine Funktion.
+- Luna-Knopf und Anstupser (Phase 4).
+- Anfrage-Formular (Phase 5).
+
+Im Screenshot folgt deshalb auf „So funktioniert's“ direkt der Fuß.
+
+Entschiedene Standards:
+- Handy wie Screen 01, Desktop wie Screen 02 (Entscheidung 5):
+  - Schnellwahl-Kacheln am Handy ohne Unterzeile, Luna-Kachel „Nicht sicher? Luna fragen“
+  - Fuß-Kontakt am Handy ohne „Telefon“-Präfix und „WhatsApp“ ohne Nummer
+- Leistungen sind auf allen Breiten ein Raster (`auto-fill` ab 340 px) mit 24 px Abstand. Im Entwurf hat die Handy-Spalte 20 px.
+- Kartenradius 22 px (`--fx-r-card-lg`) auf allen Breiten, im Entwurf am Handy 20 px.
+- Zweitknöpfe im Hero (WhatsApp, Anfrage senden) haben auf allen Breiten Radius 16 px (`--fx-r-btn-lg`), im Entwurf am Handy 14 px.
+- Abstände sind auf `--fx-s-*` gerundet, z. B. Hero oben 72 statt 76 px und Überlappung der Kacheln 96 statt 104 px.
+- Zwischen 560 und 920 px gibt es keinen Entwurf: Dort gilt der kompakte Handy-Kopf (64 px) mit Menü-Knopf, Bild 1 steht nach der Schnellwahl.

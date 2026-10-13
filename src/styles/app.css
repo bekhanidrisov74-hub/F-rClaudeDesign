@@ -136,6 +136,12 @@
   padding-inline: var(--fx-gutter);
 }
 
+/* Umrandung von Feldern, Chips und Zweitknöpfen: 1,5 px; Farbe per border-rand, border-linie … */
+@utility rahmen {
+  border-width: var(--fx-border);
+  border-style: solid;
+}
+
 @layer base {
   html {
     background: var(--fx-kalk);

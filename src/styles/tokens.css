@@ -81,6 +81,7 @@
   --fx-btn-l: 18px;        /* Anruf-Pillen in Karten, Senden-Knopf */
   --fx-text: 16px;         /* Kartentext, Tabellen, Labels, Luna-Verlauf */
   --fx-kopf: 64px;         /* Höhe Seitenkopf: Handy 64, ab 920 px 76 (01, 02) */
+  --fx-border: 1.5px;      /* Umrandung von Feldern, Chips, Zweitknöpfen (alle Screens) */
 }
 
 @media (min-width: 40rem) {

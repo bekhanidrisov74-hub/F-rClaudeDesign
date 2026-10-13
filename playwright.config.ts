@@ -1,12 +1,15 @@
 import { defineConfig } from '@playwright/test'
 
+// PW_PORT erlaubt parallele Läufe in mehreren Worktrees, ohne fremde Server zu treffen.
+const PORT = Number(process.env.PW_PORT ?? 4173)
+
 // Prüft den vorgerenderten Build (`npm run build`) über `vite preview`.
 export default defineConfig({
   fullyParallel: true,
   forbidOnly: true,
   reporter: [['list']],
   use: {
-    baseURL: 'http://localhost:4173',
+    baseURL: `http://localhost:${PORT}`,
     browserName: 'chromium',
     channel: 'chrome', // installiertes Google Chrome, derselbe Browser wie für Lighthouse
     deviceScaleFactor: 1,
@@ -14,7 +17,7 @@ export default defineConfig({
   },
   webServer: {
     command: 'npm run preview',
-    url: 'http://localhost:4173',
+    url: `http://localhost:${PORT}`,
     reuseExistingServer: true,
   },
   projects: [
