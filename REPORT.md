@@ -127,32 +127,21 @@ Der Build meldet sie im Log (`scripts/prerender.mjs`), ebenso eine fehlende Doma
 ## 8. Deploy auf Vercel
 
 1. Repository zu GitHub/GitLab hochladen und in Vercel als Projekt importieren. `vercel.json` setzt Build-Befehl `npm run build`, Ausgabe `dist` und `cleanUrls` (`/impressum` statt `/impressum.html`). Node 22 (mindestens 22.13).
-2. **Vor dem ersten Build** unter *Settings → Environment Variables* setzen:
-   - `VITE_LEAD_ENDPOINT` = URL, die Anfragen als JSON per `POST` annimmt (Production und Preview).
-   - Die Variable wird **beim Build** in den Code geschrieben. Jede Änderung braucht ein neues Deployment.
-   - **Ohne die Variable** meldet der lokale Ersatz nach 800 ms Erfolg, sendet aber nichts. Live gingen Anfragen verloren. Der Build-Log warnt dann.
-3. Der Endpunkt muss:
-   - `POST` mit `Content-Type: application/json` annehmen. Inhalt:
-     ```json
-     { "quelle": "formular|luna", "gewerk": "installateur|…|null", "beschreibung": "…", "plz": "1020", "ort": "Wien",
-       "dringlichkeit": "sofort|heute|tage|null", "name": "…", "telefon": "…", "einwilligung": true, "zeit": "2026-10-14T08:30:00.000Z" }
-     ```
-   - mit Status 2xx und `{ "anfragenummer": "F247-…" }` antworten. Jeder andere Status oder eine fehlende Nummer zeigt den Sendefehler.
-   - CORS für die Website-Domain erlauben (`Access-Control-Allow-Origin`, `POST`, Header `Content-Type`), wenn er auf einer anderen Domain läuft.
+2. **Vor dem ersten Build** unter *Settings → Environment Variables* `VITE_FORM_ENDPOINT` (Anfrage-Eingang) und `VITE_CHAT_ENDPOINT` (KI-Backend für Luna) setzen. Beide sind Google-Apps-Script-Web-Apps aus `tools/`. Einrichtung, Vertrag und Prüfungen stehen in [docs/luna-ki/BERICHT.md](docs/luna-ki/BERICHT.md).
+   - Die Variablen werden **beim Build** in den Code geschrieben. Jede Änderung braucht ein neues Deployment.
+   - Ohne `VITE_FORM_ENDPOINT` schlägt live jedes Senden fehl (Sendefehler mit Anruf-Knopf), ohne `VITE_CHAT_ENDPOINT` läuft Luna ohne KI. Der Build-Log warnt.
+3. Der OpenAI-Schlüssel liegt nur in den Skripteigenschaften des KI-Backends (bzw. lokal in `.env`), nie in einer `VITE_`-Variable.
 4. Vor dem Livegang in `src/content/contact.ts` eintragen: `TELEFON`, `WHATSAPP` (übliche Schreibweise, z. B. `0660 123 45 67`; daraus werden `tel:+43…` und `wa.me/43…`), `EMAIL`, `FIRMA`, `DOMAIN` (z. B. `https://www.fixit247.at`; dann bekommen `sitemap.xml`, `robots.txt`, `og:url` und `canonical` echte URLs).
 5. Rechtstexte in `src/content/copy.ts` (`rechtliches`) ersetzen und das `noindex` der Rechtsseiten in `src/App.tsx` entfernen, wenn sie indexiert werden sollen.
 6. Lokal prüfen: `npm run check`, `npm run test:e2e`, `npm run lighthouse`.
 
-## 9. Luna mit KI (später)
+## 9. Luna mit KI
 
-Die Oberfläche ruft `Responder.antworte(zustand, eingabe)` asynchron auf (`src/luna/flow.ts`). Für eine KI-Anbindung:
-- eine Vercel-Funktion (z. B. `api/luna.ts`) anlegen, die die Anfrage an das Sprachmodell weitergibt. Den API-Schlüssel nur als **Server**-Umgebungsvariable in Vercel speichern (ohne `VITE_`-Präfix; alles mit `VITE_` landet im Browser-Code).
-- eine zweite `Responder`-Umsetzung schreiben, die diese Funktion aufruft, und in `src/overlays.tsx` bzw. `LunaChat.tsx` statt `gefuehrt` verwenden. Der geführte Ablauf bleibt als Rückfall.
-- Schlüssel bitte nicht in den Chat kopieren, sondern direkt in Vercel bzw. eine lokale `.env` (ist in `.gitignore`).
+Gebaut am 14.10.2026 nach [docs/luna-ki/AUFGABE.md](docs/luna-ki/AUFGABE.md): Fragenkatalog je Gewerk, KI-Erfassung mit `gpt-6-luna` über Apps Script, Versand an den Anfrage-Eingang. Bericht, Prüfergebnisse, Live-Schritte und offene Punkte: [docs/luna-ki/BERICHT.md](docs/luna-ki/BERICHT.md).
 
 ## 10. Hinweise
 
 - WhatsApp: Die Sprechblase ist ein Platzhalter. Live das offizielle Logo nach den Markenrichtlinien von Meta als lokale Datei einsetzen (`design/icons/` bzw. `src/components/ui/Icon.tsx`).
-- Der Datenschutz-Link in Luna und im Formular öffnet `/datenschutz` im selben Tab. Ein offenes Gespräch bzw. ein halb ausgefülltes Formular geht dabei verloren.
+- Der Datenschutz-Link in Luna und im Formular öffnet `/datenschutz` im selben Tab. Luna setzt das Gespräch danach fort (sessionStorage). Eingetippte Kontaktdaten und ein halb ausgefülltes Formular gehen verloren.
 - Playwright und Lighthouse nutzen das installierte Google Chrome (`channel: 'chrome'`, Pfad in `lighthouserc.json`).
 - `tests/accepted-deviations.md` listet alle bewussten Abweichungen vom Entwurf je Phase.

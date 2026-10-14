@@ -89,3 +89,15 @@ Neu: Abschnitt „Anfrage senden“ mit Formular und Seitenkasten „Lieber sofo
 - Ein Feld mit Fehler bekommt zusätzlich einen Tiefsee-Rand, damit der Fehler nicht nur über Text erkennbar ist.
 - Die Checkbox ist sichtbar 24 px groß, die Trefferfläche 44 px.
 - Die Erfolgskarte des Formulars zeigt wie Luna 09 den Sicherheitstipp und „Fragen? Jetzt anrufen“.
+
+## Luna mit KI (docs/luna-ki/AUFGABE.md)
+
+Die Aufgabe ersetzt den Ablauf aus SPEC 8. Optik wie Screens 06–12, Verhalten und Texte laut Aufgabe:
+- Fragen je Gewerk aus dem Katalog mit Chips plus „Überspringen“, Dringlichkeits-Chips „Akut/Gefahr“, „So schnell wie möglich“, „In den nächsten Tagen“, bei Bedarf eine Wunschtermin-Frage. „Überspringen“ sieht aus wie die übrigen Chips.
+- Notruf-Hinweis als Luna-Blase mit 2-px-Rand in Tiefsee, Warn-Icon und fetter Schrift (`role="alert"`), nicht im Design.
+- Fortschrittsbalken in vier Schritten (Problem, Details, Ort, Prüfen) statt fünf.
+- Zusammenfassung mit mehr Zeilen (Antworten aus dem Katalog), darunter durch eine Linie getrennt die Felder Name, Telefon und E-Mail (optional) statt der Textzeilen Name/Telefon, und der Einwilligungstext der Aufgabe. Der Verlauf zeigt die Karte mit ihrem Anfang.
+- Erfolg mit zusätzlichem Knopf „Neue Anfrage starten“ (hell, volle Breite). Bei „kein Betrieb gefunden“ ein anderer Titel und Text, ohne Tipp „Bis der Betrieb kommt“. Der Sendefehler-Knopf heißt „Erneut versuchen“.
+- Während Luna antwortet, steht eine Blase „…“ im Verlauf und die Eingabe ist gesperrt.
+- Anstupser nach 25 s oder ab 60 % Scrolltiefe, nicht über einem per Tastatur fokussierten Element.
+

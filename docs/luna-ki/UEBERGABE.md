@@ -1,6 +1,6 @@
 # Übergabe: Luna mit KI (neue Session)
 
-Stand 14.10.2026. Die Aufgabe steht wörtlich in [AUFGABE.md](AUFGABE.md). Hier steht, wo wir stehen und was vor dem Bauen zu klären ist. **Noch nichts davon ist umgesetzt.**
+Stand 14.10.2026. Die Aufgabe steht wörtlich in [AUFGABE.md](AUFGABE.md). **Umgesetzt am selben Tag, siehe [BERICHT.md](BERICHT.md).** Diese Übergabe ist der Stand davor.
 
 ## 1. Ausgangslage im Repo
 
