@@ -193,3 +193,15 @@ test('Wechsel über 640 px bei offenem Chat ohne Fehler, Verlauf bleibt', async 
   await expect(chat(page)).toContainText('Verstanden. Was ist passiert?')
   expect(fehler).toEqual([])
 })
+
+test('Fenster: Esc auf der Seite minimiert, der Fokus bleibt dort (WCAG 2.4.11)', async ({ page }) => {
+  test.skip(handy(page.viewportSize()!.width), 'nur Fenster')
+  await page.goto('/')
+  await oeffneLuna(page)
+  const kopfAnruf = page.locator('header').getByRole('link', { name: /Anrufen/ })
+  await kopfAnruf.focus()
+  await page.keyboard.press('Escape')
+  await expect(chat(page)).toBeHidden()
+  await expect(kopfAnruf).toBeFocused()
+  await expect(lunaKnopf(page)).toHaveAttribute('aria-expanded', 'false')
+})

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type KeyboardEvent } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { copy } from '../content/copy'
 import { submitLead } from '../lib/submitLead'
 import { useOverlays } from '../overlays'
@@ -92,20 +92,33 @@ export function LunaChat() {
     if (dialog.current) fokussiereStart(dialog.current)
   }, [luna])
 
-  // Jedes Schließen läuft über das close-Ereignis: Esc (Vollbild), Minimieren, Schließen, Knopf und Erfolg.
+  /** Esc auf der Seite minimiert, der Fokus bleibt dort (WCAG 2.4.11: verdeckter Fokus lässt sich ohne Fokuswechsel freilegen). */
+  const fokusBleibt = useRef(false)
+
+  // Jedes Schließen läuft über das close-Ereignis: Esc, Minimieren, Schließen, Knopf und Erfolg.
   const beiClose = () => {
     if (wechsel.current) {
       wechsel.current = false
       return
     }
     schliesseLuna()
-    document.getElementById('luna-knopf')?.focus()
+    if (fokusBleibt.current) fokusBleibt.current = false
+    else document.getElementById('luna-knopf')?.focus()
   }
 
-  // show() kennt kein Esc: im Fenster minimiert ein eigener Listener (im Vollbild übernimmt das cancel-Ereignis).
-  const beiTaste = (e: KeyboardEvent<HTMLDialogElement>) => {
-    if (e.key === 'Escape' && !e.currentTarget.matches(':modal')) schliesseLuna()
-  }
+  // show() kennt kein Esc: Im Fenster minimiert Esc überall auf der Seite, solange kein modaler Dialog darüber liegt.
+  // Im Vollbild übernimmt das native cancel-Ereignis.
+  useEffect(() => {
+    if (!lunaOffen) return
+    const beiTaste = (e: globalThis.KeyboardEvent) => {
+      const d = dialog.current
+      if (e.key !== 'Escape' || !d?.open || d.matches(':modal') || document.querySelector('dialog:modal')) return
+      fokusBleibt.current = !d.contains(document.activeElement)
+      schliesseLuna()
+    }
+    document.addEventListener('keydown', beiTaste)
+    return () => document.removeEventListener('keydown', beiTaste)
+  }, [lunaOffen, schliesseLuna])
 
   const nimmAn = (neu: typeof luna) => {
     fokusNachAntwort.current = true
@@ -148,7 +161,7 @@ export function LunaChat() {
   }
 
   return (
-    <dialog ref={dialog} id="luna-chat" aria-label={copy.luna.dialogLabel} onClose={beiClose} onKeyDown={beiTaste} className={DIALOG}>
+    <dialog ref={dialog} id="luna-chat" aria-label={copy.luna.dialogLabel} onClose={beiClose} className={DIALOG}>
       <Kopf />
       <Fortschritt luna={luna} />
       <Verlauf
