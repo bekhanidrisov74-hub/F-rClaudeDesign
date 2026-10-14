@@ -229,14 +229,14 @@ export function AnfrageFormular() {
           value={werte.beschreibung}
           onChange={aendern('beschreibung')}
           placeholder={t.felder.beschreibung.platzhalter}
-          className={`${FELD} min-h-[124px] resize-y py-s3`}
+          className={`${FELD} min-h-[128px] resize-y py-s3`}
         />
       </div>
 
       <div className="col-span-full flex flex-col gap-s2">
         <label className="flex min-h-[44px] cursor-pointer items-start gap-s2 text-small">
           {/* Die Checkbox ist ein unsichtbares 44-px-Feld über dem gezeichneten 24-px-Kästchen (Trefferfläche). */}
-          <span className="relative -mx-s2 -mt-s2 flex size-[44px] shrink-0 items-center justify-center">
+          <span className="relative -mt-s2 -mr-s4 flex size-[44px] shrink-0 items-center justify-start">
             <input
               {...steuerung('einwilligung')}
               type="checkbox"
@@ -256,7 +256,7 @@ export function AnfrageFormular() {
             <a href={DATENSCHUTZ} className="underline underline-offset-3">
               {t.einwilligung.link}
             </a>
-            . <span aria-hidden="true">{t.pflichtZeichen}</span>
+            {t.einwilligung.satzende} <span aria-hidden="true">{t.pflichtZeichen}</span>
           </span>
         </label>
         <Fehlertext feld="einwilligung" text={fehler.einwilligung} />
@@ -267,7 +267,7 @@ export function AnfrageFormular() {
           <div className="flex items-start gap-s3">
             <Icon name="ui-warnung" className="size-[28px] text-tiefsee" />
             <div className="flex min-w-0 flex-col gap-s2">
-              <h3 className="font-display text-h4 font-[750] [font-stretch:100%]">{t.sendefehler.titel}</h3>
+              <h3 className="font-display text-h3 font-[750] [font-stretch:100%] dialog:text-h4">{t.sendefehler.titel}</h3>
               <p className="text-small">{t.sendefehler.text}</p>
             </div>
           </div>
@@ -275,7 +275,7 @@ export function AnfrageFormular() {
         </div>
       )}
 
-      <div className="col-span-full flex flex-col gap-s3 dialog:flex-row dialog:flex-wrap dialog:items-center dialog:gap-x-s5">
+      <div className="col-span-full flex flex-col gap-s4 dialog:flex-row dialog:flex-wrap dialog:items-center dialog:gap-x-s5">
         {/* Kein Fokuswechsel beim Drücken: Sonst prüft das Verlassen des Feldes zuerst, der Fehlertext verschiebt den Knopf und der Klick geht ins Leere. Geprüft wird beim Absenden ohnehin. */}
         <div onMouseDown={(e) => e.preventDefault()} className="contents">
           <Button
@@ -306,14 +306,14 @@ function Erfolg({ danke }: { danke: Danke }) {
         <div className="flex size-[52px] shrink-0 items-center justify-center rounded-pill bg-tiefsee text-weiss">
           <Icon name="ui-haekchen" className="size-[28px]" />
         </div>
-        <h3 ref={titel} tabIndex={-1} className="font-display text-h3 font-[750] [font-stretch:100%]">
+        <h3 ref={titel} tabIndex={-1} className="font-display text-h3-karte font-[750] [font-stretch:100%] dialog:text-h3">
           {t.erfolg.titel}
         </h3>
       </div>
       <p className="text-body">{fuelle(t.erfolg.text, { betrieb: danke.betrieb, telefon: danke.telefon })}</p>
       <p className="text-note text-schiefer">{fuelle(t.erfolg.nummer, { nummer: danke.anfragenummer })}</p>
       {danke.tipp && (
-        <p className="rounded-card bg-kalk p-s4 text-small">
+        <p className="rounded-chip bg-kalk p-s4 text-small">
           <strong>{copy.luna.erfolg.tippTitel}</strong> {danke.tipp}
         </p>
       )}

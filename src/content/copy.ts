@@ -210,6 +210,7 @@ export const copy = {
     einwilligung: {
       text: 'Ich bin einverstanden, dass fixit247 meine Angaben zur Vermittlung an einen passenden Fachbetrieb weitergibt. Mehr dazu in der',
       link: 'Datenschutzerklärung',
+      satzende: '.',
     },
     senden: 'Anfrage senden',
     sendend: 'Wird gesendet …',
@@ -225,7 +226,7 @@ export const copy = {
       titel: 'Danke. Ihre Anfrage ist unterwegs.',
       // nicht im Design: Text wie in der Luna-Erfolgskarte (Entscheidung 2)
       text: 'Wir geben sie jetzt an einen passenden {betrieb} in Ihrer Nähe weiter. Der Betrieb ruft Sie unter {telefon} zurück.',
-      nummer: 'Anfragenummer: {nummer}',
+      nummer: 'Anfragenummer: {nummer}', // nicht im Design: wie Luna 09
     },
     // nicht im Design: Texte wie in der Luna-Fehlerkarte (Entscheidung 2)
     sendefehler: {
