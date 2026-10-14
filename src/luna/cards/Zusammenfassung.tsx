@@ -1,11 +1,15 @@
 import { Fragment, useId, type RefObject } from 'react'
 import { Button } from '../../components/ui/Button'
+import { Icon } from '../../components/ui/Icon'
 import { AUFTRAG_AUFGEBEN, copy, DATENSCHUTZ } from '../../content/copy'
-import { anfahrtText, einheit, spanne } from '../../content/gewerke'
-import type { Angaben } from '../flow'
+import { anfahrtText, einheit, gewerke, spanne } from '../../content/gewerke'
+import { zeilen, type Anfrage, type Kontakt } from '../flow'
 
 export interface ZusammenfassungProps {
-  angaben: Angaben
+  anfrage: Anfrage
+  kontakt: Kontakt
+  onKontakt: (feld: keyof Kontakt, wert: string) => void
+  kontaktFehler: Partial<Record<keyof Kontakt, string>>
   einwilligung: boolean
   onEinwilligung: (an: boolean) => void
   /** Fehlertext anzeigen (SPEC 9: „Bitte stimmen Sie der Weitergabe zu …“) */
@@ -23,9 +27,21 @@ const t = copy.luna.zusammenfassung
 const PRIMAER =
   'min-h-[52px] w-full px-s4 text-btn-l font-[750] aria-disabled:cursor-default dialog:min-h-[50px] dialog:flex-1 dialog:px-s2 dialog:text-btn dialog:whitespace-nowrap'
 
+const FELD = 'rahmen min-h-[48px] w-full rounded-chip border-rand bg-weiss px-s3 text-text text-tiefsee aria-invalid:border-tiefsee'
+
+/** Kontaktfelder (Aufgabe): erst hier erfasst, gehen nur an den Anfrage-Eingang. */
+const KONTAKTFELDER = [
+  { feld: 'name', type: 'text', autoComplete: 'name', inputMode: undefined, pflicht: true },
+  { feld: 'telefon', type: 'tel', autoComplete: 'tel', inputMode: 'tel', pflicht: true },
+  { feld: 'email', type: 'email', autoComplete: 'email', inputMode: 'email', pflicht: false },
+] as const
+
 // Screen 08 (Handy) und Screen 12 (Fenster) von Luna: Überblick über alle Angaben vor dem Absenden.
 export function Zusammenfassung({
-  angaben,
+  anfrage,
+  kontakt,
+  onKontakt,
+  kontaktFehler,
   einwilligung,
   onEinwilligung,
   einwilligungFehlt,
@@ -38,16 +54,7 @@ export function Zusammenfassung({
   const titelId = `${id}-titel`
   const checkboxId = `${id}-einwilligung`
   const fehlerId = `${id}-einwilligung-fehlt`
-  const gewerk = angaben.gewerk
-
-  const felder = [
-    [t.felder.gewerk, angaben.gewerkText],
-    [t.felder.problem, angaben.problem],
-    [t.felder.ort, [angaben.plz, angaben.ort].filter(Boolean).join(' ')],
-    [t.felder.dringlichkeit, angaben.dringlichkeitText],
-    [t.felder.name, angaben.name],
-    [t.felder.telefon, angaben.telefon],
-  ]
+  const gewerk = gewerke.find((g) => g.id === anfrage.gewerk)
 
   // aria-disabled statt disabled: Der Fokus bleibt auf dem Knopf, solange gesendet wird.
   const absenden = () => {
@@ -61,13 +68,46 @@ export function Zusammenfassung({
       </h2>
 
       <dl className="grid grid-cols-[104px_minmax(0,1fr)] gap-x-s3 gap-y-s1 text-small dialog:grid-cols-[96px_minmax(0,1fr)]">
-        {felder.map(([label, wert]) => (
+        {zeilen(anfrage).map(([label, wert]) => (
           <Fragment key={label}>
             <dt className="text-schiefer">{label}</dt>
             <dd className="min-w-0 font-bold break-words">{wert}</dd>
           </Fragment>
         ))}
       </dl>
+
+      <div className="flex flex-col gap-s3">
+        {KONTAKTFELDER.map(({ feld, type, autoComplete, inputMode, pflicht }) => {
+          const fehler = kontaktFehler[feld]
+          return (
+            <div key={feld} className="flex flex-col gap-s1">
+              <label htmlFor={`luna-${feld}`} className="font-display text-small font-bold">
+                {t.kontakt[feld]}
+                {!pflicht && <span className="font-text font-normal text-schiefer"> {t.kontakt.optional}</span>}
+              </label>
+              <input
+                id={`luna-${feld}`}
+                type={type}
+                autoComplete={autoComplete}
+                inputMode={inputMode}
+                maxLength={120}
+                aria-required={pflicht || undefined}
+                aria-invalid={fehler ? true : undefined}
+                aria-describedby={fehler ? `luna-${feld}-fehler` : undefined}
+                value={kontakt[feld]}
+                onChange={(e) => onKontakt(feld, e.target.value)}
+                className={FELD}
+              />
+              {fehler && (
+                <p id={`luna-${feld}-fehler`} className="flex items-start gap-s2 text-note font-bold">
+                  <Icon name="ui-warnung" className="mt-px size-[16px] shrink-0" />
+                  {fehler}
+                </p>
+              )}
+            </div>
+          )
+        })}
+      </div>
 
       {gewerk && (
         <p className="rounded-chip bg-kalk px-s3 py-s2 text-small">

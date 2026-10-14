@@ -1,11 +1,33 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
-import { gefuehrt, type Zustand } from './luna/flow'
+import { start, type Zustand } from './luna/flow'
 
 /**
  * Steuerung der Überlagerungen: Handy-Menü, Preisübersicht und Luna.
  * Jede Überlagerung rendert sich selbst und liest hier nur, ob sie offen ist.
- * Der Luna-Gesprächszustand lebt hier, damit er Minimieren und Schließen übersteht.
+ * Der Luna-Gesprächszustand lebt hier, damit er Minimieren und Schließen übersteht, und in sessionStorage
+ * (fixit-luna), damit ein Neuladen das Gespräch fortsetzt. Kontaktdaten stehen nie darin (siehe flow.ts).
  */
+const SPEICHER = 'fixit-luna'
+
+// sessionStorage kann im privaten Modus oder bei gesperrten Cookies werfen. Dann beginnt das Gespräch neu.
+function geladen(): Zustand | null {
+  try {
+    const z = JSON.parse(sessionStorage.getItem(SPEICHER) ?? 'null') as Zustand | null
+    return z && Array.isArray(z.verlauf) && z.anfrage && typeof z.phase === 'string' && z.phase !== 'COMPLETED' ? z : null
+  } catch {
+    return null
+  }
+}
+
+/** Abgeschlossene Gespräche werden nicht aufbewahrt: Nach dem Neuladen beginnt eine neue Anfrage. */
+function speichere(z: Zustand) {
+  try {
+    if (z.phase === 'COMPLETED') sessionStorage.removeItem(SPEICHER)
+    else sessionStorage.setItem(SPEICHER, JSON.stringify(z))
+  } catch {
+    // Nicht speichern zu können ist unkritisch: Das Gespräch geht dann nur beim Neuladen verloren.
+  }
+}
 interface Overlays {
   menueOffen: boolean
   setMenueOffen: (offen: boolean) => void
@@ -33,7 +55,18 @@ export function OverlayProvider({ children }: { children: ReactNode }) {
   const [menueOffen, setMenueOffen] = useState(false)
   const [preise, setPreise] = useState<{ offen: boolean; rueckfokus: HTMLElement | null }>({ offen: false, rueckfokus: null })
   const [lunaOffen, setLunaOffen] = useState(false)
-  const [luna, setLuna] = useState<Zustand>(gefuehrt.start)
+  const [luna, setLunaRoh] = useState<Zustand>(start)
+
+  // Erst nach dem Hydrieren laden: Die vorgerenderte Seite kennt sessionStorage nicht.
+  useEffect(() => {
+    const z = geladen()
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- einmalig nach dem Hydrieren aus sessionStorage übernehmen
+    if (z) setLunaRoh(z)
+  }, [])
+  const setLuna = useCallback((z: Zustand) => {
+    speichere(z)
+    setLunaRoh(z)
+  }, [])
 
   const oeffnePreise = useCallback((rueckfokus?: HTMLElement | null) => {
     setPreise({ offen: true, rueckfokus: rueckfokus ?? (document.activeElement as HTMLElement | null) })
@@ -74,7 +107,7 @@ export function OverlayProvider({ children }: { children: ReactNode }) {
       luna,
       setLuna,
     }),
-    [menueOffen, preise.offen, oeffnePreise, schliessePreise, lunaOffen, oeffneLuna, schliesseLuna, luna],
+    [menueOffen, preise.offen, oeffnePreise, schliessePreise, lunaOffen, oeffneLuna, schliesseLuna, luna, setLuna],
   )
   return <Kontext.Provider value={wert}>{children}</Kontext.Provider>
 }

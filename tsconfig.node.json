@@ -9,6 +9,7 @@
     "types": ["node", "vite/client"],
     "strict": true,
     "noEmit": true,
+    "allowImportingTsExtensions": true,
     "skipLibCheck": true,
     "verbatimModuleSyntax": true,
     "moduleDetection": "force",
@@ -19,6 +20,7 @@
     "vite.config.ts",
     "playwright.config.ts",
     "tests",
+    "tools",
     "src/**/*.test.ts",
     "src/**/*.test.tsx",
     "src/vite-env.d.ts"

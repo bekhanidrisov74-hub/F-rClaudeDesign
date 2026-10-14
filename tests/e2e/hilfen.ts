@@ -55,31 +55,39 @@ export async function antworteLuna(page: Page, text: string) {
   const chip = c.getByRole('button', { name: text, exact: true })
   if (await chip.isVisible()) await chip.click()
   else {
-    await c.getByRole('textbox').fill(text)
+    await c.getByRole('textbox', { name: 'Nachricht an Luna' }).fill(text)
     await c.getByRole('button', { name: 'Nachricht senden' }).click()
   }
   await expect(c.getByText(text, { exact: true }).last()).toBeVisible()
 }
 
-export async function lunaBisFrage4(page: Page) {
+/** Mitten im Gespräch: Fragenkatalog des Installateurs, Chips zur Frage „Läuft Wasser aus oder tropft es?“ */
+export async function lunaImGespraech(page: Page) {
   await oeffneLuna(page)
-  for (const a of ['Installateur', 'Unter der Spüle tritt Wasser aus.', '1020']) await antworteLuna(page, a)
+  for (const a of ['Installateur', 'Unter der Spüle tritt Wasser aus.', 'Küche']) await antworteLuna(page, a)
 }
 
 export async function lunaBisZusammenfassung(page: Page) {
-  await lunaBisFrage4(page)
-  for (const a of ['Sofort, es ist ein Notfall', 'Maria Huber, 0664 1234567']) await antworteLuna(page, a)
+  await lunaImGespraech(page)
+  for (const a of ['Tropft nur', 'Ja', 'So schnell wie möglich', '1020']) await antworteLuna(page, a)
   await expect(chat(page).getByRole('heading', { name: 'Ihre Anfrage' })).toBeVisible()
+}
+
+/** Kontaktdaten in der Zusammenfassungskarte */
+export async function fuelleKontakt(page: Page) {
+  await chat(page).getByLabel('Name').fill('Maria Huber')
+  await chat(page).getByLabel('Telefon').fill('0664 1234567')
 }
 
 export async function lunaAbsenden(page: Page) {
   await lunaBisZusammenfassung(page)
+  await fuelleKontakt(page)
   await chat(page).getByRole('checkbox').check()
   await chat(page).getByRole('button', { name: 'Auftrag aufgeben' }).click()
 }
 
 export async function zeigeAnstupser(page: Page) {
-  await page.clock.fastForward(9000)
+  await page.clock.fastForward(26_000)
   await expect(page.getByRole('status').filter({ hasText: 'Notfall?' })).toBeVisible()
 }
 

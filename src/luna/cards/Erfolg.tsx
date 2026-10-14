@@ -3,11 +3,14 @@ import { Button } from '../../components/ui/Button'
 import { CallButton } from '../../components/ui/CallButton'
 import { Icon } from '../../components/ui/Icon'
 import { copy, fuelle } from '../../content/copy'
-import type { Angaben } from '../flow'
+import { gewerke } from '../../content/gewerke'
+import type { Kontakt, Zustand } from '../flow'
 
 export interface ErfolgProps {
-  angaben: Angaben
-  anfragenummer: string
+  luna: Zustand
+  kontakt: Kontakt
+  /** „Neue Anfrage starten“ */
+  onNeu: () => void
   /** „Chat schließen“ (nur im Vollbild unter 640 px sichtbar) */
   onSchliessen: () => void
 }
@@ -15,9 +18,12 @@ export interface ErfolgProps {
 const t = copy.luna.erfolg
 
 // Screen 09 (Handy: Kreis über der Überschrift) und Screen 12 Mitte (Fenster: Kreis links daneben).
-export function Erfolg({ angaben, anfragenummer, onSchliessen }: ErfolgProps) {
+// Betrieb gefunden (match FOUND) wie im Design; kein Betrieb (NONE): die Anfrage ist trotzdem aufgenommen.
+export function Erfolg({ luna, kontakt, onNeu, onSchliessen }: ErfolgProps) {
   const titelId = `${useId()}-titel`
-  const gewerk = angaben.gewerk
+  const gewerk = gewerke.find((g) => g.id === luna.anfrage.gewerk)
+  const gefunden = luna.match === 'FOUND'
+  const werte = { name: kontakt.name, telefon: kontakt.telefon, betrieb: gewerk?.betrieb ?? t.betriebUnbekannt }
 
   return (
     <section aria-labelledby={titelId} className="flex flex-col gap-s3 rounded-card border border-linie bg-weiss p-s4">
@@ -26,14 +32,12 @@ export function Erfolg({ angaben, anfragenummer, onSchliessen }: ErfolgProps) {
           <Icon name="ui-haekchen" className="size-[28px]" />
         </div>
         <h2 id={titelId} className="font-display text-h3-karte dialog:text-h4">
-          {fuelle(t.titel, { name: angaben.name })}
+          {fuelle(gefunden ? t.titel : t.keinerTitel, werte)}
         </h2>
       </div>
 
-      <p className="text-text">
-        {fuelle(t.text, { betrieb: gewerk?.betrieb ?? t.betriebUnbekannt, telefon: angaben.telefon })}
-      </p>
-      <p className="text-note text-schiefer">{fuelle(t.nummer, { nummer: anfragenummer })}</p>
+      <p className="text-text">{fuelle(gefunden ? t.text : t.keinerText, werte)}</p>
+      <p className="text-note text-schiefer">{fuelle(t.nummer, { nummer: luna.anfrageId })}</p>
 
       {gewerk && (
         <p className="rounded-chip bg-kalk px-s3 py-s3 text-small">
@@ -42,6 +46,9 @@ export function Erfolg({ angaben, anfragenummer, onSchliessen }: ErfolgProps) {
       )}
 
       <CallButton variante="block" label={t.anrufen} />
+      <Button art="hell" onClick={onNeu} className="min-h-[50px] w-full px-s4 text-btn">
+        {t.neu}
+      </Button>
       <Button art="textlink" onClick={onSchliessen} className="min-h-[44px] px-s4 text-btn dialog:hidden">
         {t.schliessen}
       </Button>

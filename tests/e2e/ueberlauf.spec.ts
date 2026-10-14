@@ -14,6 +14,8 @@ for (const u of UEBERLAGERUNGEN)
   test(`kein horizontales Scrollen mit offener Überlagerung: ${u.name}`, async ({ page }, info) => {
     test.skip(info.project.name !== 'm390', 'setzt die Breite selbst')
     test.setTimeout(120_000)
+    // Jede Breite beginnt ein neues Gespräch (Luna setzt es sonst aus sessionStorage fort)
+    await page.addInitScript(() => sessionStorage.removeItem('fixit-luna'))
     for (const breite of BREITEN) {
       if (u.nurUnter && breite >= u.nurUnter) continue
       await page.setViewportSize({ width: breite, height: 900 })

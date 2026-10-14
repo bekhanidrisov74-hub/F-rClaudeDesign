@@ -12,13 +12,16 @@ export const WEISS_NICHT = 'Weiß ich nicht'
 /** Pfad der Datenschutzerklärung (Fuß, Formular, Luna) */
 export const DATENSCHUTZ = '/datenschutz'
 
-/** Dringlichkeit in Luna: Chip, Zusammenfassung (Screen 08) und Kurzfassung (Screen 10) */
+/**
+ * Dringlichkeit in Luna: Chip (auch Zeile der Zusammenfassung) und Kurzfassung (Screen 10).
+ * Chips laut Aufgabe (docs/luna-ki/AUFGABE.md, Entscheidung vom 14.10.2026: Texte der Aufgabe gelten in Luna).
+ */
 export const dringlichkeit = [
-  { id: 'sofort', chip: 'Sofort, es ist ein Notfall', zusammenfassung: 'Sofort, Notfall', kurz: 'sofort' },
-  // nicht im Design: Zusammenfassung und Kurzfassung für „heute“ und „tage“ (Entscheidung 2)
-  { id: 'heute', chip: 'Heute noch', zusammenfassung: 'Heute noch', kurz: 'heute' },
-  { id: 'tage', chip: 'In den nächsten Tagen', zusammenfassung: 'In den nächsten Tagen', kurz: 'in den nächsten Tagen' },
+  { id: 'ACUTE', chip: 'Akut/Gefahr', kurz: 'akut' },
+  { id: 'URGENT', chip: 'So schnell wie möglich', kurz: 'so schnell wie möglich' },
+  { id: 'NORMAL', chip: 'In den nächsten Tagen', kurz: 'in den nächsten Tagen' },
 ] as const
+export type DringlichkeitId = (typeof dringlichkeit)[number]['id']
 
 export const copy = {
   meta: {
@@ -227,6 +230,9 @@ export const copy = {
       // nicht im Design: Text wie in der Luna-Erfolgskarte (Entscheidung 2)
       text: 'Wir geben sie jetzt an einen passenden {betrieb} in Ihrer Nähe weiter. Der Betrieb ruft Sie unter {telefon} zurück.',
       nummer: 'Anfragenummer: {nummer}', // nicht im Design: wie Luna 09
+      // nicht im Design: Eingang meldet „kein Betrieb gefunden“ (match NONE), Text wie in Luna
+      keinerTitel: 'Danke. Ihre Anfrage ist eingegangen.',
+      keinerText: 'Gerade ist kein passender {betrieb} frei. Wir nehmen Ihre Anfrage trotzdem auf, suchen weiter und melden uns unter {telefon}.',
     },
     // nicht im Design: Texte wie in der Luna-Fehlerkarte (Entscheidung 2)
     sendefehler: {
@@ -263,8 +269,9 @@ export const copy = {
     schliessen: 'Chat schließen',
     minimieren: 'Chat minimieren',
     anstupser: { fett: 'Notfall?', text: 'Ich helfe Ihnen in einer Minute.', schliessen: 'Hinweis schließen' },
-    /** {x}, {n} */
-    fortschritt: 'Frage {x} von {n}',
+    /** {x}, {n}, {schritt}; vier Schritte laut Aufgabe */
+    fortschritt: 'Schritt {x} von {n}: {schritt}',
+    schritte: ['Problem', 'Details', 'Ort', 'Prüfen'],
     fragen: {
       gewerk:
         'Hallo, ich bin Luna, die digitale Assistentin von fixit247. Ich gebe Ihre Anfrage an einen Fachbetrieb in Ihrer Nähe weiter. Worum geht es?',
@@ -272,15 +279,25 @@ export const copy = {
       /** {tipp} = Sicherheitstipp des Gewerks mit Leerzeichen dahinter, sonst leer */
       plz: 'Danke. {tipp}Wie lautet Ihre Postleitzahl?',
       dringlichkeit: 'Wie dringend ist es?',
-      kontakt: 'Wie heißen Sie, und unter welcher Nummer erreicht Sie der Betrieb?',
+      // Aufgabe: Wunschtermin nur bei „In den nächsten Tagen“
+      wunschtermin: 'Wann passt es Ihnen am besten?',
     },
+    // nicht im Design (Aufgabe bzw. Referenz): Gewerk unklar, sehr kurze Eingabe, Notruf, Zusammenfassung, Ergänzung
+    gewerkUnklar: 'Verstanden. Um welches Gewerk geht es?',
+    gewerkNochmal:
+      'Das kann ich noch keinem Gewerk zuordnen. Bitte wählen Sie den passenden Bereich oder beschreiben Sie genauer, was nicht funktioniert.',
+    kurz: 'Können Sie das Problem in ein paar Worten beschreiben? Zum Beispiel: Unter der Spüle tritt Wasser aus.',
+    notruf: 'Bei akuter Gefahr bitte sofort 122 bzw. 112 kontaktieren. Ich nehme Ihre Anfrage parallel weiter auf.',
+    zusammenfassungIntro: 'Danke. Bitte prüfen Sie Ihre Anfrage und ergänzen Sie, wie der Betrieb Sie erreicht.',
+    notiert: 'Notiert. Das nehme ich in die Anfrage auf.',
+    ueberspringen: 'Überspringen',
+    wunschterminChips: ['Morgen', 'Diese Woche', 'Nächste Woche', 'Nach Absprache'],
     plzFehler: 'Bitte geben Sie eine österreichische Postleitzahl mit vier Ziffern ein, zum Beispiel 1020.',
-    // nicht im Design: Nachfragen, wenn Nummer oder Name fehlt
-    telefonFehlt: 'Unter welcher Nummer erreicht Sie der Betrieb?',
-    nameFehlt: 'Und wie heißen Sie?',
-    // nicht im Design: Name der Chip-Gruppe in Schritt 1
+    plzUnbekannt: 'Diese Postleitzahl kenne ich nicht. Bitte prüfen Sie die vier Ziffern, zum Beispiel 1020.', // nicht im Design
+    // nicht im Design: Namen der Chip-Gruppen
     auswahlGewerk: 'Gewerk wählen',
     auswahlDringlichkeit: 'Dringlichkeit wählen',
+    auswahlAntwort: 'Antwort wählen',
     eingabe: {
       label: 'Nachricht an Luna',
       mitAuswahl: 'Oder selbst schreiben',
@@ -289,10 +306,31 @@ export const copy = {
     },
     zusammenfassung: {
       titel: 'Ihre Anfrage',
-      felder: { gewerk: 'Gewerk', problem: 'Problem', ort: 'Ort', dringlichkeit: 'Dringlichkeit', name: 'Name', telefon: 'Telefon' },
+      felder: {
+        gewerk: 'Gewerk',
+        problem: 'Problem',
+        ort: 'Ort',
+        dringlichkeit: 'Dringlichkeit',
+        wunschtermin: 'Wunschtermin', // nicht im Design
+        zusatz: 'Ergänzung', // nicht im Design
+      },
+      // Aufgabe: Kontaktdaten erst hier, nie im Chat (gehen nie an die KI)
+      kontakt: {
+        name: 'Name',
+        telefon: 'Telefon',
+        email: 'E-Mail',
+        optional: '(optional)',
+      },
+      fehler: {
+        name: 'Bitte geben Sie Ihren Namen ein.',
+        telefon: 'Bitte geben Sie eine Telefonnummer für den Rückruf ein.',
+        email: 'Bitte prüfen Sie die E-Mail-Adresse.', // nicht im Design
+      },
       richtpreis: 'Richtpreis',
       anfahrt: 'Anfahrt',
-      einwilligung: 'Ich bin einverstanden, dass fixit247 meine Angaben zur Vermittlung an einen Fachbetrieb weitergibt.',
+      // Text laut Aufgabe
+      einwilligung:
+        'Ich stimme zu, dass meine Angaben zur Bearbeitung der Anfrage verwendet und zu diesem Zweck an einen passenden Partnerbetrieb weitergegeben werden.',
       datenschutz: 'Datenschutz',
       einwilligungFehlt: 'Bitte stimmen Sie der Weitergabe zu, sonst können wir keinen Betrieb vermitteln.', // nicht im Design (SPEC 9)
       hinweis: 'Die Vermittlung ist kostenlos. Der Vertrag kommt direkt mit dem Betrieb zustande.',
@@ -303,17 +341,21 @@ export const copy = {
       /** Entscheidung 2: voller Name statt „Frau Huber“ (Luna fragt kein Geschlecht ab) */
       titel: 'Danke, {name}. Ihre Anfrage ist unterwegs.',
       text: 'Wir geben sie jetzt an einen passenden {betrieb} in Ihrer Nähe weiter. Der Betrieb ruft Sie unter {telefon} zurück.',
+      // nicht im Design: Eingang meldet „kein Betrieb gefunden“ (match NONE), die Anfrage ist trotzdem aufgenommen
+      keinerTitel: 'Danke, {name}. Ihre Anfrage ist eingegangen.',
+      keinerText: 'Gerade ist kein passender {betrieb} frei. Wir nehmen Ihre Anfrage trotzdem auf, suchen weiter und melden uns unter {telefon}.',
       betriebUnbekannt: 'Fachbetrieb', // nicht im Design: bei „Weiß ich nicht“
       nummer: 'Anfragenummer: {nummer}',
       tippTitel: 'Bis der Betrieb kommt:',
       anrufen: 'Fragen? Jetzt anrufen',
+      neu: 'Neue Anfrage starten', // Aufgabe
       schliessen: 'Chat schließen',
     },
     fehler: {
       titel: 'Die Anfrage wurde nicht gesendet.',
       text: 'Bitte prüfen Sie Ihre Internetverbindung und versuchen Sie es noch einmal. Ihre Angaben bleiben erhalten.',
       anrufen: 'Stattdessen anrufen',
-      erneut: 'Erneut senden',
+      erneut: 'Erneut versuchen', // Aufgabe (Design: „Erneut senden“)
     },
   },
 

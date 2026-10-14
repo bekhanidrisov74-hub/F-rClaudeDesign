@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type ChangeEvent, type FormEvent, type ReactNode } from 'react'
 import { DATENSCHUTZ, WEISS_NICHT, copy, fuelle } from '../content/copy'
 import { gewerke } from '../content/gewerke'
-import { submitLead } from '../lib/submitLead'
+import { submitLead, zufallsnummer, type Match } from '../lib/submitLead'
 import {
   LEERES_FORMULAR,
   WEISS_NICHT_ID,
@@ -23,6 +23,7 @@ type Status = 'bereit' | 'sendend' | 'sendefehler'
 type Eingabe = ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
 
 interface Danke {
+  match: Match
   anfragenummer: string
   betrieb: string
   telefon: string
@@ -66,6 +67,8 @@ export function AnfrageFormular() {
   const [fehler, setFehler] = useState<Fehler>({})
   const [status, setStatus] = useState<Status>('bereit')
   const [danke, setDanke] = useState<Danke | null>(null)
+  /** Eine Id je Anfrage: bleibt beim erneuten Senden gleich, neu nach dem Erfolg */
+  const [anfrageId, setAnfrageId] = useState(zufallsnummer)
   const formular = useRef<HTMLFormElement>(null)
 
   // Links „… anfragen“ und die Schnellwahl-Kacheln wählen das Gewerk vor. Der Sprung zum Anker bleibt.
@@ -118,15 +121,17 @@ export function AnfrageFormular() {
     }
     setStatus('sendend')
     try {
-      const { anfragenummer } = await submitLead(formularZuLead(werte))
+      const match = await submitLead(formularZuLead(werte, anfrageId))
       const gewerk = gewerke.find((g) => g.id === werte.gewerk)
       setDanke({
-        anfragenummer,
+        match,
+        anfragenummer: anfrageId,
         betrieb: gewerk?.betrieb ?? copy.luna.erfolg.betriebUnbekannt,
         telefon: werte.telefon.trim(),
         tipp: gewerk?.tippErfolg,
       })
       setWerte(LEERES_FORMULAR)
+      setAnfrageId(zufallsnummer())
       setFehler({})
       setStatus('bereit')
     } catch {
@@ -309,10 +314,12 @@ function Erfolg({ danke }: { danke: Danke }) {
           <Icon name="ui-haekchen" className="size-[28px]" />
         </div>
         <h3 ref={titel} tabIndex={-1} className="font-display text-h3-karte dialog:text-h3">
-          {t.erfolg.titel}
+          {danke.match === 'FOUND' ? t.erfolg.titel : t.erfolg.keinerTitel}
         </h3>
       </div>
-      <p className="text-body">{fuelle(t.erfolg.text, { betrieb: danke.betrieb, telefon: danke.telefon })}</p>
+      <p className="text-body">
+        {fuelle(danke.match === 'FOUND' ? t.erfolg.text : t.erfolg.keinerText, { betrieb: danke.betrieb, telefon: danke.telefon })}
+      </p>
       <p className="text-note text-schiefer">{fuelle(t.erfolg.nummer, { nummer: danke.anfragenummer })}</p>
       {danke.tipp && (
         <p className="rounded-chip bg-kalk p-s4 text-small">

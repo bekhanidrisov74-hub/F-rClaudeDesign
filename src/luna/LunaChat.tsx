@@ -1,14 +1,20 @@
 import { useEffect, useRef, useState } from 'react'
 import { copy } from '../content/copy'
-import { submitLead } from '../lib/submitLead'
+import { ladePlz } from '../lib/plz'
+import { submitLead, type Match } from '../lib/submitLead'
+import { istEmail, istTelefon } from '../lib/validate'
 import { useOverlays } from '../overlays'
-import { aendern, auswahl, gefuehrt, gesendet, vorschlag, zuLead } from './flow'
+import { aendern, antworte, auswahl, gesendet, mitId, start, zuLead, type Kontakt } from './flow'
 import { Eingabe } from './Eingabe'
 import { Fortschritt, Kopf } from './Kopf'
 import { Verlauf } from './Verlauf'
 
 // Wie --breakpoint-dialog in app.css (640 px): ab hier schwebt der Chat als Fenster, darunter ist er Vollbild.
 const AB_DIALOG = '(min-width: 40rem)'
+
+const t = copy.luna
+const KEIN_KONTAKT: Kontakt = { name: '', telefon: '', email: '' }
+export type KontaktFehler = Partial<Record<keyof Kontakt, string>>
 
 /**
  * EIN natives <dialog> für beide Formen (Screen 07 und 11):
@@ -49,9 +55,21 @@ export function LunaChat() {
   const fokusNachAntwort = useRef(false)
 
   const [eingabe, setEingabe] = useState('')
+  /** Kontaktdaten nur hier im Speicher: nie im Gesprächszustand, nie in sessionStorage, nie an die KI */
+  const [kontakt, setKontakt] = useState<Kontakt>(KEIN_KONTAKT)
+  const [kontaktFehler, setKontaktFehler] = useState<KontaktFehler>({})
   const [einwilligung, setEinwilligung] = useState(false)
   const [einwilligungFehlt, setEinwilligungFehlt] = useState(false)
   const [sendend, setSendend] = useState(false)
+  /** Luna verarbeitet gerade eine Antwort (PLZ-Verzeichnis, KI) */
+  const [denkt, setDenkt] = useState(false)
+  /** Sperre gegen Doppelklick: wirkt sofort, nicht erst nach dem nächsten Rendern */
+  const sperre = useRef(false)
+
+  // Das PLZ-Verzeichnis laden, sobald der Chat offen ist, damit die Ortsfrage ohne Wartezeit antwortet.
+  useEffect(() => {
+    if (lunaOffen) void ladePlz()
+  }, [lunaOffen])
 
   // Öffnen und Schließen. Bei einem Wechsel der Breite über 640 px den Dialog ohne Zustandsverlust im anderen Modus öffnen.
   useEffect(() => {
@@ -84,7 +102,7 @@ export function LunaChat() {
   useEffect(() => {
     const el = verlauf.current
     if (el) el.scrollTop = el.scrollHeight
-  }, [luna, sendend, einwilligungFehlt, lunaOffen])
+  }, [luna, sendend, denkt, einwilligungFehlt, kontaktFehler, lunaOffen])
 
   useEffect(() => {
     if (!fokusNachAntwort.current) return
@@ -123,12 +141,19 @@ export function LunaChat() {
   const nimmAn = (neu: typeof luna) => {
     fokusNachAntwort.current = true
     setLuna(neu)
-    setEingabe(vorschlag(neu))
   }
 
-  const antworte = async (text: string) => {
-    if (!text.trim()) return
-    nimmAn(await gefuehrt.antworte(luna, text))
+  const beantworte = async (text: string) => {
+    if (!text.trim() || sperre.current) return
+    sperre.current = true
+    setDenkt(true)
+    setEingabe('')
+    try {
+      nimmAn(await antworte(luna, text))
+    } finally {
+      sperre.current = false
+      setDenkt(false)
+    }
   }
 
   const aendereAngaben = () => {
@@ -137,27 +162,46 @@ export function LunaChat() {
     nimmAn(aendern(luna))
   }
 
+  const neueAnfrage = () => {
+    setKontakt(KEIN_KONTAKT)
+    setKontaktFehler({})
+    setEinwilligung(false)
+    setEinwilligungFehlt(false)
+    nimmAn(start())
+  }
+
   const sende = async () => {
+    if (sperre.current) return
+    sperre.current = true
     setSendend(true)
-    let ergebnis: { anfragenummer: string } | null = null
+    const z = mitId(luna)
+    setLuna(z)
+    let match: Match | null = null
     try {
-      ergebnis = await submitLead(zuLead(luna))
+      match = await submitLead(zuLead(z, kontakt))
     } catch {
       // Der Fehler wird als Karte „Anfrage nicht gesendet“ gezeigt, die Angaben bleiben erhalten.
     }
     // Der gedrückte Knopf verschwindet mit der Zusammenfassung bzw. der Fehlerkarte: Fokus nicht verlieren.
     fokusNachAntwort.current = true
-    setLuna(gesendet(luna, ergebnis))
+    setLuna(gesendet(z, match))
     setSendend(false)
+    sperre.current = false
   }
 
+  /** Prüft Kontaktdaten und Einwilligung; der erste Fehler bekommt den Fokus. */
   const absenden = () => {
-    if (!einwilligung) {
-      setEinwilligungFehlt(true)
-      einwilligungRef.current?.focus()
-      return
+    const fehler: KontaktFehler = {
+      name: kontakt.name.trim() ? undefined : t.zusammenfassung.fehler.name,
+      telefon: istTelefon(kontakt.telefon) ? undefined : t.zusammenfassung.fehler.telefon,
+      email: !kontakt.email.trim() || istEmail(kontakt.email) ? undefined : t.zusammenfassung.fehler.email,
     }
-    void sende()
+    setKontaktFehler(fehler)
+    setEinwilligungFehlt(!einwilligung)
+    const erstes = (['name', 'telefon', 'email'] as const).find((f) => fehler[f])
+    if (erstes) document.getElementById(`luna-${erstes}`)?.focus()
+    else if (!einwilligung) einwilligungRef.current?.focus()
+    else void sende()
   }
 
   return (
@@ -167,8 +211,16 @@ export function LunaChat() {
       <Verlauf
         ref={verlauf}
         luna={luna}
-        onAntwort={(text) => void antworte(text)}
+        denkt={denkt}
+        onAntwort={(text) => void beantworte(text)}
+        kontakt={kontakt}
         zusammenfassung={{
+          kontakt,
+          onKontakt: (feld, wert) => {
+            setKontakt((alt) => ({ ...alt, [feld]: wert }))
+            setKontaktFehler((alt) => ({ ...alt, [feld]: undefined }))
+          },
+          kontaktFehler,
           einwilligung,
           onEinwilligung: (an) => {
             setEinwilligung(an)
@@ -182,14 +234,15 @@ export function LunaChat() {
         }}
         sendend={sendend}
         onErneut={() => void sende()}
+        onNeu={neueAnfrage}
         onSchliessen={schliesseLuna}
       />
       <Eingabe
         wert={eingabe}
         onWert={setEingabe}
-        onSenden={() => void antworte(eingabe)}
+        onSenden={() => void beantworte(eingabe)}
         mitAuswahl={auswahl(luna).length > 0}
-        deaktiviert={luna.schritt === 'erfolg'}
+        deaktiviert={luna.phase === 'COMPLETED' || denkt}
       />
     </dialog>
   )

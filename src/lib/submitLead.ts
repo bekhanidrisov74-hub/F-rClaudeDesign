@@ -1,55 +1,47 @@
-// Versand für Formular und Luna (SPEC 9).
-// Mit VITE_LEAD_ENDPOINT: POST als JSON, Antwort { "anfragenummer": "…" }.
-// Ohne: lokaler Ersatz, meldet nach 800 ms Erfolg; mit ?fehler=1 in der URL einen Fehler (für Tests).
+// Versand für Formular und Luna an den Anfrage-Eingang (tools/apps-script.gs, Aufgabe Abschnitt 6).
+// POST als URLSearchParams (einfache Anfrage ohne Preflight, nötig für Apps Script).
+// Erfolg ist nur JSON { ok: true, match: 'FOUND' | 'NONE' }; alles andere und ein Timeout nach 20 s sind Fehler.
+import type { DringlichkeitId } from '../content/copy'
+import { formEndpunkt } from './endpunkte'
 
-export type Dringlichkeit = 'sofort' | 'heute' | 'tage'
+export type Match = 'FOUND' | 'NONE'
 
-export interface LeadDaten {
-  quelle: 'formular' | 'luna'
-  /** id aus gewerke.ts, null bei „Weiß ich nicht“ oder Freitext */
-  gewerk: string | null
-  beschreibung: string
+export interface Lead {
+  /** Je Anfrage einmal vergeben, bleibt beim erneuten Senden gleich (der Eingang erkennt Doppelsendungen) */
+  anfrageId: string
+  name: string
+  tel: string
+  email: string
   plz: string
   ort: string
-  dringlichkeit: Dringlichkeit | null
-  name: string
-  telefon: string
-  einwilligung: true
+  /** id aus gewerke.ts, leer bei „Weiß ich nicht“ */
+  kategorie: string
+  /** Name des Gewerks bzw. „Weiß ich nicht“ */
+  bereich: string
+  /** leer: das Formular fragt nicht danach, der Eingang nimmt dann URGENT an */
+  dringlichkeit: DringlichkeitId | ''
+  wunschtermin: string
+  /** lesbare Zusammenfassung */
+  text: string
+  antworten: Record<string, string>
 }
-
-export interface Lead extends LeadDaten {
-  /** ISO-8601 */
-  zeit: string
-}
-
-export const buildPayload = (daten: LeadDaten, jetzt = new Date()): Lead => ({ ...daten, zeit: jetzt.toISOString() })
 
 const ZEICHEN = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'
-/** Anfragenummer im Format F247-XXXXXX (nur im lokalen Ersatz, sonst vom Server) */
+/** Anfrage-Id im Format F247-XXXXXX, wird auch als Anfragenummer angezeigt */
 export function zufallsnummer(): string {
   const zahlen = crypto.getRandomValues(new Uint32Array(6))
   return `F247-${[...zahlen].map((z) => ZEICHEN[z % ZEICHEN.length]).join('')}`
 }
 
-export async function submitLead(daten: LeadDaten): Promise<{ anfragenummer: string }> {
-  const lead = buildPayload(daten)
-  const endpunkt = import.meta.env.VITE_LEAD_ENDPOINT
-  if (!endpunkt) return lokalerErsatz()
+export const buildPayload = (lead: Lead) =>
+  new URLSearchParams({ art: 'anfrage', ...lead, antworten: JSON.stringify(lead.antworten), dsgvo: 'on' })
 
-  const antwort = await fetch(endpunkt, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(lead),
-  })
+export async function submitLead(lead: Lead): Promise<Match> {
+  const endpunkt = formEndpunkt()
+  if (!endpunkt) throw new Error('Kein Anfrage-Eingang konfiguriert (VITE_FORM_ENDPOINT)')
+  const antwort = await fetch(endpunkt, { method: 'POST', body: buildPayload(lead), signal: AbortSignal.timeout(20_000) })
   if (!antwort.ok) throw new Error(`Anfrage nicht angenommen (HTTP ${antwort.status})`)
-  const inhalt: unknown = await antwort.json()
-  const nummer = (inhalt as { anfragenummer?: unknown } | null)?.anfragenummer
-  if (typeof nummer !== 'string' || !nummer) throw new Error('Antwort ohne Anfragenummer')
-  return { anfragenummer: nummer }
-}
-
-async function lokalerErsatz(): Promise<{ anfragenummer: string }> {
-  await new Promise((fertig) => setTimeout(fertig, 800))
-  if (new URLSearchParams(globalThis.location?.search ?? '').get('fehler') === '1') throw new Error('Testfehler (?fehler=1)')
-  return { anfragenummer: zufallsnummer() }
+  const inhalt = (await antwort.json()) as { ok?: unknown; match?: unknown } | null
+  if (inhalt?.ok !== true || (inhalt.match !== 'FOUND' && inhalt.match !== 'NONE')) throw new Error('Antwort nicht im erwarteten Format')
+  return inhalt.match
 }

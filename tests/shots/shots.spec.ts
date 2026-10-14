@@ -6,7 +6,7 @@ import {
   formularErfolg,
   formularSendefehler,
   lunaAbsenden,
-  lunaBisFrage4,
+  lunaImGespraech,
   lunaBisZusammenfassung,
   oeffneMenue,
   sendeLeer,
@@ -51,7 +51,7 @@ const ZUSTAENDE: Zustand[] = [
     },
   },
   { name: 'luna-anstupser', pfad: '/', uhr: true, vorbereiten: zeigeAnstupser },
-  { name: 'luna-gespraech', pfad: '/', vorbereiten: lunaBisFrage4 },
+  { name: 'luna-gespraech', pfad: '/', vorbereiten: lunaImGespraech },
   { name: 'luna-zusammenfassung', pfad: '/', vorbereiten: lunaBisZusammenfassung },
   {
     name: 'luna-erfolg',

@@ -42,7 +42,8 @@ for (const datei of fs.readdirSync('src/content')) {
 }
 if (platzhalter.size) warn(`Platzhalter noch nicht ersetzt (${platzhalter.size}): ${[...platzhalter].join(', ')}`)
 if (domainPlatzhalter) warn('DOMAIN ist ein Platzhalter: sitemap.xml ohne echte URL, robots.txt ohne Sitemap-Zeile, kein og:url.')
-if (!loadEnv('production', process.cwd(), 'VITE_').VITE_LEAD_ENDPOINT)
-  warn('VITE_LEAD_ENDPOINT ist nicht gesetzt: Formular und Luna nutzen den lokalen Ersatz. Live gehen Anfragen verloren.')
+const umgebung = loadEnv('production', process.cwd(), 'VITE_')
+if (!umgebung.VITE_FORM_ENDPOINT) warn('VITE_FORM_ENDPOINT ist nicht gesetzt: Live schlägt jedes Senden fehl (Formular und Luna zeigen den Sendefehler).')
+if (!umgebung.VITE_CHAT_ENDPOINT) warn('VITE_CHAT_ENDPOINT ist nicht gesetzt: Luna läuft live nur mit den lokalen Regeln, ohne KI.')
 
 console.log(`Vorgerendert: ${pfade.join(', ')}`)

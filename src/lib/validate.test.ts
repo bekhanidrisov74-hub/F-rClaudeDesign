@@ -1,12 +1,12 @@
 import { describe, expect, test } from 'vitest'
 import {
   formularZuLead,
+  istEmail,
   istTelefon,
   LEERES_FORMULAR,
   ortZuPlz,
   pruefeFeld,
   pruefeFormular,
-  teileNameTelefon,
   teilePlzOrt,
   WEISS_NICHT_ID,
   type FormularWerte,
@@ -40,12 +40,13 @@ describe('PLZ und Ort', () => {
   })
 })
 
-describe('Telefon und Name', () => {
+describe('Telefon und E-Mail', () => {
   test.each(['0664 1234567', '+43 664 1234567', '01/234 56 78', '(0664) 123-45-67'])('„%s“ ist eine Nummer', (n) => expect(istTelefon(n)).toBe(true))
   test.each(['', '12345', 'abc', '0664 12345678901234', 'Huber 0664'])('„%s“ ist keine Nummer', (n) => expect(istTelefon(n)).toBe(false))
-  test('Name und Nummer trennen', () => {
-    expect(teileNameTelefon('Maria Huber, 0664 123 45 67')).toEqual({ name: 'Maria Huber', telefon: '0664 123 45 67' })
-    expect(teileNameTelefon('Maria Huber')).toEqual({ name: 'Maria Huber', telefon: '' })
+  test('E-Mail', () => {
+    expect(istEmail('maria@beispiel.at')).toBe(true)
+    expect(istEmail('maria@beispiel')).toBe(false)
+    expect(istEmail('maria beispiel.at')).toBe(false)
   })
 })
 
@@ -77,19 +78,23 @@ describe('Formular', () => {
     expect(pruefeFeld('gewerk', { ...GUELTIG, gewerk: 'gibt-es-nicht' }, IDS)).not.toBeNull()
   })
 
-  test('Payload: Quelle formular, Dringlichkeit null, PLZ und Ort getrennt', () => {
-    expect(formularZuLead({ ...GUELTIG, plzOrt: '1020', name: '  Maria Huber ' })).toEqual({
-      quelle: 'formular',
-      gewerk: 'installateur',
-      beschreibung: 'Unter der Spüle tritt Wasser aus.',
+  test('Payload für den Anfrage-Eingang: PLZ und Ort getrennt, Gewerk mit id und Name', () => {
+    expect(formularZuLead({ ...GUELTIG, plzOrt: '1020', name: '  Maria Huber ' }, 'F247-ABCDEF')).toEqual({
+      anfrageId: 'F247-ABCDEF',
+      name: 'Maria Huber',
+      tel: '0664 1234567',
+      email: '',
       plz: '1020',
       ort: 'Wien',
-      dringlichkeit: null,
-      name: 'Maria Huber',
-      telefon: '0664 1234567',
-      einwilligung: true,
+      kategorie: 'installateur',
+      bereich: 'Installateur',
+      dringlichkeit: '',
+      wunschtermin: '',
+      text: 'Unter der Spüle tritt Wasser aus.\n\n(Anfrage über das Formular)',
+      antworten: {},
     })
-    expect(formularZuLead({ ...GUELTIG, gewerk: WEISS_NICHT_ID }).gewerk).toBeNull()
-    expect(() => formularZuLead({ ...GUELTIG, einwilligung: false })).toThrow()
+    const unbekannt = formularZuLead({ ...GUELTIG, gewerk: WEISS_NICHT_ID }, 'F247-ABCDEF')
+    expect([unbekannt.kategorie, unbekannt.bereich]).toEqual(['', 'Weiß ich nicht'])
+    expect(() => formularZuLead({ ...GUELTIG, einwilligung: false }, 'F247-ABCDEF')).toThrow()
   })
 })

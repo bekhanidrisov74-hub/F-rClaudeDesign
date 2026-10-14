@@ -1,6 +1,7 @@
 // Prüfregeln für Formular und Luna (SPEC 8 und 9).
-import { copy } from '../content/copy'
-import type { LeadDaten } from './submitLead'
+import { WEISS_NICHT, copy } from '../content/copy'
+import { gewerke } from '../content/gewerke'
+import type { Lead } from './submitLead'
 
 const PLZ = { min: 1010, max: 9992 }
 
@@ -24,20 +25,8 @@ const ziffern = (text: string) => text.replace(/\D/g, '')
 /** Telefonnummer plausibel: 6 bis 15 Ziffern, nur Ziffern, Leerzeichen, + / ( ) - */
 export const istTelefon = (text: string) => /^[+(\d][\d\s/()-]*$/.test(text.trim()) && ziffern(text).length >= 6 && ziffern(text).length <= 15
 
-/**
- * „Maria Huber, 0664 1234567“ → { name: 'Maria Huber', telefon: '0664 1234567' }.
- * Die längste Ziffernfolge mit mindestens 6 Ziffern gilt als Telefonnummer, der Rest als Name.
- */
-export function teileNameTelefon(eingabe: string): { name: string; telefon: string } {
-  const kandidaten = [...eingabe.matchAll(/\+?\d[\d\s/()-]*\d/g)].map((m) => m[0]).filter((t) => ziffern(t).length >= 6)
-  const telefon = kandidaten.sort((a, b) => ziffern(b).length - ziffern(a).length)[0] ?? ''
-  const name = (telefon ? eingabe.replace(telefon, ' ') : eingabe)
-    .replace(/\b(?:tel(?:efon)?|nr|nummer|handy|mobil)\b\.?:?/gi, ' ')
-    .replace(/[,;:|]+/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim()
-  return { name, telefon: telefon.trim() }
-}
+/** E-Mail plausibel (optional in Luna) */
+export const istEmail = (text: string) => /^[^@\s]+@[^@\s]+\.[a-zA-Z]{2,}$/.test(text.trim())
 
 // ── Anfrage-Formular (SPEC 9) ──
 
@@ -94,18 +83,22 @@ export function pruefeFormular(w: FormularWerte, gewerkIds: readonly string[]): 
 }
 
 /** Daten für submitLead. Nur aufrufen, wenn pruefeFormular keine Fehler meldet. */
-export function formularZuLead(w: FormularWerte): LeadDaten {
+export function formularZuLead(w: FormularWerte, anfrageId: string): Lead {
   const ort = plzUndOrt(w.plzOrt)
   if (!ort || !w.einwilligung) throw new Error('Formular ist nicht vollständig')
+  const gewerk = gewerke.find((g) => g.id === w.gewerk)
   return {
-    quelle: 'formular',
-    gewerk: w.gewerk === WEISS_NICHT_ID ? null : w.gewerk,
-    beschreibung: w.beschreibung.trim(),
+    anfrageId,
+    name: w.name.trim(),
+    tel: w.telefon.trim(),
+    email: '',
     plz: ort.plz,
     ort: ort.ort,
-    dringlichkeit: null,
-    name: w.name.trim(),
-    telefon: w.telefon.trim(),
-    einwilligung: true,
+    kategorie: gewerk?.id ?? '',
+    bereich: gewerk?.name ?? WEISS_NICHT,
+    dringlichkeit: '',
+    wunschtermin: '',
+    text: [w.beschreibung.trim(), '(Anfrage über das Formular)'].filter(Boolean).join('\n\n'),
+    antworten: {},
   }
 }

@@ -2,7 +2,7 @@ import { Icon } from '../components/ui/Icon'
 import { telHref } from '../content/contact'
 import { copy, fuelle } from '../content/copy'
 import { useOverlays } from '../overlays'
-import { ANZAHL_FRAGEN, fortschritt, type Zustand } from './flow'
+import { ANZAHL_SCHRITTE, fortschritt, type Zustand } from './flow'
 
 const t = copy.luna
 
@@ -51,24 +51,24 @@ export function Kopf() {
   )
 }
 
-/** Fortschrittsbalken unter dem Kopf: Frage x von 5. Nach dem Senden (null) gibt es keinen Balken. */
+/** Fortschrittsbalken unter dem Kopf: Problem → Details → Ort → Prüfen. Nach dem Abschluss (null) gibt es keinen Balken. */
 export function Fortschritt({ luna }: { luna: Zustand }) {
   const x = fortschritt(luna)
   if (x === null) return null
-  const text = fuelle(t.fortschritt, { x, n: ANZAHL_FRAGEN })
+  const text = fuelle(t.fortschritt, { x, n: ANZAHL_SCHRITTE, schritt: t.schritte[x - 1] })
   return (
     <div
       role="progressbar"
       aria-label={text}
       aria-valuemin={1}
-      aria-valuemax={ANZAHL_FRAGEN}
+      aria-valuemax={ANZAHL_SCHRITTE}
       aria-valuenow={x}
       aria-valuetext={text}
       className="h-[4px] flex-none bg-linie"
     >
       <div
         className="h-full bg-tiefsee transition-[width] duration-(--fx-dur-chat) ease-fx"
-        style={{ width: `${(x / ANZAHL_FRAGEN) * 100}%` }}
+        style={{ width: `${(x / ANZAHL_SCHRITTE) * 100}%` }}
       />
     </div>
   )

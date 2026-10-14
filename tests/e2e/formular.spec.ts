@@ -57,6 +57,11 @@ test('„… anfragen“ wählt das Gewerk im Formular vor', async ({ page }) =>
 })
 
 test('Senden: „Wird gesendet …“, dann ersetzt der Dank das Formular', async ({ page }) => {
+  // Die lokale Attrappe antwortet sofort: verzögern, damit der Sendezustand sichtbar ist
+  await page.route('**/api/anfrage', async (r) => {
+    await new Promise((fertig) => setTimeout(fertig, 800))
+    await r.fallback()
+  })
   await sendeFormular(page)
   const knopf = anfrage(page).getByRole('button', { name: 'Wird gesendet …' })
   await expect(knopf).toBeVisible()
