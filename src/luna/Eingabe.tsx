@@ -33,7 +33,7 @@ export function Eingabe({ wert, onWert, onSenden, mitAuswahl, deaktiviert }: Pro
         disabled={deaktiviert}
         onChange={(e) => onWert(e.target.value)}
         placeholder={mitAuswahl ? t.mitAuswahl : t.ohneAuswahl}
-        className="rahmen h-[48px] min-w-0 flex-1 rounded-btn border-rand bg-weiss px-s4 text-text text-tiefsee disabled:bg-kalk"
+        className="rahmen h-[48px] min-w-0 flex-1 rounded-btn border-rand bg-weiss px-s4 text-text text-tiefsee"
       />
       <button
         type="submit"

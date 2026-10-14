@@ -68,3 +68,8 @@ Neu: Luna-Knopf, Anstupser, Chat als Fenster (ab 640 px) bzw. Vollbild (darunter
 - Der Verlauf im Fenster scrollt und zeigt unten die neueste Nachricht. Im Entwurf ist er oben abgeschnitten.
 - Größe der Luna-Glyphe wie in den Seitenentwürfen (32 px im 64-px-Knopf, 29 px im 58-px-Knopf).
 - Der Hintergrund hinter dem Fenster ist die echte Seite.
+- Preisformat: Mit Nachkommastellen („190,00–280,00 €“) rechnet nur der Preisrechner (SPEC 5). Leistungen, Preisübersicht und die Luna-Zusammenfassung zeigen ganze Euro („95–140 €“) wie die Entwürfe 01–04, 08 und 12.
+- Luna-Sendefehler im Fenster: Der bisherige Verlauf bleibt über der Kurzfassung sichtbar (Screen 12 rechts), am Handy nicht (Screen 10). Beim Erfolg ersetzt die Kurzfassung den Verlauf (Screen 12 Mitte).
+- Luna-Fenster: Die Chips sind 48 px hoch mit 16 px Schrift (gemeinsamer Chip-Baustein). Die Dringlichkeits-Chips brechen deshalb eine Reihe früher um als in Screen 11.
+- Luna: Bei langem Verlauf erscheint ein schmaler Scrollbalken in Rand-Farbe.
+- Anstupser etwa 5 px höher als im Entwurf, weil der Text-Knopf und das Schließen eine Trefferfläche von 44 px haben.

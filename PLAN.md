@@ -292,6 +292,8 @@ Für 1024 gibt es keinen Entwurf. Dort gilt das Desktop-Layout (Navigation sicht
 | Leistungen am Handy als Spalte | ein Raster `auto-fill` ab 340 px auf allen Breiten |
 | Preisübersicht, Reihenfolge der Knöpfe | wie Screens: Dialog [Zum Preisrechner][Anrufen], Sheet [Anrufen] und darunter der Textlink |
 | Preisübersicht, zwei Hinweistexte | beide wörtlich in `copy.ts` |
+| Preisformat außerhalb des Rechners | ganze Euro („95–140 €“) wie in den Entwürfen, zwei Nachkommastellen nur im Rechner (SPEC 5) |
+| Luna-Sendefehler im Fenster | Verlauf bleibt sichtbar (Screen 12 rechts), am Handy nicht (Screen 10) |
 | Fortschritt nach dem Senden | wie Screens: 5/5 bei der Zusammenfassung, danach kein Balken |
 | Verlauf nach dem Senden | wie Screens: Die Ergebnisansicht ersetzt den Verlauf, der Fehler zeigt die Kurzfassung „Ihre Anfrage“ |
 | Größe der Luna-Signet-Glyphe (Seite 50 %, Board 60 %) | Werte der Seitenentwürfe |
@@ -320,7 +322,7 @@ Für 1024 gibt es keinen Entwurf. Dort gilt das Desktop-Layout (Navigation sicht
 2. **Luna-Texte, die im Design fehlen.** Vorschläge:
    - „Danke, Frau Huber.“: Luna fragt kein Geschlecht ab → „Danke, Maria Huber. Ihre Anfrage ist unterwegs.“
    - Ort aus der PLZ („1020 Wien“, Luna fragt nur die PLZ) → 1010–1239 = Wien, sonst nur die PLZ. Alternative: PLZ-Liste der Post mit rund 2.500 Einträgen.
-   - Nummer fehlt → „Unter welcher Nummer erreicht Sie der Betrieb?“
+   - Nummer fehlt → „Unter welcher Nummer erreicht Sie der Betrieb?“ (ebenso: Name fehlt → „Und wie heißen Sie?“)
    - Erfolgstext je Gewerk („an einen passenden …“): Installateur, Fachbetrieb für Heizung und Klima, Schlüsseldienst, Elektriker, Fachbetrieb für Haushaltsgeräte. Bei „Weiß ich nicht“: Fachbetrieb.
    - Dringlichkeit in der Zusammenfassung und Kurzfassung: „Heute noch“/„heute“ und „In den nächsten Tagen“/„in den nächsten Tagen“. Gezeichnet ist nur „Sofort, Notfall“/„sofort“.
    - Erfolg und Fehler des Formulars übernehmen die Texte aus Luna 09/10.

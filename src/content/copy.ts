@@ -291,10 +291,10 @@ export const copy = {
       anfahrt: 'Anfahrt',
       einwilligung: 'Ich bin einverstanden, dass fixit247 meine Angaben zur Vermittlung an einen Fachbetrieb weitergibt.',
       datenschutz: 'Datenschutz',
-      einwilligungFehlt: 'Bitte stimmen Sie der Weitergabe zu, sonst können wir keinen Betrieb vermitteln.',
+      einwilligungFehlt: 'Bitte stimmen Sie der Weitergabe zu, sonst können wir keinen Betrieb vermitteln.', // nicht im Design (SPEC 9)
       hinweis: 'Die Vermittlung ist kostenlos. Der Vertrag kommt direkt mit dem Betrieb zustande.',
       aendern: 'Angaben ändern',
-      sendend: 'Wird gesendet …',
+      sendend: 'Wird gesendet …', // nicht im Design (SPEC 9)
     },
     erfolg: {
       /** Entscheidung 2: voller Name statt „Frau Huber“ (Luna fragt kein Geschlecht ab) */

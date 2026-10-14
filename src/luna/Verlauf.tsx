@@ -35,13 +35,17 @@ interface Props {
  * Verlauf (Screen 07–12): Kalk-Fläche, scrollt, unten ausgerichtet.
  * Der innere Block mit `mt-auto` richtet unten aus, ohne bei langem Inhalt oben abzuschneiden.
  * Die Region aria-live="polite" ist dauerhaft da; Chips stehen außerhalb, damit sie nicht mitgesprochen werden.
- * Nach dem Senden ersetzen Erfolg bzw. Fehler den Verlauf (Screen 09, 10, 12).
+ * Nach dem Senden ersetzt der Erfolg den Verlauf (Screen 09, 12 Mitte). Beim Fehler bleibt er im Fenster
+ * sichtbar (Screen 12 rechts), am Handy nicht (Screen 10).
  */
 export function Verlauf({ luna, ref, onAntwort, zusammenfassung, sendend, onErneut, onSchliessen }: Props) {
   const chips = auswahl(luna)
 
   return (
-    <div ref={ref} className="flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain bg-kalk p-s4">
+    <div
+      ref={ref}
+      className="flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain bg-kalk p-s4 duenner-balken"
+    >
       <div className="mt-auto flex flex-col gap-s3">
         <div aria-live="polite" className="flex flex-col gap-s3">
           {luna.schritt === 'erfolg' ? (
@@ -70,6 +74,14 @@ export function Verlauf({ luna, ref, onAntwort, zusammenfassung, sendend, onErne
         {/* Der Fehler meldet sich selbst per role="alert", deshalb steht er außerhalb der höflichen Region */}
         {luna.schritt === 'fehler' && (
           <>
+            {/* Bisheriger Verlauf, nicht in der Live-Region (wird nicht noch einmal angesagt) */}
+            <div className="flex flex-col gap-s3 max-dialog:hidden">
+              {luna.verlauf.map((n, i) => (
+                <Blase key={i} von={n.von}>
+                  {n.text}
+                </Blase>
+              ))}
+            </div>
             <Kurzfassung angaben={luna.angaben} />
             <Sendefehler sendend={sendend} onErneut={onErneut} />
           </>
