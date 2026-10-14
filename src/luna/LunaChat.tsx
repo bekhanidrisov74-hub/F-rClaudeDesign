@@ -7,6 +7,7 @@ import { useOverlays } from '../overlays'
 import { aendern, antworte, auswahl, gesendet, mitId, start, zuLead, type Kontakt } from './flow'
 import { Eingabe } from './Eingabe'
 import { Fortschritt, Kopf } from './Kopf'
+import { erfasseUeberApi } from './ki'
 import { Verlauf } from './Verlauf'
 
 // Wie --breakpoint-dialog in app.css (640 px): ab hier schwebt der Chat als Fenster, darunter ist er Vollbild.
@@ -98,11 +99,17 @@ export function LunaChat() {
     return () => mq.removeEventListener('change', beiBreite)
   }, [lunaOffen])
 
-  // Verlauf unten halten: bei neuen Nachrichten, nach dem Öffnen (der Dialog war ausgeblendet) und bei Hinweisen.
+  // Verlauf unten halten: bei neuen Nachrichten und nach dem Öffnen (der Dialog war ausgeblendet).
+  // Karten (Zusammenfassung, Erfolg, Sendefehler) mit ihrem Anfang zeigen: Sie sind oft höher als der Verlauf.
+  // Nicht beim Senden und nicht bei Fehlertexten neu ausrichten, sonst springt der gedrückte Knopf bzw. das Feld weg.
   useEffect(() => {
     const el = verlauf.current
-    if (el) el.scrollTop = el.scrollHeight
-  }, [luna, sendend, denkt, einwilligungFehlt, kontaktFehler, lunaOffen])
+    if (!el) return
+    const karte = el.querySelector<HTMLElement>('[data-karte]')
+    el.scrollTop = karte
+      ? el.scrollTop + karte.getBoundingClientRect().top - el.getBoundingClientRect().top - parseFloat(getComputedStyle(el).paddingTop)
+      : el.scrollHeight
+  }, [luna.phase, luna.verlauf.length, denkt, lunaOffen])
 
   useEffect(() => {
     if (!fokusNachAntwort.current) return
@@ -149,7 +156,7 @@ export function LunaChat() {
     setDenkt(true)
     setEingabe('')
     try {
-      nimmAn(await antworte(luna, text))
+      nimmAn(await antworte(luna, text, erfasseUeberApi))
     } finally {
       sperre.current = false
       setDenkt(false)

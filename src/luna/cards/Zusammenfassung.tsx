@@ -27,7 +27,7 @@ const t = copy.luna.zusammenfassung
 const PRIMAER =
   'min-h-[52px] w-full px-s4 text-btn-l font-[750] aria-disabled:cursor-default dialog:min-h-[50px] dialog:flex-1 dialog:px-s2 dialog:text-btn dialog:whitespace-nowrap'
 
-const FELD = 'rahmen min-h-[48px] w-full rounded-chip border-rand bg-weiss px-s3 text-text text-tiefsee aria-invalid:border-tiefsee'
+const FELD = 'rahmen min-h-[48px] w-full rounded-chip border-rand bg-weiss px-s4 text-text text-tiefsee aria-invalid:border-tiefsee'
 
 /** Kontaktfelder (Aufgabe): erst hier erfasst, gehen nur an den Anfrage-Eingang. */
 const KONTAKTFELDER = [
@@ -62,7 +62,7 @@ export function Zusammenfassung({
   }
 
   return (
-    <section aria-labelledby={titelId} className="flex flex-col gap-s3 rounded-card border border-linie bg-weiss p-s4">
+    <section data-karte aria-labelledby={titelId} className="flex flex-col gap-s3 rounded-card border border-linie bg-weiss p-s4">
       <h2 id={titelId} className="font-display text-h4">
         {t.titel}
       </h2>
@@ -76,7 +76,7 @@ export function Zusammenfassung({
         ))}
       </dl>
 
-      <div className="flex flex-col gap-s3">
+      <div className="flex flex-col gap-s3 border-t border-linie pt-s3">
         {KONTAKTFELDER.map(({ feld, type, autoComplete, inputMode, pflicht }) => {
           const fehler = kontaktFehler[feld]
           return (
@@ -143,7 +143,8 @@ export function Zusammenfassung({
           </span>
         </label>
         {einwilligungFehlt && (
-          <p id={fehlerId} className="text-note font-bold">
+          <p id={fehlerId} className="flex items-start gap-s2 text-note font-bold">
+            <Icon name="ui-warnung" className="mt-px size-[16px] shrink-0" />
             {t.einwilligungFehlt}
           </p>
         )}

@@ -232,7 +232,7 @@ export const copy = {
       nummer: 'Anfragenummer: {nummer}', // nicht im Design: wie Luna 09
       // nicht im Design: Eingang meldet „kein Betrieb gefunden“ (match NONE), Text wie in Luna
       keinerTitel: 'Danke. Ihre Anfrage ist eingegangen.',
-      keinerText: 'Gerade ist kein passender {betrieb} frei. Wir nehmen Ihre Anfrage trotzdem auf, suchen weiter und melden uns unter {telefon}.',
+      keinerText: 'Wir haben gerade keinen passenden {betrieb} in Ihrer Nähe gefunden. Wir nehmen Ihre Anfrage trotzdem auf, suchen weiter und melden uns unter {telefon}.',
     },
     // nicht im Design: Texte wie in der Luna-Fehlerkarte (Entscheidung 2)
     sendefehler: {
@@ -279,13 +279,13 @@ export const copy = {
       /** {tipp} = Sicherheitstipp des Gewerks mit Leerzeichen dahinter, sonst leer */
       plz: 'Danke. {tipp}Wie lautet Ihre Postleitzahl?',
       dringlichkeit: 'Wie dringend ist es?',
-      // Aufgabe: Wunschtermin nur bei „In den nächsten Tagen“
+      // Aufgabe: Wunschtermin nur bei „In den nächsten Tagen“; Frage und Chips nicht im Design und nicht in der Aufgabe
       wunschtermin: 'Wann passt es Ihnen am besten?',
     },
     // nicht im Design (Aufgabe bzw. Referenz): Gewerk unklar, sehr kurze Eingabe, Notruf, Zusammenfassung, Ergänzung
     gewerkUnklar: 'Verstanden. Um welches Gewerk geht es?',
     gewerkNochmal:
-      'Das kann ich noch keinem Gewerk zuordnen. Bitte wählen Sie den passenden Bereich oder beschreiben Sie genauer, was nicht funktioniert.',
+      'Das kann ich noch keinem Gewerk zuordnen. Bitte wählen Sie das passende Gewerk oder beschreiben Sie genauer, was nicht funktioniert.',
     kurz: 'Können Sie das Problem in ein paar Worten beschreiben? Zum Beispiel: Unter der Spüle tritt Wasser aus.',
     notruf: 'Bei akuter Gefahr bitte sofort 122 bzw. 112 kontaktieren. Ich nehme Ihre Anfrage parallel weiter auf.',
     zusammenfassungIntro: 'Danke. Bitte prüfen Sie Ihre Anfrage und ergänzen Sie, wie der Betrieb Sie erreicht.',
@@ -293,7 +293,7 @@ export const copy = {
     ueberspringen: 'Überspringen',
     wunschterminChips: ['Morgen', 'Diese Woche', 'Nächste Woche', 'Nach Absprache'],
     plzFehler: 'Bitte geben Sie eine österreichische Postleitzahl mit vier Ziffern ein, zum Beispiel 1020.',
-    plzUnbekannt: 'Diese Postleitzahl kenne ich nicht. Bitte prüfen Sie die vier Ziffern, zum Beispiel 1020.', // nicht im Design
+    plzUnbekannt: 'Zu dieser Postleitzahl finde ich keinen Ort. Bitte prüfen Sie die vier Ziffern, zum Beispiel 1020.', // nicht im Design
     // nicht im Design: Namen der Chip-Gruppen
     auswahlGewerk: 'Gewerk wählen',
     auswahlDringlichkeit: 'Dringlichkeit wählen',
@@ -343,7 +343,7 @@ export const copy = {
       text: 'Wir geben sie jetzt an einen passenden {betrieb} in Ihrer Nähe weiter. Der Betrieb ruft Sie unter {telefon} zurück.',
       // nicht im Design: Eingang meldet „kein Betrieb gefunden“ (match NONE), die Anfrage ist trotzdem aufgenommen
       keinerTitel: 'Danke, {name}. Ihre Anfrage ist eingegangen.',
-      keinerText: 'Gerade ist kein passender {betrieb} frei. Wir nehmen Ihre Anfrage trotzdem auf, suchen weiter und melden uns unter {telefon}.',
+      keinerText: 'Wir haben gerade keinen passenden {betrieb} in Ihrer Nähe gefunden. Wir nehmen Ihre Anfrage trotzdem auf, suchen weiter und melden uns unter {telefon}.',
       betriebUnbekannt: 'Fachbetrieb', // nicht im Design: bei „Weiß ich nicht“
       nummer: 'Anfragenummer: {nummer}',
       tippTitel: 'Bis der Betrieb kommt:',

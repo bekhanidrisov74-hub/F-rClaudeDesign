@@ -109,8 +109,10 @@ export function Verlauf({ luna, denkt, ref, onAntwort, kontakt, zusammenfassung,
             <div className="flex flex-col gap-s3 max-dialog:hidden">
               <Nachrichten verlauf={luna.verlauf} />
             </div>
-            <Kurzfassung anfrage={luna.anfrage} kontakt={kontakt} />
-            <Sendefehler sendend={sendend} onErneut={onErneut} />
+            <div data-karte className="flex flex-col gap-s3">
+              <Kurzfassung anfrage={luna.anfrage} kontakt={kontakt} />
+              <Sendefehler sendend={sendend} onErneut={onErneut} />
+            </div>
           </>
         )}
 

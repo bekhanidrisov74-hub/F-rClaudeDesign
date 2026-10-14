@@ -274,7 +274,10 @@ test('kein Betrieb gefunden: Anfrage ist trotzdem aufgenommen', async ({ page })
   await lunaAbsenden(page)
   const c = chat(page)
   await expect(c.getByRole('heading', { name: 'Danke, Maria Huber. Ihre Anfrage ist eingegangen.' })).toBeVisible()
-  await expect(c).toContainText('Gerade ist kein passender Installateur frei. Wir nehmen Ihre Anfrage trotzdem auf, suchen weiter und melden uns unter 0664 1234567.')
+  await expect(c).toContainText(
+    'Wir haben gerade keinen passenden Installateur in Ihrer Nähe gefunden. Wir nehmen Ihre Anfrage trotzdem auf, suchen weiter und melden uns unter 0664 1234567.',
+  )
+  await expect(c).not.toContainText('Bis der Betrieb kommt')
 })
 
 test('fremde Antwort des Eingangs gilt als Fehler', async ({ page }) => {
@@ -332,4 +335,52 @@ test('Fenster: Esc auf der Seite minimiert, der Fokus bleibt dort (WCAG 2.4.11)'
   await expect(chat(page)).toBeHidden()
   await expect(kopfAnruf).toBeFocused()
   await expect(lunaKnopf(page)).toHaveAttribute('aria-expanded', 'false')
+})
+
+test.describe('KI-Erfassung', () => {
+  const freitextBisZusammenfassung = async (page: Page) => {
+    await oeffneLuna(page)
+    for (const a of ['Unter der Spüle tritt Wasser aus', 'Küche', 'Tropft nur', 'Ja', 'So schnell wie möglich', '1020']) await antworteLuna(page, a)
+    await expect(chat(page).getByRole('heading', { name: 'Ihre Anfrage' })).toBeVisible()
+  }
+
+  test('Backend nicht erreichbar: Luna läuft mit den lokalen Regeln bis zum Versand', async ({ page }) => {
+    const kiAufrufe: string[] = []
+    await page.route('**/api/chat', (r) => {
+      kiAufrufe.push(r.request().postData() ?? '')
+      return r.abort()
+    })
+    await page.goto('/')
+    await freitextBisZusammenfassung(page)
+    expect(kiAufrufe.length).toBeGreaterThan(0)
+    await fuelleKontakt(page)
+    await chat(page).getByRole('checkbox').check()
+    await chat(page).getByRole('button', { name: 'Auftrag aufgeben' }).click()
+    await expect(chat(page).getByRole('heading', { name: 'Danke, Maria Huber. Ihre Anfrage ist unterwegs.' })).toBeVisible()
+    // Kontaktdaten gehen nie an die KI
+    expect(kiAufrufe.join()).not.toContain('Maria Huber')
+  })
+
+  test('Attrappe: Werkzeug ohne Felder, der Ablauf bleibt gleich', async ({ page }) => {
+    await page.goto('/')
+    await freitextBisZusammenfassung(page)
+    await expect(chat(page)).toContainText('Ort1020 Wien')
+  })
+
+  test('Felder der KI werden übernommen, die Antwort erscheint nur als Text', async ({ page }) => {
+    const antwort = 'Die Vermittlung ist kostenlos. <img src=x onerror="window.angriff=1">'
+    await page.route('**/api/chat', (r) =>
+      r.fulfill({
+        json: { message: { role: 'assistant', tool_calls: [{ type: 'function', function: { name: 'erfassen', arguments: JSON.stringify({ category: 'shk', reply: antwort }) } }] } },
+      }),
+    )
+    await page.goto('/')
+    await oeffneLuna(page)
+    await antworteLuna(page, 'Bei mir ist es seit gestern eiskalt, was kostet das?')
+    const c = chat(page)
+    await expect(c.getByText(antwort, { exact: true })).toBeVisible()
+    await expect(c.locator('img')).toHaveCount(0)
+    expect(await page.evaluate(() => (window as { angriff?: number }).angriff)).toBeUndefined()
+    await expect(c).toContainText('Geht es um die Heizung, das Warmwasser oder die Klimaanlage?')
+  })
 })

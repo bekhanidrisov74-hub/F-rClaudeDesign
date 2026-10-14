@@ -321,7 +321,7 @@ function Erfolg({ danke }: { danke: Danke }) {
         {fuelle(danke.match === 'FOUND' ? t.erfolg.text : t.erfolg.keinerText, { betrieb: danke.betrieb, telefon: danke.telefon })}
       </p>
       <p className="text-note text-schiefer">{fuelle(t.erfolg.nummer, { nummer: danke.anfragenummer })}</p>
-      {danke.tipp && (
+      {danke.tipp && danke.match === 'FOUND' && (
         <p className="rounded-chip bg-kalk p-s4 text-small">
           <strong>{copy.luna.erfolg.tippTitel}</strong> {danke.tipp}
         </p>

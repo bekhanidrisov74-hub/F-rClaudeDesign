@@ -26,7 +26,7 @@ export function Erfolg({ luna, kontakt, onNeu, onSchliessen }: ErfolgProps) {
   const werte = { name: kontakt.name, telefon: kontakt.telefon, betrieb: gewerk?.betrieb ?? t.betriebUnbekannt }
 
   return (
-    <section aria-labelledby={titelId} className="flex flex-col gap-s3 rounded-card border border-linie bg-weiss p-s4">
+    <section data-karte aria-labelledby={titelId} className="flex flex-col gap-s3 rounded-card border border-linie bg-weiss p-s4">
       <div className="flex flex-col gap-s3 dialog:flex-row dialog:items-start">
         <div className="flex size-[52px] shrink-0 dialog:size-[44px] items-center justify-center rounded-pill bg-tiefsee text-weiss">
           <Icon name="ui-haekchen" className="size-[28px]" />
@@ -39,7 +39,7 @@ export function Erfolg({ luna, kontakt, onNeu, onSchliessen }: ErfolgProps) {
       <p className="text-text">{fuelle(gefunden ? t.text : t.keinerText, werte)}</p>
       <p className="text-note text-schiefer">{fuelle(t.nummer, { nummer: luna.anfrageId })}</p>
 
-      {gewerk && (
+      {gewerk && gefunden && (
         <p className="rounded-chip bg-kalk px-s3 py-s3 text-small">
           <span className="font-bold">{t.tippTitel}</span> {gewerk.tippErfolg}
         </p>

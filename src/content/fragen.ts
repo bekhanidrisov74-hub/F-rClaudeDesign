@@ -51,7 +51,7 @@ export const katalog: Katalog[] = [
         wenn: (a) => a.was !== 'Klimaanlage',
       },
       { id: 'code', frage: 'Zeigt das Gerät einen Fehlercode? Falls ja, bitte nennen.', label: 'Fehlercode', chips: ['Kein Fehlercode', 'Weiß nicht'] },
-      { id: 'marke', frage: 'Welche Marke und welches Modell hat das Gerät?', label: 'Gerät', chips: ['Weiß nicht'] },
+      { id: 'marke', frage: 'Welche Marke und welches Modell hat das Gerät?', label: 'Marke', chips: ['Weiß nicht'] },
       { id: 'ganz', frage: 'Ist die Anlage komplett oder teilweise ausgefallen?', label: 'Ausfall', chips: ['Komplett', 'Teilweise'] },
       { id: 'seit', frage: 'Seit wann besteht das Problem?', label: 'Seit', chips: ['Seit heute', 'Seit gestern', 'Seit mehreren Tagen'] },
     ],

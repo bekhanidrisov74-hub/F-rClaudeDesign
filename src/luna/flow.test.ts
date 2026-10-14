@@ -187,7 +187,7 @@ describe('PLZ', () => {
     expect(z.phase).toBe('LOCATION')
     expect(letzte(z)).toBe('Bitte geben Sie eine österreichische Postleitzahl mit vier Ziffern ein, zum Beispiel 1020.')
     z = await lauf(['1239'], undefined, z)
-    expect(letzte(z)).toMatch(/^Diese Postleitzahl kenne ich nicht/)
+    expect(letzte(z)).toMatch(/^Zu dieser Postleitzahl finde ich keinen Ort/)
     z = await lauf(['2020'], undefined, z)
     expect(z.anfrage).toMatchObject({ plz: '2020', ort: 'Hollabrunn' })
     expect(z.phase).toBe('SUMMARY')
