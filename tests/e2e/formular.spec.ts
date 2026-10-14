@@ -65,6 +65,8 @@ test('Senden: „Wird gesendet …“, dann ersetzt der Dank das Formular', asyn
   await expect(anfrage(page)).toContainText(/Anfragenummer: F247-[A-Z0-9]{6}/)
   await expect(anfrage(page)).toContainText('Wir geben sie jetzt an einen passenden Installateur in Ihrer Nähe weiter.')
   await expect(anfrage(page)).toContainText('Der Betrieb ruft Sie unter 0664 1234567 zurück.')
+  await expect(anfrage(page)).toContainText('Bis der Betrieb kommt: Drehen Sie, wenn möglich, den Hauptwasserhahn zu')
+  await expect(anfrage(page).getByRole('link', { name: 'Fragen? Jetzt anrufen' })).toHaveAttribute('href', /^tel:/)
   await expect(anfrage(page).getByLabel(/^Name/)).toHaveCount(0)
 })
 

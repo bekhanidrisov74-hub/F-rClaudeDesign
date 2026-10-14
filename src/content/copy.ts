@@ -9,6 +9,8 @@ export const AUFTRAG_AUFGEGEBEN = 'Auftrag aufgegeben'
 /** SPEC 11, offen: Brutto/netto */
 export const UST_HINWEIS = '[inkl. 20 % USt.]'
 export const WEISS_NICHT = 'Weiß ich nicht'
+/** Pfad der Datenschutzerklärung (Fuß, Formular, Luna) */
+export const DATENSCHUTZ = '/datenschutz'
 
 /** Dringlichkeit in Luna: Chip, Zusammenfassung (Screen 08) und Kurzfassung (Screen 10) */
 export const dringlichkeit = [
@@ -124,7 +126,7 @@ export const copy = {
     rechtliches: 'Rechtliches',
     links: [
       { text: 'Impressum', href: '/impressum' },
-      { text: 'Datenschutz', href: '/datenschutz' },
+      { text: 'Datenschutz', href: DATENSCHUTZ },
       { text: 'AGB', href: '/agb' },
     ],
     /** {jahr}, {firma} */

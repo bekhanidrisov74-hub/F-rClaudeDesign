@@ -83,3 +83,9 @@ Neu: Abschnitt „Anfrage senden“ mit Formular und Seitenkasten „Lieber sofo
 - Seitenkasten am Handy wie Screen 01: Anruf-Knopf ohne Nummer, am Desktop wie Screen 02 mit Kreis und Nummer (Entscheidung 5).
 - Die Einwilligung startet leer, Pflichtfelder tragen das Sternchen im Label wie im Entwurf.
 - „… anfragen“ und die Schnellwahl-Kacheln wählen das Gewerk im Formular vor (nicht im Design, SPEC verlangt es nicht; es ändert nichts an der Optik).
+- Abstände im Formular auf Token-Stufen gerundet: Karte innen am Handy 16/24 px statt 18/22 px, am Desktop 32 statt 36 px; Feldabstände 16 bzw. 24 px. Felder 54 px hoch wie im Entwurf.
+- Zwischen 640 und 919 px (kein Entwurf): Felder schon zweispaltig, Seitenkasten wie am Handy.
+- Seitenkasten-Titel bis 919 px 26 px, ab 920 px 30 px.
+- Ein Feld mit Fehler bekommt zusätzlich einen Tiefsee-Rand, damit der Fehler nicht nur über Text erkennbar ist.
+- Die Checkbox ist sichtbar 24 px groß, die Trefferfläche 44 px.
+- Die Erfolgskarte des Formulars zeigt wie Luna 09 den Sicherheitstipp und „Fragen? Jetzt anrufen“.

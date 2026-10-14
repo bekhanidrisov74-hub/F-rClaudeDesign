@@ -1,6 +1,6 @@
 import { Fragment, useId, type RefObject } from 'react'
 import { Button } from '../../components/ui/Button'
-import { AUFTRAG_AUFGEBEN, copy } from '../../content/copy'
+import { AUFTRAG_AUFGEBEN, copy, DATENSCHUTZ } from '../../content/copy'
 import { anfahrtText, einheit, spanne } from '../../content/gewerke'
 import type { Angaben } from '../flow'
 
@@ -18,7 +18,6 @@ export interface ZusammenfassungProps {
 }
 
 const t = copy.luna.zusammenfassung
-const DATENSCHUTZ = '/datenschutz'
 
 /** Primärknopf: Screen 08 volle Breite, Screen 12 neben „Angaben ändern“. */
 const PRIMAER =
