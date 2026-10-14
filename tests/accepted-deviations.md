@@ -73,3 +73,5 @@ Neu: Luna-Knopf, Anstupser, Chat als Fenster (ab 640 px) bzw. Vollbild (darunter
 - Luna-Fenster: Die Chips sind 48 px hoch mit 16 px Schrift (gemeinsamer Chip-Baustein). Die Dringlichkeits-Chips brechen deshalb eine Reihe früher um als in Screen 11.
 - Luna: Bei langem Verlauf erscheint ein schmaler Scrollbalken in Rand-Farbe.
 - Anstupser etwa 5 px höher als im Entwurf, weil der Text-Knopf und das Schließen eine Trefferfläche von 44 px haben.
+- Nach dem Erfolg ist die Eingabezeile gesperrt (Optik unverändert weiß). Die Anfrage ist abgeschlossen, weitere Nachrichten würden nichts bewirken.
+- Titel der Erfolgs- und Fehlerkarte im Fenster 22 px (`--fx-h4`), im Entwurf etwa 21 px; der Erfolgstitel bricht dadurch bei 1440 in drei Zeilen um.
