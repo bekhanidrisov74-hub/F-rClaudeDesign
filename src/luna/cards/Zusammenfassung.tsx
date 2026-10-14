@@ -1,7 +1,7 @@
 import { Fragment, useId, type RefObject } from 'react'
 import { Button } from '../../components/ui/Button'
 import { Icon } from '../../components/ui/Icon'
-import { AUFTRAG_AUFGEBEN, copy, DATENSCHUTZ } from '../../content/copy'
+import { AUFTRAG_AUFGEBEN, copy, DATENSCHUTZ, EINWILLIGUNG } from '../../content/copy'
 import { anfahrtText, einheit, gewerke, spanne } from '../../content/gewerke'
 import { zeilen, type Anfrage, type Kontakt } from '../flow'
 
@@ -136,10 +136,11 @@ export function Zusammenfassung({
             className="mt-px size-[22px] shrink-0 cursor-pointer accent-tiefsee"
           />
           <span>
-            {t.einwilligung}{' '}
+            {EINWILLIGUNG.text}{' '}
             <a href={DATENSCHUTZ} className="underline underline-offset-4">
-              {t.datenschutz}
+              {EINWILLIGUNG.link}
             </a>
+            {EINWILLIGUNG.satzende}
           </span>
         </label>
         {einwilligungFehlt && (

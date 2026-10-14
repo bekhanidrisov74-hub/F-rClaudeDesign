@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ChangeEvent, type FormEvent, type ReactNode } from 'react'
-import { DATENSCHUTZ, WEISS_NICHT, copy, fuelle } from '../content/copy'
+import { DATENSCHUTZ, EINWILLIGUNG, WEISS_NICHT, copy, fuelle } from '../content/copy'
 import { gewerke } from '../content/gewerke'
 import { submitLead, zufallsnummer, type Match } from '../lib/submitLead'
 import {
@@ -127,7 +127,8 @@ export function AnfrageFormular() {
         match,
         anfragenummer: anfrageId,
         betrieb: gewerk?.betrieb ?? copy.luna.erfolg.betriebUnbekannt,
-        telefon: werte.telefon.trim(),
+        // Geschützte Leerzeichen: Die Telefonnummer bricht nicht mitten im Text um.
+        telefon: werte.telefon.trim().replace(/ /g, ' '),
         tipp: gewerk?.tippErfolg,
       })
       setWerte(LEERES_FORMULAR)
@@ -259,11 +260,11 @@ export function AnfrageFormular() {
             </span>
           </span>
           <span>
-            {t.einwilligung.text}{' '}
+            {EINWILLIGUNG.text}{' '}
             <a href={DATENSCHUTZ} className="underline underline-offset-3">
-              {t.einwilligung.link}
+              {EINWILLIGUNG.link}
             </a>
-            {t.einwilligung.satzende} <span aria-hidden="true">{t.pflichtZeichen}</span>
+            {EINWILLIGUNG.satzende} <span aria-hidden="true">{t.pflichtZeichen}</span>
           </span>
         </label>
         <Fehlertext feld="einwilligung" text={fehler.einwilligung} />

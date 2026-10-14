@@ -23,7 +23,8 @@ export function Erfolg({ luna, kontakt, onNeu, onSchliessen }: ErfolgProps) {
   const titelId = `${useId()}-titel`
   const gewerk = gewerke.find((g) => g.id === luna.anfrage.gewerk)
   const gefunden = luna.match === 'FOUND'
-  const werte = { name: kontakt.name, telefon: kontakt.telefon, betrieb: gewerk?.betrieb ?? t.betriebUnbekannt }
+  // Geschützte Leerzeichen: Die Telefonnummer bricht nicht mitten im Text um.
+  const werte = { name: kontakt.name, telefon: kontakt.telefon.replace(/ /g, ' '), betrieb: gewerk?.betrieb ?? t.betriebUnbekannt }
 
   return (
     <section data-karte aria-labelledby={titelId} className="flex flex-col gap-s3 rounded-card border border-linie bg-weiss p-s4">

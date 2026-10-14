@@ -206,7 +206,7 @@ test('Zusammenfassung: Kontaktdaten und Einwilligung sind Pflicht, der erste Feh
   for (const text of ['Installateur', 'Unter der Spüle tritt Wasser aus.', 'Küche', 'So schnell wie möglich', '1020 Wien', '95–140 € pro Stunde', 'Anfahrt 29,90 €'])
     await expect(c).toContainText(text)
   await expect(c).toContainText(
-    'Ich stimme zu, dass meine Angaben zur Bearbeitung der Anfrage verwendet und zu diesem Zweck an einen passenden Partnerbetrieb weitergegeben werden.',
+    'Ich stimme zu, dass fixit247 meine Angaben zur Bearbeitung meiner Anfrage verwendet und dafür an einen passenden Fachbetrieb weitergibt. Ich kann diese Einwilligung jederzeit widerrufen. Mehr dazu in der Datenschutzerklärung.',
   )
   await expect(c.getByRole('progressbar')).toHaveAttribute('aria-valuetext', 'Schritt 4 von 4: Prüfen')
   await c.getByRole('button', { name: 'Auftrag aufgeben' }).click()
@@ -275,7 +275,7 @@ test('kein Betrieb gefunden: Anfrage ist trotzdem aufgenommen', async ({ page })
   const c = chat(page)
   await expect(c.getByRole('heading', { name: 'Danke, Maria Huber. Ihre Anfrage ist eingegangen.' })).toBeVisible()
   await expect(c).toContainText(
-    'Wir haben gerade keinen passenden Installateur in Ihrer Nähe gefunden. Wir nehmen Ihre Anfrage trotzdem auf, suchen weiter und melden uns unter 0664 1234567.',
+    'Wir haben gerade keinen passenden Installateur in Ihrer Nähe gefunden. Ihre Anfrage ist trotzdem aufgenommen: Wir suchen weiter und melden uns unter 0664 1234567. Ist es dringend, rufen Sie uns bitte gleich an.',
   )
   await expect(c).not.toContainText('Bis der Betrieb kommt')
 })

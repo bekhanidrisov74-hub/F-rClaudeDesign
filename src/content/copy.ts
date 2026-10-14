@@ -13,6 +13,17 @@ export const WEISS_NICHT = 'Weiß ich nicht'
 export const DATENSCHUTZ = '/datenschutz'
 
 /**
+ * Einwilligung zur Weitergabe, gleich in Formular und Luna (Entscheidung vom 14.10.2026: ein Text für dieselbe Weitergabe,
+ * wie auf österreichischen Seiten üblich mit Verantwortlichem, Zweck, Empfänger, Widerruf und Link zur Datenschutzerklärung).
+ * Ersetzt den Text aus dem Design (Screen 08) und den aus der Aufgabe. Mit der Datenschutzerklärung rechtlich prüfen lassen.
+ */
+export const EINWILLIGUNG = {
+  text: 'Ich stimme zu, dass fixit247 meine Angaben zur Bearbeitung meiner Anfrage verwendet und dafür an einen passenden Fachbetrieb weitergibt. Ich kann diese Einwilligung jederzeit widerrufen. Mehr dazu in der',
+  link: 'Datenschutzerklärung',
+  satzende: '.',
+} as const
+
+/**
  * Dringlichkeit in Luna: Chip (auch Zeile der Zusammenfassung) und Kurzfassung (Screen 10).
  * Chips laut Aufgabe (docs/luna-ki/AUFGABE.md, Entscheidung vom 14.10.2026: Texte der Aufgabe gelten in Luna).
  */
@@ -210,11 +221,6 @@ export const copy = {
     },
     /** Sternchen hinter Pflichtfeldern */
     pflichtZeichen: '*',
-    einwilligung: {
-      text: 'Ich bin einverstanden, dass fixit247 meine Angaben zur Vermittlung an einen passenden Fachbetrieb weitergibt. Mehr dazu in der',
-      link: 'Datenschutzerklärung',
-      satzende: '.',
-    },
     senden: 'Anfrage senden',
     sendend: 'Wird gesendet …',
     pflicht: '* Pflichtfeld. Die Vermittlung ist kostenlos.',
@@ -232,7 +238,7 @@ export const copy = {
       nummer: 'Anfragenummer: {nummer}', // nicht im Design: wie Luna 09
       // nicht im Design: Eingang meldet „kein Betrieb gefunden“ (match NONE), Text wie in Luna
       keinerTitel: 'Danke. Ihre Anfrage ist eingegangen.',
-      keinerText: 'Wir haben gerade keinen passenden {betrieb} in Ihrer Nähe gefunden. Wir nehmen Ihre Anfrage trotzdem auf, suchen weiter und melden uns unter {telefon}.',
+      keinerText: 'Wir haben gerade keinen passenden {betrieb} in Ihrer Nähe gefunden. Ihre Anfrage ist trotzdem aufgenommen: Wir suchen weiter und melden uns unter {telefon}. Ist es dringend, rufen Sie uns bitte gleich an.',
     },
     // nicht im Design: Texte wie in der Luna-Fehlerkarte (Entscheidung 2)
     sendefehler: {
@@ -328,10 +334,6 @@ export const copy = {
       },
       richtpreis: 'Richtpreis',
       anfahrt: 'Anfahrt',
-      // Text laut Aufgabe
-      einwilligung:
-        'Ich stimme zu, dass meine Angaben zur Bearbeitung der Anfrage verwendet und zu diesem Zweck an einen passenden Partnerbetrieb weitergegeben werden.',
-      datenschutz: 'Datenschutz',
       einwilligungFehlt: 'Bitte stimmen Sie der Weitergabe zu, sonst können wir keinen Betrieb vermitteln.', // nicht im Design (SPEC 9)
       hinweis: 'Die Vermittlung ist kostenlos. Der Vertrag kommt direkt mit dem Betrieb zustande.',
       aendern: 'Angaben ändern',
@@ -343,7 +345,7 @@ export const copy = {
       text: 'Wir geben sie jetzt an einen passenden {betrieb} in Ihrer Nähe weiter. Der Betrieb ruft Sie unter {telefon} zurück.',
       // nicht im Design: Eingang meldet „kein Betrieb gefunden“ (match NONE), die Anfrage ist trotzdem aufgenommen
       keinerTitel: 'Danke, {name}. Ihre Anfrage ist eingegangen.',
-      keinerText: 'Wir haben gerade keinen passenden {betrieb} in Ihrer Nähe gefunden. Wir nehmen Ihre Anfrage trotzdem auf, suchen weiter und melden uns unter {telefon}.',
+      keinerText: 'Wir haben gerade keinen passenden {betrieb} in Ihrer Nähe gefunden. Ihre Anfrage ist trotzdem aufgenommen: Wir suchen weiter und melden uns unter {telefon}. Ist es dringend, rufen Sie uns bitte gleich an.',
       betriebUnbekannt: 'Fachbetrieb', // nicht im Design: bei „Weiß ich nicht“
       nummer: 'Anfragenummer: {nummer}',
       tippTitel: 'Bis der Betrieb kommt:',

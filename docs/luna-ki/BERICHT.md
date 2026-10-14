@@ -56,6 +56,12 @@ Entschieden mit Ihnen am 14.10.2026:
 - Texte der Aufgabe gelten in Luna (Fragen, Chips „Akut/Gefahr“ usw., Einwilligung, „Erneut versuchen“, „Neue Anfrage starten“). Die Gewerk-Namen bleiben überall wie im Design („Heizung & Klima“, „Elektro“, „Haushaltsgeräte“).
 - PLZ: vollständiges Verzeichnis der RTR (2.234 PLZ, CC BY 4.0, aktualisieren mit `node scripts/plz.mjs`). Es lädt erst mit Luna. „seit 2020“ im Freitext gilt als Jahr. Bei der Ortsfrage wird 2020 als Hollabrunn angenommen, denn 2020 ist eine echte PLZ. Der Test der Aufgabe („2020 abgelehnt“) prüft deshalb das Jahr im Freitext.
 - Gewerk-Karten bleiben beim Formular, Luna ist eine Hilfe neben den anderen Wegen.
+- Kontaktdaten von fixit247 (Telefon, WhatsApp, E-Mail, Firma) bleiben Platzhalter, bis Sie sie liefern. Die Kunden geben ihre eigenen Kontaktdaten in der Zusammenfassung an. Solange Platzhalter stehen, nennen KI und Bestätigungsmail „[Telefonnummer]“. Beim Eintragen: `src/content/contact.ts` ändern und `KONTAKT` in beiden `.gs` angleichen, der Test meldet sonst die Abweichung.
+
+Von mir entschieden, wie auf österreichischen Seiten üblich (Ihr Auftrag vom 14.10.2026):
+- **Einwilligung:** ein Text für Formular und Luna (`EINWILLIGUNG` in `src/content/copy.ts`), mit Verantwortlichem, Zweck, Empfänger, Widerrufsrecht und Link zur Datenschutzerklärung: „Ich stimme zu, dass fixit247 meine Angaben zur Bearbeitung meiner Anfrage verwendet und dafür an einen passenden Fachbetrieb weitergibt. Ich kann diese Einwilligung jederzeit widerrufen. Mehr dazu in der Datenschutzerklärung.“ „Fachbetrieb“ statt „Partnerbetrieb“, wie überall auf der Seite. Er ersetzt beide bisherigen Texte. Bitte zusammen mit der Datenschutzerklärung rechtlich prüfen lassen.
+- **Kein Betrieb gefunden:** Der Rückruf bleibt zugesagt, denn der Eingang meldet solche Anfragen dem Postfach zur manuellen Vermittlung. Dazu kommt ein Hinweis zum direkten Anruf: „Wir haben gerade keinen passenden {betrieb} in Ihrer Nähe gefunden. Ihre Anfrage ist trotzdem aufgenommen: Wir suchen weiter und melden uns unter {telefon}. Ist es dringend, rufen Sie uns bitte gleich an.“ Eine Zeit sagt der Text nicht zu.
+- **2020:** bleibt wie gebaut. Echte PLZ werden angenommen, Jahreszahlen im Freitext nicht.
 
 Nach Standard gebaut (bitte prüfen):
 - Lokaler Server als Vite-Plugin statt eigenem Static-Server. `node tools/server.mjs 8080` startet die Vorschau mit dieser API, wie in der Aufgabe beschrieben.
@@ -68,10 +74,7 @@ Nach Standard gebaut (bitte prüfen):
 - Anfrage-Id im Format `F247-XXXXXX`, wird als Anfragenummer angezeigt. Der Eingang nimmt sie zur Erkennung von Doppelsendungen.
 - `?fehler=1` in der Seitenadresse lässt die lokale Anfrage-Attrappe mit HTTP 500 antworten (für Tests und Screenshots).
 
-Offen (Ihre Entscheidung):
-- **Kontaktdaten:** `src/content/contact.ts` hat weiter Platzhalter (SPEC 11). Die Apps-Script-Kopien übernehmen sie, die KI würde also „[Telefonnummer]“ nennen und die Bestätigungsmail ebenso. Die alte Referenz hatte 0676 4777700 und support@fixit247.at. Bitte in `contact.ts` eintragen und in beide `.gs` übernehmen, der Test meldet sonst die Abweichung.
-- **Zwei Einwilligungstexte:** In Luna steht der Text der Aufgabe („Partnerbetrieb“), im Formular der Text aus dem Design („Fachbetrieb“). Beide gehen an denselben Eingang.
-- **Rückruf-Zusage bei „kein Betrieb gefunden“:** „… suchen weiter und melden uns unter {telefon}“ sagt einen Rückruf durch fixit247 zu. Bitte bestätigen.
+Offen:
 - **Gas bei Heizung & Klima:** Gasgeruch im Freitext löst den Notruf-Hinweis aus. Eine eigene Katalogfrage dazu gibt es nicht, die Aufgabe nennt keine.
 - **Mails des Anfrage-Eingangs:** Sie nutzen noch die Farben der alten Referenz (Navy/Orange), nicht die Tokens der neuen Seite.
 - Zwei kleine optische Hinweise des visual-reviewers sind offen: die native Checkbox in der Zusammenfassung (wie seit Phase 4 abgenommen) und der knappe Innenabstand von „Auftrag aufgeben“ im Fenster (unverändert seit Phase 6).
