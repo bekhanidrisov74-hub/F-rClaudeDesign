@@ -56,7 +56,7 @@ export function Zusammenfassung({
 
   return (
     <section aria-labelledby={titelId} className="flex flex-col gap-s3 rounded-card border border-linie bg-weiss p-s4">
-      <h2 id={titelId} className="font-display text-h4 font-[750] [font-stretch:100%]">
+      <h2 id={titelId} className="font-display text-h4">
         {t.titel}
       </h2>
 

@@ -26,7 +26,7 @@ export function Schnellwahl() {
               <GewerkIcon gewerk={g} className="size-[41px] nav:size-[47px]" />
               <span className="flex flex-col gap-s1">
                 <span className={TITEL}>{g.name}</span>
-                <span className="text-note text-schiefer max-nav:hidden">{g.schnellwahl}</span>
+                <span className="min-h-[2lh] text-note text-schiefer max-nav:hidden">{g.schnellwahl}</span>
               </span>
             </a>
           ))}
@@ -38,7 +38,7 @@ export function Schnellwahl() {
             <span className="flex flex-col gap-s1">
               <span className={`${TITEL} nav:hidden`}>{copy.schnellwahl.luna.handy}</span>
               <span className={`${TITEL} max-nav:hidden`}>{copy.schnellwahl.luna.titel}</span>
-              <span className="text-note text-schiefer max-nav:hidden">{copy.schnellwahl.luna.unterzeile}</span>
+              <span className="min-h-[2lh] text-note text-schiefer max-nav:hidden">{copy.schnellwahl.luna.unterzeile}</span>
             </span>
           </a>
         </div>

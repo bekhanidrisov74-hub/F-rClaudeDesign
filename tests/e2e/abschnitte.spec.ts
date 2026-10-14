@@ -109,3 +109,20 @@ for (const pfad of ['/', '/impressum'])
     const zuKlein = (await bedienelemente(page)).filter((e) => e.b < 44 || e.h < 44)
     expect(zuKlein).toEqual([])
   })
+
+test('Schnellwahl: Kacheltitel einer Reihe auf gleicher Höhe', async ({ page }, info) => {
+  nurEinmal(info.project.name)
+  for (const breite of [920, 1024, 1180, 1440]) {
+    await page.setViewportSize({ width: breite, height: 900 })
+    await page.goto(`/?breite=${breite}`)
+    const kacheln = await page.locator('section[aria-labelledby="schnellwahl-titel"] a').evaluateAll((els) =>
+      els.map((el) => {
+        const titel = [...el.querySelectorAll('span')].find((s) => getComputedStyle(s).display !== 'none' && s.textContent && !s.querySelector('svg') && s.className.includes('font-'))
+        return { reihe: Math.round(el.getBoundingClientRect().top), titel: Math.round(titel!.getBoundingClientRect().top) }
+      }),
+    )
+    const reihen = new Map<number, number[]>()
+    for (const k of kacheln) reihen.set(k.reihe, [...(reihen.get(k.reihe) ?? []), k.titel])
+    for (const [reihe, titel] of reihen) expect(new Set(titel).size, `${breite} px, Reihe bei ${reihe}`).toBe(1)
+  }
+})

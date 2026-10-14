@@ -49,7 +49,7 @@ export function Preisrechner() {
         </div>
 
         <div className="grid gap-s5 nav:grid-cols-[minmax(0,1fr)_420px]">
-          <div className="flex min-w-0 flex-col gap-s5 rounded-card-lg border border-linie bg-kalk p-s4 dialog:gap-s6 dialog:p-s6">
+          <div className="flex min-w-0 flex-col gap-s5 rounded-card-lg border border-linie bg-kalk px-s4 py-s5 dialog:gap-s6 dialog:p-s6">
             <fieldset className={FELDGRUPPE}>
               <legend className={LEGENDE}>{copy.rechner.gewerk}</legend>
               <div className={REIHE}>

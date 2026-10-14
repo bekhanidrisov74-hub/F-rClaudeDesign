@@ -22,7 +22,7 @@ export function Sendefehler({ sendend, onErneut }: SendefehlerProps) {
       <div className="flex items-start gap-s3">
         <Icon name="ui-warnung" className="size-[28px] text-tiefsee" />
         <div className="flex min-w-0 flex-col gap-s2">
-          <h2 className="font-display text-h3 font-[750] [font-stretch:100%] dialog:text-h4">{t.titel}</h2>
+          <h2 className="font-display text-h3 dialog:text-h4">{t.titel}</h2>
           <p className="text-small">{t.text}</p>
         </div>
       </div>

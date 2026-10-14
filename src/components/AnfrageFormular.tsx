@@ -269,7 +269,7 @@ export function AnfrageFormular() {
           <div className="flex items-start gap-s3">
             <Icon name="ui-warnung" className="size-[28px] text-tiefsee" />
             <div className="flex min-w-0 flex-col gap-s2">
-              <h3 className="font-display text-h3 font-[750] [font-stretch:100%] dialog:text-h4">{t.sendefehler.titel}</h3>
+              <h3 className="font-display text-h3 dialog:text-h4">{t.sendefehler.titel}</h3>
               <p className="text-small">{t.sendefehler.text}</p>
             </div>
           </div>
@@ -308,7 +308,7 @@ function Erfolg({ danke }: { danke: Danke }) {
         <div className="flex size-[52px] shrink-0 items-center justify-center rounded-pill bg-tiefsee text-weiss">
           <Icon name="ui-haekchen" className="size-[28px]" />
         </div>
-        <h3 ref={titel} tabIndex={-1} className="font-display text-h3-karte font-[750] [font-stretch:100%] dialog:text-h3">
+        <h3 ref={titel} tabIndex={-1} className="font-display text-h3-karte dialog:text-h3">
           {t.erfolg.titel}
         </h3>
       </div>

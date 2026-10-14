@@ -25,7 +25,7 @@ export function Erfolg({ angaben, anfragenummer, onSchliessen }: ErfolgProps) {
         <div className="flex size-[52px] shrink-0 dialog:size-[44px] items-center justify-center rounded-pill bg-tiefsee text-weiss">
           <Icon name="ui-haekchen" className="size-[28px]" />
         </div>
-        <h2 id={titelId} className="font-display text-h3-karte font-[750] [font-stretch:100%] dialog:text-h4">
+        <h2 id={titelId} className="font-display text-h3-karte dialog:text-h4">
           {fuelle(t.titel, { name: angaben.name })}
         </h2>
       </div>
@@ -36,7 +36,7 @@ export function Erfolg({ angaben, anfragenummer, onSchliessen }: ErfolgProps) {
       <p className="text-note text-schiefer">{fuelle(t.nummer, { nummer: anfragenummer })}</p>
 
       {gewerk && (
-        <p className="rounded-chip bg-kalk px-s4 py-s3 text-small">
+        <p className="rounded-chip bg-kalk px-s3 py-s3 text-small">
           <span className="font-bold">{t.tippTitel}</span> {gewerk.tippErfolg}
         </p>
       )}
