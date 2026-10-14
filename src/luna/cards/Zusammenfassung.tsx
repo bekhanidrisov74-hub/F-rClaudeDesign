@@ -21,7 +21,7 @@ const t = copy.luna.zusammenfassung
 
 /** Primärknopf: Screen 08 volle Breite, Screen 12 neben „Angaben ändern“. */
 const PRIMAER =
-  'min-h-[52px] w-full px-s4 text-btn-l font-extrabold aria-disabled:cursor-default dialog:min-h-[50px] dialog:flex-1 dialog:px-s2 dialog:text-btn dialog:whitespace-nowrap'
+  'min-h-[52px] w-full px-s4 text-btn-l font-[750] aria-disabled:cursor-default dialog:min-h-[50px] dialog:flex-1 dialog:px-s2 dialog:text-btn dialog:whitespace-nowrap'
 
 // Screen 08 (Handy) und Screen 12 (Fenster) von Luna: Überblick über alle Angaben vor dem Absenden.
 export function Zusammenfassung({

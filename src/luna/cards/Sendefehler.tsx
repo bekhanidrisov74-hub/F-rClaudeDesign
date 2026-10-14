@@ -32,7 +32,7 @@ export function Sendefehler({ sendend, onErneut }: SendefehlerProps) {
         art="primaer"
         onClick={erneut}
         aria-disabled={sendend}
-        className="min-h-[52px] w-full px-s4 text-btn-l font-extrabold aria-disabled:cursor-default dialog:min-h-[50px] dialog:text-btn"
+        className="min-h-[52px] w-full px-s4 text-btn-l font-[750] aria-disabled:cursor-default dialog:min-h-[50px] dialog:text-btn"
       >
         {sendend ? copy.luna.zusammenfassung.sendend : t.erneut}
       </Button>
