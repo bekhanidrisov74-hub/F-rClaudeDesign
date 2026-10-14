@@ -75,3 +75,11 @@ Neu: Luna-Knopf, Anstupser, Chat als Fenster (ab 640 px) bzw. Vollbild (darunter
 - Anstupser etwa 5 px höher als im Entwurf, weil der Text-Knopf und das Schließen eine Trefferfläche von 44 px haben.
 - Nach dem Erfolg ist die Eingabezeile gesperrt (Optik unverändert weiß). Die Anfrage ist abgeschlossen, weitere Nachrichten würden nichts bewirken.
 - Titel der Erfolgs- und Fehlerkarte im Fenster 22 px (`--fx-h4`), im Entwurf etwa 21 px; der Erfolgstitel bricht dadurch bei 1440 in drei Zeilen um.
+
+## Phase 5 (Formular)
+
+Neu: Abschnitt „Anfrage senden“ mit Formular und Seitenkasten „Lieber sofort sprechen?“, Zustände Fehler, sendend, Erfolg, Sendefehler.
+- Für die Formular-Zustände gibt es keinen Entwurf (SPEC 9). Erfolg und Sendefehler übernehmen Texte und Aufbau der Luna-Karten 09/10 (Entscheidung 2).
+- Seitenkasten am Handy wie Screen 01: Anruf-Knopf ohne Nummer, am Desktop wie Screen 02 mit Kreis und Nummer (Entscheidung 5).
+- Die Einwilligung startet leer, Pflichtfelder tragen das Sternchen im Label wie im Entwurf.
+- „… anfragen“ und die Schnellwahl-Kacheln wählen das Gewerk im Formular vor (nicht im Design, SPEC verlangt es nicht; es ändert nichts an der Optik).

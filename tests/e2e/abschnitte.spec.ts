@@ -4,7 +4,7 @@ import { gewerke } from '../../src/content/gewerke'
 const nurEinmal = (name: string) => test.skip(name !== 'm390', 'läuft nur einmal, setzt die Breite selbst')
 
 /** Erwartete Reihenfolge der Abschnitte. Jede Phase ergänzt ihre Abschnitte. */
-const REIHENFOLGE = ['#start', 'section[aria-label="Warum fixit247"]', '#leistungen', '#ablauf', '#preisrechner', 'footer'] // Phase 5: '#anfrage' vor 'footer'
+const REIHENFOLGE = ['#start', 'section[aria-label="Warum fixit247"]', '#leistungen', '#ablauf', '#preisrechner', '#anfrage', 'footer']
 
 test('Abschnitte in der richtigen Reihenfolge', async ({ page }) => {
   await page.goto('/')
