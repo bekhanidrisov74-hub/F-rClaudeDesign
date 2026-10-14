@@ -148,16 +148,18 @@ describe('Zusammenfassung, Ändern, Senden', () => {
     })
   })
 
-  test('Erfolg und Fehler, Angaben bleiben, Erneut senden ohne doppeltes Echo', () => {
-    const fehler = gesendet(fertig(), null)
+  test('Erfolg und Fehler, Angaben bleiben, kein „Auftrag aufgegeben“ im Verlauf', () => {
+    const vorher = fertig()
+    const fehler = gesendet(vorher, null)
     expect(fehler.schritt).toBe('fehler')
-    expect(letzte(fehler)).toEqual({ von: 'nutzer', text: AUFTRAG_AUFGEGEBEN })
+    expect(fehler.verlauf).toEqual(vorher.verlauf)
+    expect(fehler.verlauf.some((n) => n.text === AUFTRAG_AUFGEGEBEN)).toBe(false)
     expect(fortschritt(fehler)).toBeNull()
     expect(fehler.angaben.name).toBe('Maria Huber')
     const erfolg = gesendet(fehler, { anfragenummer: 'F247-ABC234' })
     expect(erfolg.schritt).toBe('erfolg')
     expect(erfolg.anfragenummer).toBe('F247-ABC234')
-    expect(erfolg.verlauf.filter((n) => n.text === AUFTRAG_AUFGEGEBEN)).toHaveLength(1)
+    expect(erfolg.verlauf).toEqual(vorher.verlauf)
   })
 
   test('Responder ist asynchron (für eine spätere KI-Anbindung)', async () => {

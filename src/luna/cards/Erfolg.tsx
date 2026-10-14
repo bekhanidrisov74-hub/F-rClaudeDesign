@@ -22,7 +22,7 @@ export function Erfolg({ angaben, anfragenummer, onSchliessen }: ErfolgProps) {
   return (
     <section aria-labelledby={titelId} className="flex flex-col gap-s3 rounded-card border border-linie bg-weiss p-s4">
       <div className="flex flex-col gap-s3 dialog:flex-row dialog:items-start">
-        <div className="flex size-[48px] shrink-0 items-center justify-center rounded-pill bg-tiefsee text-weiss">
+        <div className="flex size-[52px] shrink-0 dialog:size-[44px] items-center justify-center rounded-pill bg-tiefsee text-weiss">
           <Icon name="ui-haekchen" className="size-[28px]" />
         </div>
         <h2 id={titelId} className="font-display text-h3-karte font-[750] [font-stretch:100%] dialog:text-h4">

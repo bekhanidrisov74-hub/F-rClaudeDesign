@@ -177,6 +177,8 @@ test('Sendefehler mit ?fehler=1: Alarm, Angaben bleiben, Erneut senden', async (
   const frage = c.getByText('Wie heißen Sie, und unter welcher Nummer erreicht Sie der Betrieb?')
   if (handy(page.viewportSize()!.width)) await expect(frage).toBeHidden()
   else await expect(frage).toBeVisible()
+  // Nichts wurde aufgegeben: kein Echo „Auftrag aufgegeben“ (SPEC 1, Screen 10/12 rechts)
+  await expect(c.getByText('Auftrag aufgegeben', { exact: true })).toHaveCount(0)
   await alarm.getByRole('button', { name: 'Erneut senden' }).click()
   await expect(c.getByRole('alert')).toContainText('Die Anfrage wurde nicht gesendet.')
 })

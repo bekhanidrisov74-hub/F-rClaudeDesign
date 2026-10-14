@@ -1,7 +1,7 @@
 // Luna: geführter Ablauf ohne KI (SPEC 8). Reine Logik ohne React, in Vitest ohne DOM testbar.
 // Die Oberfläche spricht nur über `Responder` mit dem Ablauf. Eine KI-Anbindung ersetzt später
 // `gefuehrt` durch eine eigene Umsetzung, die über eine Server-Funktion läuft (Schlüssel nie im Browser).
-import { AUFTRAG_AUFGEGEBEN, copy, dringlichkeit, fuelle, WEISS_NICHT } from '../content/copy'
+import { copy, dringlichkeit, fuelle, WEISS_NICHT } from '../content/copy'
 import { gewerke, type Gewerk } from '../content/gewerke'
 import type { Dringlichkeit, LeadDaten } from '../lib/submitLead'
 import { ortZuPlz, teileNameTelefon, teilePlzOrt } from '../lib/validate'
@@ -158,12 +158,12 @@ export function zuLead(z: Zustand): LeadDaten {
   }
 }
 
-/** Nach dem Absenden: Echo „Auftrag aufgegeben“ und Erfolg bzw. Fehler. */
+/**
+ * Nach dem Absenden: Erfolg (mit Anfragenummer) bzw. Fehler. Der Verlauf bleibt unverändert:
+ * Das Echo AUFTRAG_AUFGEGEBEN zeigt nur die Erfolgsansicht, beim Fehler wurde nichts aufgegeben (SPEC 1).
+ */
 export function gesendet(z: Zustand, ergebnis: { anfragenummer: string } | null): Zustand {
-  const echo = z.schritt === 'fehler' ? [] : [{ von: 'nutzer' as const, text: AUFTRAG_AUFGEGEBEN }]
-  return ergebnis
-    ? { ...z, schritt: 'erfolg', anfragenummer: ergebnis.anfragenummer, verlauf: [...z.verlauf, ...echo] }
-    : { ...z, schritt: 'fehler', verlauf: [...z.verlauf, ...echo] }
+  return ergebnis ? { ...z, schritt: 'erfolg', anfragenummer: ergebnis.anfragenummer } : { ...z, schritt: 'fehler' }
 }
 
 /** Kurzfassung „Ihre Anfrage“: „Installateur, 1020 Wien, sofort. Unter der Spüle tritt Wasser aus. Maria Huber, 0664 …“ */
