@@ -213,7 +213,7 @@ describe('KI-Erfassung (optional)', () => {
 
   test('fremdes Format, falsches Gewerk, ungültige PLZ und Platzhalter werden ignoriert', async () => {
     const liste = await ladePlz()
-    for (const felder of [null, 'Text', 42, [], { category: 'sanitaer', postalCode: '9999', reply: '' }, { postalCode: 11000 }]) {
+    for (const felder of [null, 'Text', 42, [], { category: 'sanitaer', postalCode: '9999', reply: '' }, { postalCode: 11000 }, { postalCode: 'constructor' }, { urgency: 'constructor' }, { category: 'constructor' }]) {
       const z = start()
       uebernimm(z, felder, liste)
       expect(z).toEqual(start())

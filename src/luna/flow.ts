@@ -11,8 +11,8 @@ import { zufallsnummer, type Lead, type Match } from '../lib/submitLead'
 const t = copy.luna
 
 /**
- * Zustände laut Aufgabe. MATCHING ist das Senden selbst (die Oberfläche hält es, damit ein Neuladen mitten im Senden
- * zur Zusammenfassung zurückkehrt), MATCH_FOUND und NO_MATCH sind COMPLETED mit `match`. EMERGENCY ist der Hinweis
+ * Zustände laut Aufgabe. MATCHING ist `sendend` in LunaChat (nicht gespeichert: Ein Neuladen mitten im Senden kehrt
+ * zur Zusammenfassung zurück), MATCH_FOUND und NO_MATCH sind COMPLETED mit `match`. EMERGENCY ist der Hinweis
  * `notruf`, der Ablauf läuft danach weiter.
  */
 export type Phase = 'INITIAL' | 'CLASSIFYING' | 'ASKING' | 'LOCATION' | 'SUMMARY' | 'ERROR' | 'COMPLETED'
@@ -339,6 +339,7 @@ export function plzKandidat(text: string, streng: boolean): string | null {
 async function findePlz(text: string, streng: boolean): Promise<{ plz: string; ort: string } | 'unbekannt' | null> {
   const plz = plzKandidat(text, streng)
   if (!plz) return null
+  // Sicher nur, weil plzKandidat vier Ziffern liefert; rohe Eingaben vorher so prüfen.
   const ort = (await ladePlz())[plz]
   return ort ? { plz, ort } : 'unbekannt'
 }
@@ -366,9 +367,10 @@ export function uebernimm(z: Zustand, felder: unknown, plzListe: Readonly<Record
   const wert = (v: unknown, max: number) => (typeof v === 'string' && v.trim() && !LEER_RE.test(v.trim()) ? v.trim().slice(0, max) : '')
 
   if (!a.gewerk && gewerke.some((g) => g.id === f.category)) a.gewerk = f.category as string
-  if (typeof f.urgency === 'string' && f.urgency in RANG) hebe(a, f.urgency as DringlichkeitId)
+  // Object.hasOwn: geerbte Schlüssel wie „constructor“ zählen nicht
+  if (typeof f.urgency === 'string' && Object.hasOwn(RANG, f.urgency)) hebe(a, f.urgency as DringlichkeitId)
   const plz = typeof f.postalCode === 'string' || typeof f.postalCode === 'number' ? String(f.postalCode).trim() : ''
-  if (!a.plz && plzListe[plz]) Object.assign(a, { plz, ort: plzListe[plz] })
+  if (!a.plz && /^[1-9]\d{3}$/.test(plz) && Object.hasOwn(plzListe, plz)) Object.assign(a, { plz, ort: plzListe[plz] })
   if (a.wunschtermin === null && wert(f.preferredTime, 80)) a.wunschtermin = wert(f.preferredTime, 80)
   const zusatz = [wert(f.address, 120) && `Adresse: ${wert(f.address, 120)}`, wert(f.additionalInformation, 300)].filter(Boolean).join('. ')
   if (zusatz) a.zusatz = `${a.zusatz} ${zusatz}`.trim().slice(0, 500)
@@ -379,7 +381,8 @@ export function uebernimm(z: Zustand, felder: unknown, plzListe: Readonly<Record
       if (v && !(frage.id in a.antworten)) verbuche(z, frage, v)
     }
   }
-  const reply = wert(f.reply, 600)
+  // Ohne Platzhalter-Prüfung: „Das ist mir unbekannt …“ ist eine echte Antwort
+  const reply = typeof f.reply === 'string' ? f.reply.trim().slice(0, 600) : ''
   // Den Notruf-Satz zeigt schon der lokale Hinweis – eine Antwort, die nur ihn wiederholt, entfällt.
   if (reply && !(z.notruf && /122 bzw\. 112/.test(reply) && reply.length < 90)) {
     sage(z, reply)
