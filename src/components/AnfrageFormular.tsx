@@ -245,11 +245,13 @@ export function AnfrageFormular() {
               onChange={(e) => setze('einwilligung', e.target.checked)}
               className="peer absolute inset-0 size-full cursor-pointer appearance-none focus-visible:outline-none"
             />
+            {/* Gezeichnetes Kästchen mit Häkchen darin; sichtbar wird das Häkchen über den Zustand der Checkbox davor */}
             <span
               aria-hidden="true"
-              className="rahmen pointer-events-none size-[24px] rounded-ecke border-rand bg-weiss peer-checked:border-tiefsee peer-checked:bg-tiefsee peer-aria-invalid:border-tiefsee peer-focus-visible:outline-3 peer-focus-visible:outline-offset-3 peer-focus-visible:outline-tuerkis"
-            />
-            <Icon name="ui-haekchen" className="pointer-events-none invisible absolute inset-0 m-auto size-[24px] text-weiss peer-checked:visible" />
+              className="rahmen pointer-events-none flex size-[24px] items-center justify-center rounded-ecke border-rand bg-weiss peer-checked:border-tiefsee peer-checked:bg-tiefsee peer-checked:[&>span]:visible peer-aria-invalid:border-tiefsee peer-focus-visible:outline-3 peer-focus-visible:outline-offset-3 peer-focus-visible:outline-tuerkis"
+            >
+              <Icon name="ui-haekchen" className="invisible size-[20px] text-weiss" />
+            </span>
           </span>
           <span>
             {t.einwilligung.text}{' '}
@@ -282,7 +284,7 @@ export function AnfrageFormular() {
             art="primaer"
             type="submit"
             aria-disabled={sendend}
-            className="min-h-[56px] w-full px-s6 text-btn-l font-extrabold aria-disabled:cursor-default dialog:w-auto"
+            className="min-h-[56px] w-full px-s6 text-btn-l font-[750] aria-disabled:cursor-default dialog:w-auto"
           >
             {sendend ? t.sendend : t.senden}
           </Button>
