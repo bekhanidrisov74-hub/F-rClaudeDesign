@@ -20,7 +20,7 @@ Letzte Abnahme-Runde (Phase 6, Runde 2, 14.10.2026), ausgeführt vom qa-runner, 
 |---|---|---|
 | Typen, Lint, Unit-Tests, Build | `npm run check` | grün: `tsc -b`, `eslint .`, **Vitest 80/80** in 8 Dateien (u. a. alle 5 Pflichtfälle aus SPEC 5, Luna-Ablauf, Versand, Prüfregeln, Token-Wächter, sechstes Gewerk), Build mit Vorrendern von 4 Seiten |
 | Abläufe, Barrierefreiheit, Falz, Überlauf | `npm run test:e2e` | **221 bestanden, 0 fehlgeschlagen**, 49 übersprungen (Tests, die nur in einem Viewport-Projekt laufen). Projekte 390 × 844, 1024 × 768, 1440 × 900 |
-| axe (WCAG 2.0/2.1/2.2 A + AA) | in `test:e2e` | **0 Verstöße** in 14 Zuständen × 3 Breiten: Startseite, Impressum, Preisübersicht, Rechner Schlüsseldienst, Rechner zwei Zuschläge, Menü, Luna (Anstupser, Gespräch, Zusammenfassung, Erfolg, Sendefehler), Formular (Fehler, Erfolg, Sendefehler) |
+| axe (WCAG 2.0/2.1/2.2 A + AA) | in `test:e2e` | **0 Verstöße** in 14 Zuständen, jeweils bei 390, 1024 und 1440 px (das Menü nur bei 390), zusammen 40 Läufe: Startseite, Impressum, Preisübersicht, Rechner Schlüsseldienst, Rechner zwei Zuschläge, Menü, Luna (Anstupser, Gespräch, Zusammenfassung, Erfolg, Sendefehler), Formular (Fehler, Erfolg, Sendefehler) |
 | Falz 390 × 844 | in `test:e2e` | bestanden: Anrufen, WhatsApp und Anfrage senden enden bei etwa 463 px (Grenze 660 px) |
 | Kein horizontales Scrollen | in `test:e2e` | bestanden bei 320, 360, 390, 559, 560, 639, 640, 768, 919, 920, 1024, 1280, 1440, 1920 px: alle vier Seiten sowie mit offener Preisübersicht, offenem Menü und offenem Luna-Chat |
 | Tastatur | in `test:e2e` | jedes Bedienelement per Tab vorwärts und rückwärts erreichbar, Fokus nie verdeckt (2.4.11), Fokusfallen in Dialog, Sheet, Menü und Luna-Vollbild, Esc überall |
@@ -100,7 +100,7 @@ Bewusste Abweichungen vom Entwurf stehen in `tests/accepted-deviations.md`.
 - Gesamtpreis bleibt einzeilig und wird auf schmalen Bildschirmen bzw. bei vierstelligen Beträgen kleiner.
 - Esc minimiert das Luna-Fenster auch, wenn der Fokus auf der Seite liegt (WCAG 2.4.11), der Fokus bleibt dort.
 - Formular-Sendefehler als Meldung über dem Senden-Knopf (SPEC 9), erneut gesendet wird mit diesem Knopf.
-- „… anfragen“ und Schnellwahl-Kacheln wählen das Gewerk im Formular vor.
+- „… anfragen“ und Schnellwahl-Kacheln wählen das Gewerk im Formular vor. Nach einer erfolgreich gesendeten Anfrage blendet ein solcher Klick die Dankeskarte aus und zeigt ein leeres Formular mit vorgewähltem Gewerk (für eine zweite Anfrage ohne Neuladen).
 - Payload-Regeln: „Weiß ich nicht“ und Freitext statt Gewerk → `gewerk: null`, Freitext in `beschreibung`; Freitext statt Dringlichkeit → `dringlichkeit: null`; das Formular sendet `dringlichkeit: null`.
 
 **Texte, die nicht im Design stehen** (in `copy.ts` mit „nicht im Design“ markiert): Seitentitel und Meta-Beschreibung, Unterseiten-Titel, „Menü schließen“-Label, Name der Menü-Fläche, „Stunde“ (Einzahl), Hinweis bei drei Zuschlägen, „Zur Startseite“, Platzhaltertexte der Rechtsseiten, Luna-Nachfragen, „Gewerk wählen“, „Fachbetrieb“ bei „Weiß ich nicht“, Formular-Erfolg und -Fehler (aus Luna 09/10).
