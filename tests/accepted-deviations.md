@@ -4,7 +4,7 @@ Diese Punkte sind entschieden und gelten **nicht** als Abweichung. Quelle: PLAN.
 
 ## Immer
 
-- Bildflächen sind leere türkisblaue Flächen **ohne** Text. Die Bildbrief-Texte, „Bild N: …“ und die Marke „Platzhalter“ aus den Entwürfen erscheinen nie auf der Website.
+- Bildflächen zeigen die echten Fotos (siehe „Bilder und Icons“), **ohne** Text. Die Bildbrief-Texte, „Bild N: …“ und die Marke „Platzhalter“ aus den Entwürfen erscheinen nie auf der Website.
 - Die Wortmarke „fixit247“ steht in Bricolage 800, nicht 900.
 - Schriftgrößen, Radien, Abstände und Schatten kommen nur aus `src/styles/tokens.css`. Halbe Pixel aus den Entwürfen (13,5 / 14,5 / 15,5 px) sind auf die nächste Token-Stufe gerundet, ebenso Abstände (10/14/18/20/22 px) auf die `--fx-s-*`-Stufen. Unterschiede bis 2 px bei Schriftgrößen und bis 4 px bei Abständen sind deshalb gewollt.
 - Telefonnummer, WhatsApp, E-Mail, Firmenname und Domain zeigen die Klammer-Platzhalter wie in den Entwürfen.
@@ -101,3 +101,14 @@ Die Aufgabe ersetzt den Ablauf aus SPEC 8. Optik wie Screens 06–12, Verhalten 
 - Während Luna antwortet, steht eine Blase „…“ im Verlauf und die Eingabe ist gesperrt.
 - Anstupser nach 25 s oder ab 60 % Scrolltiefe, nicht über einem per Tastatur fokussierten Element.
 
+## Auf Wunsch nach Phase 5 (Hero und Fuß)
+
+Beide Änderungen sind bewusst und stehen nicht im Entwurf:
+- Hero-Raster (`GridPulse`, Commit 1ea98be): Hinter Hero-Text und Schnellwahl liegt ein Haarlinien-Raster aus 24-px-Zellen (`--fx-s-5`), das nach unten ausläuft. Unter dem Zeiger und von selbst leuchten einzelne Zellen gedämpft in Türkis, Technik, Nebel und Orange auf, bei prefers-reduced-motion bleibt es still. Der Entwurf 01/02 hat einen glatten Kalk-Grund. Einzelne helle oder orange Zellen in den Screenshots sind kein Befund.
+- Fuß-Panel (Commit 47225f8): Der Fuß-Inhalt steht in einem Panel mit Rand `--fx-tiefsee-2`, Füllung Tiefsee-2 mit 60 %, Radius 22 px (`--fx-r-card-lg`) und weichem türkis/petrolfarbenem Leuchten dahinter. Dazu kommen ein Uhr-Abzeichen (40-px-Kreis) vor der Wortmarke, Spaltentitel in Türkis und 24-px-Icons in Türkis vor den Kontakt-Links. Der Entwurf 01/02 hat einen flachen Tiefsee-Grund ohne Panel, weiße Titel und Links ohne Icons. Der Fuß ist dadurch höher als im Entwurf.
+
+## Bilder und Icons
+
+- Bildflächen zeigen die echten Fotos (`public/images/bild-1` bis `bild-6`): sehr dunkler Rand in Tiefsee, türkise Lichtmitte, ein oranger Akzent pro Bild. Die Farben sind mit `scripts/prepare-images.mjs` an die Tokens angeglichen. Zu prüfen ist nur, dass das Motiv vollständig sichtbar ist und die Schnellwahl das Hero-Motiv nicht überdeckt.
+- Zuschnitt: Karten unter 920 px 16 : 9, ab 920 px 4 : 3. Hero-Streifen unter 920 px mindestens 300 px hoch, ab 600 px halb so hoch wie breit (2 : 1). Ab 920 px füllt Bild 1 die rechte Spalte.
+- Alle Icons in `design/icons/*.svg` sind neu gezeichnet. Form und Rundung weichen leicht von den Entwurfs-Icons ab. Farben und Platz müssen stimmen: Gewerke-Icons Petrol bzw. Orange ohne Fläche, Bedien-Icons in der Textfarbe der Umgebung, Luna-Mond auf Tiefsee. X, Chevrons und Häkchen sind etwas größer als im Entwurf.
