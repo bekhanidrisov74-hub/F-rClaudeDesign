@@ -153,7 +153,7 @@ Typische Nachbesserungen, einfach im selben Chat schreiben:
 Wenn die sechs PNGs in `design/bilder-roh/` liegen, führt `node scripts/prepare-images.mjs` aus (Sharp-Pfad siehe Projekt-Gedächtnis):
 
 1. Farben an die Tokens angleichen: Ecken auf Tiefsee `#001B2A`, Lichtkegel auf Türkis `#3AA8B8`. Orange, Weiß und Grau bleiben, Chrom färbt mit.
-   Achtung: `HELL` im Skript ist die Helligkeit der Lichtmitte der **alten** Serie (0,58). Die neue Serie ist bewusst dunkler. Vorher an den neuen Rohbildern messen und anpassen, sonst wird der Lichtkegel zu hell oder zu trüb.
+   Achtung: Das Skript färbt jede Stelle mit der Helligkeit `HELL` auf **volles** Türkis, also genau die Farbe des Anruf-Knopfs. `HELL` (0,58) ist die Lichtmitte der alten Serie. Die neue Serie soll gedämpft bleiben: An den neuen Rohbildern die Helligkeit der Lichtmitte messen und `HELL` bewusst **darüber** setzen (etwa 0,1 höher). Dann landet der Lichtkegel auf einer Mischung aus Tiefsee und Türkis, und der Anruf-Knopf bleibt das hellste Türkis der Seite. `HELL` auf den gemessenen Wert zu setzen, würde den Kegel wieder voll türkis machen.
 2. Auf 2400 × 2400 px hochskalieren (`design/bilder-final/`).
 3. WebP und AVIF in 480, 800, 1200 und 2400 px nach `public/images/` schreiben.
 
