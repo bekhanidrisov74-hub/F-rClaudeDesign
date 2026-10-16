@@ -151,6 +151,24 @@
   mask-image: linear-gradient(to bottom, black 92%, transparent);
 }
 
+/* Haarlinien-Raster in dunklen Karten (Zusagen), oben kräftig, nach unten auslaufend */
+@utility raster-karte {
+  background-image:
+    linear-gradient(to right, var(--fx-tuerkis) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--fx-tuerkis) 1px, transparent 1px);
+  background-size: var(--fx-s-8) var(--fx-s-8);
+  mask-image: radial-gradient(ellipse 80% 50% at 50% 0%, black 70%, transparent 110%);
+}
+
+/* Karten gleiten beim Hineinscrollen ein (nur wo Scroll-Animationen gehen; sonst sind sie einfach da) */
+@utility einblenden {
+  @supports (animation-timeline: view()) {
+    animation: einblenden linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 45%;
+  }
+}
+
 /* Schmaler Scrollbalken in Rand-Farbe für innen scrollende Flächen (Luna-Verlauf) */
 @utility duenner-balken {
   scrollbar-width: thin;
@@ -218,4 +236,37 @@
 @keyframes spinner-strich {
   from { opacity: 0.15; }
   to { opacity: 1; }
+}
+
+/* Ladeanzeige (ui/Loader): Wege in % der Punktgröße, damit jede Größe passt */
+@keyframes loader-punkt-1 {
+  20% { transform: scale(1); }
+  45% { transform: translate(22.9%, 17.1%) scale(0.45); }
+  60%, 80% { transform: translate(114.3%, 85.7%) scale(0.45); }
+  100% { transform: translate(0) scale(1); }
+}
+@keyframes loader-punkt-2 {
+  20% { transform: scale(1); }
+  45% { transform: translate(-22.9%, 17.1%) scale(0.45); }
+  60%, 80% { transform: translate(-114.3%, 85.7%) scale(0.45); }
+  100% { transform: translate(0) scale(1); }
+}
+@keyframes loader-punkt-3 {
+  20% { transform: scale(1); }
+  45% { transform: translateY(-25.7%) scale(0.45); }
+  60%, 80% { transform: translateY(-128.6%) scale(0.45); }
+  100% { transform: translateY(0) scale(1); }
+}
+@keyframes loader-drehen {
+  55% { transform: rotate(0deg); }
+  80%, 100% { transform: rotate(360deg); }
+}
+@keyframes loader-ebene {
+  0%, 100% { z-index: 3; }
+  33.3% { z-index: 2; }
+  66.6% { z-index: 1; }
+}
+
+@keyframes einblenden {
+  from { opacity: 0; transform: translateY(var(--fx-s-5)); }
 }

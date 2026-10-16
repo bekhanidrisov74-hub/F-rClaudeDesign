@@ -133,6 +133,7 @@ export const copy = {
 
   fuss: {
     text: 'Vermittlung von Handwerker-Notdiensten in Österreich. fixit247 repariert nicht selbst, sondern gibt Ihre Anfrage an geprüfte Fachbetriebe aus Ihrer Region weiter. Die Vermittlung ist kostenlos. Der Vertrag kommt direkt mit dem Betrieb zustande.',
+    seiten: 'Seiten', // nicht im Design: Spalte mit den Abschnitten aus copy.kopf.nav
     kontakt: 'Kontakt',
     /** Desktop (02): „Telefon [Telefonnummer]“, „WhatsApp [WhatsApp-Nummer]“; Handy (01): ohne Präfix bzw. ohne Nummer */
     telefon: 'Telefon',
@@ -255,6 +256,56 @@ export const copy = {
   },
 
   // nicht im Design: Abschnitt „Häufige Fragen“, Antworten aus Sätzen der Startseite zusammengesetzt
+  /** nicht im Design: Abschnitt „Zusagen“ (Bento-Raster) zwischen Preisrechner und Anfrage. Sätze aus Vertrauensleiste, So funktioniert's und Häufigen Fragen. */
+  zusagen: {
+    titel: 'Darauf können Sie sich verlassen',
+    lead: 'So arbeiten wir: ruhig, klar und ohne Überraschungen.',
+    karten: [
+      {
+        icon: 'ui-vermittlung',
+        text: 'Wir reparieren nicht selbst. Wir geben Ihre Anfrage an einen geprüften Fachbetrieb aus Ihrer Region weiter.',
+        titel: 'Vermittlung statt Reparatur',
+        zusatz: 'Der Vertrag kommt direkt mit dem Betrieb zustande',
+      },
+      {
+        icon: 'ui-haekchen',
+        text: 'Die Vermittlung ist kostenlos. Sie zahlen nur den Betrieb.',
+        titel: 'Kostenlos für Sie',
+        zusatz: 'Keine Gebühr für die Vermittlung',
+      },
+      {
+        icon: 'ui-rund-um-die-uhr',
+        text: 'Auch nachts, an Sonn- und Feiertagen sind wir erreichbar.',
+        titel: 'Rund um die Uhr',
+        zusatz: 'Anruf, WhatsApp oder Formular',
+      },
+      {
+        icon: 'ui-region',
+        text: 'Geprüfte Fachbetriebe in Ihrer Nähe.',
+        titel: 'Aus Ihrer Region',
+        zusatz: 'Passend zu Ihrer Postleitzahl',
+      },
+      {
+        icon: 'ui-richtpreis',
+        text: 'Sie kennen die Preisspanne, bevor jemand kommt.',
+        titel: 'Richtpreise vorab',
+        zusatz: 'Im Preisrechner und in den Leistungen',
+      },
+      {
+        icon: 'ui-anrufen',
+        text: 'Der Betrieb ruft Sie zurück, nennt den Preis und kommt zu Ihnen.',
+        titel: 'Direkt zum Betrieb',
+        zusatz: 'Rückruf nach Ihrer Anfrage',
+      },
+      {
+        icon: 'ui-info',
+        text: 'Alle Preise sind Richtpreise der Betriebe. Den genauen Preis vereinbaren Sie mit dem Betrieb.',
+        titel: 'Richtpreise, keine Festpreise',
+        zusatz: 'Der Betrieb nennt Ihnen den Preis',
+      },
+    ],
+  },
+
   fragen: {
     titel: 'Häufige Fragen',
     lead: 'Kurz beantwortet. Ihre Frage ist nicht dabei? Rufen Sie uns an, wir sind rund um die Uhr erreichbar.',

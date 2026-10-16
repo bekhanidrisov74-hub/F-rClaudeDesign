@@ -1,6 +1,7 @@
 import type { ReactNode, Ref } from 'react'
 import { Chip } from '../components/ui/Chip'
 import { Icon } from '../components/ui/Icon'
+import { Loader } from '../components/ui/Loader'
 import { AUFTRAG_AUFGEGEBEN, copy } from '../content/copy'
 import { Erfolg } from './cards/Erfolg'
 import { Kurzfassung } from './cards/Kurzfassung'
@@ -92,8 +93,8 @@ export function Verlauf({ luna, denkt, ref, onAntwort, kontakt, zusammenfassung,
               <>
                 <Nachrichten verlauf={luna.verlauf} />
                 {denkt && (
-                  <div aria-hidden="true" className={`${BLASE} ${VON.luna}`}>
-                    …
+                  <div aria-hidden="true" className={`${BLASE} ${VON.luna} flex`}>
+                    <Loader groesse={40} />
                   </div>
                 )}
                 {luna.phase === 'SUMMARY' && <Zusammenfassung anfrage={luna.anfrage} {...zusammenfassung} />}

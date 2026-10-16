@@ -6,6 +6,7 @@ import { Leistungen } from './Leistungen'
 import { Preisrechner } from './Preisrechner'
 import { Seitenrahmen } from './Seitenrahmen'
 import { Vertrauensleiste } from './Vertrauensleiste'
+import { Zusagen } from './Zusagen'
 
 export function Startseite() {
   return (
@@ -15,6 +16,7 @@ export function Startseite() {
       <Leistungen />
       <Ablauf />
       <Preisrechner />
+      <Zusagen />
       <Anfrage />
       <Fragen />
     </Seitenrahmen>

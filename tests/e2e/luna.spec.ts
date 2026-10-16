@@ -308,6 +308,28 @@ test('Sendefehler mit ?fehler=1: Alarm, Angaben bleiben, Erneut versuchen mit de
   expect(gesendet[1].get('anfrageId')).toBe(gesendet[0].get('anfrageId'))
 })
 
+// Niedrige Fenster (Screen 10, 12): Erfolg und Sendefehler zeigt der Verlauf mit ihrem Ende, ihre Knöpfe bleiben sichtbar.
+// Nur die Zusammenfassung zeigt er mit ihrem Anfang (accepted-deviations).
+for (const hoehe of [768, 600])
+  for (const [karte, pfad, knopf] of [
+    ['Erfolg', '/', 'Neue Anfrage starten'],
+    ['Sendefehler', '/?fehler=1', 'Erneut versuchen'],
+  ] as const)
+    test(`${karte}: „${knopf}“ liegt bei 1024 × ${hoehe} vollständig im sichtbaren Verlauf`, async ({ page }, info) => {
+      test.skip(info.project.name !== 't1024', 'setzt die Größe selbst')
+      await page.setViewportSize({ width: 1024, height: hoehe })
+      await page.goto(pfad)
+      await lunaAbsenden(page)
+      await expect(chat(page).getByRole('button', { name: knopf })).toBeInViewport({ ratio: 1 })
+    })
+
+test('Zusammenfassung: der Verlauf zeigt sie mit ihrem Anfang (1024 × 768)', async ({ page }, info) => {
+  test.skip(info.project.name !== 't1024', 'einmal reicht')
+  await page.goto('/')
+  await lunaBisZusammenfassung(page)
+  await expect(chat(page).getByRole('heading', { name: 'Ihre Anfrage' })).toBeInViewport({ ratio: 1 })
+})
+
 test('Wechsel über 640 px bei offenem Chat ohne Fehler, Verlauf bleibt', async ({ page }, info) => {
   test.skip(info.project.name !== 't1024', 'einmal reicht')
   const fehler: string[] = []

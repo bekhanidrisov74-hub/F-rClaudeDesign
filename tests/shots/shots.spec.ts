@@ -81,6 +81,8 @@ for (const z of ZUSTAENDE)
       if (z.uhr) await page.clock.install()
       await page.goto(z.pfad)
       await page.evaluate(() => document.fonts.ready)
+      // Kartenbilder laden verzögert; ohne das zeigt der Vollseiten-Screenshot leeres Türkis.
+      await page.evaluate(() => Promise.all([...document.images].map((img) => { img.loading = 'eager'; return img.decode().catch(() => {}) })))
       await z.vorbereiten?.(page)
       const pfad = `tests/screens-actual/${z.name}-${breite}.png`
       if (z.element) {

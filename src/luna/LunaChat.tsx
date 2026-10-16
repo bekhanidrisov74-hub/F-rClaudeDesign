@@ -100,12 +100,13 @@ export function LunaChat() {
   }, [lunaOffen])
 
   // Verlauf unten halten: bei neuen Nachrichten und nach dem Öffnen (der Dialog war ausgeblendet).
-  // Karten (Zusammenfassung, Erfolg, Sendefehler) mit ihrem Anfang zeigen: Sie sind oft höher als der Verlauf.
+  // Nur die Zusammenfassung mit ihrem Anfang zeigen: Sie ist oft höher als der Verlauf (tests/accepted-deviations.md).
+  // Erfolg und Sendefehler stehen unten (Screen 10, 12), damit ihre Knöpfe auch in niedrigen Fenstern sichtbar bleiben.
   // Nicht beim Senden und nicht bei Fehlertexten neu ausrichten, sonst springt der gedrückte Knopf bzw. das Feld weg.
   useEffect(() => {
     const el = verlauf.current
     if (!el) return
-    const karte = el.querySelector<HTMLElement>('[data-karte]')
+    const karte = luna.phase === 'SUMMARY' ? el.querySelector<HTMLElement>('[data-karte]') : null
     el.scrollTop = karte
       ? el.scrollTop + karte.getBoundingClientRect().top - el.getBoundingClientRect().top - parseFloat(getComputedStyle(el).paddingTop)
       : el.scrollHeight
