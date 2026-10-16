@@ -1,4 +1,5 @@
 import type { AriaAttributes, MouseEventHandler, ReactNode } from 'react'
+import { Spinner } from './Spinner'
 
 /**
  * Knöpfe außer Anrufen (der hat CallButton).
@@ -6,6 +7,7 @@ import type { AriaAttributes, MouseEventHandler, ReactNode } from 'react'
  * - dunkel:   auf Tiefsee, Rand, Kalk-Schrift („Luna fragen“, „Per WhatsApp schreiben“)
  * - primaer:  Tiefsee-Fläche, Kalk-Schrift („Anfrage senden“, „Auftrag aufgeben“)
  * - textlink: unterstrichen („Preisübersicht öffnen“, „Zum Preisrechner“)
+ * `laedt` zeigt die Ladeanzeige vor dem Text (Text und Sperre setzt der Aufrufer).
  * Mit `href` ein Link, sonst ein <button type="button">. Größe und Breite über className,
  * ein eigenes rounded-* bzw. font-<gewicht> ersetzt Standardradius bzw. -gewicht. aria-* und data-* werden durchgereicht.
  */
@@ -19,6 +21,7 @@ interface Props extends AriaAttributes {
   className?: string
   type?: 'button' | 'submit'
   disabled?: boolean
+  laedt?: boolean
   id?: string
   [data: `data-${string}`]: string | number | boolean | undefined
 }
@@ -30,7 +33,7 @@ const ARTEN: Record<Art, string> = {
   textlink: 'bg-transparent text-current underline underline-offset-4',
 }
 
-export function Button({ art, children, href, onClick, className = '', type = 'button', disabled, ...rest }: Props) {
+export function Button({ art, children, href, onClick, className = '', type = 'button', disabled, laedt, ...rest }: Props) {
   const radius = art === 'textlink' || /\brounded-/.test(className) ? '' : 'rounded-btn'
   const gewicht = /\bfont-(?:bold|extrabold|semibold|\[\d+\])/.test(className) ? '' : 'font-bold'
   const klassen = `inline-flex items-center justify-center gap-s2 font-display ${gewicht} leading-[1.1] cursor-pointer disabled:cursor-default ${ARTEN[art]} ${radius} ${className}`
@@ -42,6 +45,7 @@ export function Button({ art, children, href, onClick, className = '', type = 'b
     )
   return (
     <button type={type} onClick={onClick} disabled={disabled} className={klassen} {...rest}>
+      {laedt && <Spinner className="size-[20px]" />}
       {children}
     </button>
   )

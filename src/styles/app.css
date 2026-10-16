@@ -213,3 +213,9 @@
     overflow: hidden;
   }
 }
+
+/* Ladeanzeige (ui/Spinner) */
+@keyframes spinner-strich {
+  from { opacity: 0.15; }
+  to { opacity: 1; }
+}

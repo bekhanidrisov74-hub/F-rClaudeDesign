@@ -294,6 +294,7 @@ export function AnfrageFormular() {
             art="primaer"
             type={hydriert ? 'submit' : 'button'}
             aria-disabled={sendend}
+            laedt={sendend}
             className="min-h-[56px] w-full px-s6 text-btn-l font-[750] aria-disabled:cursor-default dialog:w-auto"
           >
             {sendend ? t.sendend : t.senden}
