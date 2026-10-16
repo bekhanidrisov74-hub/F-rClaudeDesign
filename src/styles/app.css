@@ -142,6 +142,15 @@
   border-style: solid;
 }
 
+/* Haarlinien-Raster unter dem Hero (GridPulse), Zelle = --fx-s-5; läuft unten aus */
+@utility raster {
+  background-image:
+    linear-gradient(to right, var(--fx-linie) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--fx-linie) 1px, transparent 1px);
+  background-size: var(--fx-s-5) var(--fx-s-5);
+  mask-image: linear-gradient(to bottom, black 92%, transparent);
+}
+
 /* Schmaler Scrollbalken in Rand-Farbe für innen scrollende Flächen (Luna-Verlauf) */
 @utility duenner-balken {
   scrollbar-width: thin;

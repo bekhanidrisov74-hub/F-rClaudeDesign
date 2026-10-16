@@ -4,6 +4,7 @@ import { Schnellwahl } from './Schnellwahl'
 import { Bildflaeche } from './ui/Bildflaeche'
 import { Button } from './ui/Button'
 import { CallButton } from './ui/CallButton'
+import { GridPulse } from './ui/GridPulse'
 import { Icon } from './ui/Icon'
 
 /**
@@ -19,21 +20,22 @@ const ZWEITICON = 'size-[20px] nav:size-[22px]'
 
 export function Hero() {
   return (
-    <div className={SPALTEN}>
+    <div className={`relative isolate ${SPALTEN}`}>
+      <GridPulse />
       <section
         id="start"
         aria-labelledby="hero-titel"
         className="px-gutter py-s5 nav:col-start-2 nav:row-start-1 nav:px-0 nav:pt-s9 nav:pb-s10"
       >
         <div className="flex max-w-[560px] flex-col gap-s4 nav:gap-s6 nav:pb-s7">
-          <h1 id="hero-titel" className="text-h1">
+          <h1 id="hero-titel" data-grid-avoid className="text-h1">
             {copy.hero.h1.map((zeile) => (
               <span key={zeile} className="block">
                 {zeile}
               </span>
             ))}
           </h1>
-          <p className="max-w-[27em] text-lead text-schiefer">{copy.hero.lead}</p>
+          <p data-grid-avoid className="max-w-[27em] text-lead text-schiefer">{copy.hero.lead}</p>
 
           <div className="mt-s1 flex flex-col gap-s3 nav:mt-s2 nav:max-w-[470px]">
             <CallButton variante="hero" nummer />
@@ -49,7 +51,7 @@ export function Hero() {
             </div>
           </div>
 
-          <p className="max-w-[34em] text-small text-balance text-schiefer">{copy.hero.hinweis}</p>
+          <p data-grid-avoid className="max-w-[34em] text-small text-balance text-schiefer">{copy.hero.hinweis}</p>
         </div>
       </section>
 
