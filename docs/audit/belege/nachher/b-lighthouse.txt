@@ -1,0 +1,8 @@
+//[^/]+/index.html$ [ true, false ]
+impressum/index.html$ [ false, true ]
+http://localhost:58799/index.html  {"performance":0.97,"accessibility":1,"best-practices":1,"seo":1}
+http://localhost:58799/index.html  {"performance":0.98,"accessibility":1,"best-practices":1,"seo":1}
+http://localhost:58799/impressum/index.html  {"performance":0.98,"accessibility":1,"best-practices":1,"seo":0.63}
+http://localhost:58799/impressum/index.html  {"performance":0.98,"accessibility":1,"best-practices":1,"seo":0.63}
+http://localhost:58799/index.html (repr.) {"performance":0.98,"accessibility":1,"best-practices":1,"seo":1}
+http://localhost:58799/impressum/index.html (repr.) {"performance":0.98,"accessibility":1,"best-practices":1,"seo":0.63}

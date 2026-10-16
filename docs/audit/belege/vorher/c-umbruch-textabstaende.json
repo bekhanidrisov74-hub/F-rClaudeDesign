@@ -1,0 +1,22 @@
+[
+  {
+    "breite": 320,
+    "scrollWidth": 320
+  },
+  {
+    "breite": 640,
+    "scrollWidth": 640
+  },
+  {
+    "breite": 390,
+    "textabstaende": true,
+    "scrollWidth": 390,
+    "abgeschnitten": []
+  },
+  {
+    "breite": 1440,
+    "textabstaende": true,
+    "scrollWidth": 1440,
+    "abgeschnitten": []
+  }
+]

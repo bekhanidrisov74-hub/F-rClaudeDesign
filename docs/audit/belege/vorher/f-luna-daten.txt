@@ -1,0 +1,12 @@
+[
+ [
+  {
+   "role": "user",
+   "content": "Rohrbruch in der Küche, bitte rufen Sie Maria Huber an: 0664 1234567, Hauptstraße 5, 1020 Wien"
+  }
+ ]
+]
+sessionStorage-Schlüssel: ["fixit-luna","fixit-nudge"]
+localStorage-Schlüssel: []
+Cookies: []
+Telefonnummer im sessionStorage: true

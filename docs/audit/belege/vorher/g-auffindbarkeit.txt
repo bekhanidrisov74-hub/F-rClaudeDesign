@@ -1,0 +1,57 @@
+### grep -o "<title>[^<]*</title>" dist/index.html
+<title>fixit247 – Vermittlung von Handwerker-Notdiensten rund um die Uhr</title>
+### grep -o "<meta [^>]*>" dist/index.html
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#F2F7F9" />
+<meta name="description" content="Rohrbruch, ausgesperrt, Strom weg? Wir vermitteln Ihnen sofort einen geprüften Fachbetrieb aus Ihrer Region. Die Vermittlung ist kostenlos." />
+<meta property="og:title" content="fixit247 – Vermittlung von Handwerker-Notdiensten rund um die Uhr" />
+<meta property="og:description" content="Rohrbruch, ausgesperrt, Strom weg? Wir vermitteln Ihnen sofort einen geprüften Fachbetrieb aus Ihrer Region. Die Vermittlung ist kostenlos." />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="de_AT" />
+### grep -o "<link rel=\"canonical\"[^>]*>" dist/index.html
+(kein Treffer)
+### grep -c "application/ld+json" dist/index.html
+0
+### Überschriften (h1–h3) in dist/index.html
+h1: Handwerker- Notdienst. Rund um die Uhr.
+h2: Was ist passiert?
+h2: Leistungen
+h3: Installateur
+h3: Heizung &amp; Klima
+h3: Schlüsseldienst
+h3: Elektro
+h3: Haushaltsgeräte
+h3: Ihr Problem ist nicht dabei?
+h2: So funktioniert&#x27;s
+h3: Anfrage senden
+h3: Wir vermitteln einen Betrieb in der Nähe
+h3: Der Betrieb meldet sich und kommt
+h2: Was kostet der Einsatz ungefähr?
+h3: Ihre Richtpreis-Spanne
+h2: Anfrage senden
+h3: Lieber sofort sprechen?
+h2: Kontakt
+h2: Rechtliches
+h2: Richtpreise im Überblick
+### cat dist/sitemap.xml
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>[Domain]/</loc></url>
+</urlset>
+### cat dist/robots.txt
+User-agent: *
+Allow: /
+### Wortzahl sichtbarer Text je Gewerk-Karte
+Wörter gesamt (sichtbar+versteckt): 791
+Wien             0
+Graz             0
+Linz             0
+Salzburg         0
+Innsbruck        0
+Notdienst        3
+Schlüsseldienst  9
+Aufsperrdienst   0
+Installateur     9
+Elektriker       0
+Rohrbruch        3

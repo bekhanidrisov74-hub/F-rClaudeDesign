@@ -1,0 +1,590 @@
+[
+  {
+    "el": "a",
+    "name": "fixit247, zur Startseite",
+    "rahmen": "solid 3px rgb(58, 168, 184) +3px",
+    "box": [
+      16,
+      10,
+      78,
+      44
+    ],
+    "verdeckt": null
+  },
+  {
+    "el": "a",
+    "name": "Anrufen",
+    "rahmen": "solid 3px rgb(58, 168, 184) +3px",
+    "box": [
+      211,
+      10,
+      119,
+      44
+    ],
+    "verdeckt": null
+  },
+  {
+    "el": "button#menue-knopf",
+    "name": "Menü öffnen",
+    "rahmen": "solid 3px rgb(58, 168, 184) +3px",
+    "box": [
+      338,
+      10,
+      44,
+      44
+    ],
+    "verdeckt": null
+  },
+  {
+    "el": "a",
+    "name": "Jetzt anrufen [Telefonnummer]",
+    "rahmen": "solid 3px rgb(58, 168, 184) +3px",
+    "box": [
+      16,
+      327,
+      358,
+      70
+    ],
+    "verdeckt": null
+  },
+  {
+    "el": "a",
+    "name": "WhatsApp",
+    "rahmen": "solid 3px rgb(58, 168, 184) +3px",
+    "box": [
+      16,
+      409,
+      173,
+      54
+    ],
+    "verdeckt": null
+  },
+  {
+    "el": "a",
+    "name": "Anfrage senden",
+    "rahmen": "solid 3px rgb(58, 168, 184) +3px",
+    "box": [
+      201,
+      409,
+      173,
+      54
+    ],
+    "verdeckt": null
+  },
+  {
+    "el": "a",
+    "name": "Installateur",
+    "rahmen": "solid 3px rgb(58, 168, 184) +3px",
+    "box": [
+      16,
+      590,
+      173,
+      112
+    ],
+    "verdeckt": null
+  },
+  {
+    "el": "a",
+    "name": "Heizung & Klima",
+    "rahmen": "solid 3px rgb(58, 168, 184) +3px",
+    "box": [
+      201,
+      590,
+      173,
+      112
+    ],
+    "verdeckt": null
+  },
+  {
+    "el": "a",
+    "name": "Schlüsseldienst",
+    "rahmen": "solid 3px rgb(58, 168, 184) +3px",
+    "box": [
+      16,
+      714,
+      173,
+      112
+    ],
+    "verdeckt": null
+  },
+  {
+    "el": "a",
+    "name": "Elektro",
+    "rahmen": "solid 3px rgb(58, 168, 184) +3px",
+    "box": [
+      201,
+      714,
+      173,
+      112
+    ],
+    "verdeckt": null
+  },
+  {
+    "el": "a",
+    "name": "Haushaltsgeräte",
+    "rahmen": "solid 3px rgb(58, 168, 184) +3px",
+    "box": [
+      16,
+      717,
+      173,
+      127
+    ],
+    "verdeckt": null
+  },
+  {
+    "el": "a",
+    "name": "Nicht sicher? Luna fragen",
+    "rahmen": "solid 3px rgb(58, 168, 184) +3px",
+    "box": [
+      201,
+      717,
+      173,
+      127
+    ],
+    "verdeckt": null
+  },
+  {
+    "el": "button",
+    "name": "Alle Richtpreise im Überblick",
+    "rahmen": "solid 3px rgb(58, 168, 184) +3px",
+    "box": [
+      16,
+      429,
+      358,
+      50
+    ],
+    "verdeckt": null
+  },
+  {
+    "el": "a",
+    "name": "Installateur anfragen",
+    "rahmen": "solid 3px rgb(58, 168, 184) +3px",
+    "box": [
+      33,
+      429,
+      324,
+      50
+    ],
+    "verdeckt": null
+  },
+  {
+    "el": "a",
+    "name": "Heizung & Klima anfragen",
+    "rahmen": "solid 3px rgb(58, 168, 184) +3px",
+    "box": [
+      33,
+      429,
+      324,
+      50
+    ],
+    "verdeckt": null
+  },
+  {
+    "el": "a",
+    "name": "Schlüsseldienst anfragen",
+    "rahmen": "solid 3px rgb(58, 168, 184) +3px",
+    "box": [
+      33,
+      429,
+      324,
+      50
+    ],
+    "verdeckt": null
+  },
+  {
+    "el": "a",
+    "name": "Elektro anfragen",
+    "rahmen": "solid 3px rgb(58, 168, 184) +3px",
+    "box": [
+      33,
+      429,
+      324,
+      50
+    ],
+    "verdeckt": null
+  },
+  {
+    "el": "a",
+    "name": "Haushaltsgeräte anfragen",
+    "rahmen": "solid 3px rgb(58, 168, 184) +3px",
+    "box": [
+      33,
+      429,
+      324,
+      50
+    ],
+    "verdeckt": null
+  },
+  {
+    "el": "a",
+    "name": "Jetzt anrufen",
+    "rahmen": "solid 3px rgb(58, 168, 184) +3px",
+    "box": [
+      40,
+      771,
+      310,
+      56
+    ],
+    "verdeckt": null
+  },
+  {
+    "el": "a",
+    "name": "Luna fragen",
+    "rahmen": "solid 3px rgb(58, 168, 184) +3px",
+    "box": [
+      40,
+      792,
+      310,
+      52
+    ],
+    "verdeckt": null
+  },
+  {
+    "el": "button",
+    "name": "Installateur",
+    "rahmen": "solid 3px rgb(58, 168, 184) +3px",
+    "box": [
+      33,
+      430,
+      148,
+      48
+    ],
+    "verdeckt": null
+  },
+  {
+    "el": "button",
+    "name": "Heizung & Klima",
+    "rahmen": "solid 3px rgb(58, 168, 184) +3px",
+    "box": [
+      189,
+      430,
+      161,
+      48
+    ],
+    "verdeckt": null
+  },
+  {
+    "el": "button",
+    "name": "Schlüsseldienst",
+    "rahmen": "solid 3px rgb(58, 168, 184) +3px",
+    "box": [
+      33,
+      486,
+      158,
+      48
+    ],
+    "verdeckt": null
+  },
+  {
+    "el": "button",
+    "name": "Elektro",
+    "rahmen": "solid 3px rgb(58, 168, 184) +3px",
+    "box": [
+      199,
+      486,
+      90,
+      48
+    ],
+    "verdeckt": null
+  },
+  {
+    "el": "button",
+    "name": "Haushaltsgeräte",
+    "rahmen": "solid 3px rgb(58, 168, 184) +3px",
+    "box": [
+      33,
+      542,
+      163,
+      48
+    ],
+    "verdeckt": null
+  },
+  {
+    "el": "button",
+    "name": "Eine Stunde weniger",
+    "rahmen": "solid 3px rgb(58, 168, 184) +3px",
+    "box": [
+      33,
+      647,
+      52,
+      52
+    ],
+    "verdeckt": null
+  },
+  {
+    "el": "button",
+    "name": "Eine Stunde mehr",
+    "rahmen": "solid 3px rgb(58, 168, 184) +3px",
+    "box": [
+      305,
+      647,
+      52,
+      52
+    ],
+    "verdeckt": null
+  },
+  {
+    "el": "button",
+    "name": "Sonntag +100 %",
+    "rahmen": "solid 3px rgb(58, 168, 184) +3px",
+    "box": [
+      33,
+      796,
+      156,
+      48
+    ],
+    "verdeckt": null
+  },
+  {
+    "el": "button",
+    "name": "Feiertag +100 %",
+    "rahmen": "solid 3px rgb(58, 168, 184) +3px",
+    "box": [
+      197,
+      796,
+      155,
+      48
+    ],
+    "verdeckt": null
+  },
+  {
+    "el": "button",
+    "name": "Nacht +100 %",
+    "rahmen": "solid 3px rgb(58, 168, 184) +3px",
+    "box": [
+      33,
+      430,
+      138,
+      48
+    ],
+    "verdeckt": null
+  },
+  {
+    "el": "a",
+    "name": "Jetzt anrufen",
+    "rahmen": "solid 3px rgb(58, 168, 184) +3px",
+    "box": [
+      32,
+      426,
+      326,
+      56
+    ],
+    "verdeckt": null
+  },
+  {
+    "el": "button",
+    "name": "Preisübersicht öffnen",
+    "rahmen": "solid 3px rgb(58, 168, 184) +3px",
+    "box": [
+      32,
+      494,
+      326,
+      48
+    ],
+    "verdeckt": null
+  },
+  {
+    "el": "input#anfrage-name",
+    "name": "Vor- und Nachname",
+    "rahmen": "solid 3px rgb(58, 168, 184) +3px",
+    "box": [
+      33,
+      427,
+      324,
+      54
+    ],
+    "verdeckt": null
+  },
+  {
+    "el": "input#anfrage-telefon",
+    "name": "Für den Rückruf",
+    "rahmen": "solid 3px rgb(58, 168, 184) +3px",
+    "box": [
+      33,
+      559,
+      324,
+      54
+    ],
+    "verdeckt": null
+  },
+  {
+    "el": "input#anfrage-plzOrt",
+    "name": "z. B. 1020 Wien",
+    "rahmen": "solid 3px rgb(58, 168, 184) +3px",
+    "box": [
+      33,
+      712,
+      324,
+      54
+    ],
+    "verdeckt": null
+  },
+  {
+    "el": "select#anfrage-gewerk",
+    "name": "Bitte wählen Installateur Heizung & Klima Schlüsse",
+    "rahmen": "solid 3px rgb(58, 168, 184) +3px",
+    "box": [
+      33,
+      427,
+      324,
+      54
+    ],
+    "verdeckt": null
+  },
+  {
+    "el": "textarea#anfrage-beschreibung",
+    "name": "Was ist passiert? Zum Beispiel: Unter der Spüle tr",
+    "rahmen": "solid 3px rgb(58, 168, 184) +3px",
+    "box": [
+      33,
+      558,
+      324,
+      128
+    ],
+    "verdeckt": null
+  },
+  {
+    "el": "input#anfrage-einwilligung",
+    "name": "on",
+    "rahmen": "none 3px rgb(58, 168, 184) +3px",
+    "box": [
+      33,
+      694,
+      44,
+      44
+    ],
+    "verdeckt": null
+  },
+  {
+    "el": "a",
+    "name": "Datenschutzerklärung",
+    "rahmen": "solid 3px rgb(58, 168, 184) +3px",
+    "box": [
+      146,
+      811,
+      144,
+      20
+    ],
+    "verdeckt": null
+  },
+  {
+    "el": "button",
+    "name": "Anfrage senden",
+    "rahmen": "solid 3px rgb(58, 168, 184) +3px",
+    "box": [
+      33,
+      426,
+      324,
+      56
+    ],
+    "verdeckt": null
+  },
+  {
+    "el": "a",
+    "name": "Jetzt anrufen",
+    "rahmen": "solid 3px rgb(58, 168, 184) +3px",
+    "box": [
+      32,
+      691,
+      326,
+      56
+    ],
+    "verdeckt": null
+  },
+  {
+    "el": "a",
+    "name": "Per WhatsApp schreiben",
+    "rahmen": "solid 3px rgb(58, 168, 184) +3px",
+    "box": [
+      32,
+      759,
+      326,
+      54
+    ],
+    "verdeckt": null
+  },
+  {
+    "el": "a",
+    "name": "[Telefonnummer]",
+    "rahmen": "solid 3px rgb(58, 168, 184) +3px",
+    "box": [
+      16,
+      603,
+      113,
+      44
+    ],
+    "verdeckt": null
+  },
+  {
+    "el": "a",
+    "name": "WhatsApp",
+    "rahmen": "solid 3px rgb(58, 168, 184) +3px",
+    "box": [
+      16,
+      639,
+      67,
+      44
+    ],
+    "verdeckt": null
+  },
+  {
+    "el": "a",
+    "name": "[E-Mail-Adresse]",
+    "rahmen": "solid 3px rgb(58, 168, 184) +3px",
+    "box": [
+      16,
+      675,
+      110,
+      44
+    ],
+    "verdeckt": null
+  },
+  {
+    "el": "a",
+    "name": "Impressum",
+    "rahmen": "solid 3px rgb(58, 168, 184) +3px",
+    "box": [
+      203,
+      603,
+      75,
+      44
+    ],
+    "verdeckt": null
+  },
+  {
+    "el": "a",
+    "name": "Datenschutz",
+    "rahmen": "solid 3px rgb(58, 168, 184) +3px",
+    "box": [
+      203,
+      639,
+      82,
+      44
+    ],
+    "verdeckt": null
+  },
+  {
+    "el": "a",
+    "name": "AGB",
+    "rahmen": "solid 3px rgb(58, 168, 184) +3px",
+    "box": [
+      203,
+      675,
+      44,
+      44
+    ],
+    "verdeckt": null
+  },
+  {
+    "el": "button#luna-knopf",
+    "name": "Chat mit Luna öffnen",
+    "rahmen": "solid 3px rgb(58, 168, 184) +3px",
+    "box": [
+      316,
+      770,
+      58,
+      58
+    ],
+    "verdeckt": null
+  }
+]

@@ -82,7 +82,7 @@ Bewusste Abweichungen vom Entwurf stehen in `tests/accepted-deviations.md`.
 | Logo | Wortmarke „fixit247“ in Bricolage 800 | `src/components/Header.tsx`, `Footer.tsx`; Favicon `public/favicon.svg` |
 | Telefon, WhatsApp, E-Mail, Firmenname | Platzhalter, Links funktionieren ohne Nummer (`tel:`, `wa.me/?text=…`) | `src/content/contact.ts` |
 | Bilder 1–6 | Türkisblaue Flächen ohne Text | `src/components/ui/Bildflaeche.tsx` (dort `<picture>` mit `public/images/bild-N.webp/.avif`) |
-| Endpunkt für Anfragen | lokaler Ersatz (Erfolg nach 800 ms, `?fehler=1` für Fehler) | Umgebungsvariable `VITE_LEAD_ENDPOINT` (Abschnitt 7) |
+| Endpunkt für Anfragen | lokaler Ersatz (Erfolg nach 800 ms, `?fehler=1` für Fehler) | Umgebungsvariablen `VITE_FORM_ENDPOINT` und `VITE_CHAT_ENDPOINT` (Abschnitt 8) |
 | Sicherheitstipps in Luna | Vorschlag aus SPEC 8, auch in der Erfolgskarte des Formulars | `src/content/gewerke.ts`: `tipp`, `tippErfolg` |
 
 ## 6. Weitere Entscheidungen und Ergänzungen
@@ -122,22 +122,24 @@ Bewusste Abweichungen vom Entwurf stehen in `tests/accepted-deviations.md`.
 | Logo | Wortmarke im Kopf und Fuß, Favicon `public/favicon.svg` (Luna-Signet) | überall |
 | WhatsApp-Symbol | Sprechblase `design/icons/ui-chat.svg` | Hero, Seitenkasten, Menü |
 
-Der Build meldet sie im Log (`scripts/prerender.mjs`), ebenso eine fehlende Domain und einen fehlenden `VITE_LEAD_ENDPOINT`.
+Der Build meldet sie im Log (`scripts/prerender.mjs`), ebenso eine fehlende Domain und fehlende `VITE_FORM_ENDPOINT` und `VITE_CHAT_ENDPOINT`.
 
-## 8. Deploy auf Vercel
+## 8. Live schalten
 
-1. Repository zu GitHub/GitLab hochladen und in Vercel als Projekt importieren. `vercel.json` setzt Build-Befehl `npm run build`, Ausgabe `dist` und `cleanUrls` (`/impressum` statt `/impressum.html`). Node 22 (mindestens 22.13).
-2. **Vor dem ersten Build** unter *Settings → Environment Variables* `VITE_FORM_ENDPOINT` (Anfrage-Eingang) und `VITE_CHAT_ENDPOINT` (KI-Backend für Luna) setzen. Beide sind Google-Apps-Script-Web-Apps aus `tools/`. Einrichtung, Vertrag und Prüfungen stehen in [docs/luna-ki/BERICHT.md](docs/luna-ki/BERICHT.md).
-   - Die Variablen werden **beim Build** in den Code geschrieben. Jede Änderung braucht ein neues Deployment.
+Hosting und Backend (Webspace mit PHP, seit 16.10.2026) stehen in [docs/hosting.md](docs/hosting.md).
+
+1. **Vor dem Build** in `.env` `VITE_FORM_ENDPOINT=/anfrage.php` (Anfrage-Eingang) und `VITE_CHAT_ENDPOINT=/chat.php` (KI-Backend für Luna) setzen, dann `npm run build` (Node 22, mindestens 22.13). Die PHP-Dateien aus `public/` kommen dabei mit nach `dist/`.
+   - Die Variablen werden **beim Build** in den Code geschrieben. Jede Änderung braucht einen neuen Build und Upload.
    - Ohne `VITE_FORM_ENDPOINT` schlägt live jedes Senden fehl (Sendefehler mit Anruf-Knopf), ohne `VITE_CHAT_ENDPOINT` läuft Luna ohne KI. Der Build-Log warnt.
-3. Der OpenAI-Schlüssel liegt nur in den Skripteigenschaften des KI-Backends (bzw. lokal in `.env`), nie in einer `VITE_`-Variable.
+2. `dist/` in den Webroot hochladen und `fixit247-konfig.php` eine Ebene darüber anlegen, wie in [docs/hosting.md](docs/hosting.md), Abschnitt „Einrichtung beim Hoster“. Unterseiten wie `/impressum` funktionieren ohne `.htaccess`.
+3. Der OpenAI-Schlüssel liegt nur in `fixit247-konfig.php` (`openai_key`, bzw. lokal in `.env`), nie in einer `VITE_`-Variable.
 4. Vor dem Livegang in `src/content/contact.ts` eintragen: `TELEFON`, `WHATSAPP` (übliche Schreibweise, z. B. `0660 123 45 67`; daraus werden `tel:+43…` und `wa.me/43…`), `EMAIL`, `FIRMA`, `DOMAIN` (z. B. `https://www.fixit247.at`; dann bekommen `sitemap.xml`, `robots.txt`, `og:url` und `canonical` echte URLs).
 5. Rechtstexte in `src/content/copy.ts` (`rechtliches`) ersetzen und das `noindex` der Rechtsseiten in `src/App.tsx` entfernen, wenn sie indexiert werden sollen.
 6. Lokal prüfen: `npm run check`, `npm run test:e2e`, `npm run lighthouse`.
 
 ## 9. Luna mit KI
 
-Gebaut am 14.10.2026 nach [docs/luna-ki/AUFGABE.md](docs/luna-ki/AUFGABE.md): Fragenkatalog je Gewerk, KI-Erfassung mit `gpt-6-luna` über Apps Script, Versand an den Anfrage-Eingang. Bericht, Prüfergebnisse, Live-Schritte und offene Punkte: [docs/luna-ki/BERICHT.md](docs/luna-ki/BERICHT.md).
+Gebaut am 14.10.2026 nach [docs/luna-ki/AUFGABE.md](docs/luna-ki/AUFGABE.md): Fragenkatalog je Gewerk, KI-Erfassung mit `gpt-6-luna` über Apps Script (seit 16.10.2026 über `public/chat.php`, siehe [docs/hosting.md](docs/hosting.md)), Versand an den Anfrage-Eingang. Bericht, Prüfergebnisse, Live-Schritte und offene Punkte: [docs/luna-ki/BERICHT.md](docs/luna-ki/BERICHT.md).
 
 ## 10. Hinweise
 

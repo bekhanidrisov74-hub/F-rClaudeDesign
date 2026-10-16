@@ -37,7 +37,7 @@ interface Zustand {
 const ZUSTAENDE: Zustand[] = [
   { name: 'startseite', pfad: '/', ganzeSeite: true },
   { name: 'falz', pfad: '/', breiten: [390] },
-  { name: 'impressum', pfad: '/impressum', breiten: [390, 1440] },
+  { name: 'impressum', pfad: '/impressum/', breiten: [390, 1440] },
   { name: 'preisuebersicht', pfad: '/', vorbereiten: oeffnePreisuebersicht },
   { name: 'menue', pfad: '/', breiten: [390], vorbereiten: oeffneMenue },
   { name: 'rechner-schluesseldienst', pfad: '/', element: rechner, vorbereiten: (p) => waehleGewerk(p, 'Schlüsseldienst') },

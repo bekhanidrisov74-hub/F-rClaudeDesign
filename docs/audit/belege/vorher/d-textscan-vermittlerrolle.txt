@@ -1,0 +1,25 @@
+### grep -n -i -E "geprüft|sofort|rund um die uhr|erreichbar|repar|garant|festpreis|auftrag|kommt zu|wir kommen|in einer minute" src/content/*.ts src/luna/*.ts (ohne Tests)
+src/content/copy.ts:6:export const AUFTRAG_AUFGEBEN = 'Auftrag aufgeben'
+src/content/copy.ts:7:/** Echo-Blase in Luna nach dem Absenden, ändert sich mit AUFTRAG_AUFGEBEN. */
+src/content/copy.ts:8:export const AUFTRAG_AUFGEGEBEN = 'Auftrag aufgegeben'
+src/content/copy.ts:40:    titel: 'fixit247 – Vermittlung von Handwerker-Notdiensten rund um die Uhr',
+src/content/copy.ts:44:      'Rohrbruch, ausgesperrt, Strom weg? Wir vermitteln Ihnen sofort einen geprüften Fachbetrieb aus Ihrer Region. Die Vermittlung ist kostenlos.',
+src/content/copy.ts:74:    h1: ['Handwerker-', 'Notdienst.', 'Rund um die Uhr.'],
+src/content/copy.ts:75:    lead: 'Rohrbruch, ausgesperrt, Strom weg? Wir vermitteln Ihnen sofort einen geprüften Fachbetrieb aus Ihrer Region.',
+src/content/copy.ts:94:      { icon: 'ui-rund-um-die-uhr', titel: 'Rund um die Uhr', text: 'Auch nachts, an Sonn- und Feiertagen' },
+src/content/copy.ts:95:      { icon: 'ui-region', titel: 'Fachbetriebe aus Ihrer Region', text: 'Geprüft und in Ihrer Nähe' },
+src/content/copy.ts:104:    lead: 'Wir vermitteln geprüfte Fachbetriebe für diese {anzahl} Bereiche. Alle Preise sind Richtpreise der Betriebe.',
+src/content/copy.ts:125:        text: 'Wir geben Ihre Anfrage an einen geprüften Fachbetrieb aus Ihrer Region weiter. Die Vermittlung ist kostenlos.',
+src/content/copy.ts:129:        text: 'Der Betrieb ruft Sie zurück, nennt den Preis und kommt zu Ihnen. Der Vertrag kommt direkt mit dem Betrieb zustande.',
+src/content/copy.ts:135:    text: 'Vermittlung von Handwerker-Notdiensten in Österreich. fixit247 repariert nicht selbst, sondern gibt Ihre Anfrage an geprüfte Fachbetriebe aus Ihrer Region weiter. Die Vermittlung ist kostenlos. Der Vertrag kommt direkt mit 
+src/content/copy.ts:214:    lead: 'Wir geben Ihre Anfrage sofort an einen passenden Fachbetrieb in Ihrer Region weiter. Der Betrieb ruft Sie zurück.',
+src/content/copy.ts:250:      titel: 'Lieber sofort sprechen?',
+src/content/copy.ts:251:      text: 'Wir sind rund um die Uhr erreichbar, auch an Sonn- und Feiertagen.',
+src/content/copy.ts:266:    kontaktTitel: 'Rund um die Uhr erreichbar',
+src/content/copy.ts:277:    anstupser: { fett: 'Notfall?', text: 'Ich helfe Ihnen in einer Minute.', schliessen: 'Hinweis schließen' },
+src/content/copy.ts:296:    notruf: 'Bei akuter Gefahr bitte sofort 122 bzw. 112 kontaktieren. Ich nehme Ihre Anfrage parallel weiter auf.',
+src/luna/flow.ts:4:// ihre Antwort ist fremde Eingabe und wird hier geprüft. Kontaktdaten kommen im Zustand nie vor.
+src/luna/flow.ts:98:const URGENT_RE = /sofort|dringend|notfall|akut|eilig|asap|so schnell wie möglich|schnellstmöglich/i
+
+### grep -n "var PARTNER" tools/apps-script.gs
+40:var PARTNER = [];

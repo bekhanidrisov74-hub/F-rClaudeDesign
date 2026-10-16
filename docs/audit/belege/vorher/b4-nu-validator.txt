@@ -1,0 +1,34 @@
+### curl -s -H 'Content-Type: text/html; charset=utf-8' --data-binary @dist/index.html 'https://validator.w3.org/nu/?out=gnu'
+:4.5-4.28: info: Trailing slash on void elements has no effect and interacts badly with unquoted attribute values.
+:5.5-5.74: info: Trailing slash on void elements has no effect and interacts badly with unquoted attribute values.
+:6.5-6.64: info: Trailing slash on void elements has no effect and interacts badly with unquoted attribute values.
+:7.5-7.49: info: Trailing slash on void elements has no effect and interacts badly with unquoted attribute values.
+:9.5-9.181: info: Trailing slash on void elements has no effect and interacts badly with unquoted attribute values.
+:10.5-10.108: info: Trailing slash on void elements has no effect and interacts badly with unquoted attribute values.
+:11.5-11.188: info: Trailing slash on void elements has no effect and interacts badly with unquoted attribute values.
+:12.5-12.49: info: Trailing slash on void elements has no effect and interacts badly with unquoted attribute values.
+:13.5-13.49: info: Trailing slash on void elements has no effect and interacts badly with unquoted attribute values.
+:14.5-14.141: info: Trailing slash on void elements has no effect and interacts badly with unquoted attribute values.
+:15.5-15.138: info: Trailing slash on void elements has no effect and interacts badly with unquoted attribute values.
+:38.567-38.658: info warning: The “list” role is unnecessary for element “ol”.
+:42.1153-42.1410: info: Trailing slash on void elements has no effect and interacts badly with unquoted attribute values.
+:42.1578-42.1853: info: Trailing slash on void elements has no effect and interacts badly with unquoted attribute values.
+:42.2024-42.2282: info: Trailing slash on void elements has no effect and interacts badly with unquoted attribute values.
+:43.689-43.877: info: Trailing slash on void elements has no effect and interacts badly with unquoted attribute values.
+:51.3042-51.3244: info: Trailing slash on void elements has no effect and interacts badly with unquoted attribute values.
+
+### curl -s -H 'Content-Type: text/html; charset=utf-8' --data-binary @dist/impressum.html 'https://validator.w3.org/nu/?out=gnu'
+:4.5-4.28: info: Trailing slash on void elements has no effect and interacts badly with unquoted attribute values.
+:5.5-5.74: info: Trailing slash on void elements has no effect and interacts badly with unquoted attribute values.
+:6.5-6.64: info: Trailing slash on void elements has no effect and interacts badly with unquoted attribute values.
+:7.5-7.49: info: Trailing slash on void elements has no effect and interacts badly with unquoted attribute values.
+:9.5-9.181: info: Trailing slash on void elements has no effect and interacts badly with unquoted attribute values.
+:10.5-10.44: info: Trailing slash on void elements has no effect and interacts badly with unquoted attribute values.
+:11.5-11.63: info: Trailing slash on void elements has no effect and interacts badly with unquoted attribute values.
+:12.5-12.188: info: Trailing slash on void elements has no effect and interacts badly with unquoted attribute values.
+:13.5-13.49: info: Trailing slash on void elements has no effect and interacts badly with unquoted attribute values.
+:14.5-14.49: info: Trailing slash on void elements has no effect and interacts badly with unquoted attribute values.
+:15.5-15.141: info: Trailing slash on void elements has no effect and interacts badly with unquoted attribute values.
+:16.5-16.138: info: Trailing slash on void elements has no effect and interacts badly with unquoted attribute values.
+:27.3042-27.3244: info: Trailing slash on void elements has no effect and interacts badly with unquoted attribute values.
+

@@ -1,0 +1,7 @@
+Name getippt vor Hydrierung: true
+Feldinhalt nach Hydrierung: ""
+Gewerk nach Hydrierung: ""
+Feldinhalt Name nach Senden: ""
+Fehlertexte: ["Bitte geben Sie Ihren Namen ein."]
+Erfolg sichtbar: false
+Fokus auf: anfrage-name

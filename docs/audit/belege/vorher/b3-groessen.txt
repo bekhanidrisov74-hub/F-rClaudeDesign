@@ -1,0 +1,10 @@
+# gzip -9 / Brotli-Größen der Auslieferung (node:zlib)
+dist/index.html                                                                    70832 roh   11268 gzip    9065 br
+dist/assets/atkinson-hyperlegible-next-latin-ext-wght-normal-C6vrW8VD.woff2        19092 roh   19120 gzip   19092 br
+dist/assets/atkinson-hyperlegible-next-latin-wght-normal-BcXVPD7q.woff2            33996 roh   34029 gzip   34000 br
+dist/assets/bricolage-grotesque-latin-ext-standard-normal-qp-RdZgh.woff2           53588 roh   53626 gzip   53592 br
+dist/assets/bricolage-grotesque-latin-standard-normal-C5Lc8Qmc.woff2              131548 roh  131601 gzip  131553 br
+dist/assets/bricolage-grotesque-vietnamese-standard-normal-Br4FGdAc.woff2          22028 roh   22056 gzip   22027 br
+dist/assets/index-BMgGCP80.css                                                     37252 roh    8511 gzip    7383 br
+dist/assets/index-DFNKuvUu.js                                                     319194 roh   95448 gzip   82943 br
+dist/assets/plz-8vwhHL6C.js                                                        44425 roh   17607 gzip   15076 br

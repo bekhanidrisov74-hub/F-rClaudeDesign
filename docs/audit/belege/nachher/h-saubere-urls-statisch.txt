@@ -1,0 +1,15 @@
+# Einfacher statischer Server ohne Umschreibregeln (python -m http.server), nach Korrektur H2
+### curl -s -o /dev/null -w '%{http_code} %{redirect_url}' http://127.0.0.1:8099/  |  mit -L
+200   |  200
+### curl -s -o /dev/null -w '%{http_code} %{redirect_url}' http://127.0.0.1:8099/impressum  |  mit -L
+301 http://127.0.0.1:8099/impressum/  |  200
+### curl -s -o /dev/null -w '%{http_code} %{redirect_url}' http://127.0.0.1:8099/impressum/  |  mit -L
+200   |  200
+### curl -s -o /dev/null -w '%{http_code} %{redirect_url}' http://127.0.0.1:8099/datenschutz  |  mit -L
+301 http://127.0.0.1:8099/datenschutz/  |  200
+### curl -s -o /dev/null -w '%{http_code} %{redirect_url}' http://127.0.0.1:8099/datenschutz/  |  mit -L
+200   |  200
+### curl -s -o /dev/null -w '%{http_code} %{redirect_url}' http://127.0.0.1:8099/agb  |  mit -L
+301 http://127.0.0.1:8099/agb/  |  200
+### curl -s -o /dev/null -w '%{http_code} %{redirect_url}' http://127.0.0.1:8099/agb/  |  mit -L
+200   |  200

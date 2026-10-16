@@ -1,0 +1,44 @@
+# Eigene GegenprÃ¼fung: Textauszug aus dem AK-PDF (pypdf 6.13.1), https://www.arbeiterkammer.at/beratung/konsument/AchtungFalle/Handwerkerkosten_2025.pdf, abgerufen 2026-10-15
+Durch-
+schnitt 
+2025 
+im eigenen Bezirk    
+an Werktagen (zu Betriebszeiten)    
+ - bei zugefallener Türe  60,00 198,00 131,19 
+ - bei verschlossener Türe (EVVA EPS) 120,00 260,00 200,15 
+an Werktagen (22:00 Uhr)    
+ - bei zugefallener Türe  120,00 190,00 157,76 
+ - bei verschlossener Türe (EVVA EPS) 150,00 300,00 221,88 
+an Sonn- u. Feiertagen (9:00 Uhr)    
+ - bei zugefallener Türe  120,00 200,00 168,86 
+ - bei verschlossener Türe (EVVA EPS) 150,00 300,00 227,88 
+an Sonn- u. Feiertagen (22:00 Uhr)    
+ - bei zugefallener Türe  120,00 220,00 173,86 
+ - bei verschlossener Türe (EVVA EPS) 150,00 300,00 233,88 
+in angrenzenden Bezirken    
+an Werktagen (zu Betriebszeiten)    
+ - bei zugefallener Türe  94,80 240,00 137,99 
+ - bei verschlossener Türe (EVVA EPS) 120,00 300,00 205,21 
+an Werktagen (22:00 Uhr)    
+ - bei zugefallener Türe  120,00 190,00 157,76 
+ - bei verschlossener Türe (EVVA EPS) 150,00 300,00 221,88 
+an Sonn- u. Feiertagen (9:00 Uhr)    
+ - bei zugefallener Türe  120,00 200,00 168,86 
+ - bei verschlossener Türe (EVVA EPS) 150,00 300,00 227,88 
+an Sonn- u. Feiertagen (22:00 Uhr)    
+ - bei zugefallener Türe  120,00 220,00 173,86 
+ - bei verschlossener Türe (EVVA EPS) 150,00 300,00 233,88 
+2025 
+Durch-
+schnitt 
+2025 
+an Werktagen (zu Betriebszeiten)    
+Stundensatz Monteur 90,00 173,69 119,61 
+Stundensatz Monteur und Helfer 144,00 197,28 174,44 
+Anfahrtskosten eigener Bezirk 0,00 104,40 39,06 
+Anfahrtskosten angrenz. Bezirk 18,00 167,04 74,66 
+an Werktagen (20:00 Uhr)    
+Stundensatz Monteur 172,80 347,38 250,09 
+Stundensatz Monteur und Helfer 244,80 288,00 266,40 
+Anfahrtskosten eigener Bezirk 54,00 144,00 99,00 
+Das verlangen Handwerker – Preise in Euro inkl. MwSt.  

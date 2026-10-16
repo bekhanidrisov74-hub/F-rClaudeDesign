@@ -1,16 +1,8 @@
-import { useEffect, useRef, useState, type ChangeEvent, type FormEvent, type ReactNode } from 'react'
+import { useEffect, useRef, useState, useSyncExternalStore, type FormEvent, type ReactNode } from 'react'
 import { DATENSCHUTZ, EINWILLIGUNG, WEISS_NICHT, copy, fuelle } from '../content/copy'
 import { gewerke } from '../content/gewerke'
 import { submitLead, zufallsnummer, type Match } from '../lib/submitLead'
-import {
-  LEERES_FORMULAR,
-  WEISS_NICHT_ID,
-  formularZuLead,
-  pruefeFeld,
-  pruefeFormular,
-  type FormularFeld,
-  type FormularWerte,
-} from '../lib/validate'
+import { WEISS_NICHT_ID, formularZuLead, pruefeFeld, pruefeFormular, type FormularFeld, type FormularWerte } from '../lib/validate'
 import { Button } from './ui/Button'
 import { CallButton } from './ui/CallButton'
 import { Icon } from './ui/Icon'
@@ -20,7 +12,28 @@ const GEWERK_IDS = gewerke.map((g) => g.id)
 
 type Fehler = Partial<Record<FormularFeld, string>>
 type Status = 'bereit' | 'sendend' | 'sendefehler'
-type Eingabe = ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+type Feldereignis = { currentTarget: { form: HTMLFormElement | null } }
+
+/**
+ * Die Felder sind unkontrolliert, die Werte stehen nur im DOM. So bleibt stehen, was auf langsamem Netz
+ * schon vor der Hydrierung getippt wurde; kontrollierte Felder setzt React dabei auf leer zurück (Audit, Befund A2).
+ */
+function lies(form: HTMLFormElement): FormularWerte {
+  const daten = new FormData(form)
+  const text = (feld: FormularFeld) => String(daten.get(feld) ?? '')
+  return {
+    name: text('name'),
+    telefon: text('telefon'),
+    plzOrt: text('plzOrt'),
+    gewerk: text('gewerk'),
+    beschreibung: text('beschreibung'),
+    einwilligung: daten.has('einwilligung'),
+  }
+}
+
+/** false beim Vorrendern und Hydrieren, danach true (ohne Effekt, ohne Abweichung beim Hydrieren). */
+const keinAbo = () => () => {}
+const useHydriert = () => useSyncExternalStore(keinAbo, () => true, () => false)
 
 interface Danke {
   match: Match
@@ -63,13 +76,17 @@ function Fehlertext({ feld, text }: { feld: FormularFeld; text?: string }) {
 }
 
 export function AnfrageFormular() {
-  const [werte, setWerte] = useState<FormularWerte>(LEERES_FORMULAR)
+  /** Vorauswahl aus Kachel oder „… anfragen“; Startwert, wenn das Formular nach dem Erfolg neu erscheint */
+  const [vorauswahl, setVorauswahl] = useState('')
   const [fehler, setFehler] = useState<Fehler>({})
   const [status, setStatus] = useState<Status>('bereit')
   const [danke, setDanke] = useState<Danke | null>(null)
   /** Eine Id je Anfrage: bleibt beim erneuten Senden gleich, neu nach dem Erfolg */
   const [anfrageId, setAnfrageId] = useState(zufallsnummer)
   const formular = useRef<HTMLFormElement>(null)
+  // Vor der Hydrierung sendet der Knopf nicht nativ: Das Formular hat kein Ziel, ein GET schriebe Name und
+  // Telefon in die Adresse und verwürfe die Anfrage (Audit, Befund A3). Die Eingaben bleiben stehen.
+  const hydriert = useHydriert()
 
   // Links „… anfragen“ und die Schnellwahl-Kacheln wählen das Gewerk vor. Der Sprung zum Anker bleibt.
   useEffect(() => {
@@ -78,7 +95,9 @@ export function AnfrageFormular() {
       const gewerk = e.target.closest<HTMLElement>('a[href="#anfrage"][data-gewerk]')?.dataset.gewerk
       if (!gewerk || !GEWERK_IDS.includes(gewerk)) return
       setDanke(null)
-      setWerte((alt) => ({ ...alt, gewerk }))
+      setVorauswahl(gewerk)
+      const auswahl = formular.current?.elements.namedItem('gewerk')
+      if (auswahl instanceof HTMLSelectElement) auswahl.value = gewerk
       setFehler((alt) => ({ ...alt, gewerk: undefined }))
     }
     document.addEventListener('click', beiKlick)
@@ -87,30 +106,26 @@ export function AnfrageFormular() {
 
   if (danke) return <Erfolg danke={danke} />
 
-  const pruefe = (feld: FormularFeld, w: FormularWerte) => {
-    const meldung = pruefeFeld(feld, w, GEWERK_IDS) ?? undefined
+  const pruefe = (feld: FormularFeld, form: HTMLFormElement | null) => {
+    if (!form) return
+    const meldung = pruefeFeld(feld, lies(form), GEWERK_IDS) ?? undefined
     setFehler((alt) => ({ ...alt, [feld]: meldung }))
   }
-
-  // Ein Feld mit Fehler wird beim Tippen sofort neu geprüft, sonst erst beim Verlassen.
-  const setze = (feld: FormularFeld, wert: string | boolean) => {
-    const neu = { ...werte, [feld]: wert }
-    setWerte(neu)
-    if (fehler[feld]) pruefe(feld, neu)
-  }
-  const aendern = (feld: FormularFeld) => (e: Eingabe) => setze(feld, e.target.value)
 
   const steuerung = (feld: FormularFeld) => ({
     id: feldId(feld),
     name: feld,
-    onBlur: () => pruefe(feld, werte),
+    onBlur: (e: Feldereignis) => pruefe(feld, e.currentTarget.form),
+    // Ein Feld mit Fehler wird beim Tippen sofort neu geprüft, sonst erst beim Verlassen.
+    onChange: (e: Feldereignis) => fehler[feld] && pruefe(feld, e.currentTarget.form),
     'aria-invalid': fehler[feld] ? true : undefined,
     'aria-describedby': fehler[feld] ? fehlerId(feld) : undefined,
   })
 
-  const absenden = async (e: FormEvent) => {
+  const absenden = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (status === 'sendend') return
+    const werte = lies(e.currentTarget)
     const alle = pruefeFormular(werte, GEWERK_IDS)
     setFehler(alle)
     const erstes = Object.keys(alle)[0]
@@ -131,7 +146,7 @@ export function AnfrageFormular() {
         telefon: werte.telefon.trim().replace(/ /g, ' '),
         tipp: gewerk?.tippErfolg,
       })
-      setWerte(LEERES_FORMULAR)
+      setVorauswahl('')
       setAnfrageId(zufallsnummer())
       setFehler({})
       setStatus('bereit')
@@ -158,8 +173,6 @@ export function AnfrageFormular() {
           type="text"
           autoComplete="name"
           aria-required="true"
-          value={werte.name}
-          onChange={aendern('name')}
           placeholder={t.felder.name.platzhalter}
           className={`${FELD} ${FELDHOEHE}`}
         />
@@ -176,8 +189,6 @@ export function AnfrageFormular() {
           inputMode="tel"
           autoComplete="tel"
           aria-required="true"
-          value={werte.telefon}
-          onChange={aendern('telefon')}
           placeholder={t.felder.telefon.platzhalter}
           className={`${FELD} ${FELDHOEHE}`}
         />
@@ -194,8 +205,6 @@ export function AnfrageFormular() {
           type="text"
           autoComplete="off"
           aria-required="true"
-          value={werte.plzOrt}
-          onChange={aendern('plzOrt')}
           placeholder={t.felder.plzOrt.platzhalter}
           className={`${FELD} ${FELDHOEHE}`}
         />
@@ -210,8 +219,7 @@ export function AnfrageFormular() {
           <select
             {...steuerung('gewerk')}
             aria-required="true"
-            value={werte.gewerk}
-            onChange={aendern('gewerk')}
+            defaultValue={vorauswahl}
             className={`${FELD} ${FELDHOEHE} cursor-pointer appearance-none pr-s7`}
           >
             <option value="">{t.felder.gewerk.bitteWaehlen}</option>
@@ -232,8 +240,6 @@ export function AnfrageFormular() {
         <textarea
           {...steuerung('beschreibung')}
           rows={4}
-          value={werte.beschreibung}
-          onChange={aendern('beschreibung')}
           placeholder={t.felder.beschreibung.platzhalter}
           className={`${FELD} min-h-[128px] resize-y py-s3`}
         />
@@ -247,8 +253,6 @@ export function AnfrageFormular() {
               {...steuerung('einwilligung')}
               type="checkbox"
               aria-required="true"
-              checked={werte.einwilligung}
-              onChange={(e) => setze('einwilligung', e.target.checked)}
               className="peer absolute inset-0 size-full cursor-pointer appearance-none focus-visible:outline-none"
             />
             {/* Gezeichnetes Kästchen mit Häkchen darin; sichtbar wird das Häkchen über den Zustand der Checkbox davor */}
@@ -288,7 +292,7 @@ export function AnfrageFormular() {
         <div onMouseDown={(e) => e.preventDefault()} className="contents">
           <Button
             art="primaer"
-            type="submit"
+            type={hydriert ? 'submit' : 'button'}
             aria-disabled={sendend}
             className="min-h-[56px] w-full px-s6 text-btn-l font-[750] aria-disabled:cursor-default dialog:w-auto"
           >

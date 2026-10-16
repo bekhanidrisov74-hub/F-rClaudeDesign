@@ -1,0 +1,542 @@
+[
+  {
+    "szenario": "s1_aussperrung_anruf",
+    "netz": "ungedrosselt",
+    "ziel": "Anruf",
+    "knopf": {
+      "oben": 327,
+      "unten": 397,
+      "sichtbar": true
+    },
+    "href": "tel:",
+    "beruehrungen": 1,
+    "zeichen": 0,
+    "wischen_geschaetzt": 0,
+    "ziel_erreicht_ms": 276,
+    "schritte": [
+      {
+        "was": "Hero „Jetzt anrufen“",
+        "t": 276
+      }
+    ],
+    "fcp_ms": 276,
+    "lcp_ms": null,
+    "hydriert_ms": 169,
+    "anrufe": [
+      {
+        "href": "tel:",
+        "t": 273
+      }
+    ],
+    "anfragen": [
+      {
+        "url": "/",
+        "methode": "GET",
+        "typ": "document",
+        "status": 200,
+        "bytes": 11619,
+        "ende_ms": 5
+      },
+      {
+        "url": "/assets/index-BMgGCP80.css",
+        "methode": "GET",
+        "typ": "stylesheet",
+        "status": 200,
+        "bytes": 8895,
+        "ende_ms": 10
+      },
+      {
+        "url": "/assets/atkinson-hyperlegible-next-latin-wght-normal-BcXVPD7q.woff2",
+        "methode": "GET",
+        "typ": "font",
+        "status": 200,
+        "bytes": 34316,
+        "ende_ms": 8
+      },
+      {
+        "url": "/assets/bricolage-grotesque-latin-standard-normal-C5Lc8Qmc.woff2",
+        "methode": "GET",
+        "typ": "font",
+        "status": 200,
+        "bytes": 131870,
+        "ende_ms": 10
+      },
+      {
+        "url": "/assets/index-DFNKuvUu.js",
+        "methode": "GET",
+        "typ": "script",
+        "status": 200,
+        "bytes": 96132,
+        "ende_ms": 20
+      },
+      {
+        "url": "/favicon.svg",
+        "methode": "GET",
+        "typ": "other",
+        "status": 200,
+        "bytes": 564,
+        "ende_ms": 2
+      }
+    ]
+  },
+  {
+    "szenario": "s2_rohrbruch_formular",
+    "netz": "ungedrosselt",
+    "ziel": "Formular",
+    "vorgewaehlt": "installateur",
+    "ergebnis": "POST",
+    "erfolg": true,
+    "url": "/#anfrage",
+    "beruehrungen": 6,
+    "zeichen": 32,
+    "wischen_geschaetzt": 1,
+    "ziel_erreicht_ms": 578,
+    "schritte": [
+      {
+        "was": "Schnellwahl „Installateur“",
+        "t": 230
+      },
+      {
+        "was": "Feld Name",
+        "t": 371
+      },
+      {
+        "was": "Feld Telefon",
+        "t": 436
+      },
+      {
+        "was": "Feld PLZ und Ort",
+        "t": 497
+      },
+      {
+        "was": "Einwilligung",
+        "t": 545
+      },
+      {
+        "was": "Anfrage senden",
+        "t": 578
+      }
+    ],
+    "fcp_ms": 172,
+    "lcp_ms": 172,
+    "hydriert_ms": 181,
+    "anrufe": [],
+    "anfragen": 8
+  },
+  {
+    "szenario": "s3_stromausfall_luna",
+    "netz": "ungedrosselt",
+    "ziel": "Luna",
+    "tote_beruehrungen": 0,
+    "erfolg": true,
+    "beruehrungen": 12,
+    "zeichen": 27,
+    "wischen_geschaetzt": 1,
+    "ziel_erreicht_ms": 2875,
+    "schritte": [
+      {
+        "was": "Luna-Knopf",
+        "t": 232
+      },
+      {
+        "was": "Chip „Elektro“",
+        "t": 281
+      },
+      {
+        "was": "Chip „Kein Strom“",
+        "t": 627
+      },
+      {
+        "was": "Chip „Ganze Wohnung“",
+        "t": 980
+      },
+      {
+        "was": "Chip „Ja“",
+        "t": 1323
+      },
+      {
+        "was": "Chip „Nein“",
+        "t": 1659
+      },
+      {
+        "was": "Chip „So schnell wie möglich“",
+        "t": 2006
+      },
+      {
+        "was": "Senden",
+        "t": 2375
+      },
+      {
+        "was": "Feld Name",
+        "t": 2723
+      },
+      {
+        "was": "Feld Telefon",
+        "t": 2784
+      },
+      {
+        "was": "Einwilligung",
+        "t": 2842
+      },
+      {
+        "was": "Auftrag aufgeben",
+        "t": 2875
+      }
+    ],
+    "fcp_ms": 160,
+    "lcp_ms": 160,
+    "hydriert_ms": 176,
+    "anrufe": [],
+    "anfragen": 8
+  },
+  {
+    "szenario": "s4_therme_unten_anruf_kopf",
+    "netz": "ungedrosselt",
+    "ziel": "Anruf",
+    "knopf": {
+      "oben": 10,
+      "unten": 54,
+      "sichtbar": true
+    },
+    "href": "tel:",
+    "beruehrungen": 1,
+    "zeichen": 0,
+    "wischen_geschaetzt": 0,
+    "ziel_erreicht_ms": 234,
+    "schritte": [
+      {
+        "was": "Kopf „Anrufen“",
+        "t": 234
+      }
+    ],
+    "fcp_ms": 164,
+    "lcp_ms": 164,
+    "hydriert_ms": 173,
+    "anrufe": [
+      {
+        "href": "tel:",
+        "t": 231
+      }
+    ],
+    "anfragen": 6
+  },
+  {
+    "szenario": "s5_rohrbruch_ohne_js",
+    "netz": "ungedrosselt",
+    "ziel": "Anruf + Formular ohne JS",
+    "anruf_href": "tel:",
+    "dokument_anfragen_nach_senden": [
+      "GET /?name=Maria+Huber&telefon=0664+1234567&plzOrt=1020+Wien&gewerk=installateur&beschreibung=&einwilligung=on"
+    ],
+    "url_danach": "/?name=Maria+Huber&telefon=0664+1234567&plzOrt=1020+Wien&gewerk=installateur&beschreibung=&einwilligung=on#anfrage",
+    "beruehrungen": 8,
+    "zeichen": 32,
+    "wischen_geschaetzt": 1,
+    "ziel_erreicht_ms": 464,
+    "schritte": [
+      {
+        "was": "Hero „Anfrage senden“",
+        "t": 179
+      },
+      {
+        "was": "Feld Name",
+        "t": 216
+      },
+      {
+        "was": "Feld Telefon",
+        "t": 272
+      },
+      {
+        "was": "Feld PLZ und Ort",
+        "t": 322
+      },
+      {
+        "was": "Auswahl Gewerk öffnen",
+        "t": 378
+      },
+      {
+        "was": "Einwilligung",
+        "t": 426
+      },
+      {
+        "was": "Anfrage senden",
+        "t": 464
+      }
+    ],
+    "fcp_ms": 100,
+    "lcp_ms": 100,
+    "hydriert_ms": null,
+    "anrufe": [],
+    "anfragen": 13
+  },
+  {
+    "szenario": "s1_aussperrung_anruf",
+    "netz": "Slow 4G + CPU 4×",
+    "ziel": "Anruf",
+    "knopf": {
+      "oben": 327,
+      "unten": 397,
+      "sichtbar": true
+    },
+    "href": "tel:",
+    "beruehrungen": 1,
+    "zeichen": 0,
+    "wischen_geschaetzt": 1,
+    "ziel_erreicht_ms": 1827,
+    "schritte": [
+      {
+        "was": "Hero „Jetzt anrufen“",
+        "t": 1827
+      }
+    ],
+    "fcp_ms": 1756,
+    "lcp_ms": 1756,
+    "hydriert_ms": 2615,
+    "anrufe": [
+      {
+        "href": "tel:",
+        "t": 1775
+      }
+    ],
+    "anfragen": [
+      {
+        "url": "/",
+        "methode": "GET",
+        "typ": "document",
+        "status": 200,
+        "bytes": 11619,
+        "ende_ms": 634
+      },
+      {
+        "url": "/assets/index-BMgGCP80.css",
+        "methode": "GET",
+        "typ": "stylesheet",
+        "status": 200,
+        "bytes": 8895,
+        "ende_ms": 765
+      },
+      {
+        "url": "/assets/atkinson-hyperlegible-next-latin-wght-normal-BcXVPD7q.woff2",
+        "methode": "GET",
+        "typ": "font",
+        "status": 200,
+        "bytes": 34316,
+        "ende_ms": 1158
+      },
+      {
+        "url": "/assets/index-DFNKuvUu.js",
+        "methode": "GET",
+        "typ": "script",
+        "status": 200,
+        "bytes": 96132,
+        "ende_ms": 1843
+      },
+      {
+        "url": "/assets/bricolage-grotesque-latin-standard-normal-C5Lc8Qmc.woff2",
+        "methode": "GET",
+        "typ": "font",
+        "status": 200,
+        "bytes": 131870,
+        "ende_ms": 2020
+      }
+    ]
+  },
+  {
+    "szenario": "s2_rohrbruch_formular",
+    "netz": "Slow 4G + CPU 4×",
+    "ziel": "Formular",
+    "vorgewaehlt": "(leer)",
+    "ergebnis": null,
+    "erfolg": false,
+    "url": "/#anfrage",
+    "beruehrungen": 8,
+    "zeichen": 32,
+    "wischen_geschaetzt": 5,
+    "ziel_erreicht_ms": 3020,
+    "schritte": [
+      {
+        "was": "Schnellwahl „Installateur“",
+        "t": 1833
+      },
+      {
+        "was": "Feld Name",
+        "t": 1946
+      },
+      {
+        "was": "Feld Telefon",
+        "t": 2104
+      },
+      {
+        "was": "Feld PLZ und Ort",
+        "t": 2277
+      },
+      {
+        "was": "Auswahl Gewerk öffnen",
+        "t": 2448
+      },
+      {
+        "was": "Einwilligung",
+        "t": 2921
+      },
+      {
+        "was": "Anfrage senden",
+        "t": 3020
+      }
+    ],
+    "fcp_ms": 1748,
+    "lcp_ms": 1748,
+    "hydriert_ms": 2619,
+    "anrufe": [],
+    "anfragen": 6
+  },
+  {
+    "szenario": "s3_stromausfall_luna",
+    "netz": "Slow 4G + CPU 4×",
+    "ziel": "Luna",
+    "tote_beruehrungen": 1,
+    "erfolg": true,
+    "beruehrungen": 13,
+    "zeichen": 27,
+    "wischen_geschaetzt": 22,
+    "ziel_erreicht_ms": 7309,
+    "schritte": [
+      {
+        "was": "Luna-Knopf",
+        "t": 1875
+      },
+      {
+        "was": "Luna-Knopf",
+        "t": 3574
+      },
+      {
+        "was": "Chip „Elektro“",
+        "t": 3766
+      },
+      {
+        "was": "Chip „Kein Strom“",
+        "t": 4194
+      },
+      {
+        "was": "Chip „Ganze Wohnung“",
+        "t": 4595
+      },
+      {
+        "was": "Chip „Ja“",
+        "t": 5013
+      },
+      {
+        "was": "Chip „Nein“",
+        "t": 5432
+      },
+      {
+        "was": "Chip „So schnell wie möglich“",
+        "t": 5863
+      },
+      {
+        "was": "Senden",
+        "t": 6421
+      },
+      {
+        "was": "Feld Name",
+        "t": 6804
+      },
+      {
+        "was": "Feld Telefon",
+        "t": 6999
+      },
+      {
+        "was": "Einwilligung",
+        "t": 7212
+      },
+      {
+        "was": "Auftrag aufgeben",
+        "t": 7309
+      }
+    ],
+    "fcp_ms": 1796,
+    "lcp_ms": 1796,
+    "hydriert_ms": 2606,
+    "anrufe": [],
+    "anfragen": 8
+  },
+  {
+    "szenario": "s4_therme_unten_anruf_kopf",
+    "netz": "Slow 4G + CPU 4×",
+    "ziel": "Anruf",
+    "knopf": {
+      "oben": 10,
+      "unten": 54,
+      "sichtbar": true
+    },
+    "href": "tel:",
+    "beruehrungen": 1,
+    "zeichen": 0,
+    "wischen_geschaetzt": 0,
+    "ziel_erreicht_ms": 1910,
+    "schritte": [
+      {
+        "was": "Kopf „Anrufen“",
+        "t": 1910
+      }
+    ],
+    "fcp_ms": 1760,
+    "lcp_ms": 1760,
+    "hydriert_ms": 2608,
+    "anrufe": [
+      {
+        "href": "tel:",
+        "t": 1906
+      }
+    ],
+    "anfragen": 5
+  },
+  {
+    "szenario": "s5_rohrbruch_ohne_js",
+    "netz": "Slow 4G + CPU 4×",
+    "ziel": "Anruf + Formular ohne JS",
+    "anruf_href": "tel:",
+    "dokument_anfragen_nach_senden": [
+      "GET /?name=Maria+Huber&telefon=0664+1234567&plzOrt=1020+Wien&gewerk=installateur&beschreibung=&einwilligung=on"
+    ],
+    "url_danach": "/?name=Maria+Huber&telefon=0664+1234567&plzOrt=1020+Wien&gewerk=installateur&beschreibung=&einwilligung=on#anfrage",
+    "beruehrungen": 8,
+    "zeichen": 32,
+    "wischen_geschaetzt": 4,
+    "ziel_erreicht_ms": 2621,
+    "schritte": [
+      {
+        "was": "Hero „Anfrage senden“",
+        "t": 1700
+      },
+      {
+        "was": "Feld Name",
+        "t": 1804
+      },
+      {
+        "was": "Feld Telefon",
+        "t": 1974
+      },
+      {
+        "was": "Feld PLZ und Ort",
+        "t": 2332
+      },
+      {
+        "was": "Auswahl Gewerk öffnen",
+        "t": 2474
+      },
+      {
+        "was": "Einwilligung",
+        "t": 2567
+      },
+      {
+        "was": "Anfrage senden",
+        "t": 2621
+      }
+    ],
+    "fcp_ms": 1480,
+    "lcp_ms": 1480,
+    "hydriert_ms": null,
+    "anrufe": [],
+    "anfragen": 11
+  }
+]

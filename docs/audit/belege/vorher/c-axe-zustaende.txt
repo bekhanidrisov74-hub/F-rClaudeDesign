@@ -1,0 +1,34 @@
+
+Running 28 tests using 14 workers
+
+  ok  4 [m390] › tests\e2e\a11y.spec.ts:67:3 › axe: impressum (3.2s)
+  ok  7 [m390] › tests\e2e\a11y.spec.ts:67:3 › axe: preisuebersicht (4.1s)
+  ok 11 [m390] › tests\e2e\a11y.spec.ts:67:3 › axe: luna-erfolg (4.0s)
+  ok  5 [m390] › tests\e2e\a11y.spec.ts:67:3 › axe: menue (4.1s)
+  ok  3 [m390] › tests\e2e\a11y.spec.ts:67:3 › axe: luna-gespraech (4.2s)
+  ok  8 [m390] › tests\e2e\a11y.spec.ts:67:3 › axe: luna-anstupser (4.3s)
+  ok 14 [m390] › tests\e2e\a11y.spec.ts:67:3 › axe: formular-fehler (4.1s)
+  ok  6 [m390] › tests\e2e\a11y.spec.ts:67:3 › axe: startseite (4.3s)
+  ok  1 [m390] › tests\e2e\a11y.spec.ts:67:3 › axe: rechner-zwei-zuschlaege (4.7s)
+  ok  2 [m390] › tests\e2e\a11y.spec.ts:67:3 › axe: rechner-schluesseldienst (4.4s)
+  ok 12 [m390] › tests\e2e\a11y.spec.ts:67:3 › axe: formular-sendefehler (4.3s)
+  ok  9 [m390] › tests\e2e\a11y.spec.ts:67:3 › axe: luna-sendefehler (4.3s)
+  ok 10 [m390] › tests\e2e\a11y.spec.ts:67:3 › axe: luna-zusammenfassung (4.5s)
+  ok 13 [m390] › tests\e2e\a11y.spec.ts:67:3 › axe: formular-erfolg (4.5s)
+  -  21 [d1440] › tests\e2e\a11y.spec.ts:67:3 › axe: menue
+  ok 20 [d1440] › tests\e2e\a11y.spec.ts:67:3 › axe: impressum (2.7s)
+  ok 24 [d1440] › tests\e2e\a11y.spec.ts:67:3 › axe: preisuebersicht (3.1s)
+  ok 16 [d1440] › tests\e2e\a11y.spec.ts:67:3 › axe: rechner-zwei-zuschlaege (4.0s)
+  ok 25 [d1440] › tests\e2e\a11y.spec.ts:67:3 › axe: formular-fehler (3.9s)
+  ok 19 [d1440] › tests\e2e\a11y.spec.ts:67:3 › axe: formular-erfolg (4.4s)
+  ok 26 [d1440] › tests\e2e\a11y.spec.ts:67:3 › axe: rechner-schluesseldienst (4.2s)
+  ok 15 [d1440] › tests\e2e\a11y.spec.ts:67:3 › axe: luna-gespraech (4.8s)
+  ok 23 [d1440] › tests\e2e\a11y.spec.ts:67:3 › axe: luna-anstupser (4.2s)
+  ok 27 [d1440] › tests\e2e\a11y.spec.ts:67:3 › axe: startseite (4.2s)
+  ok 17 [d1440] › tests\e2e\a11y.spec.ts:67:3 › axe: luna-zusammenfassung (4.7s)
+  ok 22 [d1440] › tests\e2e\a11y.spec.ts:67:3 › axe: luna-sendefehler (4.5s)
+  ok 18 [d1440] › tests\e2e\a11y.spec.ts:67:3 › axe: luna-erfolg (4.8s)
+  ok 28 [d1440] › tests\e2e\a11y.spec.ts:67:3 › axe: formular-sendefehler (4.6s)
+
+  1 skipped
+  27 passed (16.5s)

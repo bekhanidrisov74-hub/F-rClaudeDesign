@@ -214,7 +214,7 @@ export async function antworte(alt: Zustand, roh: string, erfasse?: Erfasser): P
   }
   // KI nur dort, wo sie etwas beitragen kann: erste Beschreibung und längere Freitexte.
   if (erfasse && (erst || (offen && text.split(/\s+/).length >= 4))) {
-    z.ki = kuerze([...z.ki, { role: 'user', content: text }])
+    z.ki = kuerze([...z.ki, { role: 'user', content: ohneKontakt(text) }])
     uebernimm(z, await erfasse(z.ki, kiZustand(z, offen)), await ladePlz())
   }
   return weiter(z, alt.phase)
@@ -250,6 +250,15 @@ function frage(z: Zustand, text: string) {
   sage(z, text)
   z.ki = kuerze([...z.ki, { role: 'assistant', content: text }])
 }
+
+/**
+ * Telefonnummern und E-Mail-Adressen aus Freitext entfernen, bevor er an die KI geht (Aufgabe 5: Kontaktdaten nie an
+ * OpenAI; Audit, Befund F1). ponytail: Nummern ab 6 Ziffern mit führender 0 oder +; Namen erkennt das nicht.
+ */
+export const ohneKontakt = (text: string) =>
+  text
+    .replace(/[^\s@]+@[^\s@]+\.[^\s@]+/g, '[E-Mail entfernt]')
+    .replace(/(?:\+|\b0)[\d /()-]{5,}\d/g, (nummer) => (nummer.replace(/\D/g, '').length >= 6 ? '[Nummer entfernt]' : nummer))
 
 const kuerze = (ki: KiNachricht[]) => ki.slice(-KI_NACHRICHTEN).map((m) => ({ ...m, content: m.content.slice(0, KI_ZEICHEN) }))
 
@@ -350,7 +359,7 @@ function kiZustand(z: Zustand, offen: Frage | null): KiZustand {
     category: a.gewerk,
     urgency: a.dringlichkeit,
     postalCode: a.plz || null,
-    answers: { ...a.antworten },
+    answers: Object.fromEntries(Object.entries(a.antworten).map(([id, wert]) => [id, ohneKontakt(wert)])),
     pending: offen ? { id: offen.id, q: offen.frage, opts: [...offen.chips] } : null,
     questions: fragenZu(a.gewerk).map((f) => ({ id: f.id, q: f.frage })),
   }

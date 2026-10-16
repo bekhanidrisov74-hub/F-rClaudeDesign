@@ -10,7 +10,7 @@ export const AUFTRAG_AUFGEGEBEN = 'Auftrag aufgegeben'
 export const UST_HINWEIS = '[inkl. 20 % USt.]'
 export const WEISS_NICHT = 'Weiß ich nicht'
 /** Pfad der Datenschutzerklärung (Fuß, Formular, Luna) */
-export const DATENSCHUTZ = '/datenschutz'
+export const DATENSCHUTZ = '/datenschutz/'
 
 /**
  * Einwilligung zur Weitergabe, gleich in Formular und Luna (Entscheidung vom 14.10.2026: ein Text für dieselbe Weitergabe,
@@ -139,9 +139,9 @@ export const copy = {
     whatsapp: 'WhatsApp',
     rechtliches: 'Rechtliches',
     links: [
-      { text: 'Impressum', href: '/impressum' },
+      { text: 'Impressum', href: '/impressum/' },
       { text: 'Datenschutz', href: DATENSCHUTZ },
-      { text: 'AGB', href: '/agb' },
+      { text: 'AGB', href: '/agb/' },
     ],
     /** {jahr}, {firma} */
     copyright: '© {jahr} {firma}',

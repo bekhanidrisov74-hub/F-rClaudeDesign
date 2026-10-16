@@ -2,17 +2,19 @@
 
 Stand 14.10.2026. Aufgabe: [AUFGABE.md](AUFGABE.md). Gebaut in den drei Schichten der Aufgabe, jede Schicht für sich lauffähig und committet.
 
+Aktualisiert 16.10.2026: Das Backend läuft jetzt als PHP auf dem Webspace statt als Apps Script, siehe [docs/hosting.md](../hosting.md). Die Anleitungen unten sind darauf umgestellt.
+
 ## 1. Was gebaut ist
 
 | Schicht | Inhalt | Dateien |
 |---|---|---|
 | 1 ohne KI | Zustandsautomat INITIAL → CLASSIFYING → ASKING → LOCATION → SUMMARY → COMPLETED/ERROR, Notruf-Hinweis, Fragenkatalog der fünf Gewerke, lokale Erkennung von Gewerk, PLZ und Dringlichkeit, Wunschtermin bei NORMAL, PLZ-Verzeichnis, Zusammenfassung mit Kontaktfeldern, Versand als URLSearchParams | `src/luna/flow.ts`, `src/content/fragen.ts`, `src/content/plz.json`, `src/lib/submitLead.ts`, `src/lib/endpunkte.ts`, `src/luna/cards/*` |
 | 2 Attrappe | `/api/chat` und `/api/anfrage` als Vite-Plugin (gilt für `npm run dev`, `npm run preview` und die Tests), Anbindung im Browser mit 12 s Timeout und Rückfall | `tools/lokale-api.ts`, `tools/server.mjs`, `src/luna/ki.ts` |
-| 3 echt | OpenAI über `.env`, Apps-Script-Backends für KI und Anfrage-Eingang | `tools/apps-script-chat.gs`, `tools/apps-script.gs` |
+| 3 echt | OpenAI über `.env`, Apps-Script-Backends für KI und Anfrage-Eingang | `tools/apps-script-chat.gs`, `tools/apps-script.gs` (am 16.10.2026 ersetzt durch `public/chat.php`, `public/anfrage.php`) |
 
-- `SERVICES` ist `src/content/gewerke.ts`. Die Kopien in den beiden `.gs` (Gewerke, Preise, Kontakt) prüft `src/luna/backend.test.ts` gegen diese Quelle.
+- `SERVICES` ist `src/content/gewerke.ts`. Die Kopien in `public/_basis.php` (Gewerke, Preise, Kontakt) prüft `src/luna/backend.test.ts` gegen diese Quelle.
 - Kontaktdaten stehen nie im Gesprächszustand. Sie liegen nur im Speicher der Zusammenfassungskarte und gehen nur an den Anfrage-Eingang. Nach dem Abschluss löscht Luna das Gespräch aus `sessionStorage`.
-- Modell: `gpt-6-luna`. Ihr OpenAI-Konto hat auch `gpt-5.6-luna`. Umstellen über `OPENAI_MODEL` (lokal) bzw. die Skripteigenschaft `MODEL`.
+- Modell: `gpt-6-luna`. Ihr OpenAI-Konto hat auch `gpt-5.6-luna`. Umstellen über `OPENAI_MODEL` (lokal) bzw. `'modell'` in `fixit247-konfig.php`.
 
 ## 2. Prüfergebnisse
 
@@ -36,19 +38,19 @@ Stand 14.10.2026. Aufgabe: [AUFGABE.md](AUFGABE.md). Gebaut in den drei Schichte
 ```bash
 npm run build
 npm run preview                                # Attrappen, keine Kosten
-node --env-file=.env tools/server.mjs 8080     # /api/chat echt an OpenAI
+FIXIT247_KONFIG=/pfad/konfig.php php -S 127.0.0.1:8085 -t dist tools/php-router.php   # echte PHP-Endpunkte
 npm run test:ki                                # zwei Prüfungen gegen das echte Modell
 ```
 
-`.env` braucht `OPENAI_API_KEY=…` und optional `OPENAI_MODEL=gpt-6-luna`. Sie stand im Format `Openai API key: …`, das kann Node nicht lesen. Ich habe sie umgeschrieben.
+Für echte KI über `php -S` `OPENAI_API_KEY` in der Shell setzen, Einzelheiten in [docs/hosting.md](../hosting.md), Abschnitt „Lokal“. `npm run test:ki` braucht PHP im PATH. `.env` braucht `OPENAI_API_KEY=…` und optional `OPENAI_MODEL=gpt-6-luna`. Sie stand im Format `Openai API key: …`, das kann Node nicht lesen. Ich habe sie umgeschrieben.
 
 ## 4. Live schalten (Ihre Schritte)
 
-1. **KI-Backend:** script.google.com → Neues Projekt → Inhalt von `tools/apps-script-chat.gs` einfügen → Skripteigenschaften `API_KEY` (optional `MODEL`) → einmal `testChat()` ausführen (OAuth-Freigabe, prüft das Beispiel) → Bereitstellen als Web-App („Ausführen als: Ich“, „Zugriff: Jeder“).
-2. **Anfrage-Eingang:** dasselbe mit `tools/apps-script.gs`, im Editor einmal `testEingang()` ausführen. Echte Partnerbetriebe trägt man in `PARTNER` ein, solange die Liste leer ist, meldet der Eingang immer „kein Betrieb gefunden“. Empfänger der Mails ist `EMPFAENGER` (aus der Referenz übernommen: support@fixit247.at).
-3. In Vercel unter *Environment Variables* `VITE_FORM_ENDPOINT` und `VITE_CHAT_ENDPOINT` auf die beiden Web-App-URLs setzen und neu bauen. Ohne `VITE_FORM_ENDPOINT` schlägt live jedes Senden fehl, ohne `VITE_CHAT_ENDPOINT` läuft Luna ohne KI. Der Build-Log warnt in beiden Fällen.
-4. **Nach jeder Änderung an einer `.gs`:** Bereitstellungen verwalten → Stift → Version „Neu“. Sonst läuft die alte Fassung weiter.
-5. Den OpenAI-Schlüssel neu erzeugen und in `.env` und `API_KEY` eintragen. Der alte stand einmal im Klartext in der Sitzung, weil meine Schwärzung beim ersten Lesen der `.env` nicht gegriffen hat.
+1. **KI-Backend und Anfrage-Eingang:** `public/chat.php` und `public/anfrage.php` kommen mit `dist/` auf den Webspace. Einrichtung wie in [docs/hosting.md](../hosting.md), Abschnitt „Einrichtung beim Hoster“: `fixit247-konfig.php` außerhalb des Webroots mit `openai_key` (optional `modell`), `empfaenger`, `absender` und `partner`.
+2. **Partner und Empfänger:** Echte Partnerbetriebe trägt man in `partner` ein, solange die Liste leer ist, meldet der Eingang immer „kein Betrieb gefunden“. Empfänger der Mails ist `empfaenger` (aus der Referenz übernommen: support@fixit247.at). Danach eine echte Testanfrage schicken und prüfen, ob die Mail ankommt.
+3. Beim Build `VITE_FORM_ENDPOINT=/anfrage.php` und `VITE_CHAT_ENDPOINT=/chat.php` setzen (z. B. in `.env`), `npm run build` und `dist/` hochladen. Ohne `VITE_FORM_ENDPOINT` schlägt live jedes Senden fehl, ohne `VITE_CHAT_ENDPOINT` läuft Luna ohne KI. Der Build-Log warnt in beiden Fällen.
+4. **Nach jeder Änderung an einer `.php` in `public/`:** neu bauen und `dist/` erneut hochladen. Sonst läuft die alte Fassung weiter.
+5. Den OpenAI-Schlüssel neu erzeugen und in `.env` und `fixit247-konfig.php` eintragen. Der alte stand einmal im Klartext in der Sitzung, weil meine Schwärzung beim ersten Lesen der `.env` nicht gegriffen hat.
 
 ## 5. Entscheidungen und offene Punkte
 
@@ -56,7 +58,7 @@ Entschieden mit Ihnen am 14.10.2026:
 - Texte der Aufgabe gelten in Luna (Fragen, Chips „Akut/Gefahr“ usw., Einwilligung, „Erneut versuchen“, „Neue Anfrage starten“). Die Gewerk-Namen bleiben überall wie im Design („Heizung & Klima“, „Elektro“, „Haushaltsgeräte“).
 - PLZ: vollständiges Verzeichnis der RTR (2.234 PLZ, CC BY 4.0, aktualisieren mit `node scripts/plz.mjs`). Es lädt erst mit Luna. „seit 2020“ im Freitext gilt als Jahr. Bei der Ortsfrage wird 2020 als Hollabrunn angenommen, denn 2020 ist eine echte PLZ. Der Test der Aufgabe („2020 abgelehnt“) prüft deshalb das Jahr im Freitext.
 - Gewerk-Karten bleiben beim Formular, Luna ist eine Hilfe neben den anderen Wegen.
-- Kontaktdaten von fixit247 (Telefon, WhatsApp, E-Mail, Firma) bleiben Platzhalter, bis Sie sie liefern. Die Kunden geben ihre eigenen Kontaktdaten in der Zusammenfassung an. Solange Platzhalter stehen, nennen KI und Bestätigungsmail „[Telefonnummer]“. Beim Eintragen: `src/content/contact.ts` ändern und `KONTAKT` in beiden `.gs` angleichen, der Test meldet sonst die Abweichung.
+- Kontaktdaten von fixit247 (Telefon, WhatsApp, E-Mail, Firma) bleiben Platzhalter, bis Sie sie liefern. Die Kunden geben ihre eigenen Kontaktdaten in der Zusammenfassung an. Solange Platzhalter stehen, nennen KI und Bestätigungsmail „[Telefonnummer]“. Beim Eintragen: `src/content/contact.ts` ändern und `KONTAKT` in `public/_basis.php` angleichen, der Test meldet sonst die Abweichung.
 
 Von mir entschieden, wie auf österreichischen Seiten üblich (Ihr Auftrag vom 14.10.2026):
 - **Einwilligung:** ein Text für Formular und Luna (`EINWILLIGUNG` in `src/content/copy.ts`), mit Verantwortlichem, Zweck, Empfänger, Widerrufsrecht und Link zur Datenschutzerklärung: „Ich stimme zu, dass fixit247 meine Angaben zur Bearbeitung meiner Anfrage verwendet und dafür an einen passenden Fachbetrieb weitergibt. Ich kann diese Einwilligung jederzeit widerrufen. Mehr dazu in der Datenschutzerklärung.“ „Fachbetrieb“ statt „Partnerbetrieb“, wie überall auf der Seite. Er ersetzt beide bisherigen Texte. Bitte zusammen mit der Datenschutzerklärung rechtlich prüfen lassen.

@@ -11,6 +11,7 @@ import {
   kurzfassung,
   mitId,
   offeneFrage,
+  ohneKontakt,
   plzKandidat,
   start,
   uebernimm,
@@ -209,6 +210,16 @@ describe('KI-Erfassung (optional)', () => {
     const [verlauf, zustand] = erfasse.mock.calls[0]
     expect(verlauf.at(-1)).toEqual({ role: 'user', content: 'Bei mir ist es seit heute ganz kalt in der Wohnung' })
     expect(zustand).toEqual({ category: null, urgency: null, postalCode: null, answers: {}, pending: null, questions: [] })
+  })
+
+  test('Telefonnummern und E-Mail-Adressen aus dem Freitext gehen nicht an die KI (Audit F1)', async () => {
+    const erfasse = vi.fn<Erfasser>().mockResolvedValue({})
+    await lauf(['Rohrbruch, bitte Maria Huber anrufen: 0664 1234567 oder +43 660 1234567, maria@example.at', 'In der Küche, Rückruf bitte unter 0664/1234567'], erfasse)
+    expect(erfasse).toHaveBeenCalled()
+    const gesendet = JSON.stringify(erfasse.mock.calls)
+    expect(gesendet).not.toMatch(/0664|1234567|@/)
+    expect(erfasse.mock.calls[0][0].at(-1)?.content).toBe('Rohrbruch, bitte Maria Huber anrufen: [Nummer entfernt] oder [Nummer entfernt], [E-Mail entfernt]')
+    expect(ohneKontakt('PLZ 1020 Wien, seit 2020, am 05.10., Baujahr 2015, Fehler 0815')).toBe('PLZ 1020 Wien, seit 2020, am 05.10., Baujahr 2015, Fehler 0815')
   })
 
   test('fremdes Format, falsches Gewerk, ungültige PLZ und Platzhalter werden ignoriert', async () => {

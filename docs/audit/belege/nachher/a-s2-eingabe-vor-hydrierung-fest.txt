@@ -1,0 +1,3 @@
+vor Hydrierung: {"name":"Maria Huber","tel":"0664 1234567","gewerk":"elektro"}
+nach Hydrierung: {"name":"Maria Huber","tel":"0664 1234567","gewerk":"elektro"}
+Fehler nach Senden: [] Erfolg: true

@@ -1,0 +1,11 @@
+# Einfacher statischer Server ohne Umschreibregeln (python -m http.server, Stand-in für Webspace ohne .htaccess)
+### curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:8099/
+200
+### curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:8099/impressum
+404
+### curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:8099/datenschutz
+404
+### curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:8099/agb
+404
+### curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:8099/impressum.html
+200

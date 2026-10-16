@@ -15,7 +15,7 @@ test('Felder mit Labels, Pflichtangaben und passenden Typen', async ({ page }) =
   for (const feld of [/^Name/, /^Telefon/, /^PLZ und Ort/, /^Gewerk/]) await expect(a.getByLabel(feld)).toHaveAttribute('aria-required', 'true')
   const optionen = await a.getByLabel(/^Gewerk/).locator('option').allTextContents()
   expect(optionen).toEqual(['Bitte wählen', 'Installateur', 'Heizung & Klima', 'Schlüsseldienst', 'Elektro', 'Haushaltsgeräte', 'Weiß ich nicht'])
-  await expect(a.getByRole('link', { name: 'Datenschutzerklärung' })).toHaveAttribute('href', '/datenschutz')
+  await expect(a.getByRole('link', { name: 'Datenschutzerklärung' })).toHaveAttribute('href', '/datenschutz/')
   await expect(a).toContainText('* Pflichtfeld. Die Vermittlung ist kostenlos.')
 })
 

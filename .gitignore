@@ -7,5 +7,7 @@ playwright-report/
 tests/screens-actual/
 .env
 .env.local
+fixit247-konfig.php
+fixit247-daten/
 *.log
 .claude/worktrees/

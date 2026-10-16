@@ -27,7 +27,7 @@ interface Zustand {
 /** Jede Phase ergänzt hier ihre Zustände (gleiche Liste wie die Screenshot-Matrix). */
 const ZUSTAENDE: Zustand[] = [
   { name: 'startseite', pfad: '/' },
-  { name: 'impressum', pfad: '/impressum' },
+  { name: 'impressum', pfad: '/impressum/' },
   { name: 'preisuebersicht', pfad: '/', vorbereiten: oeffnePreisuebersicht },
   { name: 'rechner-schluesseldienst', pfad: '/', vorbereiten: (p) => waehleGewerk(p, 'Schlüsseldienst') },
   {

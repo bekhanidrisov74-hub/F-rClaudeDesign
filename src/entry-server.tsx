@@ -11,6 +11,8 @@ export function render(pfad: string) {
   const schluessel = normalisiere(pfad)
   const seite = seiten[schluessel]
   const domainBekannt = !istPlatzhalter(DOMAIN)
+  // Unterseiten liegen als ordner/index.html und haben ihre Adresse mit Schrägstrich am Ende.
+  const url = DOMAIN + (schluessel === '/' ? '/' : `${schluessel}/`)
   const head = [
     `<title>${esc(seite.titel)}</title>`,
     `<meta name="description" content="${esc(seite.beschreibung)}" />`,
@@ -19,8 +21,8 @@ export function render(pfad: string) {
     `<meta property="og:description" content="${esc(seite.beschreibung)}" />`,
     '<meta property="og:type" content="website" />',
     '<meta property="og:locale" content="de_AT" />',
-    domainBekannt ? `<meta property="og:url" content="${esc(DOMAIN + schluessel)}" />` : '',
-    domainBekannt && !seite.noindex ? `<link rel="canonical" href="${esc(DOMAIN + schluessel)}" />` : '',
+    domainBekannt ? `<meta property="og:url" content="${esc(url)}" />` : '',
+    domainBekannt && !seite.noindex ? `<link rel="canonical" href="${esc(url)}" />` : '',
   ]
     .filter(Boolean)
     .join('\n    ')

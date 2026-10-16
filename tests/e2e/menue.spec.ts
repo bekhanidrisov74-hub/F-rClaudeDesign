@@ -68,7 +68,7 @@ test('schließt, wenn das Fenster 920 px oder breiter wird', async ({ page }) =>
 })
 
 test('auf Rechtsseiten zeigen die Links auf die Startseite', async ({ page }) => {
-  await page.goto('/impressum')
+  await page.goto('/impressum/')
   await oeffneMenue(page)
   await expect(page.locator('#menue').getByRole('link', { name: 'Leistungen' })).toHaveAttribute('href', '/#leistungen')
 })

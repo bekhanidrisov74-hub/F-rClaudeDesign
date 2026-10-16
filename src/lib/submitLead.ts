@@ -1,5 +1,5 @@
-// Versand für Formular und Luna an den Anfrage-Eingang (tools/apps-script.gs, Aufgabe Abschnitt 6).
-// POST als URLSearchParams (einfache Anfrage ohne Preflight, nötig für Apps Script).
+// Versand für Formular und Luna an den Anfrage-Eingang (public/anfrage.php, Aufgabe Abschnitt 6).
+// POST als URLSearchParams (einfache Anfrage ohne Preflight).
 // Erfolg ist nur JSON { ok: true, match: 'FOUND' | 'NONE' }; alles andere und ein Timeout nach 20 s sind Fehler.
 import type { DringlichkeitId } from '../content/copy'
 import { formEndpunkt } from './endpunkte'

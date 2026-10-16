@@ -35,7 +35,7 @@ export const seiten: Record<string, Seite> = {
   },
 }
 
-/** „/impressum.html“, „/impressum/“ und „/index.html“ auf die Schlüssel von `seiten` abbilden. */
+/** „/impressum/“ (so liefert der Webserver die Unterseiten aus), „/impressum.html“ und „/index.html“ auf die Schlüssel von `seiten` abbilden. */
 export function normalisiere(pfad: string): string {
   const p = pfad.replace(/\.html$/, '').replace(/\/index$/, '/').replace(/(.)\/$/, '$1')
   return p in seiten ? p : '/'

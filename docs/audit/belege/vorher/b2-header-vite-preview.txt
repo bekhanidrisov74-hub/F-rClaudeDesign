@@ -1,0 +1,97 @@
+### curl -sI http://localhost:4173/
+HTTP/1.1 200 OK
+Vary: Origin
+Content-Type: text/html
+Cache-Control: no-cache
+Etag: W/"114b0-PISBQL5cg7cnIdzXjorXNo9+1g4"
+Date: Thu, 15 Oct 2026 16:33:09 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+### curl -sI http://localhost:4173/impressum
+HTTP/1.1 200 OK
+Vary: Origin
+Content-Type: text/html
+Cache-Control: no-cache
+Etag: W/"7631-KmeydMkdCnlVJhTR3jB+ztlhQw0"
+Date: Thu, 15 Oct 2026 16:33:09 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+### curl -sI http://localhost:4173/impressum.html
+HTTP/1.1 200 OK
+Vary: Origin
+Content-Length: 30257
+Content-Type: text/html;charset=utf-8
+Last-Modified: Thu, 15 Oct 2026 16:24:03 GMT
+ETag: W/"30257-1792081443289"
+Cache-Control: no-cache
+Date: Thu, 15 Oct 2026 16:33:10 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+### curl -sI http://localhost:4173/datenschutz
+HTTP/1.1 200 OK
+Vary: Origin
+Content-Type: text/html
+Cache-Control: no-cache
+Etag: W/"7643-KLucIXOS0989aqCQMMdweGRCCUc"
+Date: Thu, 15 Oct 2026 16:33:10 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+### curl -sI http://localhost:4173/agb
+HTTP/1.1 200 OK
+Vary: Origin
+Content-Type: text/html
+Cache-Control: no-cache
+Etag: W/"761a-CeYlu0pMfV1h19Js9Vcqqpo7vLQ"
+Date: Thu, 15 Oct 2026 16:33:10 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+### curl -sI http://localhost:4173/sitemap.xml
+HTTP/1.1 200 OK
+Vary: Origin
+Content-Length: 144
+Content-Type: text/xml
+Last-Modified: Thu, 15 Oct 2026 16:24:03 GMT
+ETag: W/"144-1792081443303"
+Cache-Control: no-cache
+Date: Thu, 15 Oct 2026 16:33:10 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+### curl -sI http://localhost:4173/robots.txt
+HTTP/1.1 200 OK
+Vary: Origin
+Content-Length: 23
+Content-Type: text/plain
+Last-Modified: Thu, 15 Oct 2026 16:24:03 GMT
+ETag: W/"23-1792081443304"
+Cache-Control: no-cache
+Date: Thu, 15 Oct 2026 16:33:10 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+### curl -sI http://localhost:4173/nichtda
+HTTP/1.1 404 Not Found
+Vary: Origin
+Date: Thu, 15 Oct 2026 16:33:10 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+### curl -sI http://localhost:4173/assets/index-DFNKuvUu.js
+HTTP/1.1 200 OK
+Vary: Origin
+Content-Length: 319194
+Content-Type: text/javascript
+Last-Modified: Thu, 15 Oct 2026 16:24:02 GMT
+ETag: W/"319194-1792081442418"
+Cache-Control: no-cache
+Date: Thu, 15 Oct 2026 16:33:10 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+### curl -s -X POST -o /dev/null -w '%{http_code}' http://localhost:4173/
+404

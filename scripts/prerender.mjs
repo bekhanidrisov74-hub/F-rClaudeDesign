@@ -17,10 +17,13 @@ const preload = schriften
   .map((f) => `<link rel="preload" href="/assets/${f}" as="font" type="font/woff2" crossorigin />`)
   .join('\n    ')
 
+// Unterseiten als ordner/index.html: /impressum findet so jeder Webserver ohne Umschreibregeln (Audit, Befund H2).
 for (const pfad of pfade) {
   const { html, head } = render(pfad)
   const seite = vorlage.replace('<!--app-head-->', `${head}\n    ${preload}`).replace('<!--app-html-->', html)
-  fs.writeFileSync(path.join(dist, pfad === '/' ? 'index.html' : `${pfad.slice(1)}.html`), seite)
+  const ordner = path.join(dist, pfad.slice(1))
+  fs.mkdirSync(ordner, { recursive: true })
+  fs.writeFileSync(path.join(ordner, 'index.html'), seite)
 }
 
 const domainPlatzhalter = /^\[.*\]$/.test(DOMAIN)

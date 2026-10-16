@@ -1,7 +1,7 @@
 import { expect, test } from './test'
 
 // Jedes Bedienelement ist per Tab erreichbar (vorwärts und rückwärts) und nie ganz verdeckt (WCAG 2.4.11).
-for (const pfad of ['/', '/impressum'])
+for (const pfad of ['/', '/impressum/'])
   test(`${pfad}: Tab erreicht alles, Fokus nie verdeckt`, async ({ page }) => {
     await page.goto(pfad)
     const erwartet = await page

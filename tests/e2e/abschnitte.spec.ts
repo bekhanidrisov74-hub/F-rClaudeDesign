@@ -103,7 +103,7 @@ async function bedienelemente(page: Page) {
   )
 }
 
-for (const pfad of ['/', '/impressum'])
+for (const pfad of ['/', '/impressum/'])
   test(`${pfad}: Touch-Ziele mindestens 44 × 44 px`, async ({ page }) => {
     await page.goto(pfad)
     const zuKlein = (await bedienelemente(page)).filter((e) => e.b < 44 || e.h < 44)

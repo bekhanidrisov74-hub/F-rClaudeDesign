@@ -1,0 +1,20 @@
+// Befund f/d: Was geht an /api/chat (KI, live OpenAI), wenn Kundinnen Kontaktdaten in den Freitext schreiben? Aufruf: node docs/audit/probe-luna-daten.mjs
+import { chromium } from '@playwright/test'
+const b = await chromium.launch({ channel: 'chrome' })
+const page = await (await b.newContext({ viewport: { width: 390, height: 844 }, locale: 'de-AT' })).newPage()
+const gesendet = []
+page.on('request', (r) => r.url().includes('/api/chat') && gesendet.push(r.postData()))
+await page.goto('http://localhost:4173/')
+await page.waitForFunction(() => document.documentElement.hasAttribute('data-hydriert'))
+await page.getByRole('button', { name: 'Chat mit Luna öffnen' }).click()
+const c = page.getByRole('dialog', { name: 'Chat mit Luna' })
+await c.getByRole('textbox', { name: 'Nachricht an Luna' }).fill('Rohrbruch in der Küche, bitte rufen Sie Maria Huber an: 0664 1234567, Hauptstraße 5, 1020 Wien')
+await c.getByRole('button', { name: 'Nachricht senden' }).click()
+await page.waitForTimeout(1500)
+console.log(JSON.stringify(gesendet.map((p) => JSON.parse(p).messages), null, 1))
+console.log('sessionStorage-Schlüssel:', JSON.stringify(await page.evaluate(() => Object.keys(sessionStorage))))
+console.log('localStorage-Schlüssel:', JSON.stringify(await page.evaluate(() => Object.keys(localStorage))))
+console.log('Cookies:', JSON.stringify(await page.context().cookies()))
+const gespeichert = await page.evaluate(() => sessionStorage.getItem('fixit-luna') ?? '')
+console.log('Telefonnummer im sessionStorage:', gespeichert.includes('0664 1234567'))
+await b.close()

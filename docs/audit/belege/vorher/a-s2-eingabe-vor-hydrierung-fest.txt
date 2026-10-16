@@ -1,0 +1,3 @@
+vor Hydrierung: {"name":"Maria Huber","tel":"0664 1234567","gewerk":"elektro"}
+nach Hydrierung: {"name":"","tel":"","gewerk":""}
+Fehler nach Senden: ["Bitte geben Sie Ihren Namen ein.","Bitte geben Sie eine Telefonnummer für den Rückruf ein.","Bitte wählen Sie ein Gewerk."] Erfolg: false

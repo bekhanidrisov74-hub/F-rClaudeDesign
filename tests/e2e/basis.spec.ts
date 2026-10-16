@@ -27,7 +27,7 @@ test('Seite: Kalk-Hintergrund, Tiefsee-Schrift', async ({ page }) => {
 })
 
 test('Fokusrahmen: 3 px Türkis, Abstand 3 px', async ({ page }) => {
-  await page.goto('/impressum')
+  await page.goto('/impressum/')
   await page.keyboard.press('Tab')
   const fokus = await page.evaluate(() => {
     const el = document.activeElement as HTMLElement
