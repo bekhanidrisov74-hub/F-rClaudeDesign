@@ -6,7 +6,7 @@ import { Icon } from './ui/Icon'
 /** Letzte Zelle im Leistungsraster: „Ihr Problem ist nicht dabei?“ mit Anruf und Luna. */
 export function Hilfekarte() {
   return (
-    <article className="flex flex-col justify-between gap-s4 rounded-card-lg bg-tiefsee p-s5 text-kalk nav:gap-s5 nav:p-s6">
+    <article className="kante flex flex-col justify-between gap-s4 rounded-card-lg bg-tiefsee p-s5 text-kalk nav:gap-s5 nav:p-s6">
       <div className="flex flex-col gap-s4 nav:gap-s3">
         <span
           aria-hidden="true"

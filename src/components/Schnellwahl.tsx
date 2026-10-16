@@ -22,7 +22,7 @@ export function Schnellwahl() {
         </h2>
         <div className="grid grid-cols-2 gap-s3 dialog:grid-cols-3 nav:grid-cols-[repeat(auto-fit,minmax(min(176px,100%),1fr))]">
           {gewerke.map((g) => (
-            <a key={g.id} href="#anfrage" data-gewerk={g.id} className={`${KACHEL} border border-linie bg-weiss`}>
+            <a key={g.id} href="#anfrage" data-gewerk={g.id} className={`${KACHEL} border border-linie bg-weiss transition-colors hover:border-tuerkis`}>
               <GewerkIcon gewerk={g} className="size-[41px] nav:size-[47px]" />
               <span className="flex flex-col gap-s1">
                 <span className={TITEL}>{g.name}</span>
@@ -31,7 +31,7 @@ export function Schnellwahl() {
             </a>
           ))}
 
-          <a href="#luna" className={`${KACHEL} rahmen border-rand bg-kalk`}>
+          <a href="#luna" className={`${KACHEL} rahmen border-rand bg-kalk transition-colors hover:border-tiefsee`}>
             <span className="flex size-[46px] items-center justify-center rounded-icon bg-tiefsee nav:size-[52px]">
               <Icon name="luna-signet-glyph" className="size-[28px] nav:size-[30px]" />
             </span>

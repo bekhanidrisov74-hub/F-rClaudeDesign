@@ -9,7 +9,7 @@ export function Bildflaeche({ bild, className = '' }: { bild: number; className?
     .join(', ')
 
   return (
-    <div aria-hidden="true" data-bild={bild} className={`relative overflow-hidden bg-tuerkis ${className}`}>
+    <div aria-hidden="true" data-bild={bild} className={`relative overflow-clip bg-tuerkis ${className}`}>
       <picture>
         <source type="image/avif" srcSet={srcSet('avif')} sizes={sizes} />
         <img

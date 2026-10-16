@@ -108,9 +108,9 @@ export function Preisuebersicht({ aufStartseite = true }: { aufStartseite?: bool
                   </span>
                 </th>
                 <td className="py-s3">
-                  <span className="font-bold">{spanne(g)}</span> {einheit(g)}
+                  <span className="betrag font-bold">{spanne(g)}</span> {einheit(g)}
                 </td>
-                <td className="py-s3 text-right">{anfahrtText(g)}</td>
+                <td className="betrag py-s3 text-right">{anfahrtText(g)}</td>
               </tr>
             ))}
           </tbody>
@@ -128,7 +128,7 @@ export function Preisuebersicht({ aufStartseite = true }: { aufStartseite?: bool
                 </span>
               </span>
               <span className="flex flex-col items-end whitespace-nowrap">
-                <span className="text-text font-bold">{spanne(g)}</span>
+                <span className="betrag text-text font-bold">{spanne(g)}</span>
                 <span className="text-note text-schiefer">{einheit(g)}</span>
               </span>
             </li>

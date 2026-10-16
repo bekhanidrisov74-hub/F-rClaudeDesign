@@ -63,7 +63,7 @@ export function Hero() {
       {/* Handy: 300 px hoch, ab 600 px 2 : 1 (50vw), damit Düse und Wasserkrone im Streifen bleiben; Desktop: Krone in der schmalen Spalte halten */}
       <Bildflaeche
         bild={1}
-        className="h-[max(300px,50vw)] kopf:[&_img]:object-[50%_60%] nav:col-start-4 nav:row-start-1 nav:h-auto nav:min-h-[640px] nav:[&_img]:object-[75%_50%]"
+        className="tiefe h-[max(300px,50vw)] kopf:[&_img]:object-[50%_60%] nav:col-start-4 nav:row-start-1 nav:h-auto nav:min-h-[640px] nav:[&_img]:object-[75%_50%]"
       />
     </div>
   )

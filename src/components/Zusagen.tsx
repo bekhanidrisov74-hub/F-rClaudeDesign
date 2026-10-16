@@ -15,7 +15,7 @@ function ZusageKarte({ karte, gross, dunkel }: { karte: Karte; gross: boolean; d
     <li
       className={`einblenden relative flex flex-col justify-end gap-s5 overflow-hidden rounded-card-lg p-s5 ${
         gross ? 'nav:grow-[7]' : 'nav:grow-[3]'
-      } ${dunkel ? 'bg-tiefsee-2 text-kalk' : 'bg-weiss text-tiefsee'}`}
+      } ${dunkel ? 'kante bg-tiefsee-2 text-kalk' : 'bg-weiss text-tiefsee'}`}
     >
       {gross && <div aria-hidden="true" className="raster-karte absolute inset-0 opacity-25" />}
       <p className={`relative ${gross ? 'text-lead' : 'text-body'}`}>{karte.text}</p>

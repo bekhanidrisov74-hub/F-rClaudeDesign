@@ -169,7 +169,7 @@ function Zeile({ label, unter, children }: { label: string; unter?: string; chil
           label
         )}
       </dt>
-      <dd className="ml-auto font-bold whitespace-nowrap">{children}</dd>
+      <dd className="betrag ml-auto font-bold whitespace-nowrap">{children}</dd>
     </div>
   )
 }
@@ -182,7 +182,7 @@ function Ergebniskarte({ ergebnis: e }: { ergebnis: Ergebnis }) {
   return (
     <div
       aria-live="polite"
-      className="@container flex min-w-0 flex-col gap-s4 rounded-card-lg bg-tiefsee px-s4 py-s5 text-kalk dialog:gap-s5 dialog:p-s6"
+      className="kante @container flex min-w-0 flex-col gap-s4 rounded-card-lg bg-tiefsee px-s4 py-s5 text-kalk dialog:gap-s5 dialog:p-s6"
     >
       <div className="flex flex-col gap-s1">
         <h3 className="text-h4 font-[750] [font-stretch:100%]">{t.titel}</h3>

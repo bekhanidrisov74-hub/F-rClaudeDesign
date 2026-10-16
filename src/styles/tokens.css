@@ -82,6 +82,12 @@
   --fx-text: 16px;         /* Kartentext, Tabellen, Labels, Luna-Verlauf */
   --fx-kopf: 64px;         /* Höhe Seitenkopf: Handy 64, ab 920 px 76 (01, 02) */
   --fx-border: 1.5px;      /* Umrandung von Feldern, Chips, Zweitknöpfen (alle Screens) */
+
+  /* ── Ergänzt für „Glanz“ (16.10.2026, docs/glanz/BRIEF.md). Nur Mischungen der Farben oben ── */
+  --fx-tuerkis-tief: color-mix(in srgb, var(--fx-tuerkis) 88%, var(--fx-tiefsee)); /* Anruf-Knopf beim Überfahren (Tiefsee-Schrift 5,2:1) */
+  --fx-glanz: color-mix(in srgb, var(--fx-weiss) 55%, transparent);     /* Glanzlicht, das beim Scrollen über das Chrom der Fotos wandert */
+  --fx-leuchten: color-mix(in srgb, var(--fx-tuerkis) 22%, transparent); /* weiches Leuchten auf Tiefsee (So funktioniert's) */
+  --fx-kante: inset 0 1px 0 color-mix(in srgb, var(--fx-weiss) 9%, transparent); /* Lichtkante oben an dunklen Karten */
 }
 
 @media (min-width: 40rem) {

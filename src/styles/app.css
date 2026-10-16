@@ -31,6 +31,7 @@
   --default-font-family: var(--fx-font-text);
 
   --color-tuerkis: var(--fx-tuerkis);
+  --color-tuerkis-tief: var(--fx-tuerkis-tief);
   --color-tiefsee: var(--fx-tiefsee);
   --color-tiefsee-2: var(--fx-tiefsee-2);
   --color-kalk: var(--fx-kalk);
@@ -42,6 +43,7 @@
   --color-icon-technik: var(--fx-icon-technik);
   --color-icon-handwerk: var(--fx-icon-handwerk);
   --color-abdunklung: var(--fx-abdunklung);
+  --color-leuchten: var(--fx-leuchten);
   --color-transparent: transparent;
   --color-current: currentColor;
 
@@ -125,6 +127,10 @@
   --spacing-kopf: var(--fx-kopf);
 
   --ease-fx: var(--fx-ease);
+
+  /* transition-colors & Co. laufen mit der Hover-Dauer aus den Tokens */
+  --default-transition-duration: var(--fx-dur-fast);
+  --default-transition-timing-function: var(--fx-ease);
 }
 
 /* Inhaltsbreite: 1140 px plus Seitenrand */
@@ -169,6 +175,79 @@
   }
 }
 
+/* Signatur (docs/glanz/BRIEF.md): beim Scrollen gleitet ein Glanzlicht über das Chrom der Fotos,
+   wie an einer Vitrine vorbei. Ohne Scroll-Animationen oder mit reduced motion bleibt es unsichtbar. */
+@utility glanz {
+  @supports (animation-timeline: view()) {
+    /* Versatz je Spalte: das Licht wandert über die Reihe statt über alle Karten gleichzeitig */
+    --von: 20%;
+    --bis: 70%;
+    :nth-child(3n + 2) > & { --von: 27%; --bis: 77%; }
+    :nth-child(3n + 3) > & { --von: 34%; --bis: 84%; }
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background-image: linear-gradient(105deg, transparent 40%, var(--fx-glanz) 50%, transparent 60%);
+      mix-blend-mode: overlay;
+      translate: -100% 0;
+      animation: glanz linear both;
+      animation-timeline: view();
+      animation-range: cover var(--von) cover var(--bis);
+    }
+  }
+}
+
+/* Hero-Foto: rückt beim Wegscrollen minimal zurück (Tiefe, ohne dass Text sich bewegt) */
+@utility tiefe {
+  @supports (animation-timeline: view()) {
+    & img {
+      animation: tiefe linear both;
+      animation-timeline: view();
+      animation-range: exit 0% exit 100%;
+    }
+  }
+}
+
+/* So funktioniert's (Höhepunkt): eine türkise Linie zieht über die Schritte, die Ziffern leuchten nacheinander auf.
+   Jeder Schritt hat seine eigene Sichtachse; der Versatz über nth-child ergibt die Reihenfolge auch in einer Zeile. */
+@utility schritt {
+  @supports (animation-timeline: view()) {
+    --von: 18%;
+    --bis: 34%;
+    &:nth-child(2) { --von: 28%; --bis: 44%; }
+    &:nth-child(3) { --von: 38%; --bis: 54%; }
+    &::before {
+      content: '';
+      position: absolute;
+      inset: -2px 0 auto;
+      height: 2px;
+      background-color: var(--fx-tuerkis);
+      transform-origin: left;
+      animation: linie linear both;
+      animation-timeline: view();
+      animation-range: cover var(--von) cover var(--bis);
+    }
+    & [data-ziffer] {
+      animation: ziffer linear both;
+      animation-timeline: view();
+      animation-range: cover var(--von) cover var(--bis);
+    }
+  }
+}
+
+/* Lichtkante oben an dunklen Karten: wie eine polierte Kante, die das Licht fängt */
+@utility kante {
+  box-shadow: var(--fx-kante);
+}
+
+/* Beträge: Bricolage mit gleich breiten Ziffern (Atkinson zeichnet die Null durchgestrichen) */
+@utility betrag {
+  font-family: var(--fx-font-display);
+  font-variant-numeric: tabular-nums;
+}
+
 /* Schmaler Scrollbalken in Rand-Farbe für innen scrollende Flächen (Luna-Verlauf) */
 @utility duenner-balken {
   scrollbar-width: thin;
@@ -197,6 +276,9 @@
     line-height: 1.5;
     scroll-padding-top: var(--fx-kopf);
     -webkit-text-size-adjust: 100%;
+    /* macOS: Graustufen-Glättung, damit helle Schrift auf Tiefsee nicht aufquillt */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   body {
@@ -208,10 +290,23 @@
     font-family: var(--fx-font-display);
     font-weight: 700;
     font-stretch: 96%;
+    text-wrap: balance;
+  }
+
+  /* Keine einzelnen Wörter in der letzten Zeile */
+  p, li, dd, dt, summary {
+    text-wrap: pretty;
   }
 
   a {
     color: inherit;
+    text-underline-offset: 0.2em;
+    text-decoration-thickness: from-font;
+  }
+
+  ::selection {
+    background-color: var(--fx-tuerkis);
+    color: var(--fx-tiefsee);
   }
 
   input::placeholder,
@@ -269,4 +364,20 @@
 
 @keyframes einblenden {
   from { opacity: 0; transform: translateY(var(--fx-s-5)); }
+}
+
+@keyframes glanz {
+  to { translate: 100% 0; }
+}
+
+@keyframes tiefe {
+  to { scale: 1.07; }
+}
+
+@keyframes linie {
+  from { scale: 0 1; }
+}
+
+@keyframes ziffer {
+  from { opacity: 0.3; translate: 0 var(--fx-s-2); }
 }

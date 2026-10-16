@@ -17,7 +17,7 @@ export function Fragen() {
             <details
               key={f.frage}
               name="fragen"
-              className="frage group rounded-card border border-linie bg-kalk transition-colors duration-[var(--fx-dur-fast)] open:border-rand"
+              className="frage group rounded-card border border-linie bg-kalk transition-colors duration-[var(--fx-dur-fast)] hover:border-rand open:border-rand"
             >
               <summary className="flex cursor-pointer list-none items-center justify-between gap-s4 rounded-card px-s5 py-s4 [&::-webkit-details-marker]:hidden">
                 <span className="font-display text-h5 font-bold [font-stretch:96%]">{f.frage}</span>

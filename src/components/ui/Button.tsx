@@ -26,17 +26,18 @@ interface Props extends AriaAttributes {
   [data: `data-${string}`]: string | number | boolean | undefined
 }
 
+// Hover nur als Farbe (tokens.css: --fx-dur-fast); gesperrte Knöpfe reagieren nicht.
 const ARTEN: Record<Art, string> = {
-  hell: 'rahmen border-rand bg-weiss text-tiefsee no-underline',
-  dunkel: 'rahmen border-rand bg-transparent text-kalk no-underline',
-  primaer: 'bg-tiefsee text-kalk no-underline',
-  textlink: 'bg-transparent text-current underline underline-offset-4',
+  hell: 'rahmen border-rand bg-weiss text-tiefsee no-underline not-disabled:hover:border-tiefsee',
+  dunkel: 'rahmen border-rand bg-transparent text-kalk no-underline not-disabled:hover:border-kalk',
+  primaer: 'bg-tiefsee text-kalk no-underline not-disabled:hover:bg-tiefsee-2',
+  textlink: 'bg-transparent text-current underline underline-offset-4 hover:decoration-tuerkis',
 }
 
 export function Button({ art, children, href, onClick, className = '', type = 'button', disabled, laedt, ...rest }: Props) {
   const radius = art === 'textlink' || /\brounded-/.test(className) ? '' : 'rounded-btn'
   const gewicht = /\bfont-(?:bold|extrabold|semibold|\[\d+\])/.test(className) ? '' : 'font-bold'
-  const klassen = `inline-flex items-center justify-center gap-s2 font-display ${gewicht} leading-[1.1] cursor-pointer disabled:cursor-default ${ARTEN[art]} ${radius} ${className}`
+  const klassen = `inline-flex items-center justify-center gap-s2 font-display ${gewicht} leading-[1.1] transition-colors cursor-pointer disabled:cursor-default ${ARTEN[art]} ${radius} ${className}`
   if (href)
     return (
       <a href={href} onClick={onClick} className={klassen} {...rest}>

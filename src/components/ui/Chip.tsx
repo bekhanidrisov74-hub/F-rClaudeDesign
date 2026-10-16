@@ -21,7 +21,7 @@ export function Chip({ children, pressed, zusatz, onClick, className = '', ...re
       type="button"
       aria-pressed={pressed}
       onClick={onClick}
-      className={`group rahmen inline-flex min-h-[48px] cursor-pointer items-center gap-s2 rounded-chip border-rand bg-weiss px-s4 font-display text-btn font-bold text-tiefsee aria-pressed:border-tiefsee aria-pressed:bg-tiefsee aria-pressed:pl-s3 aria-pressed:text-kalk ${className}`}
+      className={`group rahmen inline-flex min-h-[48px] cursor-pointer items-center gap-s2 rounded-chip border-rand bg-weiss transition-colors hover:border-tiefsee px-s4 font-display text-btn font-bold text-tiefsee aria-pressed:border-tiefsee aria-pressed:bg-tiefsee aria-pressed:pl-s3 aria-pressed:text-kalk ${className}`}
       {...rest}
     >
       {pressed && <Icon name="ui-haekchen" className="size-[20px]" />}

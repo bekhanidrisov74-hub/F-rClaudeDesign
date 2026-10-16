@@ -88,7 +88,7 @@ function OffenesMenue({ aufStartseite }: { aufStartseite: boolean }) {
           </ul>
         </nav>
 
-        <div className="mt-s5 flex flex-col gap-s3 rounded-card-lg bg-tiefsee px-s4 py-s5 text-kalk">
+        <div className="kante mt-s5 flex flex-col gap-s3 rounded-card-lg bg-tiefsee px-s4 py-s5 text-kalk">
           <p className="m-0 font-display text-h5 font-[750] [font-stretch:100%]">{copy.menue.kontaktTitel}</p>
           <CallButton variante="karte" nummer className="w-full" />
           <Button art="dunkel" href={whatsappHref} className="min-h-[52px] w-full rounded-btn-lg text-btn">

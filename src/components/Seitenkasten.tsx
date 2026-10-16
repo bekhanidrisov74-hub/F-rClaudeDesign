@@ -14,7 +14,7 @@ export function Seitenkasten() {
   return (
     <aside
       aria-labelledby="sofort-titel"
-      className="flex flex-col gap-s3 rounded-card-lg bg-tiefsee px-s4 py-s5 text-kalk nav:gap-s4 nav:p-s6"
+      className="kante flex flex-col gap-s3 rounded-card-lg bg-tiefsee px-s4 py-s5 text-kalk nav:gap-s4 nav:p-s6"
     >
       <h3 id="sofort-titel" className="text-h3-karte nav:text-h2-s">
         {t.titel}
