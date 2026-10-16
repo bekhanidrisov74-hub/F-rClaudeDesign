@@ -254,6 +254,41 @@ export const copy = {
     },
   },
 
+  // nicht im Design: Abschnitt „Häufige Fragen“, Antworten aus Sätzen der Startseite zusammengesetzt
+  fragen: {
+    titel: 'Häufige Fragen',
+    lead: 'Kurz beantwortet. Ihre Frage ist nicht dabei? Rufen Sie uns an, wir sind rund um die Uhr erreichbar.',
+    liste: [
+      {
+        frage: 'Repariert fixit247 selbst?',
+        antwort:
+          'Nein. fixit247 repariert nicht selbst, sondern gibt Ihre Anfrage an geprüfte Fachbetriebe aus Ihrer Region weiter. Der Vertrag kommt direkt mit dem Betrieb zustande.',
+      },
+      {
+        frage: 'Was kostet die Vermittlung?',
+        antwort: 'Die Vermittlung ist kostenlos. Sie zahlen nur den Betrieb.',
+      },
+      {
+        frage: 'Wie verbindlich sind die Preise auf der Seite?',
+        antwort:
+          'Alle Preise sind Richtpreise der Fachbetriebe. Den genauen Preis vereinbaren Sie mit dem Betrieb. Für Sonntag, Feiertag oder Nacht gilt ein Zuschlag von +100 % auf die Arbeit, höchstens einer.',
+      },
+      {
+        frage: 'Wann sind Sie erreichbar?',
+        antwort: 'Wir sind rund um die Uhr erreichbar, auch nachts, an Sonn- und Feiertagen.',
+      },
+      {
+        frage: 'Wie geht es nach meiner Anfrage weiter?',
+        antwort:
+          'Wir geben Ihre Anfrage an einen geprüften Fachbetrieb aus Ihrer Region weiter. Der Betrieb ruft Sie zurück, nennt den Preis und kommt zu Ihnen.',
+      },
+      {
+        frage: 'Was tue ich bei akuter Gefahr?',
+        antwort: 'Bei akuter Gefahr wie Rauch, Funken oder Gasgeruch kontaktieren Sie bitte sofort 122 bzw. 112.',
+      },
+    ],
+  },
+
   menue: {
     label: 'Menü', // nicht im Design: Name der Menü-Fläche (aria-label)
     links: [

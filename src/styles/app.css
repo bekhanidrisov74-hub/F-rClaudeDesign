@@ -157,6 +157,19 @@
   scrollbar-color: var(--fx-rand) transparent;
 }
 
+/* Häufige Fragen: Antwort gleitet auf (nur wo ::details-content geht, sonst springt sie auf) */
+@utility frage {
+  interpolate-size: allow-keywords;
+  &::details-content {
+    block-size: 0;
+    overflow: clip;
+    transition: block-size var(--fx-dur-chat) var(--fx-ease), content-visibility var(--fx-dur-chat) allow-discrete;
+  }
+  &[open]::details-content {
+    block-size: auto;
+  }
+}
+
 @layer base {
   html {
     background: var(--fx-kalk);

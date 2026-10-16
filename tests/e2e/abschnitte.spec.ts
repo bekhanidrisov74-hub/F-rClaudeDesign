@@ -4,7 +4,7 @@ import { gewerke } from '../../src/content/gewerke'
 const nurEinmal = (name: string) => test.skip(name !== 'm390', 'läuft nur einmal, setzt die Breite selbst')
 
 /** Erwartete Reihenfolge der Abschnitte. Jede Phase ergänzt ihre Abschnitte. */
-const REIHENFOLGE = ['#start', 'section[aria-label="Warum fixit247"]', '#leistungen', '#ablauf', '#preisrechner', '#anfrage', 'footer']
+const REIHENFOLGE = ['#start', 'section[aria-label="Warum fixit247"]', '#leistungen', '#ablauf', '#preisrechner', '#anfrage', '#fragen', 'footer']
 
 test('Abschnitte in der richtigen Reihenfolge', async ({ page }) => {
   await page.goto('/')
@@ -125,4 +125,15 @@ test('Schnellwahl: Kacheltitel einer Reihe auf gleicher Höhe', async ({ page },
     for (const k of kacheln) reihen.set(k.reihe, [...(reihen.get(k.reihe) ?? []), k.titel])
     for (const [reihe, titel] of reihen) expect(new Set(titel).size, `${breite} px, Reihe bei ${reihe}`).toBe(1)
   }
+})
+
+test('Häufige Fragen: Tastatur öffnet, immer nur eine Antwort offen', async ({ page }) => {
+  await page.goto('/')
+  const fragen = page.locator('#fragen details')
+  await fragen.nth(0).locator('summary').focus()
+  await page.keyboard.press('Enter')
+  await expect(fragen.nth(0)).toHaveAttribute('open')
+  await fragen.nth(1).locator('summary').click()
+  await expect(fragen.nth(1)).toHaveAttribute('open')
+  await expect(fragen.nth(0)).not.toHaveAttribute('open')
 })

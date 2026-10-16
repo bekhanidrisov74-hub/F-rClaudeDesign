@@ -1,5 +1,6 @@
 import { Ablauf } from './Ablauf'
 import { Anfrage } from './Anfrage'
+import { Fragen } from './Fragen'
 import { Hero } from './Hero'
 import { Leistungen } from './Leistungen'
 import { Preisrechner } from './Preisrechner'
@@ -15,6 +16,7 @@ export function Startseite() {
       <Ablauf />
       <Preisrechner />
       <Anfrage />
+      <Fragen />
     </Seitenrahmen>
   )
 }
