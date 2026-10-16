@@ -96,6 +96,12 @@ for (const z of ZUSTAENDE)
       // Kartenbilder laden verzögert; ohne das zeigt der Vollseiten-Screenshot leeres Türkis.
       await page.evaluate(() => Promise.all([...document.images].map((img) => { img.loading = 'eager'; return img.decode().catch(() => {}) })))
       await z.vorbereiten?.(page)
+      // Grundzustand fotografieren: der Zeiger bleibt sonst nach dem letzten Klick auf einem Knopf (Hover-Farbe).
+      await page.mouse.move(0, 0)
+      // Steht der Fuß-Globus schon im Bild, lädt er gerade; auf ihn warten statt auf das Timing zu hoffen.
+      const globus = page.locator('footer canvas')
+      if (!z.element && !z.ganzeSeite && (await globus.isVisible()) && (await globus.evaluate((c) => c.getBoundingClientRect().top < innerHeight)))
+        await expect.poll(() => globus.evaluate((c: HTMLCanvasElement) => c.width)).not.toBe(300)
       const pfad = `tests/screens-actual/${z.name}-${breite}.png`
       if (z.element) {
         // Der sticky Kopf und der schwebende Luna-Knopf würden Teile des Elements verdecken.
