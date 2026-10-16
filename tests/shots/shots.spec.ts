@@ -35,7 +35,19 @@ interface Zustand {
 
 // Jede Phase ergänzt hier ihre Zustände.
 const ZUSTAENDE: Zustand[] = [
-  { name: 'startseite', pfad: '/', ganzeSeite: true },
+  {
+    name: 'startseite',
+    pfad: '/',
+    ganzeSeite: true,
+    // Der Fuß-Globus lädt erst beim Hinscrollen; Ganzseiten-Shots scrollen nie.
+    vorbereiten: async (p) => {
+      const globus = p.locator('footer canvas')
+      if (!(await globus.isVisible())) return
+      await globus.scrollIntoViewIfNeeded()
+      await expect.poll(() => globus.evaluate((c: HTMLCanvasElement) => c.width)).not.toBe(300)
+      await p.evaluate(() => window.scrollTo(0, 0))
+    },
+  },
   { name: 'falz', pfad: '/', breiten: [390] },
   { name: 'impressum', pfad: '/impressum/', breiten: [390, 1440] },
   { name: 'preisuebersicht', pfad: '/', vorbereiten: oeffnePreisuebersicht },
