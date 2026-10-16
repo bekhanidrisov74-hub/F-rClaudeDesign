@@ -44,7 +44,8 @@ Style rules for every icon in this set:
 - Flat vector pictogram in two tones of ONE hue: the main object in the full color, one supporting part (a housing, a wall, a plate, a body) in a light tint of the same color. No third color, no outlines or strokes, no gradients, no shadows, no glow, no 3D, no texture, no perspective.
 - Built from simple geometric shapes: rounded rectangles, circles, arcs and straight bars. Generous, consistent corner rounding, like the soft curves of a friendly grotesque typeface. Only drops and lightning may have a pointed tip.
 - Medium weight: the thinnest solid part is about 7% of the icon width, so the icon stays readable at 24 px. No hairlines.
-- Interior detail only as negative space (cut-outs where the white background shows through). Never thin interior lines.
+- Interior detail only as negative space: cut-outs and gaps through which the background or the light tint part shows. Never thin interior lines.
+- The light tint part is always a real part of the object (a rosette, a housing, a plate, a body), shaped by the object's own outline. It is never a tile, badge or circle placed behind the whole icon.
 - At most 5 shapes per icon, so it can be traced as clean vector.
 - Strictly frontal or side view, one object, centered, recognisable from its silhouette alone.
 - The longest side of each icon fills about 84% of the canvas; all icons share the same optical weight and visual size.
@@ -110,7 +111,7 @@ Square 1:1, flat pure white #FFFFFF background, icon centered, longest side abou
 Generate icon 5 of the set (file name gewerk-haushaltsgeraete). Follow all style rules above and match the attached icon in weight, rounding and tint use.
 Subject: a front-loading washing machine, front view, perfectly symmetric.
 - Light tint #C5D8DB: the machine body, a rounded square about 78% of the icon width and 84% of its height.
-- Full petrol #3F7D88: a thick round door ring centered in the lower part of the body (outer diameter about 54% of the icon width); inside the ring, separated by a narrow white gap, a solid half disc of water with a gentle wave on top.
+- Full petrol #3F7D88: a thick round door ring centered in the lower part of the body (outer diameter about 54% of the icon width); inside the ring, separated by a narrow gap through which the light tint shows, a solid half disc of water with a gentle wave on top.
 - Full petrol #3F7D88: in the top strip of the body, one small round knob on the left and a short rounded bar (display) on the right.
 No bubbles, no outlines.
 Square 1:1, flat pure white #FFFFFF background, icon centered, longest side about 84% of the canvas, nothing else in the image.
@@ -120,10 +121,10 @@ Square 1:1, flat pure white #FFFFFF background, icon centered, longest side abou
 
 ### 6 – `luna-signet`
 
-Nur erzeugen, wenn das Signet ohnehin neu soll. Es hat eigene Farben und bleibt ohne hellen Ton.
+Nur erzeugen, wenn das Signet ohnehin neu soll. Es hat eigene Farben und bleibt ohne hellen Ton. Am besten in einem **eigenen Chat**, ohne Stilanker; im Icon-Chat geht es auch, der Prompt hebt die widersprechenden Regeln ausdrücklich auf.
 
 ```
-Generate icon 6 of the set (file name luna-signet), the emblem of the chat assistant "Luna". Flat vector, no gradients, no glow, no text.
+Separate from the five trade icons above, generate one emblem (file name luna-signet) for the chat assistant "Luna". The two-tone, single-hue and no-background-shape rules above do NOT apply to this emblem; use exactly the three colors below. Flat vector, no gradients, no glow, no text.
 - A perfectly round disc in deep navy #001B2A, filling the canvas with only a thin white margin.
 - On it, centered, a bold off-white #F2F7F9 crescent moon, about 56% of the disc diameter, the open side facing the upper right.
 - In the open area of the crescent at the upper right, one small round turquoise #3AA8B8 dot like a single star (about 11% of the disc).

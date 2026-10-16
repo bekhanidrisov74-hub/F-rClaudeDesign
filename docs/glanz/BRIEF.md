@@ -15,7 +15,7 @@
 5. **Was keine andere Seite macht:** Das Licht wandert mit. Beim Scrollen gleitet ein Glanzlicht über das Chrom der Fotos, als würde man an einer Vitrine vorbeigehen.
 6. **Abstand zu Premium-minimal:** nah dran. Die Seite ist ein Notdienst, keine Spielwiese.
 7. **Eine Welt oder Szenen:** Szenen. Jeder Abschnitt bleibt ein eigener Block mit eigener Fläche.
-8. **Vorhandenes Material:** sechs Fotos, 23 Icons, Tokens, fertiges Layout. Nichts wird neu erzeugt.
+8. **Vorhandenes Material:** sechs Fotos, 23 Icons, Tokens, fertiges Layout. Auf der Seite wird nichts neu erzeugt; neue Fotos und Gewerke-Icons folgen über die überarbeiteten Prompts (`design/IMAGE-PROMPTS-CHATGPT.md`, `design/ICON-PROMPTS-CHATGPT.md`).
 
 ## Weg (Beats)
 
@@ -32,9 +32,9 @@
 
 | Abschnitt | Gefühl | Was es auslöst |
 |---|---|---|
-| Hero | Erleichterung | große klare Zeile, Anruf-Knopf sofort da; das Foto rückt beim Wegscrollen leicht zurück |
-| Leistungen | Wiedererkennen | die Karten kommen nacheinander an, über das Chrom läuft ein Glanzlicht |
-| So funktioniert's | Durchblick (Höhepunkt) | auf Tiefsee zieht eine türkise Linie von Schritt 1 zu Schritt 3, die Ziffern leuchten nacheinander auf |
+| Hero | Erleichterung | große klare Zeile, Anruf-Knopf sofort da; das Foto zoomt beim Wegscrollen minimal heran |
+| Leistungen | Wiedererkennen | über das Chrom der Fotos läuft ein Glanzlicht, Spalte für Spalte versetzt |
+| So funktioniert's | Durchblick (Höhepunkt) | auf Tiefsee zieht eine türkise Linie von Schritt 1 zu Schritt 3, die Ziffern werden nacheinander voll (vorher 70 %, damit sie immer lesbar bleiben) |
 | Preisrechner | Kontrolle | ruhig, keine Bewegung außer der eigenen Eingabe |
 | Zusagen | Vertrauen | die Karten setzen sich nacheinander |
 | Anfrage, Fragen | Entschlossenheit | still, nichts lenkt ab |
@@ -51,18 +51,17 @@ Gewählt: **Gallery / Katalog**, als Abfolge von Szenen. Die Seite ist ein Verze
 
 Nicht gewählt: Filmic one-shot, Continuous world (Scroll-Video, Kamerafahrt), Live surface, Typographic poster, Chaptered editorial, Split stage, Rhythmic cutlist. Ein Notdienst darf niemandem den Weg zum Anruf verlängern. `pin` und `scrub` halten die Seite fest, `pan` erzeugt seitliches Scrollen (verboten laut SPEC 4).
 
-Die scrollcraft-Maschine (`scrollcraft.js`) wird nicht eingebaut. Die Seite ist React mit Vorrendern, Lighthouse ≥ 95 und WCAG AA. Alles läuft über native CSS-Scroll-Animationen (`animation-timeline: view()` / `scroll()`), hinter `@supports`, und fällt bei `prefers-reduced-motion` komplett weg. Ohne Unterstützung ist die Seite einfach statisch.
+Die scrollcraft-Maschine (`scrollcraft.js`) wird nicht eingebaut. Die Seite ist React mit Vorrendern, Lighthouse ≥ 95 und WCAG AA. Alles läuft über native CSS-Scroll-Animationen (`animation-timeline: view()`), hinter `@supports`, und fällt bei `prefers-reduced-motion` komplett weg. Ohne Unterstützung ist die Seite einfach statisch.
 
 ## Partitur
 
 | Abschnitt | Mittel | Warum |
 |---|---|---|
-| Hero | `parallax` (Foto skaliert beim Wegscrollen minimal) | Tiefe ohne Text zu bewegen |
-| Leistungen | `in` (Karten gleiten ein) + Signatur (Glanzlicht) | das Chrom glänzt, ohne dass die Fotos sich ändern |
+| Hero | `parallax` (Foto zoomt beim Wegscrollen bis 7 % heran) | Tiefe, ohne Text zu bewegen |
+| Leistungen | Signatur (Glanzlicht, Versatz nach Spalte) | das Chrom glänzt, ohne dass die Fotos sich ändern |
 | So funktioniert's | Linie zeichnet sich, Ziffern leuchten nacheinander | der Weg der Anfrage wird sichtbar |
 | Preisrechner | `flow`, still | Kontrolle |
 | Zusagen | `in` | ruhiges Ankommen |
-| Kopf | Kante erscheint erst beim Scrollen | sauber oben, klar getrennt darunter |
 
 ## Prüfen
 

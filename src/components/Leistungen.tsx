@@ -29,7 +29,8 @@ export function Leistungen() {
             <span>{copy.leistungen.ueberblick}</span>
           </Button>
         </div>
-        <div className="grid grid-cols-[repeat(auto-fill,minmax(min(340px,100%),1fr))] gap-s5">
+        {/* @container: das Glanzlicht der Karten richtet seinen Versatz nach der echten Spaltenzahl (app.css, glanz) */}
+        <div className="@container grid grid-cols-[repeat(auto-fill,minmax(min(340px,100%),1fr))] gap-s5">
           {gewerke.map((g) => (
             <LeistungKarte key={g.id} gewerk={g} />
           ))}

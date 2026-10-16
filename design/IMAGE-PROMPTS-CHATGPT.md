@@ -47,7 +47,7 @@ Alle Bilder kommen aus **einer quadratischen Datei** und werden je nach Bildschi
 | 1 Hero | rechte Spalte bis zum Rand, ca. 670 × 750 px, leicht hochkant; Ausschnitt eher rechts (75 % / 50 %) | volle Breite × 300 px, quer (ca. 1,3 : 1) |
 | 2–6 Karten | 4 : 3, ca. 365 × 275 px | volle Breite, 16 : 9 |
 
-**Nur Bild 1:** Am Desktop überlappen die Schnellwahl-Kacheln das **untere linke Viertel**. Dort darf nur ruhiges Tiefsee sein.
+**Nur Bild 1:** Am Desktop überlappen die Schnellwahl-Kacheln einen **Streifen am unteren Rand** (etwa die unteren 13 %, linke 80 % der Breite). Der Prompt hält deshalb den unteren Rand und das ganze untere linke Viertel ruhig.
 
 ## Stilanker (zuerst einfügen)
 
@@ -55,13 +55,13 @@ Alle Bilder kommen aus **einer quadratischen Datei** und werden je nach Bildschi
 I need a consistent series of 6 product photographs for an Austrian emergency-tradesperson referral website. The website itself is calm, precise and modern: off-white pages, deep navy text and sections, one turquoise accent color. The photos must feel like one professional studio shoot for a high-end tool catalogue. Please confirm you understand the rules; do not generate an image yet.
 
 Style rules for every image in this series:
-- Real studio product photography, not CGI, not 3D render, not illustration. Medium-format camera, 90 mm macro lens, f/8, ISO 100. Natural micro-detail and true materials. No HDR look, no oversharpening, no glow, no lens flare, no bokeh balls, no sparkles, no floating water droplets in the air.
+- Real studio product photography, not CGI, not 3D render, not illustration. Medium-format camera, 90 mm macro lens, f/8, ISO 100. Natural micro-detail and true materials. No HDR look, no oversharpening, no glow, no lens flare, no bokeh balls, no sparkles, no stray or decorative water droplets (the only exception is the single falling drop in image 1).
 - Low-key setup on a seamless matte backdrop in deep navy (#001B2A). The backdrop curves smoothly into the floor like an infinity cove, so the object stands on a surface and casts a soft contact shadow. No visible horizon line, no texture, no grid, no vignette banding.
 - Behind the object, one soft, wide pool of light on the backdrop in a muted turquoise (#3AA8B8), falling off smoothly into navy toward every edge. The turquoise pool covers at most one fifth of the frame. At least two thirds of the image stay dark navy.
 - Lighting: one large softbox from the upper left, soft but clearly directional, so shadows fall to the lower right. One narrow strip light from the back right draws a thin, cool turquoise rim along the object's edges. No other lights.
 - Materials: chrome reflects the dark room and the softbox as calm, broad highlights, never as glitter or mirror chaos. White plastic and enamel stay clean neutral white. Rubber, brass and brushed steel stay matte.
 - Exactly one orange (#E8842A) element per image, and it is a real physical part attached to the problem (a washer, a cap, a lever, a marking, a sock). Never orange light, glow or reflection. No other warm color anywhere in the image.
-- One object per image, always at the same scale: the object fills about half of the frame height and sits in the middle 60% of the square, with calm navy space around it, so the image can be cropped to portrait, 4:3 and 16:9 without cutting the subject.
+- One object per image, always at the same scale: the object, including its jet, smoke or foam, fits within the middle half of the frame height and the middle 60% of its width, with calm navy space around it, so the image can be cropped to portrait, 4:3 and 16:9 without cutting the subject.
 - Camera: identical for all images. Three-quarter view from slightly above (about 15 degrees), level horizon, no dutch angle, no wide-angle distortion.
 - The problem is one small, precise, frozen moment: a thin jet of water, a fine frost, a clean break, a tripped lever with a wisp of smoke, a mound of foam. Calm and witty, never a disaster: no fire, no flooding, no dirt, no mess.
 - Strictly no people, no hands, no text, no letters, no logos, no brand names, no watermarks, no frames, no borders. Numbers only where they physically belong to the object.
@@ -111,7 +111,7 @@ Square 1:1, highest available resolution.
 ## Bild 6 – Karte Haushaltsgeräte: Schaum und Socke
 
 ```
-Generate image 6 of the series. Match the attached reference image exactly: same navy infinity cove, same muted turquoise light pool, same softbox from the upper left, same camera angle and the same object scale.
+Generate image 6 of the series. Match the attached reference image in light and camera: same softbox from the upper left, same turquoise rim light, same camera angle and the same object scale. This is the one image without a visible floor: the machine front fills the frame and falls off into dark navy shadow, which replaces the cove; no contact shadow needed. Keep a soft, muted turquoise glow behind the door edge.
 Subject: the round door of a white front-loading washing machine, close up in three-quarter view: a polished chrome door ring with smoky tinted glass, set in a section of the machine's white enamel front panel. The front panel is cut off by the frame and falls off into dark navy shadow toward the edges (low-key light), so only the door area is lit. The door stands open a small gap, and a soft, bright white mound of soap foam bulges out of the gap and runs a little down the panel. One orange (#E8842A) sock sticks out of the foam.
 Framing: the door centered, filling about half of the frame height.
 Shadow falls to the lower right.
@@ -122,22 +122,22 @@ Square 1:1, highest available resolution.
 
 ```
 Generate image 1 of the series, the hero image. Match the attached reference image exactly: same navy infinity cove, same muted turquoise light pool, same softbox from the upper left, same chrome rendering.
-Subject: a modern single-lever kitchen mixer tap in polished chrome, seen from the side. The tall spout arcs in from the right edge of the frame, so the aerator sits at about 60% of the frame width and 35% of its height. One single water drop has just left the aerator and hangs frozen in mid-air; below it, on the navy floor, a small, perfectly round ripple spreads in a thin film of water. The small hot-water indicator on the lever is orange (#E8842A), the only warm spot. No other droplets, no splash crown.
-Framing: the tap is cut off by the right edge. Keep the entire lower-left quarter of the image as calm, dark navy only, with nothing in it (interface elements will overlap that area).
+Subject: a modern single-lever kitchen mixer tap in polished chrome, in the same three-quarter view from slightly above as the reference. The tall spout arcs in from the right edge of the frame, so the aerator sits at about 60% of the frame width and 35% of its height. A thin orange (#E8842A) rubber seal ring sits between the spout tip and the aerator, right where the drop forms, the only warm spot. One single water drop has just left the aerator and hangs frozen in mid-air (the only droplet in the whole series); below it, on the navy floor, a small, perfectly round ripple spreads in a thin film of water. No other droplets, no splash crown.
+Framing: the tap is cut off by the right edge. Keep the bottom 15% of the image across its full width, and the entire lower-left quarter, as calm, dark navy only, with nothing in it (interface elements will overlap that area).
 Shadow falls to the lower right.
 Square 1:1, highest available resolution.
 ```
 
 ## Prüfliste vor dem Speichern
 
-- [ ] Wirkt wie ein Foto, nicht wie ein Rendering (kein Glitzer, keine Lichtblitze, keine schwebenden Tropfen)
+- [ ] Wirkt wie ein Foto, nicht wie ein Rendering (kein Glitzer, keine Lichtblitze, keine schwebenden Tropfen außer dem einen fallenden in Bild 1)
 - [ ] Mindestens zwei Drittel dunkles Tiefsee, Türkis nur als gedämpfter Lichtkegel hinter dem Objekt
-- [ ] Objekt steht auf dem Boden, weicher Kontaktschatten, Schatten nach rechts unten
+- [ ] Objekt steht auf dem Boden, weicher Kontaktschatten, Schatten nach rechts unten (Bild 6: Gerätefront läuft ins Dunkel aus, ohne Boden)
 - [ ] Genau ein oranges Teil, am Problem, kein oranges Licht
 - [ ] Gleiche Kamerahöhe und gleicher Maßstab wie das Referenzbild
 - [ ] Kein Text, keine Marke, kein Logo, keine Menschen, keine Hände
 - [ ] Motiv liegt im mittleren Bereich, rundum Luft
-- [ ] Bild 1: unteres linkes Viertel leer
+- [ ] Bild 1: unterer Rand und unteres linkes Viertel leer
 - [ ] Alle sechs nebeneinander wirken wie ein Shooting (am besten als Raster ansehen)
 
 Typische Nachbesserungen, einfach im selben Chat schreiben:

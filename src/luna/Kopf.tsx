@@ -34,7 +34,7 @@ export function Kopf() {
 
       <a
         href={telHref}
-        className="ml-auto flex min-h-[44px] shrink-0 items-center gap-s2 rounded-pill bg-tuerkis pr-s4 pl-s3 font-display text-small font-extrabold text-tiefsee no-underline dialog:hidden"
+        className="ml-auto flex min-h-[44px] shrink-0 items-center gap-s2 rounded-pill bg-tuerkis pr-s4 pl-s3 font-display text-small font-extrabold text-tiefsee no-underline transition-colors hover:bg-tuerkis-tief selection:bg-tiefsee selection:text-tuerkis dialog:hidden"
       >
         <Icon name="ui-anrufen" className="size-[16px]" />
         <span>{copy.kopf.anrufen}</span>

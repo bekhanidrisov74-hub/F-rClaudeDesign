@@ -179,11 +179,17 @@
    wie an einer Vitrine vorbei. Ohne Scroll-Animationen oder mit reduced motion bleibt es unsichtbar. */
 @utility glanz {
   @supports (animation-timeline: view()) {
-    /* Versatz je Spalte: das Licht wandert über die Reihe statt über alle Karten gleichzeitig */
+    /* Versatz je Spalte: das Licht wandert von links nach rechts über die Reihe.
+       Die Spaltenzahl folgt dem Leistungsraster (@container, auto-fill ab 340 px, Abstand 24 px). */
     --von: 20%;
     --bis: 70%;
-    :nth-child(3n + 2) > & { --von: 27%; --bis: 77%; }
-    :nth-child(3n + 3) > & { --von: 34%; --bis: 84%; }
+    @container (min-width: 704px) and (max-width: 1067.98px) {
+      :nth-child(2n + 2) > & { --von: 30%; --bis: 80%; }
+    }
+    @container (min-width: 1068px) {
+      :nth-child(3n + 2) > & { --von: 27%; --bis: 77%; }
+      :nth-child(3n + 3) > & { --von: 34%; --bis: 84%; }
+    }
     &::after {
       content: '';
       position: absolute;
@@ -378,6 +384,7 @@
   from { scale: 0 1; }
 }
 
+/* Gedämpft, aber lesbar: 70 % Türkis auf Tiefsee bleibt über 3:1 (große Schrift), egal wo das Scrollen stoppt */
 @keyframes ziffer {
-  from { opacity: 0.3; translate: 0 var(--fx-s-2); }
+  from { opacity: 0.7; translate: 0 var(--fx-s-2); }
 }

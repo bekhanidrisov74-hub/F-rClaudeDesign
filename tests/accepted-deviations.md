@@ -116,8 +116,8 @@ Beide Änderungen sind bewusst und stehen nicht im Entwurf:
 ## Glanz (Branch `glanz`, docs/glanz/BRIEF.md)
 
 Bewusst, auf Wunsch „schöner, attraktiver, Schrift verbessern“:
-- So funktioniert's: weiches türkises Leuchten oben rechts im Hintergrund. Über der Linie jedes Schritts liegt eine türkise Linie, die sich beim Scrollen von links füllt; die Ziffern sind vorher gedämpft (30 %). In Ganzseiten-Screenshots sind Linien und Ziffern voll; ist eine Linie teilweise oder eine Ziffer blass, hängt das nur von der Scroll-Position ab.
-- Leistungskarten: Beim Scrollen gleitet ein diagonales Glanzlicht über die Fotos. Ein heller schräger Streifen auf einem Kartenfoto ist kein Bildfehler.
+- So funktioniert's: weiches türkises Leuchten oben rechts im Hintergrund (auch am Handy sichtbar). Über der Linie jedes Schritts liegt eine türkise Linie, die sich beim Scrollen von links füllt; die Ziffern sind vorher gedämpft (70 %, Kontrast über 3:1). In Ganzseiten-Screenshots sind Linien und Ziffern voll; ist eine Linie teilweise oder eine Ziffer blass, hängt das nur von der Scroll-Position ab.
+- Leistungskarten: Beim Scrollen gleitet ein diagonales Glanzlicht über die Fotos, je Spalte etwas später. Ein heller schräger Streifen auf einem Kartenfoto ist kein Bildfehler.
 - Hero-Foto: wird beim Wegscrollen bis 7 % größer (Ausschnitt rückt minimal nach innen).
 - Dunkle Karten (Zusagen, Hilfekarte, Rechner-Ergebnis, Seitenkasten, Kontaktkarte im Menü) haben oben eine 1-px-Lichtkante.
 - Beträge in Rechner und Preisübersicht stehen in Bricolage mit gleich breiten Ziffern statt in Atkinson (Atkinson zeichnet die Null durchgestrichen). Gewicht wie bisher.

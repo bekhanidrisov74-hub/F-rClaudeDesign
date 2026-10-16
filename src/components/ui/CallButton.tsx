@@ -19,7 +19,7 @@ interface Props {
   className?: string
 }
 
-const BASIS = 'flex items-center rounded-pill bg-tuerkis text-tiefsee no-underline font-display font-extrabold transition-colors hover:bg-tuerkis-tief'
+const BASIS = 'flex items-center rounded-pill bg-tuerkis text-tiefsee no-underline font-display font-extrabold transition-colors hover:bg-tuerkis-tief selection:bg-tiefsee selection:text-tuerkis'
 
 export function CallButton({ variante, label, nummer = false, className = '' }: Props) {
   if (variante === 'kopf')

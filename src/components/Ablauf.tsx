@@ -6,7 +6,7 @@ export function Ablauf() {
       {/* Weiches Leuchten hinter den Schritten, wie im Fuß; gedämpft, damit Anrufen das Auffälligste bleibt */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -top-1/2 -right-1/4 -z-1 aspect-square w-full rounded-pill bg-radial from-leuchten to-transparent to-70% nav:w-3/5"
+        className="pointer-events-none absolute top-0 -right-1/4 -z-1 -translate-y-1/2 nav:-top-1/2 nav:translate-y-0 aspect-square w-full rounded-pill bg-radial from-leuchten to-transparent to-70% nav:w-3/5"
       />
       <div className="wrapper flex flex-col gap-s6 pt-section pb-section-end nav:gap-s7">
         <h2 id="ablauf-titel" className="text-h2">

@@ -19,12 +19,12 @@ Ablage: `public/images/bild-1.webp` bis `bild-6.webp` (plus AVIF). Quelle jeweil
 
 | Nr. | Wo | Motiv und Moment | Orange Teil | Ausschnitt |
 |---|---|---|---|---|
-| 1 | Hero, rechte Fläche (Desktop), Fläche unter der Schnellwahl (Handy) | Einhebel-Küchenarmatur in Chrom, ein einzelner Tropfen fällt, darunter ein runder Ring im Wasserfilm | Warmwasser-Markierung am Hebel | Auslauf von rechts, rechts angeschnitten; unteres linkes Viertel leer |
+| 1 | Hero, rechte Fläche (Desktop), Fläche unter der Schnellwahl (Handy) | Einhebel-Küchenarmatur in Chrom, ein einzelner Tropfen fällt, darunter ein runder Ring im Wasserfilm | Dichtring zwischen Auslauf und Strahlregler | Auslauf von rechts, rechts angeschnitten; unterer Rand und unteres linkes Viertel leer |
 | 2 | Karte Installateur | Chromrohr mit Knie und Überwurfmutter, ein feiner Wasserstrahl im Bogen aus der Verschraubung | Gummidichtung an der Verschraubung | ganzes Knie und Strahl sichtbar |
 | 3 | Karte Heizung & Klima | Weißer Thermostatkopf mit Ziffern auf Chromventil, Ventil mit feinem Raureif und einem Eiszapfen, Kopf bleibt lesbar | Markierung an der Stufe 5 | mittig, rundum Luft |
 | 4 | Karte Schlüsseldienst | Edelstahl-Beschlag mit Profilzylinder, Schlüsselbart abgebrochen, Bruchkante glänzt, Schlüsselkopf liegt davor | Gummikappe am Schlüsselkopf | Beschlag und Kopf zusammen mittig |
 | 5 | Karte Elektro | Sicherungsautomat auf Hutschiene, Hebel unten, dünner Rauchfaden | der ausgelöste Hebel | mittig, Luft über dem Automaten |
-| 6 | Karte Haushaltsgeräte | Bullauge in einem Stück weißer Gerätefront, Tür einen Spalt offen, Schaum quillt heraus | eine Socke im Schaum | Tür mittig, Front läuft ins Dunkel aus |
+| 6 | Karte Haushaltsgeräte | Bullauge in einem Stück weißer Gerätefront, Tür einen Spalt offen, Schaum quillt heraus (einziges Bild ohne Boden) | eine Socke im Schaum | Tür mittig, Front läuft ins Dunkel aus |
 
 Seitenverhältnisse im Layout: Hero-Fläche Desktop füllt die rechte Spalte (mind. 640 px hoch), Karten 4 : 3 (Handy 16 : 9).
 
