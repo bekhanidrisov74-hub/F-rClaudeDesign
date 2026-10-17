@@ -55,10 +55,11 @@ Dazu kommen schwebend: der Luna-Knopf und der Anstupser. Als Überlagerungen gib
 ## 3. Farbe und Icons
 
 - **Anruf-Knopf:** überall Türkisblau `--fx-tuerkis` mit Tiefsee-Schrift, als Pille. Er ist das auffälligste Element. Keine andere Fläche darf ihm Konkurrenz machen.
-- **Gewerke-Icons** (`icons/gewerk-*.svg`): direkt eingefärbt, ohne Fläche dahinter.
-  - Technik (Heizung & Klima, Elektro, Haushaltsgeräte) in `--fx-icon-technik`.
-  - Handwerk (Installateur, Schlüsseldienst) in `--fx-icon-handwerk`.
-  - Die Farbe kommt aus `kategorie` in den Daten.
+- **Gewerke-Icons** (`icons-3d/gewerk-*.png`): 3D-Renders, weich glänzend im Stil der Fluent-3D-Emojis. Alle mit derselben Kamera (leichte Draufsicht von schräg vorne), demselben Licht und derselben optischen Größe. Transparenter Hintergrund, keine Fläche dahinter. Motive wie in `ICON-PROMPTS-CHATGPT.md`.
+  - Die Hauptfarbe entspricht `kategorie` in den Daten: Technik (Heizung & Klima, Elektro, Haushaltsgeräte) in `--fx-icon-technik`, Handwerk (Installateur, Schlüsseldienst) in `--fx-icon-handwerk`. Sie ist im Render festgelegt; ein e2e-Test gleicht sie mit `kategorie` ab.
+  - Akzente nur in `--fx-tiefsee` (Öffnungen, Füße), `--fx-tuerkis` (Wasser, Anzeige) und `--fx-weiss` (Bedienteile). Weiß liegt immer innerhalb der Form, nie am Umriss, damit das Icon auf weißen Kacheln nicht ausfranst.
+  - Größe: Schnellwahl 56 px (Handy), ab 920 px 64 px; Preisübersicht 40 px.
+  - Auf der Seite als AVIF und WebP in doppelter Anzeigegröße (80, 112 und 128 px) aus `public/icons/`. Neu rendern mit `scripts/render-icons-3d.py` (Blender 5.2, headless), danach exportiert `scripts/icons-3d.mjs` die Dateien und das Kontaktblatt `ICON-3D-KONTAKTBLATT.png`.
 - **Bedien-Icons:** `icons/ui-*.svg`, gefüllt, `currentColor`. Ein Icon steht nie allein: immer mit Text oder `aria-label`. Dekorative Icons bekommen `aria-hidden="true"`.
 - **WhatsApp:** die Sprechblase ist ein Platzhalter. Live das offizielle Logo nach den Markenrichtlinien von Meta verwenden.
 - **Bildflächen:** Türkisblau, bis die Bilder da sind (`IMAGE-BRIEFS.md`). Die Bildbrief-Texte aus den Entwürfen erscheinen nicht auf der Website.
@@ -259,3 +260,4 @@ Am Desktop gelten dieselben Zustände im Fenster (Screen 11 und 12). Im Fenster 
 | Bilder 1–6 | Türkisblaue Flächen | nach `IMAGE-BRIEFS.md` |
 | Endpunkt für Anfragen | lokaler Ersatz | URL für `VITE_LEAD_ENDPOINT` |
 | Sicherheitstipps in Luna | Vorschlag aus Abschnitt 8 | prüfen |
+| Luna-Kasten in der Schnellwahl neben den 3D-Icons | 46/52 px wie im Entwurf, die Gewerke-Icons sind 56/64 px (SPEC 3) | mitwachsen auf 56/64 px? |

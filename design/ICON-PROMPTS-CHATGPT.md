@@ -4,6 +4,8 @@ Diese Datei ist die Anleitung für neue Icons: Stilanker, ein fertiger Prompt pr
 
 Die Prompts sind auf Englisch, weil Bildmodelle Englisch am genauesten umsetzen.
 
+> **Seit 17.10.2026 sind die fünf Gewerke-Icons 3D-Renders** (SPEC 3). Sie entstehen headless in Blender mit `scripts/render-icons-3d.py`, und `scripts/icons-3d.mjs` exportiert sie. Die Gewerke-Prompts unten beschreiben nur noch die Motive; ein neues Gewerk bekommt eine eigene Motiv-Funktion im Skript. Nachgezeichnet werden nur noch Luna und die Bedien-Icons.
+
 ## Was an den jetzigen Icons stört
 
 - **Unklare Bilder.** Der Lichtschalter liest sich bei 40 px wie ein Handy, der Thermostat wie ein Zahn, der Schlüssel am Türblatt wie ein Balken. Das Bullauge ohne Maschine ist nur ein Ring.
@@ -15,7 +17,7 @@ Die Prompts sind auf Englisch, weil Bildmodelle Englisch am genauesten umsetzen.
 - **Zwei Töne derselben Farbe:** das Objekt in der vollen Gewerk-Farbe, ein Begleitteil (Gehäuse, Wand, Platte) als heller Ton derselben Farbe. Das gibt Tiefe ohne Verlauf und ohne Schatten.
 - **Weicher, freundlicher:** großzügige Rundungen wie die Bögen der Bricolage, dafür etwas schlankere Teile als bisher.
 - **Klare Motive:** Steckdose statt Lichtschalter, Heizkörper mit Thermostat statt Ventil allein, Waschmaschine statt Ring.
-- **Auf der Seite** bleibt es ein SVG in `currentColor`: Der helle Ton wird beim Nachzeichnen zu `opacity="0.3"` derselben Farbe. Es braucht keinen neuen Token, und die Farbe kommt weiter aus `kategorie` in `src/content/gewerke.ts`. Keine Fläche hinter dem Icon (SPEC 3).
+- **Auf der Seite** (galt bis zu den 3D-Renders) bleibt es ein SVG in `currentColor`: Der helle Ton wird beim Nachzeichnen zu `opacity="0.3"` derselben Farbe. Es braucht keinen neuen Token, und die Farbe kommt weiter aus `kategorie` in `src/content/gewerke.ts`. Keine Fläche hinter dem Icon (SPEC 3).
 
 | Gruppe | Icons | Voller Ton | Heller Ton (nur im PNG) | Raster |
 |---|---|---|---|---|
@@ -171,8 +173,8 @@ Arrange all icons generated so far on ONE image in an even row, each icon at the
 
 ## Nach dem Erzeugen (im Projekt)
 
-Wenn die PNGs in `design/icons-roh/` liegen:
+Gewerke-Icons: Motiv in `scripts/render-icons-3d.py` ergänzen oder ändern, rendern, dann `scripts/icons-3d.mjs` ausführen (SPEC 3). Für Luna und die Bedien-Icons gilt, sobald die PNGs in `design/icons-roh/` liegen:
 
-1. Die PNGs in `scripts/prepare-icons.mjs` als SVG-Pfade nachzeichnen (32 × 32, `fill="currentColor"`). Der helle Ton wird ein eigener Pfad mit `opacity="0.3"`, der volle Ton ein Pfad ohne Deckkraft. Die Farbe kommt wie bisher aus `kategorie`.
+1. Die PNGs in `scripts/prepare-icons.mjs` als SVG-Pfade nachzeichnen (`fill="currentColor"`).
 2. Die Dateien in `design/icons/` ersetzen. Namen und Einbindung bleiben, `Icon.tsx` lädt sie wie bisher.
 3. Mit `npm run shots` und dem visual-reviewer prüfen (Schnellwahl, Preisübersicht, Rechner).

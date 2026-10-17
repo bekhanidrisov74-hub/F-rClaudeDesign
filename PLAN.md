@@ -11,7 +11,7 @@ Die Inventur mit 8 Lesern hat rund 50 Widersprüche und Lücken gefunden, eine G
 | Komponente | Datei | Screens | Kern |
 |---|---|---|---|
 | Icon | `src/components/ui/Icon.tsx` | alle | `import.meta.glob('/design/icons/*.svg', {query:'?raw', import:'default', eager:true})`, keine Kopien, `currentColor`, dekorativ `aria-hidden` |
-| Gewerk-Icon | `src/components/ui/GewerkIcon.tsx` | 01–04, 13 | Farbe aus `kategorie`: `--fx-icon-technik` bzw. `--fx-icon-handwerk`, ohne Fläche. Alle Stellen nutzen diesen Baustein |
+| Gewerk-Icon | `src/components/ui/GewerkIcon.tsx` | 01–04, 13 | 3D-Render als AVIF/WebP aus `public/icons/` (SPEC 3), Hauptfarbe laut `kategorie`, ohne Fläche. Alle Stellen nutzen diesen Baustein |
 | Anruf-Knopf | `src/components/ui/CallButton.tsx` | 01–05, 07–13 | Varianten `kopf` (48/44 px, Nummer ab 560 px), `gross` (76/70 px, Kreis + Nummer), `block` (Karten, Dialog, Luna), `kompakt` (Luna-Kopf Handy). Immer Türkis mit Tiefsee-Schrift, Pille |
 | Knöpfe | `src/components/ui/Button.tsx` | alle | `sekundaer` (Rand `--fx-rand`, Weiß), `primaer` (Tiefsee), `textlink` |
 | Chip | `src/components/ui/Chip.tsx` | 02, 07, 11, 13 | `aria-pressed`, Häkchen bei Auswahl |
@@ -113,7 +113,7 @@ export interface Gewerk {
   schnellwahl: string        // Unterzeile der Kachel
   karte: string              // Text der Leistungskarte
   bild: number               // 2–6, später public/images/bild-N.webp
-  icon: string               // 'gewerk-installateur' (Dateiname in design/icons)
+  icon: string               // 'gewerk-installateur' (3D-Render in design/icons-3d, exportiert nach public/icons)
   betrieb: string            // Luna-Erfolg: „an einen passenden {betrieb}“ (nicht im Design, Frage 2)
   tipp: string               // Luna Schritt 3 (SPEC 8)
   tippErfolg: string         // Luna-Erfolgskarte „Bis der Betrieb kommt:“ (SPEC 8)

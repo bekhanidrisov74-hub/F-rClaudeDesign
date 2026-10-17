@@ -68,19 +68,43 @@ test('Anruf-Knöpfe: Türkis mit Tiefsee-Schrift', async ({ page }) => {
   for (const f of farben) expect(f).toBe('rgb(58, 168, 184) / rgb(0, 27, 42)')
 })
 
-test('Gewerke-Icons: Petrol bzw. Orange, ohne Fläche', async ({ page }) => {
+test('Gewerke-Icons: 3D-Render in der Farbe der Kategorie, ohne Fläche, 56/64 px', async ({ page }, info) => {
   await page.goto('/')
+  const soll = info.project.name === 'm390' ? 56 : 64
   for (const g of gewerke) {
-    const icons = page.locator(`[data-gewerk="${g.id}"] [aria-hidden="true"]:has(svg)`)
-    expect(await icons.count(), g.id).toBeGreaterThan(0)
-    const stile = await icons.evaluateAll((els) =>
-      els.map((el) => ({ farbe: getComputedStyle(el).color, flaeche: getComputedStyle(el).backgroundColor })),
-    )
-    for (const s of stile)
-      expect(s, g.id).toEqual({
-        farbe: g.kategorie === 'technik' ? 'rgb(63, 125, 136)' : 'rgb(232, 132, 42)',
-        flaeche: 'rgba(0, 0, 0, 0)',
-      })
+    const icon = page.locator(`[data-gewerk="${g.id}"] img`)
+    await icon.scrollIntoViewIfNeeded()
+    await expect.poll(() => icon.evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth > 0), { message: g.id }).toBe(true)
+    const befund = await icon.evaluate(async (img: HTMLImageElement) => {
+      await img.decode() // sonst zeichnet drawImage ein noch nicht dekodiertes Bild leer
+      const canvas = document.createElement('canvas')
+      canvas.width = canvas.height = 64
+      const ctx = canvas.getContext('2d')!
+      ctx.drawImage(img, 0, 0, 64, 64)
+      const px = ctx.getImageData(0, 0, 64, 64).data
+      // Deckende Pixel nahe Petrol (63, 125, 136) bzw. Orange (232, 132, 42) zählen
+      let technik = 0, handwerk = 0, leer = 0
+      for (let i = 0; i < px.length; i += 4) {
+        if (px[i + 3] < 8) leer++ // fast 0: AVIF-Alpha rauscht leicht
+        if (px[i + 3] < 250) continue
+        const naehe = (r: number, gr: number, b: number) => Math.hypot(px[i] - r, px[i + 1] - gr, px[i + 2] - b) < 60
+        if (naehe(63, 125, 136)) technik++
+        if (naehe(232, 132, 42)) handwerk++
+      }
+      // Lage: oben links genau am Innenabstand der Kachel (kein zusätzlicher Abstand davor)
+      const kachel = img.closest('a')!, k = kachel.getBoundingClientRect(), r = img.getBoundingClientRect(), s = getComputedStyle(kachel)
+      return {
+        breite: Math.round(r.width),
+        versatz: [r.left - k.left - parseFloat(s.borderLeftWidth) - parseFloat(s.paddingLeft), r.top - k.top - parseFloat(s.borderTopWidth) - parseFloat(s.paddingTop)].map(Math.round),
+        flaeche: getComputedStyle(img).backgroundColor,
+        // keine Fläche dahinter: ein guter Teil des Quadrats bleibt durchsichtig
+        durchsichtig: leer / (64 * 64) > 0.3,
+        // ein leeres Bild darf nicht als Handwerk durchgehen: Mindestmenge an Farbpixeln (heute ≥ 700)
+        hauptfarbe: technik + handwerk < 100 ? 'keine' : technik > handwerk ? 'technik' : 'handwerk',
+      }
+    })
+    expect(befund, g.id).toEqual({ breite: soll, versatz: [0, 0], flaeche: 'rgba(0, 0, 0, 0)', durchsichtig: true, hauptfarbe: g.kategorie })
+    expect(await icon.evaluate((img: HTMLImageElement) => img.currentSrc)).toMatch(new RegExp(`/icons/${g.icon}-(80|112|128)\\.avif$`))
   }
 })
 

@@ -86,3 +86,23 @@ test('Auslöser im Rechner öffnet ebenfalls', async ({ page }) => {
   await page.keyboard.press('Escape')
   await expect(ausloeser).toBeFocused()
 })
+
+test('Gewerke-Icons: 40 px, als AVIF in doppelter Größe geladen', async ({ page }) => {
+  await page.goto('/')
+  await oeffnePreisuebersicht(page)
+  const icons = preisDialog(page).locator('img:visible')
+  await expect(icons).toHaveCount(gewerke.length)
+  for (const [i, icon] of (await icons.all()).entries()) {
+    await expect.poll(() => icon.evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth > 0)).toBe(true)
+    const befund = await icon.evaluate((img: HTMLImageElement) => {
+      const zeile = img.closest('th, li')!
+      return {
+        breite: Math.round(img.getBoundingClientRect().width),
+        // bündig am Zeilenanfang (Spalte „Gewerk“ bzw. Listenrand)
+        links: Math.round(img.getBoundingClientRect().left - zeile.getBoundingClientRect().left - parseFloat(getComputedStyle(zeile).paddingLeft)),
+        quelle: img.currentSrc.slice(img.currentSrc.lastIndexOf('/') + 1),
+      }
+    })
+    expect(befund).toEqual({ breite: 40, links: 0, quelle: `${gewerke[i].icon}-80.avif` })
+  }
+})

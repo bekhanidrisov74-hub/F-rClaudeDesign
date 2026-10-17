@@ -3,27 +3,13 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import assert from 'node:assert/strict'
 
 // Geometrische Nachzeichnungen der generierten PNGs; keine eingebetteten Rasterbilder.
+// Nur Bedien-Icons und Luna. Die Gewerke-Icons sind 3D-Renders: scripts/render-icons-3d.py und scripts/icons-3d.mjs.
 const rect = (x, y, w, h, r = 0) => r
   ? `M${x+r} ${y}H${x+w-r}Q${x+w} ${y} ${x+w} ${y+r}V${y+h-r}Q${x+w} ${y+h} ${x+w-r} ${y+h}H${x+r}Q${x} ${y+h} ${x} ${y+h-r}V${y+r}Q${x} ${y} ${x+r} ${y}Z`
   : `M${x} ${y}h${w}v${h}h${-w}Z`
 const circle = (x, y, r) => `M${x} ${y-r}a${r} ${r} 0 1 0 0 ${r*2}a${r} ${r} 0 1 0 0 ${-r*2}Z`
 const path = d => `<path fill-rule="evenodd" d="${d}"/>`
 const moon = '<path fill="#F2F7F9" d="M14.4 7.1A8.9 8.9 0 1 0 24.6 17.8A8 8 0 0 1 14.4 7.1Z"/><circle cx="21.9" cy="10.1" r="1.8" fill="#3AA8B8"/>'
-const trades = {
-  'gewerk-installateur': path(rect(1.9,8.2,3.4,10.8,1.5))
-    + path('M5.8 10.6H23.7A6.8 6.8 0 0 1 30.5 17.4V19.4H25.4V17.3A1.6 1.6 0 0 0 23.8 15.7H5.8Z')
-    + path('M8.3 4.1H19.2A1.7 1.7 0 0 1 19.2 7.5H15.4V10.6H12V7.5H8.3A1.7 1.7 0 0 1 8.3 4.1Z')
-    + path('M27.7 20.6C26.6 22.1 24.9 24.4 24.9 26A2.8 2.8 0 0 0 30.5 26C30.5 24.4 28.8 22.1 27.7 20.6Z'),
-  'gewerk-heizung-und-klima': path(rect(7.4,3.3,17.2,15.6,3.7)+[10.7,15.2,19.7].map(x=>rect(x,6.1,1.6,10.3,.8)).join(''))
-    + path(rect(12.2,19.1,7.6,2.5,.3))
-    + path('M6.8 21.5H25.2A1.6 1.6 0 0 1 26.8 23H30.1V27H26.8A1.6 1.6 0 0 1 25.2 28.5H6.8A1.6 1.6 0 0 1 5.2 27H1.9V23H5.2A1.6 1.6 0 0 1 6.8 21.5Z'),
-  'gewerk-schluesseldienst': path('M4.3 2H8.1A2.4 2.4 0 0 1 10.5 4.4V13.2H20.3A5.5 5.5 0 1 1 20.3 18H18.9V20.5H16.4V18H14.8V20.5H12.3V18H10.5V27.6A2.4 2.4 0 0 1 8.1 30H4.3A2.4 2.4 0 0 1 1.9 27.6V4.4A2.4 2.4 0 0 1 4.3 2Z'+circle(25.3,15.6,2.2)),
-  'gewerk-elektro': path(rect(7.2,1.9,17.6,28.2,2.1)+circle(16,6.1,1.6)+rect(10.9,10,10.2,10.5,1.5)+circle(16,25.6,1.6))
-    + path(rect(12.5,11.6,7,4.7,.8)),
-  'gewerk-haushaltsgeraete': path(circle(14.8,16,13.1)+circle(14.8,16,9.3))
-    + path('M7.1 17.2C9.8 14.8 11.1 19.5 14.7 17.3C18 14.9 18.5 19.6 22.5 17.2A7.8 7.8 0 0 1 7.1 17.2Z')
-    + path('M26.7 12.4H28.6A1.5 1.5 0 0 1 30.1 13.9V18.1A1.5 1.5 0 0 1 28.6 19.6H26.7Z'),
-}
 const ui = {
   'ui-anrufen': path('M6.1 2.3A1.6 1.6 0 0 1 8.4 2.6L10.4 5.3A1.5 1.5 0 0 1 10.1 7.4L8.6 8.6A13.8 13.8 0 0 0 15.4 15.4L16.6 13.9A1.5 1.5 0 0 1 18.7 13.6L21.4 15.6A1.6 1.6 0 0 1 21.7 17.9L19.9 20.1A3.4 3.4 0 0 1 16.3 21.2A20.5 20.5 0 0 1 2.8 7.7A3.4 3.4 0 0 1 3.9 4.1Z'),
   'ui-aufklappen': path('M5 7.8L12 14.8L19 7.8L20.6 9.4L12 18L3.4 9.4Z'),
@@ -44,7 +30,6 @@ const ui = {
   'ui-weiter': path('M8.1 5L9.7 3.4L18.3 12L9.7 20.6L8.1 19L15.1 12Z'),
 }
 const entries = [
-  ...Object.entries(trades).map(([name,body])=>({name,body,size:32})),
   {name:'luna-signet',body:`<circle cx="16" cy="16" r="16" fill="#001B2A"/>${moon}`,size:32},
   ...Object.entries(ui).map(([name,body])=>({name,body,size:24})),
   {name:'luna-signet-glyph',body:`<g transform="translate(-5.333 -5.333) scale(1.3333)">${moon}</g>`,size:32},
@@ -57,7 +42,7 @@ const raw = []
 for (const [i, {name,body,size}] of entries.entries()) {
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}" fill="currentColor">${body}</svg>\n`
   await writeFile(`design/icons/${name}.svg`,svg)
-  const color = name.startsWith('gewerk-') ? (/installateur|schluessel/.test(name)?'#E8842A':'#3F7D88') : '#001B2A'
+  const color = '#001B2A'
   const render = Buffer.from(svg.replace('fill="currentColor"',`fill="${color}"`))
   const tile = name.endsWith('-glyph') ? '#001B2A' : '#FFFFFF'
   const big = await sharp(render).resize(120,120).flatten({background:tile}).png().toBuffer()

@@ -19,7 +19,8 @@
 | `design/screens/` | 14 Entwürfe als PNG |
 | `design/reference-html/` | Dieselben Entwürfe als HTML (Texte, Icons, Maße) |
 | `design/tokens.css`, `tokens.json` | Design-Tokens |
-| `design/icons/` | 5 Gewerke-Icons, 17 Bedien-Icons, Luna-Signet als SVG |
+| `design/icons/` | 17 Bedien-Icons und Luna-Signet als SVG |
+| `design/icons-3d/` | 5 Gewerke-Icons als 3D-Renders (`scripts/render-icons-3d.py`), für die Seite exportiert nach `public/icons/` |
 | `design/IMAGE-BRIEFS.md` | Briefe für die 6 Bilder |
 
 ## Hinweise

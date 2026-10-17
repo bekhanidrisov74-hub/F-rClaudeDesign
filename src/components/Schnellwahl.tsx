@@ -23,7 +23,7 @@ export function Schnellwahl() {
         <div className="grid grid-cols-2 gap-s3 dialog:grid-cols-3 nav:grid-cols-[repeat(auto-fit,minmax(min(176px,100%),1fr))]">
           {gewerke.map((g) => (
             <a key={g.id} href="#anfrage" data-gewerk={g.id} className={`${KACHEL} border border-linie bg-weiss transition-colors hover:border-tuerkis`}>
-              <GewerkIcon gewerk={g} className="size-[41px] nav:size-[47px]" />
+              <GewerkIcon gewerk={g} sizes="(min-width: 57.5rem) 64px, 56px" className="size-[56px] nav:size-[64px]" />
               <span className="flex flex-col gap-s1">
                 <span className={TITEL}>{g.name}</span>
                 <span className="min-h-[2lh] text-note text-schiefer max-nav:hidden">{g.schnellwahl}</span>

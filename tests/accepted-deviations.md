@@ -111,7 +111,8 @@ Beide Änderungen sind bewusst und stehen nicht im Entwurf:
 
 - Bildflächen zeigen die echten Fotos (`public/images/bild-1` bis `bild-6`): sehr dunkler Rand in Tiefsee, türkise Lichtmitte, ein oranger Akzent pro Bild. Die Farben sind mit `scripts/prepare-images.mjs` an die Tokens angeglichen. Zu prüfen ist nur, dass das Motiv vollständig sichtbar ist und die Schnellwahl das Hero-Motiv nicht überdeckt.
 - Zuschnitt: Karten unter 920 px 16 : 9, ab 920 px 4 : 3. Hero-Streifen unter 920 px mindestens 300 px hoch, ab 600 px halb so hoch wie breit (2 : 1). Ab 920 px füllt Bild 1 die rechte Spalte.
-- Alle Icons in `design/icons/*.svg` sind neu gezeichnet. Form und Rundung weichen leicht von den Entwurfs-Icons ab. Farben und Platz müssen stimmen: Gewerke-Icons Petrol bzw. Orange ohne Fläche, Bedien-Icons in der Textfarbe der Umgebung, Luna-Mond auf Tiefsee. X, Chevrons und Häkchen sind etwas größer als im Entwurf.
+- Alle Icons in `design/icons/*.svg` sind neu gezeichnet. Form und Rundung weichen leicht von den Entwurfs-Icons ab. Farben und Platz müssen stimmen: Bedien-Icons in der Textfarbe der Umgebung, Luna-Mond auf Tiefsee. X, Chevrons und Häkchen sind etwas größer als im Entwurf.
+- Die Gewerke-Icons in Schnellwahl und Preisübersicht sind farbige 3D-Renders statt flacher Piktogramme (SPEC 3, freigegeben am 17.10.2026). Motive: Wasserhahn mit Tropfen, Heizkörper mit Thermostat, Schlüssel vor einem Türschild, Steckdose und Waschmaschine. Sie sind größer als im Entwurf: in der Schnellwahl 56 px (Handy) bzw. 64 px (ab 920 px) statt 41/47 px, in der Preisübersicht 40 px statt 32 px. Zu prüfen sind nur: Hauptfarbe Petrol bzw. Orange, keine Fläche dahinter, Motiv nicht abgeschnitten und der Abstand zum Kacheltitel.
 
 ## Glanz (Branch `glanz`, docs/glanz/BRIEF.md)
 

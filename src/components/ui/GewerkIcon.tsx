@@ -1,8 +1,29 @@
 import type { Gewerk } from '../../content/gewerke'
-import { Icon } from './Icon'
 
-/** Gewerke-Icon direkt eingefärbt, ohne Fläche: Technik Petrol, Handwerk Orange (SPEC 3). */
-export function GewerkIcon({ gewerk, className = '' }: { gewerk: Gewerk; className?: string }) {
-  const farbe = gewerk.kategorie === 'technik' ? 'text-icon-technik' : 'text-icon-handwerk'
-  return <Icon name={gewerk.icon} className={`${farbe} ${className}`} />
+/** Exportbreiten aus scripts/icons-3d.mjs: doppelte Anzeigegröße von 40, 56 und 64 px (SPEC 3). */
+export const BREITEN = [80, 112, 128]
+
+/**
+ * Gewerke-Icon als 3D-Render ohne Fläche dahinter (SPEC 3). Dekorativ: den Namen trägt der Text daneben.
+ * `sizes` nennt die Anzeigegröße, damit der Browser die passende Breite lädt; die Größe selbst setzt `className` am <picture>
+ * (ein Block, kein `contents`: sonst würde <source> ein eigenes Flex-Kind und belegte einen Abstand).
+ */
+export function GewerkIcon({ gewerk, sizes, className = '' }: { gewerk: Gewerk; sizes: string; className?: string }) {
+  const srcSet = (format: string) => BREITEN.map((b) => `/icons/${gewerk.icon}-${b}.${format} ${b}w`).join(', ')
+  return (
+    <picture className={`block shrink-0 ${className}`}>
+      <source type="image/avif" srcSet={srcSet('avif')} sizes={sizes} />
+      <img
+        src={`/icons/${gewerk.icon}-128.webp`}
+        srcSet={srcSet('webp')}
+        sizes={sizes}
+        width={128}
+        height={128}
+        alt=""
+        loading="lazy"
+        decoding="async"
+        className="block size-full"
+      />
+    </picture>
+  )
 }
