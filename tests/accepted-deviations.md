@@ -124,3 +124,7 @@ Bewusst, auf Wunsch „schöner, attraktiver, Schrift verbessern“:
 - Überschriften sind ausgeglichen umbrochen (`text-wrap: balance`), Absätze ohne Einzelwort in der letzten Zeile. Zeilenumbrüche können deshalb vom Entwurf abweichen.
 - Hover nur als Farbe (120 ms): Zweitknöpfe bekommen einen Tiefsee-Rand, Primärknöpfe Tiefsee-2, Kacheln einen türkisen Rand, der Anruf-Knopf wird etwas tiefer (`--fx-tuerkis-tief`).
 - Textmarkierung in Türkis mit Tiefsee-Schrift.
+
+## Wirbel (Worktree `shader-karten`)
+
+- Zusagen: Die zwei großen dunklen Karten („Vermittlung statt Reparatur“, „Richtpreise, keine Festpreise“) zeigen statt des Türkis-Rasters einen langsam fließenden Wirbel (Paper-Shader „Warp“, `Wirbelflaeche.tsx`) in Tiefsee-2, Technik und Türkis, 50 % Deckkraft, nach unten zum Text hin ausgeblendet; die zweite Karte ist um 135° gedreht. Ohne WebGL 2 und vor dem Laden steht das Raster, bei prefers-reduced-motion ein Standbild. Die Struktur unterscheidet sich zwischen zwei Aufnahmen, das ist kein Befund. Für den Abschnitt gibt es keinen Entwurf; `zusagen-*.png` nur auf Stimmigkeit prüfen.

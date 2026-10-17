@@ -1,23 +1,23 @@
 import { copy } from '../content/copy'
 import { Icon } from './ui/Icon'
+import { Wirbelflaeche } from './ui/Wirbelflaeche'
 
-type Karte = (typeof copy.zusagen.karten)[number]
-
-/** Spalten des Bento-Rasters ab 920 px: Handy untereinander. dunkel = Tiefsee-Fläche mit Raster. */
+/** Spalten des Bento-Rasters ab 920 px: Handy untereinander. dunkel = Tiefsee-Fläche; groß = mit Wirbel. */
 const spalten: { karten: [number, boolean, boolean][] }[] = [
   { karten: [[0, true, true], [1, false, false]] },
   { karten: [[2, false, true], [3, false, false], [4, false, true]] },
   { karten: [[5, false, false], [6, true, true]] },
 ]
 
-function ZusageKarte({ karte, gross, dunkel }: { karte: Karte; gross: boolean; dunkel: boolean }) {
+function ZusageKarte({ index, gross, dunkel }: { index: number; gross: boolean; dunkel: boolean }) {
+  const karte = copy.zusagen.karten[index]
   return (
     <li
       className={`einblenden relative flex flex-col justify-end gap-s5 overflow-hidden rounded-card-lg p-s5 ${
         gross ? 'nav:grow-[7]' : 'nav:grow-[3]'
       } ${dunkel ? 'kante bg-tiefsee-2 text-kalk' : 'bg-weiss text-tiefsee'}`}
     >
-      {gross && <div aria-hidden="true" className="raster-karte absolute inset-0 opacity-25" />}
+      {gross && <Wirbelflaeche drehung={index === 0 ? 0 : 135} />}
       <p className={`relative ${gross ? 'text-lead' : 'text-body'}`}>{karte.text}</p>
       <div className="relative flex items-end justify-between gap-s4">
         <div className="flex flex-col gap-px">
@@ -51,7 +51,7 @@ export function Zusagen() {
           {spalten.map((spalte, i) => (
             <ul key={i} role="list" className="flex flex-col gap-s3">
               {spalte.karten.map(([index, gross, dunkel]) => (
-                <ZusageKarte key={index} karte={copy.zusagen.karten[index]} gross={gross} dunkel={dunkel} />
+                <ZusageKarte key={index} index={index} gross={gross} dunkel={dunkel} />
               ))}
             </ul>
           ))}
