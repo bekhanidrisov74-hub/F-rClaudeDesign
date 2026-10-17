@@ -166,6 +166,11 @@
   mask-image: radial-gradient(ellipse 80% 50% at 50% 0%, black 70%, transparent 110%);
 }
 
+/* Wirbel in dunklen Karten (Zusagen, ersetzt dort das Raster): oben sichtbar, zum Text hin auslaufend */
+@utility wirbel-karte {
+  mask-image: linear-gradient(to bottom, black, transparent 85%);
+}
+
 /* Karten gleiten beim Hineinscrollen ein (nur wo Scroll-Animationen gehen; sonst sind sie einfach da) */
 @utility einblenden {
   @supports (animation-timeline: view()) {

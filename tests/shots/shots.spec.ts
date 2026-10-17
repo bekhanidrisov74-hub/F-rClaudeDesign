@@ -21,6 +21,12 @@ import { expect } from '../e2e/test'
 const HOEHE: Record<number, number> = { 390: 844, 1024: 768, 1440: 900 }
 const ALLE = [390, 1024, 1440]
 
+/** Der Wirbel in den Zusagen lädt erst beim Hinscrollen, wie der Fuß-Globus. */
+const wirbel = async (p: Page) => {
+  await p.locator('#zusagen').scrollIntoViewIfNeeded()
+  await expect(p.locator('#zusagen [data-paper-shader]')).toHaveCount(2)
+}
+
 interface Zustand {
   name: string
   pfad: string
@@ -39,15 +45,18 @@ const ZUSTAENDE: Zustand[] = [
     name: 'startseite',
     pfad: '/',
     ganzeSeite: true,
-    // Der Fuß-Globus lädt erst beim Hinscrollen; Ganzseiten-Shots scrollen nie.
+    // Wirbel und Fuß-Globus laden erst beim Hinscrollen; Ganzseiten-Shots scrollen nie.
     vorbereiten: async (p) => {
+      await wirbel(p)
       const globus = p.locator('footer canvas')
-      if (!(await globus.isVisible())) return
-      await globus.scrollIntoViewIfNeeded()
-      await expect.poll(() => globus.evaluate((c: HTMLCanvasElement) => c.width)).not.toBe(300)
+      if (await globus.isVisible()) {
+        await globus.scrollIntoViewIfNeeded()
+        await expect.poll(() => globus.evaluate((c: HTMLCanvasElement) => c.width)).not.toBe(300)
+      }
       await p.evaluate(() => window.scrollTo(0, 0))
     },
   },
+  { name: 'zusagen', pfad: '/', element: (p) => p.locator('#zusagen'), vorbereiten: wirbel },
   { name: 'falz', pfad: '/', breiten: [390] },
   { name: 'impressum', pfad: '/impressum/', breiten: [390, 1440] },
   { name: 'preisuebersicht', pfad: '/', vorbereiten: oeffnePreisuebersicht },
@@ -104,8 +113,8 @@ for (const z of ZUSTAENDE)
         await expect.poll(() => globus.evaluate((c: HTMLCanvasElement) => c.width)).not.toBe(300)
       const pfad = `tests/screens-actual/${z.name}-${breite}.png`
       if (z.element) {
-        // Der sticky Kopf und der schwebende Luna-Knopf würden Teile des Elements verdecken.
-        await page.addStyleTag({ content: 'header { position: static !important; } #luna-knopf { display: none !important; }' })
+        // Der sticky Kopf, der schwebende Luna-Knopf und sein Anstupser würden Teile des Elements verdecken.
+        await page.addStyleTag({ content: 'header { position: static !important; } #luna-knopf, [data-anstupser] { display: none !important; }' })
         await z.element(page).screenshot({ path: pfad, animations: 'disabled' })
       }
       else await page.screenshot({ path: pfad, fullPage: z.ganzeSeite, animations: 'disabled' })
