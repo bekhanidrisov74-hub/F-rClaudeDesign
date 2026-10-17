@@ -54,6 +54,8 @@ const ZUSTAENDE: Zustand[] = [
         await expect.poll(() => globus.evaluate((c: HTMLCanvasElement) => c.width)).not.toBe(300)
       }
       await p.evaluate(() => window.scrollTo(0, 0))
+      // Das Scrollen weckt den Anstupser (ab 60 % Scrolltiefe); er gehört nicht zum Grundzustand der Startseite.
+      await p.addStyleTag({ content: '[data-anstupser] { display: none !important; }' })
     },
   },
   { name: 'zusagen', pfad: '/', element: (p) => p.locator('#zusagen'), vorbereiten: wirbel },
