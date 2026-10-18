@@ -23,9 +23,7 @@ export function Footer() {
         <div className="grid gap-s7 nav:grid-cols-[minmax(0,1fr)_auto] nav:gap-s9">
           <div className="flex flex-col gap-s4">
             <span className="flex items-center gap-s3">
-              <span className="flex size-s7 shrink-0 items-center justify-center rounded-pill bg-tiefsee-2 text-tuerkis">
-                <Symbol3D name="ui-rund-um-die-uhr" hell trage className="size-s5" />
-              </span>
+              <Symbol3D name="ui-rund-um-die-uhr" hell trage gross className="size-s7" />
               <span className="font-display text-logo-fuss font-extrabold tracking-[-0.035em] [font-stretch:100%]">
                 {copy.kopf.logo}
               </span>

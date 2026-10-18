@@ -24,13 +24,7 @@ function ZusageKarte({ index, gross, dunkel }: { index: number; gross: boolean; 
           <h3 className="font-display text-h5 font-[750] [font-stretch:100%]">{karte.titel}</h3>
           <p className={`text-small ${dunkel ? 'text-nebel' : 'text-schiefer'}`}>{karte.zusatz}</p>
         </div>
-        <span
-          className={`flex size-s8 shrink-0 items-center justify-center rounded-icon ${
-            dunkel ? 'bg-tiefsee text-tuerkis' : 'bg-kalk text-icon-technik'
-          }`}
-        >
-          <Symbol3D name={karte.icon} hell={dunkel} trage className="size-s6" />
-        </span>
+        <Symbol3D name={karte.icon} hell={dunkel} trage gross className="size-s8" />
       </div>
     </li>
   )

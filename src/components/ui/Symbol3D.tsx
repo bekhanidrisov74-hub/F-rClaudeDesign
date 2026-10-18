@@ -4,8 +4,9 @@ export const SYMBOLE_3D = [
   'ui-richtpreis', 'ui-vermittlung', 'ui-info', 'ui-haekchen', 'ui-warnung',
 ]
 
-/** Breite der Dateien in public/icons: deckt 32 px bei dreifacher Pixeldichte; wie in scripts/export-3d.mjs. */
+/** Breite der Dateien in public/icons: 96 deckt 32 px, 168 (`gross`, ab etwa 33 px) bis 56 px bei dreifacher Pixeldichte; wie in scripts/export-3d.mjs. */
 export const SYMBOL_BREITE = 96
+export const SYMBOL_BREITE_GROSS = 168
 
 /**
  * Dekoratives 3D-Symbol. Ein Bild erbt keine Textfarbe, darum zwei Farbstellungen:
@@ -14,13 +15,14 @@ export const SYMBOL_BREITE = 96
  * Lädt sofort (Anruf-Knopf, Luna: sonst erscheint das Zeichen erst nach dem ersten Bildaufbau); `trage` nur weit
  * unter dem Falz (Zusagen, Fuß).
  */
-export function Symbol3D({ name, hell = false, trage = false, className = '' }: { name: string; hell?: boolean; trage?: boolean; className?: string }) {
+export function Symbol3D({ name, hell = false, trage = false, gross = false, className = '' }: { name: string; hell?: boolean; trage?: boolean; gross?: boolean; className?: string }) {
   if (!SYMBOLE_3D.includes(name)) throw new Error(`Symbol fehlt: ${name}`)
-  const datei = `/icons/${name}${hell ? '-hell' : ''}-${SYMBOL_BREITE}`
+  const breite = gross ? SYMBOL_BREITE_GROSS : SYMBOL_BREITE
+  const datei = `/icons/${name}${hell ? '-hell' : ''}-${breite}`
   return (
     <picture className={`block shrink-0 ${className}`}>
       <source type="image/avif" srcSet={`${datei}.avif`} />
-      <img src={`${datei}.webp`} width={SYMBOL_BREITE} height={SYMBOL_BREITE} alt="" loading={trage ? 'lazy' : undefined} decoding="async" className="block size-full" />
+      <img src={`${datei}.webp`} width={breite} height={breite} alt="" loading={trage ? 'lazy' : undefined} decoding="async" className="block size-full" />
     </picture>
   )
 }

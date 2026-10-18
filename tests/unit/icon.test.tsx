@@ -2,7 +2,7 @@ import { existsSync, readdirSync } from 'node:fs'
 import { renderToString } from 'react-dom/server'
 import { expect, test } from 'vitest'
 import { Icon, icons } from '../../src/components/ui/Icon'
-import { SYMBOL_BREITE, SYMBOLE_3D, Symbol3D } from '../../src/components/ui/Symbol3D'
+import { SYMBOL_BREITE, SYMBOL_BREITE_GROSS, SYMBOLE_3D, Symbol3D } from '../../src/components/ui/Symbol3D'
 import { copy } from '../../src/content/copy'
 
 test('alle Icons aus design/icons sind geladen', () => {
@@ -23,7 +23,7 @@ test('unbekanntes Icon fällt sofort auf', () => {
 test('jedes 3D-Symbol hat beide Farbstellungen als Render und als Export', () => {
   for (const name of SYMBOLE_3D)
     for (const datei of [`design/icons-3d/${name}.png`, `design/icons-3d/${name}-hell.png`,
-      ...['', '-hell'].flatMap((s) => ['avif', 'webp'].map((f) => `public/icons/${name}${s}-${SYMBOL_BREITE}.${f}`))])
+      ...['', '-hell'].flatMap((s) => [SYMBOL_BREITE, SYMBOL_BREITE_GROSS].flatMap((b) => ['avif', 'webp'].map((f) => `public/icons/${name}${s}-${b}.${f}`)))])
       expect(existsSync(datei), datei).toBe(true)
 })
 

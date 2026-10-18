@@ -128,12 +128,7 @@ export function Preisrechner() {
 function EinsatzHinweis() {
   return (
     <div className="flex items-start gap-s3 rounded-btn-lg border border-linie bg-weiss px-s4 py-s4">
-      <span
-        aria-hidden="true"
-        className="flex size-[40px] shrink-0 items-center justify-center rounded-icon bg-tuerkis text-tiefsee"
-      >
-        <Symbol3D name="ui-richtpreis" className="size-[24px]" />
-      </span>
+      <Symbol3D name="ui-richtpreis" gross className="size-[40px]" />
       <div className="flex min-w-0 flex-col gap-s1">
         <p className="font-display text-h5 font-[750] [font-stretch:100%]">{copy.rechner.einsatz.titel}</p>
         <p className="text-small text-schiefer">{copy.rechner.einsatz.text}</p>

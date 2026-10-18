@@ -3,7 +3,7 @@ import { mkdir, readdir, readFile } from 'node:fs/promises'
 
 // Alle 3D-Renders für die Seite aufbereiten (SPEC 3, IMAGE-BRIEFS.md), danach Kontaktblätter zur Kontrolle:
 // - Gewerke-Icons design/icons-3d/gewerk-*.png → public/icons, doppelte Anzeigegröße 80/112/128 px (GewerkIcon.tsx)
-// - Symbole design/icons-3d/ui-*.png (zwei Farbstellungen) → public/icons, 96 px (Symbol3D.tsx)
+// - Symbole design/icons-3d/ui-*.png (zwei Farbstellungen) → public/icons, 96 und 168 px (Symbol3D.tsx)
 // - Bilder design/bilder-chatgpt/bild-N.png (mit ChatGPT erzeugt, 1254 px) → public/images, 480/800/1200/1254 px (Bildflaeche.tsx)
 // Die Icons und Symbole werden mit scripts/render-icons-3d.py gerendert, die Bilder mit ChatGPT erzeugt (design/BILD-PROMPTS-3D-CHATGPT.md).
 // Aufruf: SHARP_MODULE_PATH=… node scripts/export-3d.mjs (Sharp ist keine Projektabhängigkeit)
@@ -14,7 +14,7 @@ const tokens = JSON.parse(await readFile('design/tokens.json', 'utf8'))
 const farbe = (token) => tokens[token].value
 const GEWERKE = ['gewerk-installateur', 'gewerk-heizung-und-klima', 'gewerk-schluesseldienst', 'gewerk-elektro', 'gewerk-haushaltsgeraete']
 const GEWERK_BREITEN = [80, 112, 128] // 2 × Preisübersicht 40, Schnellwahl 56 (Handy) und 64 px (ab 920 px)
-const SYMBOL_BREITE = 96 // deckt 32 px bei dreifacher Pixeldichte; wie SYMBOL_BREITE in Symbol3D.tsx
+const SYMBOL_BREITEN = [96, 168] // deckt 32 px bzw. 56 px bei dreifacher Pixeldichte; wie SYMBOL_BREITE und SYMBOL_BREITE_GROSS in Symbol3D.tsx
 const BILD_BREITEN = [480, 800, 1200, 1254] // wie in Bildflaeche.tsx
 
 const symbole = (await readdir('design/icons-3d')).filter((f) => f.startsWith('ui-')).map((f) => f.slice(0, -'.png'.length))
@@ -30,7 +30,9 @@ const icon = (quelle, ziel, breite) => {
 for (const name of GEWERKE) {
   for (const breite of GEWERK_BREITEN) await icon(`design/icons-3d/${name}.png`, `public/icons/${name}-${breite}`, breite)
 }
-for (const name of symbole) await icon(`design/icons-3d/${name}.png`, `public/icons/${name}-${SYMBOL_BREITE}`, SYMBOL_BREITE)
+for (const name of symbole) {
+  for (const breite of SYMBOL_BREITEN) await icon(`design/icons-3d/${name}.png`, `public/icons/${name}-${breite}`, breite)
+}
 
 await mkdir('public/images', { recursive: true })
 // Das Schwarz der Bilder (≈ #010304) wird auf Tiefsee angehoben, damit Bildecken und Vignette in derselben Farbe

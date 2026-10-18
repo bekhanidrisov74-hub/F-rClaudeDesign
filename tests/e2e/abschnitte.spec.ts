@@ -170,7 +170,7 @@ test('Symbole: 3D-Renders in der Farbstellung ihrer Fläche, geladen und dekorat
   expect(await page.locator('header a[href^="tel:"] img').first().evaluate(datei)).toBe('ui-anrufen-96.webp')
   expect(await page.locator('#start a[href^="tel:"] img').first().evaluate(datei)).toBe('ui-anrufen-hell-96.webp')
   for (const name of await page.locator('footer img[src*="/icons/ui-"]').evaluateAll((els) => els.map((el) => el.getAttribute('src'))))
-    expect(name).toMatch(/-hell-96\.webp$/)
+    expect(name).toMatch(/-hell-(96|168)\.webp$/)
   const alle = page.locator('img[src*="/icons/ui-"]:visible')
   expect(await alle.count()).toBeGreaterThan(10)
   for (const img of await alle.all()) {
