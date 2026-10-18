@@ -4,8 +4,8 @@ export const TELEFON = '[Telefonnummer]'
 export const WHATSAPP = '[WhatsApp-Nummer]'
 export const EMAIL = '[E-Mail-Adresse]'
 export const FIRMA = '[Firmenname]'
-/** Für sitemap.xml, robots.txt und og:url, z. B. 'https://www.fixit247.at' (ohne Schrägstrich am Ende). */
-export const DOMAIN = '[Domain]'
+/** Für sitemap.xml, robots.txt, og:url und canonical (ohne Schrägstrich am Ende). www leitet public/.htaccess hierher um. */
+export const DOMAIN = 'https://fixit247.at'
 
 export const WHATSAPP_TEXT = 'Hallo fixit247, ich brauche Hilfe: '
 

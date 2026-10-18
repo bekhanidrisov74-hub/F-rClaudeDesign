@@ -1,10 +1,11 @@
 # Hosting und Backend
 
-Stand: 16.10.2026
+Stand: 18.10.2026
 
 ## Entscheidung
 
-- **Hosting:** Webspace eines „All-inclusive“-Hosters (Name noch offen). Hochgeladen wird der Inhalt von `dist/` nach `npm run build`.
+- **Hosting:** ALL-INKL.COM, Domain `fixit247.at` (ohne www, `DOMAIN` in `src/content/contact.ts`). Webspace, PHP, Postfächer und Domain liegen dort in einem Paket. Hochgeladen wird der Inhalt von `dist/` nach `npm run build`.
+- **Mail:** PHP `mail()` über die Mailserver von ALL-INKL. SPF und DKIM für diese Server legt ALL-INKL automatisch an, SMTP ist nicht nötig. Absender (`-f` und `From`) ist eine Adresse von `fixit247.at`, damit Envelope- und sichtbarer Absender zur selben Domain gehören (Vorgabe von ALL-INKL wegen DMARC).
 - **Backend:** PHP-Dateien auf dem Webspace statt Google Apps Script (gebaut am 16.10.2026). Sie liegen in `public/` und kommen mit `npm run build` nach `dist/`:
   - `anfrage.php` nimmt Formular und Luna entgegen, speichert die Anfrage als Datei und verschickt die Mails.
   - `chat.php` leitet Lunas KI-Anfragen an OpenAI weiter. Der Schlüssel liegt nur auf dem Server.
@@ -12,26 +13,31 @@ Stand: 16.10.2026
 - **Endpunkte:** `VITE_FORM_ENDPOINT=/anfrage.php` und `VITE_CHAT_ENDPOINT=/chat.php` stehen in `.env.production` und gelten für jeden `npm run build`. Abweichend nur in `.env.production.local`. Gleiche Herkunft, also keine CORS-Probleme.
 - **Nicht gewählt:** Supabase. Begründung in der Konversation: Anfragen werden nur weitergeleitet, und externe Requests widersprechen den Projektregeln.
 
-## Einrichtung beim Hoster
+## Einrichtung bei ALL-INKL (KAS)
 
-1. PHP ab 8.1 mit `mbstring` und `curl` (bei Webhostern Standard).
-2. `dist/` in den Webroot hochladen.
-3. Eine Ebene über dem Webroot `fixit247-konfig.php` anlegen. Sie gehört nicht ins Repo (`.gitignore`):
+1. **Domain-Ordner:** `fixit247.at` in KAS unter Domain auf einen Unterordner zeigen lassen, z. B. `/fixit247.at/`, nicht auf `/`. Die Konfiguration liegt eine Ebene über dem Webroot, also im Hauptverzeichnis des Accounts (`/www/htdocs/<KAS-Login>/`). Nur dort darf PHP lesen und schreiben (`open_basedir`). Zeigt die Domain auf `/`, liest PHP die Konfiguration nicht: keine Partnerliste, kein KI-Schlüssel, kein Ordner `fixit247-daten/`. Mails gingen dann trotzdem mit den Standardadressen hinaus.
+2. **PHP:** für die Domain PHP 8.1 oder neuer wählen (`mbstring` und `curl` sind dabei).
+3. **SSL:** in KAS unter SSL-Schutz ein Let’s-Encrypt-Zertifikat für `fixit247.at` **und** `www.fixit247.at` anlegen. `public/.htaccess` leitet http und www auf `https://fixit247.at` um. Ohne Zertifikat für www scheitert der Aufruf mit www schon am Zertifikat, bevor die Weiterleitung greift.
+4. **Postfach:** `support@fixit247.at` anlegen. Diese Adresse ist im Code Standard für Empfänger und Absender (`EMPFAENGER` in `anfrage.php`), sie bekommt die Anfragen und Rückläufer.
+5. **Hochladen:** `npm run build`, dann den Inhalt von `dist/` (auch die unsichtbare `.htaccess`) per FTP in den Domain-Ordner. Die FTP-Zugangsdaten stehen in KAS unter FTP.
+6. **Konfiguration:** ins Hauptverzeichnis des Accounts, also neben den Domain-Ordner, `fixit247-konfig.php` legen. Sie gehört nicht ins Repo (`.gitignore`):
 
    ```php
    <?php
    return [
-     'openai_key' => 'sk-…',                  // nur hier, nie in einer VITE_-Variable
-     'empfaenger' => 'support@fixit247.at',   // mehrere mit Komma trennen
-     'absender'   => 'website@<domain>',      // Postfach der eigenen Domain (SPF/DKIM)
-     'partner'    => [],                      // Partnerbetriebe für das Matching, Felder siehe anfrage.php
-     // 'modell' => 'gpt-6-luna',             // optional
+     'openai_key' => 'sk-…',  // nur hier, nie in einer VITE_-Variable
+     'partner'    => [],        // Partnerbetriebe für das Matching, Felder siehe anfrage.php
+     // 'empfaenger' => 'support@fixit247.at, office@fixit247.at',  // optional, mehrere mit Komma
+     // 'absender'   => 'support@fixit247.at',                      // optional, immer @fixit247.at
+     // 'modell'     => 'gpt-6-luna',                               // optional
    ];
    ```
 
-   Ohne Elternordner (z. B. `open_basedir` nur auf den Webroot) die Datei an einen anderen Ort außerhalb des Webroots legen und mit `SetEnv FIXIT247_KONFIG /pfad/zur/fixit247-konfig.php` in der `.htaccess` darauf zeigen. Statt `openai_key` geht auch die Umgebungsvariable `OPENAI_API_KEY`.
-4. Neben der Konfiguration legt PHP beim ersten Aufruf den Ordner `fixit247-daten/` an. PHP braucht dort Schreibrecht.
-5. Eine echte Testanfrage schicken und prüfen, ob die Mail ankommt (auch im Spam-Ordner) und in `fixit247-daten/anfragen-*.jsonl` steht.
+   PHP legt daneben beim ersten Aufruf den Ordner `fixit247-daten/` an. Statt `openai_key` geht auch die Umgebungsvariable `OPENAI_API_KEY`.
+7. **Prüfen:**
+   - `http://www.fixit247.at/` landet mit einer Weiterleitung auf `https://fixit247.at/`.
+   - Eine echte Anfrage über das Formular und eine über Luna mit der eigenen E-Mail-Adresse schicken. Die Mail an `support@fixit247.at` und die Bestätigung kommen an (auch im Spam-Ordner nachsehen), die Anfrage steht in `fixit247-daten/anfragen-*.jsonl`.
+   - Zeigt die Seite den Sendefehler, im PHP-Fehlerprotokoll nach `mail() an … abgelehnt` suchen. Lokal geprüft ist `mail()` nur gegen einen SMTP-Empfänger. Ob ALL-INKL den Envelope-Absender `-f support@fixit247.at` annimmt, zeigt erst dieser Test.
 
 ## Speicherung, Doppelsendung, Kontingent
 
@@ -57,10 +63,9 @@ Alles als Datei in `fixit247-daten/`, keine Datenbank nötig.
 
 ## Offen
 
-- Name des Hosters, PHP-Version und ob MySQL im Paket enthalten ist.
-- `mail()` oder SMTP: gebaut ist `mail()`. Verlangt der Hoster SMTP, braucht `sende()` in `anfrage.php` einen SMTP-Versand (z. B. PHPMailer).
+- Telefonnummer und E-Mail-Adresse in `src/content/contact.ts` (und die Kopie `KONTAKT` in `_basis.php`) vor dem Livegang eintragen. Solange dort `[Telefonnummer]` und `[E-Mail-Adresse]` stehen, erscheinen sie auch in der Bestätigungsmail an den Kunden.
+- DMARC-Eintrag für `fixit247.at` in KAS (DNS) empfohlen. SPF und DKIM legt ALL-INKL selbst an.
 - MySQL ja oder nein: Standard ist die Datei (siehe oben).
-- Empfängeradresse: Standard `support@fixit247.at` aus dem Apps Script. Dazu die Absenderadresse mit SPF, DKIM und DMARC der eigenen Domain.
 - Steht beim Hoster ein Proxy vor PHP, ist `REMOTE_ADDR` für alle gleich und das Kontingent gilt dann für alle Kunden gemeinsam. Nach der Einrichtung prüfen.
 - Löschfrist für `anfragen-*.jsonl` festlegen.
 - Datenschutz: Auftragsverarbeitung mit dem Hoster, Speicherung der Anfragen und die Weitergabe an OpenAI in der Datenschutzerklärung.

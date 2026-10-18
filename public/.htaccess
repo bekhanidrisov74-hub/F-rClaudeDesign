@@ -1,0 +1,10 @@
+# ALL-INKL (Apache): http und www leiten auf https://fixit247.at um, wie DOMAIN in src/content/contact.ts.
+# Braucht das Let's-Encrypt-Zertifikat für fixit247.at und www.fixit247.at (docs/hosting.md).
+# ponytail: nur die Weiterleitung. Options -Indexes und Sicherheits-Header bewusst weggelassen, weil sie lokal
+# nicht prüfbar sind und ein nicht erlaubter Eintrag die ganze Seite mit Fehler 500 lahmlegt.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTPS} off [OR]
+  RewriteCond %{HTTP_HOST} ^www\. [NC]
+  RewriteRule ^ https://fixit247.at%{REQUEST_URI} [R=301,L]
+</IfModule>
