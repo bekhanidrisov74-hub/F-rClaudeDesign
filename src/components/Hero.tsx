@@ -9,11 +9,11 @@ import { Symbol3D } from './ui/Symbol3D'
 
 /**
  * Ab 920 px vier Spalten: Randabstand bis zum Inhalt (max. 1140 px breit), Text (höchstens 560 px),
- * Abstand 56 px, Bild bis zum rechten Fensterrand (über 1920 px mit Rand, damit der Hero mittig wirkt). Darunter gilt die Reihenfolge der DOM-Knoten:
+ * Abstand 56 px, Bild bis zum rechten Fensterrand (über 1920 px wächst rechts ein Rand bis zur Breite des linken, damit der Hero mittig wirkt). Darunter gilt die Reihenfolge der DOM-Knoten:
  * Text, Schnellwahl, Bild 1 (Screen 01).
  */
 const SPALTEN =
-  'nav:grid nav:grid-cols-[max(var(--fx-gutter),calc((100%_-_var(--fx-container))_/_2))_minmax(0,560px)_var(--fx-s-8)_minmax(0,1fr)_max(0px,calc((100%_-_var(--fx-hero-max))_/_2))]'
+  'nav:grid nav:grid-cols-[max(var(--fx-gutter),calc((100%_-_var(--fx-container))_/_2))_minmax(0,560px)_var(--fx-s-8)_minmax(0,1fr)_clamp(0px,calc(100%_-_var(--fx-hero-max)),calc((100%_-_var(--fx-container))_/_2))]'
 
 const ZWEITKNOPF = 'min-h-[54px] rounded-btn-lg px-s2 text-center text-btn nav:min-h-[58px] nav:px-s4'
 const ZWEITICON = 'size-[20px] nav:size-[22px]'
