@@ -27,10 +27,19 @@ test('HTML ist vorgerendert und hat Meta-Angaben', async ({ request }, info) => 
   expect(html).toContain('<html lang="de-AT">')
   expect(html).toContain('Rund um die Uhr.')
   expect(html).toMatch(/<title>[^<]+<\/title>/)
-  for (const meta of ['name="description"', 'property="og:title"', 'property="og:description"', 'property="og:type"', 'property="og:locale"'])
+  for (const meta of ['name="description"', 'property="og:title"', 'property="og:description"', 'property="og:type"', 'property="og:locale"', 'property="og:site_name"'])
     expect(html).toContain(meta)
   expect(html).toContain('rel="icon" href="/favicon.svg"')
   expect(html).not.toContain('noindex')
+
+  // Strukturierte Daten: nur Organization (fixit247 vermittelt), Gebiet Österreich, kein Platzhalter wie „[Telefonnummer]“.
+  const json = html.match(/<script type="application\/ld\+json">(.+?)<\/script>/)?.[1]
+  expect(json, 'JSON-LD fehlt').toBeTruthy()
+  const graph: Record<string, unknown>[] = JSON.parse(json!)['@graph']
+  const org = graph.find((knoten) => knoten['@type'] === 'Organization')
+  expect(org?.areaServed).toEqual({ '@type': 'Country', name: 'Österreich' })
+  expect(graph.map((knoten) => knoten['@type'])).not.toContain('LocalBusiness')
+  expect(json).not.toMatch(/"\[[^"]*\]"/)
 })
 
 test('Platzhalterseiten tragen noindex', async ({ request }, info) => {

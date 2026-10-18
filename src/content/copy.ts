@@ -36,12 +36,13 @@ export type DringlichkeitId = (typeof dringlichkeit)[number]['id']
 
 export const copy = {
   meta: {
-    // nicht im Design: Titel und Beschreibung aus Sätzen der Startseite zusammengesetzt
-    titel: 'fixit247 – Vermittlung von Handwerker-Notdiensten rund um die Uhr',
+    // nicht im Design: Titel und Beschreibung für Suchmaschinen (Österreich und Gewerke vorn; Titel höchstens 60,
+    // Beschreibung höchstens 155 Zeichen). „Vermittlung“ muss im Titel bleiben, fixit247 ist kein Notdienst.
+    titel: 'Handwerker-Notdienst Österreich: Vermittlung 24/7 – fixit247',
     /** nicht im Design: Titel der Unterseiten, „Impressum – fixit247“ */
     unterseite: '{seite} – fixit247',
     beschreibung:
-      'Rohrbruch, ausgesperrt, Strom weg? Wir vermitteln Ihnen sofort einen geprüften Fachbetrieb aus Ihrer Region. Die Vermittlung ist kostenlos.',
+      'Installateur, Schlüsseldienst, Elektriker: Wir vermitteln Ihnen rund um die Uhr einen geprüften Fachbetrieb in Österreich. Die Vermittlung ist kostenlos.',
   },
 
   kopf: {
