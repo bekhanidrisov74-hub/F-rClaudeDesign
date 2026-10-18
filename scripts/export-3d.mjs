@@ -33,10 +33,26 @@ for (const name of GEWERKE) {
 for (const name of symbole) await icon(`design/icons-3d/${name}.png`, `public/icons/${name}-${SYMBOL_BREITE}`, SYMBOL_BREITE)
 
 await mkdir('public/images', { recursive: true })
+// Das Schwarz der Renders (≈ #010304) wird auf Tiefsee angehoben, damit Bildecken und Vignette in derselben Farbe
+// auslaufen wie die dunklen Abschnitte und Karten der Seite. Gewichtet nach Helligkeit: unter SCHWELLE weich bis voll,
+// darüber gar nicht, sodass Haut, Orange und Chrom unverändert bleiben.
+const TIEFSEE_RGB = farbe('--fx-tiefsee').slice(1).match(/../g).map((h) => parseInt(h, 16))
+const SCHWELLE = 0.14 // Helligkeit (0–1), ab der nichts mehr angehoben wird; der Lichtkegel (≈ 0,16) bleibt unberührt
+function tiefseeAnheben(daten) {
+  for (let i = 0; i < daten.length; i += 3) {
+    const hell = (0.2126 * daten[i] + 0.7152 * daten[i + 1] + 0.0722 * daten[i + 2]) / 255
+    if (hell >= SCHWELLE) continue
+    const x = 1 - hell / SCHWELLE
+    const gewicht = x * x * (3 - 2 * x)
+    for (let k = 0; k < 3; k++) daten[i + k] += gewicht * Math.max(0, TIEFSEE_RGB[k] - daten[i + k])
+  }
+}
 for (let n = 1; n <= 6; n++) {
+  const { data, info } = await sharp(`design/bilder-3d/bild-${n}.png`).removeAlpha().raw().toBuffer({ resolveWithObject: true })
+  tiefseeAnheben(data)
   for (const breite of BILD_BREITEN) {
     const ziel = `public/images/bild-${n}${breite === 2400 ? '' : `-${breite}`}`
-    const bild = sharp(`design/bilder-3d/bild-${n}.png`).resize(breite, breite)
+    const bild = sharp(data, { raw: info }).resize(breite, breite)
     await bild.clone().webp({ quality: 85 }).toFile(`${ziel}.webp`)
     await bild.clone().avif({ quality: 60, effort: 4 }).toFile(`${ziel}.avif`)
   }
