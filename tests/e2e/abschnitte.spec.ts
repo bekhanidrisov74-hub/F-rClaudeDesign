@@ -179,3 +179,30 @@ test('Symbole: 3D-Renders in der Farbstellung ihrer Fläche, geladen und dekorat
     expect(await img.getAttribute('alt')).toBe('')
   }
 })
+
+test('Fuß: Wortmarke füllt die Inhaltsbreite und schließt den Fuß unten über die volle Breite ab', async ({ page }) => {
+  await page.goto('/')
+  await page.evaluate(() => document.fonts.ready)
+  const wort = page.locator('footer .wortmarke')
+  await expect(wort).toHaveAttribute('aria-hidden', 'true')
+  // Offset-Maße statt boundingBox: vor dem Hinscrollen ist die Wortmarke noch nach unten verschoben (aufsteigen)
+  const m = await wort.evaluate((el: HTMLElement) => {
+    const fuss = el.parentElement!
+    const innen = el.querySelector<HTMLElement>('.wrapper')!
+    const s = getComputedStyle(innen)
+    const text = document.createRange()
+    text.selectNodeContents(innen)
+    return {
+      links: el.offsetLeft,
+      breite: el.offsetWidth - fuss.clientWidth,
+      // offset-Werte sind gerundet, darum auf 1 px genau
+      unten: Math.abs(fuss.clientHeight - el.offsetTop - el.offsetHeight) <= 1,
+      fuellt: text.getBoundingClientRect().width / (innen.clientWidth - parseFloat(s.paddingLeft) - parseFloat(s.paddingRight)),
+    }
+  })
+  // Das Licht sitzt in Hintergrund und Buchstaben nur gleich, wenn die Wortmarke unten rechts mit dem Fuß abschließt (app.css, strahl)
+  expect({ links: m.links, breite: m.breite, unten: m.unten }).toEqual({ links: 0, breite: 0, unten: true })
+  // 0,32 em je px Inhaltsbreite passt zu „fixit247“ in Bricolage 800 (app.css, wortmarke); ändern sich Wort oder Schrift, neu messen
+  expect(m.fuellt).toBeGreaterThan(0.97)
+  expect(m.fuellt).toBeLessThan(1.01)
+})

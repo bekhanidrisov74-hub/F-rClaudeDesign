@@ -248,6 +248,110 @@
   }
 }
 
+/* Fuß (ui/Strahlfuss, nach „Beam Wordmark Footer“): ein türkiser Lichtstrahl liegt schräg über dem Fuß und läuft durch
+   die große Wortmarke. Er kommt beim Hinscrollen von links, wie das Glanzlicht der Fotos, während die Wortmarke aufsteigt;
+   die Maus trägt einen weichen Schein durch die Buchstaben. Strahl und Schein sind an der Ecke unten rechts verankert und
+   in cqi gemessen, darum liegt der Strahl im Hintergrund und in den Buchstaben an derselben Stelle. Gedämpft, damit Anrufen
+   das Auffälligste bleibt und türkiser Text darüber 4,5:1 hält; mit reduced motion steht der Strahl, der Schein bleibt aus. */
+@property --strahl {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 44; /* Abstand von der Ecke unten rechts in cqi: der Strahl kreuzt die Wortmarke rechts der Mitte */
+}
+@property --schein {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0;
+}
+
+@utility strahlfuss {
+  /* Breite des Strahls: wächst mit dem Fuß, am Handy etwas breiter */
+  --strahl-breite: calc(1cqi + 2px);
+  container-type: inline-size;
+  transition: --schein var(--fx-dur-fast) var(--fx-ease);
+  @supports (animation-timeline: view()) {
+    timeline-scope: --wortmarke;
+    animation: strahl linear both;
+    animation-timeline: --wortmarke;
+    animation-range: entry 0% entry 100%;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    --schein: 0 !important;
+  }
+}
+
+/* Licht hinter dem Inhalt: der Strahl, ein schwacher zweiter links oben; oben eine Lichtkante */
+@utility strahl {
+  background-image:
+    linear-gradient(298deg, transparent calc(var(--strahl) * 1cqi - 9 * var(--strahl-breite)), var(--fx-strahl-hauch) calc(var(--strahl) * 1cqi - 4 * var(--strahl-breite)), var(--fx-strahl) calc(var(--strahl) * 1cqi), var(--fx-strahl-hauch) calc(var(--strahl) * 1cqi + 5 * var(--strahl-breite)), transparent calc(var(--strahl) * 1cqi + 11 * var(--strahl-breite))),
+    linear-gradient(298deg, transparent calc(var(--strahl) * 1cqi + 20 * var(--strahl-breite)), var(--fx-strahl-hauch) calc(var(--strahl) * 1cqi + 26 * var(--strahl-breite)), transparent calc(var(--strahl) * 1cqi + 32 * var(--strahl-breite)));
+  /* Lichtkante: dieselbe Fläche, nur die oberste Pixelreihe; am hellsten, wo der Strahl sie kreuzt */
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(298deg, transparent calc(var(--strahl) * 1cqi - 14 * var(--strahl-breite)), var(--fx-strahl-kante) calc(var(--strahl) * 1cqi), transparent calc(var(--strahl) * 1cqi + 14 * var(--strahl-breite))),
+      linear-gradient(var(--fx-leuchten), var(--fx-leuchten));
+    mask-image: linear-gradient(to bottom, black 1px, transparent 1px);
+  }
+}
+
+/* Große Wortmarke, schließt den Fuß unten über die volle Breite ab; der Text steht innen in einem wrapper und füllt die
+   Inhaltsbreite (--fx-wortmarke-gross). Unten 0,09 em unter der Grundlinie abgeschnitten, läuft ins Dunkle aus.
+   Die Buchstaben malen das Licht des Hintergrunds kräftiger nach. */
+@utility wortmarke {
+  position: relative;
+  font-family: var(--fx-font-display);
+  font-size: var(--fx-wortmarke-gross);
+  font-weight: 800;
+  font-stretch: 100%;
+  letter-spacing: -0.035em;
+  line-height: 1;
+  height: 0.92em;
+  white-space: nowrap;
+  user-select: none;
+  color: transparent;
+  background-image:
+    radial-gradient(circle 22cqi at var(--zeiger-x, 50%) calc(100% + var(--zeiger-y, -50%)), var(--fx-leuchten), transparent calc(var(--schein) * 70%)),
+    linear-gradient(298deg, transparent calc(var(--strahl) * 1cqi - 8 * var(--strahl-breite)), var(--fx-leuchten) calc(var(--strahl) * 1cqi - 3.5 * var(--strahl-breite)), var(--fx-strahl-kante) calc(var(--strahl) * 1cqi), var(--fx-strahl-kante) calc(var(--strahl) * 1cqi + 1.5 * var(--strahl-breite)), transparent calc(var(--strahl) * 1cqi + 9 * var(--strahl-breite))),
+    linear-gradient(to bottom, var(--fx-wortmarke) 12%, var(--fx-tiefsee-2) 85%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  mask-image: linear-gradient(to bottom, black 50%, transparent);
+  view-timeline: --wortmarke block;
+  @supports (animation-timeline: view()) {
+    animation: aufsteigen linear both;
+    animation-timeline: --wortmarke;
+    animation-range: entry 0% entry 100%;
+  }
+  /* Im Kontrastmodus fallen Verlauf und Ausschnitt weg, übrig bliebe riesige Schrift */
+  @media (forced-colors: active) {
+    display: none;
+  }
+}
+
+/* Spaltentitel im Fuß über einer türkisen Haarlinie, die sich beim Hinscrollen aufzieht (wie die Linie in So funktioniert's) */
+@utility titellinie {
+  position: relative;
+  padding-bottom: var(--fx-s-3);
+  &::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 0;
+    height: 1px;
+    background-image: linear-gradient(to right, var(--fx-strahl-kante), var(--fx-leuchten));
+    transform-origin: left;
+  }
+  @supports (animation-timeline: view()) {
+    &::after {
+      animation: linie linear both;
+      animation-timeline: view();
+      animation-range: cover 5% cover 30%;
+    }
+  }
+}
+
 /* Lichtkante oben an dunklen Karten: wie eine polierte Kante, die das Licht fängt */
 @utility kante {
   box-shadow: var(--fx-kante);
@@ -387,6 +491,15 @@
 
 @keyframes linie {
   from { scale: 0 1; }
+}
+
+/* Fuß: der Strahl kommt von links, die Wortmarke steigt aus dem unteren Rand auf */
+@keyframes strahl {
+  from { --strahl: 74; }
+}
+
+@keyframes aufsteigen {
+  from { translate: 0 60%; }
 }
 
 /* Gedämpft, aber lesbar: 70 % Türkis auf Tiefsee bleibt über 3:1 (große Schrift), egal wo das Scrollen stoppt */
