@@ -25,6 +25,7 @@
   --breakpoint-kopf: 35rem;   /* 560 px */
   --breakpoint-dialog: 40rem; /* 640 px */
   --breakpoint-nav: 57.5rem;  /* 920 px */
+  --breakpoint-weit: 71.25rem; /* 1140 px: Vertrauensleiste in vier Spalten */
 }
 
 @theme inline {

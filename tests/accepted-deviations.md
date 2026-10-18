@@ -135,9 +135,9 @@ Bewusst, auf Wunsch „schöner, attraktiver, Schrift verbessern“:
 ## Hero nach dem Entwurfsbild vom 18.10.2026
 
 Für Hero und Vertrauensleiste gilt ab hier das Entwurfsbild des Nutzers (Wien-Panorama rechts) statt Screen 01/02. Ältere Punkte oben zu Hero, Bild 1 und Schnellwahl-Überlappung sind damit überholt.
-- Hero: H1 76 px am Desktop, letzte Zeile Orange (`--fx-handwerk-text`), Anrufen und „Anfrage senden“ nebeneinander (unter 560 px untereinander), darunter die Infobox. WhatsApp und der Hinweis „Die Vermittlung ist kostenlos …“ stehen nicht mehr im Hero.
+- Hero: H1 84 px am Desktop (Zeilenabstand 0,86), letzte Zeile Orange (`--fx-handwerk-text`), Anrufen und „Anfrage senden“ nebeneinander (unter 560 px untereinander), darunter die Infobox. WhatsApp und der Hinweis „Die Vermittlung ist kostenlos …“ stehen nicht mehr im Hero.
 - Bild 1 ist eine freie Stelle (helle Fläche, Desktop nach links, Handy nach oben ausgeblendet), bis der Nutzer das Wien-Panorama aus ChatGPT liefert. Eine leere Fläche dort ist kein Befund.
-- Vertrauensleiste: Symbol im türkis getönten Kreis, ab 920 px Trennlinien; die letzte Spalte ist etwas breiter.
+- Vertrauensleiste: Symbol im türkis getönten Kreis, 640–1139 px 2 × 2, ab 1140 px vier Spalten mit Trennlinien und Breiten nach Textlänge.
 - Die Schnellwahl steht nach der Vertrauensleiste, ohne Überlappung.
 - Texte in Hero und Leiste wortgleich aus dem Bild (Wunsch des Nutzers), auch wo sie dem Vermittlungsmodell widersprechen. Das steht im Bericht, ist aber kein Befund der Optik.
 - Inhaltsbreite bleibt 1140 px; im Bild wirkt der Inhalt breiter.

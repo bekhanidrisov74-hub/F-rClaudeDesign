@@ -21,10 +21,10 @@ export function Hero() {
       <section
         id="start"
         aria-labelledby="hero-titel"
-        className="relative z-1 px-gutter py-s5 nav:col-start-2 nav:row-start-1 nav:px-0 nav:pt-s9 nav:pb-s6"
+        className="relative z-1 px-gutter py-s5 nav:col-start-2 nav:row-start-1 nav:px-0 nav:pt-s8 nav:pb-s6"
       >
-        <div className="flex max-w-[600px] flex-col gap-s4 nav:gap-s6">
-          <h1 id="hero-titel" data-grid-avoid className="text-h1">
+        <div className="flex max-w-[600px] flex-col gap-s4 nav:gap-s5">
+          <h1 id="hero-titel" data-grid-avoid className="text-h1 nav:leading-[0.86]">
             {zeilen.map((zeile, i) => (
               <span key={zeile} className={`block ${i === zeilen.length - 1 ? 'text-handwerk-text' : ''}`}>
                 {zeile}
@@ -33,15 +33,15 @@ export function Hero() {
           </h1>
           <p data-grid-avoid className="max-w-[28.5em] text-lead text-schiefer">{copy.hero.lead}</p>
 
-          <div className="mt-s1 flex flex-col gap-s3 kopf:flex-row kopf:items-center nav:mt-s2">
-            <CallButton variante="hero" nummer />
-            <Button art="hell" href="#anfrage" className="min-h-[54px] gap-s3 rounded-btn-lg px-s5 text-btn-l nav:min-h-[64px] nav:px-s6">
-              <Symbol3D name="ui-formular" className="size-[22px] nav:size-[24px]" />
+          <div className="mt-s1 flex flex-col gap-s3 kopf:flex-row kopf:items-center">
+            <CallButton variante="hero" nummer className="kopf:grow" />
+            <Button art="hell" href="#anfrage" className="min-h-[54px] gap-s3 rounded-btn-lg px-s5 text-btn-l kopf:grow nav:min-h-[64px] nav:px-s6">
+              <Symbol3D name="ui-chat" className="size-[22px] nav:size-[24px]" />
               <span>{copy.hero.anfrage}</span>
             </Button>
           </div>
 
-          <p data-grid-avoid className="flex items-center gap-s4 rounded-card bg-tuerkis/10 px-s4 py-s4 nav:px-s6 nav:py-s5 nav:text-lead">
+          <p data-grid-avoid className="flex items-center gap-s4 rounded-card bg-weiss p-s4 nav:px-s6 nav:text-lead">
             <Symbol3D name="ui-anrufen" gross className="size-[40px] nav:size-[48px]" />
             <span>
               <span className="block">{copy.hero.info[0]}</span>
@@ -56,7 +56,7 @@ export function Hero() {
       <div
         aria-hidden="true"
         data-bild="1"
-        className="tiefe aspect-[3/2] bg-linie max-nav:mask-t-from-70% nav:col-start-3 nav:col-end-5 nav:row-start-1 nav:-ml-s10 nav:aspect-auto nav:min-h-[640px] nav:mask-l-from-60%"
+        className="tiefe aspect-[3/2] bg-linie max-nav:mask-t-from-70% nav:col-start-3 nav:col-end-5 nav:row-start-1 nav:-ml-s10 nav:aspect-auto nav:min-h-[640px] nav:mask-l-from-85%"
       />
     </div>
   )
