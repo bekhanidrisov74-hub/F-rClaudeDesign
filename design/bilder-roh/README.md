@@ -1,6 +1,6 @@
 # Rohbilder
 
-> **Nicht mehr in Verwendung (seit 17.10.2026).** Die Bilder der Seite sind 3D-Szenen aus Blender: `scripts/render-bilder-3d.py` → `../bilder-3d/`, Export mit `scripts/export-3d.mjs`. `scripts/prepare-images.mjs` und `../bilder-final/` gibt es nicht mehr.
+> **Nicht mehr in Verwendung (seit 17.10.2026).** Die Bilder der Seite liegen in `../bilder-chatgpt/`, Export mit `scripts/export-3d.mjs`. `scripts/prepare-images.mjs` und `../bilder-final/` gibt es nicht mehr.
 
 Hier liegen die unveränderten PNGs aus ChatGPT, `bild-1.png` bis `bild-6.png`. Prompts: `../IMAGE-PROMPTS-CHATGPT.md`, Motive und Farbwelt: `../IMAGE-BRIEFS.md`.
 

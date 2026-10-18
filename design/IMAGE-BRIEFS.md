@@ -6,13 +6,13 @@ Sechs 3D-Szenen aus Blender: **eine Fachkraft eines Fachbetriebs arbeitet konkre
 
 ## Welt der Bilder: Tiefsee-Studio in 3D
 
-Gebaut wie die Gewerke-Icons und Symbole: weich glänzende, gerundete Formen im Stil der Fluent-3D-Emojis. Alle sechs Bilder teilen Bühne, Licht und Figurenart.
+Mit ChatGPT erzeugt (`BILD-PROMPTS-3D-CHATGPT.md`), im Stil der 3D-Gewerke-Icons und Symbole: weich glänzende, gerundete Formen im Stil der Fluent-3D-Emojis. Alle sechs Bilder teilen Bühne, Licht und Figurenart.
 
 - **Raum:** matte Hohlkehle in Tiefsee `#001B2A`. Softbox, Aufhellung und Streiflicht treffen nur Figur und Requisiten (Light-Linking), die Wand bleibt dunkel. Kein Raster im Bild (das Raster gehört der Seite).
 - **Türkis nur als Lichtkegel:** ein gedämpfter Kegel in Türkis `#3AA8B8` auf der Wand hinter der Figur, höchstens ein Fünftel der Fläche, dazu kleine Akzente (Wasser, Anzeige). Das Bild bleibt überwiegend dunkel (Richtwert: mindestens 60 % dunkle Fläche). So bleibt der Anruf-Knopf das hellste Türkis der Seite (SPEC 3).
 - **Licht:** Softbox von links oben vorne, flache Aufhellung von rechts, schmales türkises Streiflicht von rechts hinten für eine feine Kante.
 - **Figuren:** stilisiert und freundlich, großer Kopf; Gesicht mit glänzenden Augen, Brauen, Nase, Ohren und leichtem Lächeln; Frisur mit Haaransatz. **Die Hände sind wichtig:** Handfläche, vier dreigliedrige Finger, Daumen und Nägel; greifende Hände legen sich genau um den Werkzeuggriff, stützende liegen offen an. Latzhose Petrol mit Beintaschen, Hemd Kalk mit gekrempelten Ärmeln, Uhr, Akzente Orange (Kappe, Reflexstreifen, Werkzeugtasche), Stiefel mit Zehenkappe und Knieschoner Tiefsee-2. Orange ist der Akzent des Bildes.
-- **Haut und Haare:** Mischungen der Token-Farben wie `color-mix` in `tokens.css` (`scripts/blender/figur.py`): hell = Orange 30 % + Weiß, mittel = Orange 55 % + Weiß, braun = Orange 62 % + Tiefsee, dunkel = Orange 42 % + Tiefsee; Haare Tiefsee, Orange 35 % + Tiefsee oder Kalk 70 % + Tiefsee. Über die sechs Bilder verteilt.
+- **Haut und Haare:** Mischungen der Token-Farben wie `color-mix` in `tokens.css`: hell = Orange 30 % + Weiß, mittel = Orange 55 % + Weiß, braun = Orange 62 % + Tiefsee, dunkel = Orange 42 % + Tiefsee; Haare Tiefsee, Orange 35 % + Tiefsee oder Kalk 70 % + Tiefsee. Über die sechs Bilder verteilt.
 - **Material:** lackiert und weich glänzend, Chrom mit breiten, ruhigen Lichtkanten, Wände und Böden matt.
 - **Kamera:** 50-mm-Objektiv, halbnah: Die Figur füllt vom Kopf bis etwa zur Hüfte den größten Teil des Karten-Zuschnitts, eine Hand ist etwa 6–8 % der Bildbreite groß. Gesicht, Hände, Werkzeug und Schadstelle liegen im mittleren Band, damit Handy- und Desktop-Zuschnitt aus derselben Datei kommen.
 
@@ -20,9 +20,7 @@ Die Texte unten gehören nicht auf die Website.
 
 ## Ablage und Ablauf
 
-- Bühne: `scripts/render-bilder-3d.py`; je Szene `scripts/blender/szenen/bild_N.py`; Figuren `scripts/blender/figur.py`; Formen und Farben `scripts/blender/fx3d.py`.
-- Rendern (Blender 5.2, headless, ~1 min je Bild): `blender -b --factory-startup --python-exit-code 1 -P scripts/render-bilder-3d.py [-- bild-N …]`; Vorschau mit `-- --vorschau bild-N` (600 px), Detailprüfung von Händen und Gesicht mit `-- --pruefen bild-N` (1200 px), beide im Temp-Ordner `fixit247-vorschau`.
-- Quelle `design/bilder-3d/bild-N.png`, 2400 × 2400 px. `scripts/export-3d.mjs` schreibt `public/images/bild-N.webp` und `.avif` plus 480, 800 und 1200 px.
+- Quelle `design/bilder-chatgpt/bild-N.png`, 1254 × 1254 px (Erzeugung und Prompts: `design/bilder-chatgpt/README.md`). `scripts/export-3d.mjs` hebt das Schwarz auf Tiefsee an und schreibt `public/images/bild-N.webp` und `.avif` plus 480, 800 und 1200 px. Den Bildausschnitt je Karte steuert `bildY` in `src/content/gewerke.ts`.
 
 | Nr. | Wo | Motiv und Tätigkeit | Ausschnitt |
 |---|---|---|---|

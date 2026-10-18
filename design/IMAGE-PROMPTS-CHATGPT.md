@@ -4,7 +4,7 @@ Motive, Licht, Farbwelt und Ablage sind in `IMAGE-BRIEFS.md` festgelegt. Diese D
 
 Die Prompts sind auf Englisch, weil Bildmodelle Englisch am genauesten umsetzen.
 
-> **Seit 17.10.2026 sind die sechs Bilder 3D-Szenen aus Blender** (`IMAGE-BRIEFS.md`, `scripts/render-bilder-3d.py`). Diese Prompts und `design/bilder-roh/` werden für die Seite nicht mehr verwendet.
+> **Seit 18.10.2026 sind die sechs Bilder 3D-Szenen aus ChatGPT** (`IMAGE-BRIEFS.md`, `BILD-PROMPTS-3D-CHATGPT.md`). Diese Prompts und `design/bilder-roh/` werden für die Seite nicht mehr verwendet.
 
 ## Was an der ersten Serie stört
 

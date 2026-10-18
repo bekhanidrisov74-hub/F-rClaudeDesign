@@ -66,7 +66,7 @@ Dazu kommen schwebend: der Luna-Knopf und der Anstupser. Als Überlagerungen gib
   - Ein Symbol steht nie allein: immer mit Text oder `aria-label`. Dekorativ mit `alt=""`.
 - **Steuer- und Feldzeichen** (X, Pfeile, Plus/Minus, Menü; Häkchen in Checkbox und Chip; Warnung an Feldfehlern): `icons/ui-*.svg`, gefüllt, `currentColor`, `aria-hidden="true"`. Sie bleiben flach, damit sie in jeder Größe scharf und in der Farbe ihrer Umgebung sind.
 - **WhatsApp:** die Sprechblase ist ein Platzhalter. Live das offizielle Logo nach den Markenrichtlinien von Meta verwenden.
-- **Bilder 1–6:** 3D-Szenen aus Blender nach `IMAGE-BRIEFS.md`: Fachleute bei der Arbeit im dunklen Tiefsee-Studio. Solange ein Bild lädt, bleibt die Fläche Türkisblau. Die Bildbrief-Texte aus den Entwürfen erscheinen nicht auf der Website.
+- **Bilder 1–6:** 3D-Szenen, mit ChatGPT erzeugt, nach `IMAGE-BRIEFS.md`: Fachleute bei der Arbeit im dunklen Tiefsee-Studio. Solange ein Bild lädt, bleibt die Fläche Türkisblau. Die Bildbrief-Texte aus den Entwürfen erscheinen nicht auf der Website.
 
 ## 4. Responsiv
 
@@ -266,5 +266,5 @@ Am Desktop gelten dieselben Zustände im Fenster (Screen 11 und 12). Im Fenster 
 | Sicherheitstipps in Luna | Vorschlag aus Abschnitt 8 | prüfen |
 | Luna-Kasten in der Schnellwahl neben den 3D-Icons | 46/52 px wie im Entwurf, die Gewerke-Icons sind 56/64 px (SPEC 3) | mitwachsen auf 56/64 px? |
 | Gesichter der Figuren in den Bildern | freundlich: glänzende Augen, Brauen, Nase, leichtes Lächeln | so lassen oder schlichter? |
-| Hauttöne der Figuren | vier Mischungen aus Orange, Weiß und Tiefsee (`figur.py`, `IMAGE-BRIEFS.md`), über die Bilder verteilt | Auswahl passend? |
+| Hauttöne der Figuren | vier Mischungen aus Orange, Weiß und Tiefsee (`IMAGE-BRIEFS.md`), über die Bilder verteilt | Auswahl passend? |
 | Welche Zeichen 3D werden | alle bildhaften Symbole; Steuer- und Feldzeichen bleiben SVG (SPEC 3) | auch X, Pfeile, Plus/Minus als 3D? |

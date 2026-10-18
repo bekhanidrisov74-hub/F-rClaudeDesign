@@ -60,10 +60,10 @@ export function Hero() {
         <Schnellwahl />
       </div>
 
-      {/* Handy: 300 px hoch, ab 600 px 2 : 1 (50vw); der Streifen zeigt Kappe bis Tropfen (Bildhöhe 23–73 %). Desktop: Figur und Armatur in der Spalte */}
+      {/* Handy: 300 px hoch, ab 600 px 2 : 1 (50vw); der Streifen zeigt auf dem Handy Helm bis Schrankfront (Bildhöhe 9–86 %), ab 560 px Helm bis Hand am Hahn (11–61 %). Desktop: Figur und Armatur in der Spalte */}
       <Bildflaeche
         bild={1}
-        className="tiefe h-[max(300px,50vw)] kopf:[&_img]:object-[50%_46%] nav:col-start-4 nav:row-start-1 nav:h-auto nav:min-h-[640px] nav:[&_img]:object-[50%_50%]"
+        className="tiefe h-[max(300px,50vw)] [&_img]:object-[50%_40%] kopf:[&_img]:object-[50%_22%] nav:col-start-4 nav:row-start-1 nav:h-auto nav:min-h-[640px] nav:[&_img]:object-[50%_50%]"
       />
     </div>
   )

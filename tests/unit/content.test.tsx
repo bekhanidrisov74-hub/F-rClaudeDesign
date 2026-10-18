@@ -29,6 +29,7 @@ const SECHSTES: Gewerk = vi.hoisted(() => ({
   schnellwahl: 'Dach undicht',
   karte: 'Sturmschaden, Dach undicht',
   bild: 7,
+  bildY: 50,
   icon: 'gewerk-installateur',
   betrieb: 'Dachdecker',
   tipp: 'Tipp',

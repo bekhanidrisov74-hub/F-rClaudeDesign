@@ -4,8 +4,8 @@ import { mkdir, readdir, readFile } from 'node:fs/promises'
 // Alle 3D-Renders für die Seite aufbereiten (SPEC 3, IMAGE-BRIEFS.md), danach Kontaktblätter zur Kontrolle:
 // - Gewerke-Icons design/icons-3d/gewerk-*.png → public/icons, doppelte Anzeigegröße 80/112/128 px (GewerkIcon.tsx)
 // - Symbole design/icons-3d/ui-*.png (zwei Farbstellungen) → public/icons, 96 px (Symbol3D.tsx)
-// - Bilder design/bilder-3d/bild-N.png → public/images, 480/800/1200/2400 px (Bildflaeche.tsx)
-// Gerendert wird mit scripts/render-icons-3d.py und scripts/render-bilder-3d.py.
+// - Bilder design/bilder-chatgpt/bild-N.png (mit ChatGPT erzeugt, 1254 px) → public/images, 480/800/1200/1254 px (Bildflaeche.tsx)
+// Die Icons und Symbole werden mit scripts/render-icons-3d.py gerendert, die Bilder mit ChatGPT erzeugt (design/BILD-PROMPTS-3D-CHATGPT.md).
 // Aufruf: SHARP_MODULE_PATH=… node scripts/export-3d.mjs (Sharp ist keine Projektabhängigkeit)
 const require = createRequire(import.meta.url)
 const sharp = require(process.env.SHARP_MODULE_PATH || 'sharp')
@@ -15,7 +15,7 @@ const farbe = (token) => tokens[token].value
 const GEWERKE = ['gewerk-installateur', 'gewerk-heizung-und-klima', 'gewerk-schluesseldienst', 'gewerk-elektro', 'gewerk-haushaltsgeraete']
 const GEWERK_BREITEN = [80, 112, 128] // 2 × Preisübersicht 40, Schnellwahl 56 (Handy) und 64 px (ab 920 px)
 const SYMBOL_BREITE = 96 // deckt 32 px bei dreifacher Pixeldichte; wie SYMBOL_BREITE in Symbol3D.tsx
-const BILD_BREITEN = [480, 800, 1200, 2400] // wie in Bildflaeche.tsx
+const BILD_BREITEN = [480, 800, 1200, 1254] // wie in Bildflaeche.tsx
 
 const symbole = (await readdir('design/icons-3d')).filter((f) => f.startsWith('ui-')).map((f) => f.slice(0, -'.png'.length))
 
@@ -33,7 +33,7 @@ for (const name of GEWERKE) {
 for (const name of symbole) await icon(`design/icons-3d/${name}.png`, `public/icons/${name}-${SYMBOL_BREITE}`, SYMBOL_BREITE)
 
 await mkdir('public/images', { recursive: true })
-// Das Schwarz der Renders (≈ #010304) wird auf Tiefsee angehoben, damit Bildecken und Vignette in derselben Farbe
+// Das Schwarz der Bilder (≈ #010304) wird auf Tiefsee angehoben, damit Bildecken und Vignette in derselben Farbe
 // auslaufen wie die dunklen Abschnitte und Karten der Seite. Gewichtet nach Helligkeit: unter SCHWELLE weich bis voll,
 // darüber gar nicht, sodass Haut, Orange und Chrom unverändert bleiben.
 const TIEFSEE_RGB = farbe('--fx-tiefsee').slice(1).match(/../g).map((h) => parseInt(h, 16))
@@ -48,10 +48,10 @@ function tiefseeAnheben(daten) {
   }
 }
 for (let n = 1; n <= 6; n++) {
-  const { data, info } = await sharp(`design/bilder-3d/bild-${n}.png`).removeAlpha().raw().toBuffer({ resolveWithObject: true })
+  const { data, info } = await sharp(`design/bilder-chatgpt/bild-${n}.png`).removeAlpha().raw().toBuffer({ resolveWithObject: true })
   tiefseeAnheben(data)
   for (const breite of BILD_BREITEN) {
-    const ziel = `public/images/bild-${n}${breite === 2400 ? '' : `-${breite}`}`
+    const ziel = `public/images/bild-${n}${breite === 1254 ? '' : `-${breite}`}`
     const bild = sharp(data, { raw: info }).resize(breite, breite)
     await bild.clone().webp({ quality: 85 }).toFile(`${ziel}.webp`)
     await bild.clone().avif({ quality: 60, effort: 4 }).toFile(`${ziel}.avif`)
