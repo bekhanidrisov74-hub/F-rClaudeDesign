@@ -36,8 +36,8 @@ export type DringlichkeitId = (typeof dringlichkeit)[number]['id']
 
 export const copy = {
   meta: {
-    // nicht im Design: Titel und Beschreibung für Suchmaschinen (Österreich und Gewerke vorn; Titel höchstens 60,
-    // Beschreibung höchstens 155 Zeichen). „Vermittlung“ muss im Titel bleiben, fixit247 ist kein Notdienst.
+    // nicht im Design: Titel und Beschreibung für Suchmaschinen nach .claude/rules/seo.md (Österreich und Gewerke vorn).
+    // „Vermittlung“ muss im Titel bleiben, fixit247 ist kein Notdienst.
     titel: 'Handwerker-Notdienst Österreich: Vermittlung 24/7 – fixit247',
     /** nicht im Design: Titel der Unterseiten, „Impressum – fixit247“ */
     unterseite: '{seite} – fixit247',

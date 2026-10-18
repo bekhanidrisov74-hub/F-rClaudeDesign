@@ -1,3 +1,4 @@
+import { DOMAIN } from '../../src/content/contact'
 import { expect, test } from './test'
 
 const PFADE = ['/', '/impressum/', '/datenschutz/', '/agb/']
@@ -32,13 +33,21 @@ test('HTML ist vorgerendert und hat Meta-Angaben', async ({ request }, info) => 
   expect(html).toContain('rel="icon" href="/favicon.svg"')
   expect(html).not.toContain('noindex')
 
-  // Strukturierte Daten: nur Organization (fixit247 vermittelt), Gebiet Österreich, kein Platzhalter wie „[Telefonnummer]“.
+  // Eine Adresse für canonical und og:url; das Vorschaubild muss im Build liegen (die Bilder werden öfter getauscht).
+  expect(html).toContain(`<link rel="canonical" href="${DOMAIN}/" />`)
+  expect(html).toContain(`<meta property="og:url" content="${DOMAIN}/" />`)
+  const bild = html.match(/<meta property="og:image" content="([^"]+)"/)?.[1] ?? ''
+  expect(bild.startsWith(`${DOMAIN}/`), 'og:image fehlt oder ist nicht absolut').toBe(true)
+  expect((await request.get(bild.slice(DOMAIN.length))).status()).toBe(200)
+
+  // Strukturierte Daten: nur Organization und WebSite (fixit247 vermittelt), Gebiet Österreich, kein Platzhalter wie „[Telefonnummer]“.
   const json = html.match(/<script type="application\/ld\+json">(.+?)<\/script>/)?.[1]
   expect(json, 'JSON-LD fehlt').toBeTruthy()
   const graph: Record<string, unknown>[] = JSON.parse(json!)['@graph']
-  const org = graph.find((knoten) => knoten['@type'] === 'Organization')
-  expect(org?.areaServed).toEqual({ '@type': 'Country', name: 'Österreich' })
-  expect(graph.map((knoten) => knoten['@type'])).not.toContain('LocalBusiness')
+  expect(graph.map((knoten) => knoten['@type'])).toEqual(['Organization', 'WebSite'])
+  const [org, website] = graph
+  expect(org.areaServed).toEqual({ '@type': 'Country', name: 'Österreich' })
+  expect(website).toMatchObject({ name: 'fixit247', url: `${DOMAIN}/` })
   expect(json).not.toMatch(/"\[[^"]*\]"/)
 })
 
