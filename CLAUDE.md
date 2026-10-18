@@ -12,3 +12,4 @@ Regeln:
 - WCAG 2.2 AA, Tastatur, prefers-reduced-motion.
 - Vor jeder Erfolgsmeldung `npm run check` und `npm run test:e2e` ausführen. Optik mit `npm run shots` und dem Subagent visual-reviewer prüfen.
 - Offene Entscheidungen (design/SPEC.md, Abschnitt 11) nicht selbst treffen, sondern Standard bauen und berichten.
+- SEO nach `.claude/rules/seo.md`. Lädt automatisch bei Inhalten, Seitenliste, Head und Prerender; vor jeder neuen Seite selbst lesen.
