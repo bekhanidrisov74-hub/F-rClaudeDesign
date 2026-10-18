@@ -86,6 +86,15 @@
   --fx-glanz: color-mix(in srgb, var(--fx-weiss) 55%, transparent);     /* Glanzlicht, das beim Scrollen über das Chrom der Fotos wandert */
   --fx-leuchten: color-mix(in srgb, var(--fx-tuerkis) 22%, transparent); /* weiches Leuchten auf Tiefsee (So funktioniert's) */
   --fx-kante: inset 0 1px 0 color-mix(in srgb, var(--fx-weiss) 9%, transparent); /* Lichtkante oben an dunklen Karten */
+
+  /* ── Ergänzt für den Fuß mit Lichtstrahl (18.10.2026, ui/Strahlfuss). Nur Mischungen der Farben oben ── */
+  --fx-strahl: color-mix(in srgb, var(--fx-tuerkis) 16%, transparent);       /* Kern des Lichtstrahls hinter dem Inhalt; mehr nicht, sonst fällt türkiser Text darüber unter 4,5:1 */
+  --fx-strahl-hauch: color-mix(in srgb, var(--fx-tuerkis) 10%, transparent); /* Saum des Lichtstrahls, zweiter Strahl */
+  --fx-strahl-kante: color-mix(in srgb, var(--fx-tuerkis) 55%, transparent); /* Strahl in der großen Wortmarke, Lichtkante oben, Haarlinien unter den Spaltentiteln */
+  --fx-wortmarke: color-mix(in srgb, var(--fx-icon-technik) 60%, var(--fx-tiefsee)); /* große Wortmarke oben, läuft nach unten in Tiefsee-2 aus */
+  /* Große Wortmarke so breit wie der Inhalt (in einem Container gemessen): 0,32 em je px passt zu „fixit247“ in Bricolage 800,
+     in Chrome gemessen; ein e2e-Test prüft es. Ändern sich Wort oder Schrift, neu messen. */
+  --fx-wortmarke-gross: calc(min(100cqi - 2 * var(--fx-gutter), var(--fx-container)) * 0.32);
 }
 
 @media (min-width: 40rem) {
