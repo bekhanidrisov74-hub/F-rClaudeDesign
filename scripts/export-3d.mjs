@@ -4,7 +4,7 @@ import { mkdir, readdir, readFile } from 'node:fs/promises'
 // Alle 3D-Renders für die Seite aufbereiten (SPEC 3, IMAGE-BRIEFS.md), danach Kontaktblätter zur Kontrolle:
 // - Gewerke-Icons design/icons-3d/gewerk-*.png → public/icons, doppelte Anzeigegröße 80/112/128 px (GewerkIcon.tsx)
 // - Symbole design/icons-3d/ui-*.png (zwei Farbstellungen) → public/icons, 96 px (Symbol3D.tsx)
-// - Bilder design/bilder-3d/bild-N.png → public/images, 480/800/1200/2400 px (Bildflaeche.tsx)
+// - Bilder design/bilder-3d/bild-N.png → public/images, 480/800/1200/2400 px (Bildflaeche.tsx), Wand dazu als wand-N.webp (Szene3D.tsx)
 // Gerendert wird mit scripts/render-icons-3d.py und scripts/render-bilder-3d.py.
 // Aufruf: SHARP_MODULE_PATH=… node scripts/export-3d.mjs (Sharp ist keine Projektabhängigkeit)
 const require = createRequire(import.meta.url)
@@ -48,6 +48,10 @@ function tiefseeAnheben(daten) {
   }
 }
 for (let n = 1; n <= 6; n++) {
+  // Wand mit Lichtkegel ohne Motiv: Hintergrund der 3D-Szene (Szene3D.tsx), unscharf genug für eine Größe
+  const wand = await sharp(`design/bilder-3d/wand-${n}.png`).removeAlpha().raw().toBuffer({ resolveWithObject: true })
+  tiefseeAnheben(wand.data)
+  await sharp(wand.data, { raw: wand.info }).webp({ quality: 80 }).toFile(`public/images/wand-${n}.webp`)
   const { data, info } = await sharp(`design/bilder-3d/bild-${n}.png`).removeAlpha().raw().toBuffer({ resolveWithObject: true })
   tiefseeAnheben(data)
   for (const breite of BILD_BREITEN) {

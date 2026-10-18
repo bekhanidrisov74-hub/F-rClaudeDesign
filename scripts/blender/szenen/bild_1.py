@@ -16,6 +16,7 @@ from mathutils import Matrix, Vector
 from werkzeug import maulschluessel, sechskant
 
 CHROM = material(WEISS, rauheit=0.16, metall=1.0, glanz=0.0)
+EDELSTAHL = material(WEISS, rauheit=0.32, metall=1.0, glanz=0.0)
 SCHRANK = material(TIEFSEE, rauheit=0.2, glanz=0.0)  # glatter Lack: spiegelt den dunklen Boden, die Front bleibt dunkel
 PLATTE_Z = 0.9225
 ARMATUR = Vector((0.25, 0.42, PLATTE_Z))
@@ -47,7 +48,7 @@ def kueche():
         quader(f'Tuer{i}', (0.58, 0.025, 0.7), SCHRANK, 0.012, ort=(x, 0.02, 0.46))  # dunkel: mind. zwei Drittel des Bildes
         quader(f'Griff{i}', (0.18, 0.03, 0.022), WEISS, 0.01, ort=(x + (0.12 if i < 2 else -0.12), -0.005, 0.76))
     # Becken: dunkle Mulde mit Chromrand, Wasserring um den Aufprall
-    quader('Becken', (0.56, 0.32, 0.004), TIEFSEE, 0.0, ort=(0.25, 0.2, PLATTE_Z + 0.001))
+    quader('Becken', (0.56, 0.32, 0.004), EDELSTAHL, 0.0, ort=(0.25, 0.2, PLATTE_Z + 0.001))
     rohr('Beckenrand', rundrechteck(0.25, 0.2, 0.58, 0.34, 0.06, PLATTE_Z + 0.004), 0.008, CHROM, ring=True)
     ring('Wasserring', (0.25, 0.18, PLATTE_Z + 0.005), (0, 0, 1), 0.05, 0.035, 0.004, TUERKIS, quer=(1, 0, 0))
 

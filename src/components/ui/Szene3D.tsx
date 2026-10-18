@@ -22,17 +22,19 @@ function nachErsterBewegung() {
  * Das Bild als echte 3D-Szene (three.js, public/modelle/bild-N.glb) über dem Standbild. three.js und das Modell
  * laden erst nach der ersten Bewegung, wenn die Fläche in die Nähe kommt und der Browser Zeit hat; bis zum ersten
  * gezeichneten Bild bleibt das Standbild sichtbar, ohne WebGL 2 oder bei prefers-reduced-motion bleibt es ganz.
- * Die Wand mit dem türkisen Kegel ist der Hintergrund der Zeichenfläche, die Kamera schwenkt beim Scrollen und unter
- * dem Zeiger ein paar Grad.
+ * Die Wand mit dem türkisen Kegel (public/images/wand-N.webp) ist der Hintergrund der Zeichenfläche, die Kamera
+ * schwenkt beim Scrollen und unter dem Zeiger ein paar Grad.
  */
 export function Szene3D({ bild }: { bild: number }) {
+  const wand = useRef<HTMLDivElement>(null)
   const flaeche = useRef<HTMLCanvasElement>(null)
   const [bereit, setBereit] = useState(false)
 
   useEffect(() => {
     const el = flaeche.current
-    const standbild = el?.parentElement?.querySelector('img')
-    if (!el || !standbild || matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const hinten = wand.current
+    const standbild = hinten?.parentElement?.querySelector('img')
+    if (!el || !hinten || !standbild || matchMedia('(prefers-reduced-motion: reduce)').matches) return
     let aus = false
     let abbau: (() => void) | undefined
     const sicht = new IntersectionObserver(
@@ -43,7 +45,13 @@ export function Szene3D({ bild }: { bild: number }) {
         ;(window.requestIdleCallback ?? ((f: () => void) => setTimeout(f, 300)))(() =>
           import('../../lib/buehne3d').then(({ buehne }) => {
             if (aus) return
-            abbau = buehne(el, { url: `/modelle/bild-${bild}.glb`, bild: standbild, bereit: () => setBereit(true) })
+            abbau = buehne(el, {
+              url: `/modelle/bild-${bild}.glb`,
+              wand: `/images/wand-${bild}.webp`,
+              wandFlaeche: hinten,
+              bild: standbild,
+              bereit: () => setBereit(true),
+            })
           }),
         )
       },
@@ -60,9 +68,11 @@ export function Szene3D({ bild }: { bild: number }) {
   }, [bild])
 
   return (
-    <canvas
-      ref={flaeche}
-      className={`szene3d absolute inset-0 h-full w-full transition-opacity duration-(--fx-dur-sheet) ${bereit ? 'opacity-100' : 'opacity-0'}`}
-    />
+    <div
+      ref={wand}
+      className={`szene3d absolute inset-0 transition-opacity duration-(--fx-dur-sheet) ${bereit ? 'opacity-100' : 'opacity-0'}`}
+    >
+      <canvas ref={flaeche} className="h-full w-full" />
+    </div>
   )
 }

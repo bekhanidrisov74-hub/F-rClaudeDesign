@@ -210,20 +210,18 @@
   }
 }
 
-/* 3D-Szene (Szene3D.tsx): Wand in Tiefsee mit dem gedämpften türkisen Lichtkegel hinter der Figur wie im Render.
-   buehne3d.ts setzt Mitte und Radius dort, wo der Kegel die Wand trifft, auch während die Kamera schwenkt. */
+/* 3D-Szene (Szene3D.tsx): Hintergrund ist die Wand mit dem Lichtkegel aus derselben Blender-Szene (buehne3d.ts setzt
+   Bild und Lage wie beim Standbild) */
 @utility szene3d {
-  --kegel: var(--kx, 50%) var(--ky, 40%);
-  background:
-    radial-gradient(circle calc(var(--kr, 300px) * 0.55) at var(--kegel), var(--fx-leuchten), transparent),
-    radial-gradient(circle var(--kr, 300px) at var(--kegel), var(--fx-leuchten), transparent),
-    var(--fx-tiefsee);
+  background-color: var(--fx-tiefsee);
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 /* Hero-Foto: rückt beim Wegscrollen minimal zurück (Tiefe, ohne dass Text sich bewegt) */
 @utility tiefe {
   @supports (animation-timeline: view()) {
-    & img, & canvas {
+    & img, & .szene3d {
       animation: tiefe linear both;
       animation-timeline: view();
       animation-range: exit 0% exit 100%;

@@ -5,6 +5,7 @@ import {
   MathUtils,
   Mesh,
   MeshBasicMaterial,
+  MeshPhysicalMaterial,
   MeshStandardMaterial,
   PerspectiveCamera,
   PlaneGeometry,
@@ -30,14 +31,18 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
 /** Anteil der Softbox, der als leuchtende Fläche in der Umgebung wirkt (weich, ohne Schatten); der Rest ist ein Spot mit
  * Schatten. */
 const WEICH = 0.4
-/** Der weiche Rand des Kegels (Blend 1, große Lampe) reicht so weit über den Kegelwinkel hinaus. */
-const HOF = 1.5
+/** Subsurface der Haut (Cycles) als etwas Eigenleuchten: hellt Kinn und Schattenseite des Gesichts auf. */
+const HAUT_STREU = 0.12
+/** Glanzpunkte der Lackschicht nie härter als diese Rauheit: in Cycles sind sie Spiegelbilder der 4,5-m-Softbox. */
+const LACK_RAUHEIT = 0.35
 /** Höchstens so weit dreht die Kamera um den Blickpunkt (Grad). */
 const SCHWENK = { scroll: 7, zeiger: 5, neigung: 3 }
 
-type Optionen = { url: string; bild: HTMLImageElement; bereit: () => void }
+/** wand: Bild der Wand mit Lichtkegel; es liegt auf wandFlaeche hinter der Zeichenfläche. Als Hintergrund des Canvas
+ * selbst malt Chrome es nach dem Anlegen des WebGL-Kontexts nicht mehr neu. */
+type Optionen = { url: string; wand: string; wandFlaeche: HTMLElement; bild: HTMLImageElement; bereit: () => void }
 
-export function buehne(huelle: HTMLCanvasElement, { url, bild, bereit }: Optionen) {
+export function buehne(huelle: HTMLCanvasElement, { url, wand, wandFlaeche, bild, bereit }: Optionen) {
   const token = (name: string) => getComputedStyle(document.documentElement).getPropertyValue(name).trim()
   const renderer = new WebGLRenderer({ canvas: huelle, antialias: true, alpha: true, powerPreference: 'low-power' })
   // Immer doppelt gerechnet: glättet auf einfachen Bildschirmen die Kanten, mehr bringt auf Handys nichts
@@ -50,8 +55,6 @@ export function buehne(huelle: HTMLCanvasElement, { url, bild, bereit }: Optione
 
   let kamera = new PerspectiveCamera()
   const blick = new Vector3()
-  const kegel = new Vector3()
-  const kegelRand = new Vector3()
   const basis = new Vector3()
   let geladen = false
   let aus = false
@@ -66,16 +69,26 @@ export function buehne(huelle: HTMLCanvasElement, { url, bild, bereit }: Optione
   let spiegel: Texture | undefined
   let erstesBild: (() => void) | undefined = bereit
 
+  // Wand und Kegel ohne Motiv aus derselben Blender-Szene; geladen, bevor das erste Bild erscheint
+  const wandBild = new Image()
+  wandBild.src = wand
   new GLTFLoader().setMeshoptDecoder(MeshoptDecoder).load(url, async (gltf) => {
+    await wandBild.decode().catch(() => undefined)
     if (aus) return
+    wandFlaeche.style.backgroundImage = `url("${wand}")`
     gltf.scene.updateMatrixWorld(true)
     const cam = gltf.cameras[0] as PerspectiveCamera
     kamera = cam.clone()
     cam.getWorldPosition(basis)
     blick.fromArray(cam.userData.blick as number[])
-    kegel.fromArray(cam.userData.kegel as number[])
     gltf.scene.traverse((o) => {
-      if (o instanceof Mesh) o.castShadow = o.receiveShadow = true
+      if (o instanceof Mesh) {
+        o.castShadow = o.receiveShadow = true
+        for (const m of [o.material].flat() as Material[]) {
+          if (m instanceof MeshPhysicalMaterial && m.clearcoat) m.clearcoatRoughness = Math.max(m.clearcoatRoughness, LACK_RAUHEIT)
+          if (m instanceof MeshStandardMaterial && m.userData.haut) m.emissive.copy(m.color).multiplyScalar(HAUT_STREU)
+        }
+      }
       // Lampen der Szene (Taschenlampen) kommen in Blender-Watt: Ein Spot strahlt P / (4π) je Raumwinkel
       if (o instanceof SpotLight) o.intensity /= 4 * Math.PI
     })
@@ -90,7 +103,6 @@ export function buehne(huelle: HTMLCanvasElement, { url, bild, bereit }: Optione
     const oben = new Vector3(0, 1, 0)
     const vorne = blick.clone().sub(basis).setY(0).normalize()
     const rechts = vorne.clone().cross(oben)
-    kegelRand.copy(kegel).addScaledVector(rechts, (cam.userData.kegelradius as number) * HOF)
     const ort = (f: number, r: number, o: number) => blick.clone().addScaledVector(vorne, f).addScaledVector(rechts, r).addScaledVector(oben, o)
     const weiss = new Color(token('--fx-weiss'))
     const studio = new Scene()
@@ -173,7 +185,9 @@ export function buehne(huelle: HTMLCanvasElement, { url, bild, bereit }: Optione
     if (!b || !h) return
     renderer.setSize(b, h, false)
     const s = Math.max(b, h)
-    const [px, py] = getComputedStyle(bild).objectPosition.split(' ').map((w) => (w.endsWith('%') ? parseFloat(w) / 100 : 0.5))
+    const lage = getComputedStyle(bild).objectPosition
+    wandFlaeche.style.backgroundPosition = lage   // Wandbild wie das Standbild zugeschnitten
+    const [px, py] = lage.split(' ').map((w) => (w.endsWith('%') ? parseFloat(w) / 100 : 0.5))
     kamera.aspect = 1
     kamera.setViewOffset(s, s, (s - b) * (px ?? 0.5), (s - h) * (py ?? 0.5), b, h)
     kamera.updateProjectionMatrix()
@@ -198,12 +212,6 @@ export function buehne(huelle: HTMLCanvasElement, { url, bild, bereit }: Optione
       kamera.position.copy(blick).add(versatz)
       kamera.lookAt(blick)
       kamera.updateMatrixWorld()
-      // Türkiser Lichtkegel der Wand hinter der Figur: dort, wo der Kegel im Render die Wand trifft
-      const k = kegel.clone().project(kamera)
-      const r = kegelRand.clone().project(kamera)
-      huelle.style.setProperty('--kx', `${((k.x + 1) / 2) * 100}%`)
-      huelle.style.setProperty('--ky', `${((1 - k.y) / 2) * 100}%`)
-      huelle.style.setProperty('--kr', `${(Math.hypot(r.x - k.x, r.y - k.y) / 2) * huelle.clientWidth}px`)
       renderer.render(szene, kamera)
       erstesBild?.()
       erstesBild = undefined
@@ -230,7 +238,7 @@ export function buehne(huelle: HTMLCanvasElement, { url, bild, bereit }: Optione
     zeichnen()
   })
   masse.observe(huelle)
-  const zeigerFlaeche = huelle.parentElement ?? huelle
+  const zeigerFlaeche = wandFlaeche
   addEventListener('scroll', beimScrollen, { passive: true })
   if (matchMedia('(hover: hover)').matches) {
     zeigerFlaeche.addEventListener('pointermove', beimZeiger)

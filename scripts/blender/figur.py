@@ -57,6 +57,7 @@ def haut_material(farbe):
     p = m.node_tree.nodes['Principled BSDF']
     p.inputs['Subsurface Weight'].default_value = 0.25
     p.inputs['Subsurface Scale'].default_value = 0.02
+    m['haut'] = 1   # glTF-extras: three.js ersetzt Subsurface durch etwas Eigenleuchten (buehne3d.ts)
     return m
 
 
