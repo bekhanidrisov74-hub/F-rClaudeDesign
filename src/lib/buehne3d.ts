@@ -11,8 +11,8 @@ import {
   Scene,
   ShadowMaterial,
   SpotLight,
-  Vector3,
   PCFShadowMap,
+  Vector3,
   WebGLRenderer,
   type Material,
 } from 'three'
@@ -54,11 +54,13 @@ export function buehne(huelle: HTMLCanvasElement, { url, bild, bereit }: Optione
   let aus = false
   let sichtbar = false
 
-  // Schwenk: Ziel aus Scroll und Zeiger, Ist folgt weich
+  // Schwenk: Ziel aus Scroll und Zeiger, Ist folgt weich. Das erste Bild steht wie das Standbild (0°), danach gleitet
+  // die Kamera zum Ziel.
   const ziel = { gier: 0, neigung: 0 }
   const ist = { gier: 0, neigung: 0 }
   let zeiger = { x: 0, y: 0 }
   let rahmen = 0
+  let erstesBild: (() => void) | undefined = bereit
 
   new GLTFLoader().setMeshoptDecoder(MeshoptDecoder).load(url, (gltf) => {
     if (aus) return
@@ -112,7 +114,7 @@ export function buehne(huelle: HTMLCanvasElement, { url, bild, bereit }: Optione
 
     // Weicher Schatten der Softbox; der Boden fängt nur den Schatten (die Wand zeichnet die Seite)
     softbox.castShadow = true
-    softbox.shadow.mapSize.set(2048, 2048)
+    softbox.shadow.mapSize.set(1024, 1024)
     softbox.shadow.radius = 4
     softbox.shadow.bias = -0.0002
     softbox.shadow.normalBias = 0.01
@@ -126,7 +128,6 @@ export function buehne(huelle: HTMLCanvasElement, { url, bild, bereit }: Optione
     geladen = true
     groesse()
     zeichnen()
-    bereit()
   })
 
   /** Wie object-fit: cover mit der object-position des Standbilds: das Quadrat füllt die Fläche, der Rest ragt hinaus. */
@@ -168,6 +169,8 @@ export function buehne(huelle: HTMLCanvasElement, { url, bild, bereit }: Optione
       huelle.style.setProperty('--ky', `${((1 - k.y) / 2) * 100}%`)
       huelle.style.setProperty('--kr', `${(Math.hypot(r.x - k.x, r.y - k.y) / 2) * huelle.clientWidth}px`)
       renderer.render(szene, kamera)
+      erstesBild?.()
+      erstesBild = undefined
       if (Math.abs(ziel.gier - ist.gier) > 0.01 || Math.abs(ziel.neigung - ist.neigung) > 0.01) zeichnen()
     })
   }
@@ -192,8 +195,6 @@ export function buehne(huelle: HTMLCanvasElement, { url, bild, bereit }: Optione
   })
   masse.observe(huelle)
   const zeigerFlaeche = huelle.parentElement ?? huelle
-  scrollZiel()
-  ist.gier = ziel.gier
   addEventListener('scroll', beimScrollen, { passive: true })
   if (matchMedia('(hover: hover)').matches) {
     zeigerFlaeche.addEventListener('pointermove', beimZeiger)

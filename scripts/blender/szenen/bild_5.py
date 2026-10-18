@@ -2,7 +2,9 @@
 
 Der Kasten hängt an einer Wand, die von ihm schräg nach links vorne aus dem Bild läuft: So sieht die Kamera ins
 Innere (etwa 53° zur Front) und zugleich das Gesicht der Fachkraft, die rechts davor steht, im Dreiviertelprofil.
-Halbnah: Die linke Faust hält den Spannungsprüfer, die rechte Hand liegt offen am unteren rechten Rahmen.
+Halbnah, wie im korrigierten Bild (design/bilder-chatgpt/bild-5.png): ein zweipoliger Spannungsprüfer mit zwei
+isolierten Griffen und Verbindungskabel. Die linke Faust setzt die eine Spitze an die Klemme des ausgelösten Automaten,
+die rechte die andere an die N-Klemme rechts zwischen den Reihen; am rechten Griff sitzt die Anzeige.
 Am Boden rechts Werkzeugtasche und Kabeltrommel, angeschnitten.
 Zuschnitte: 16 : 9 zeigt Gesicht, beide Hände, Prüfer und Klemme; 4 : 3 die Figur von der Kappe bis zur Hüfte.
 """
@@ -99,6 +101,19 @@ def fi_schalter(name, u, zr):
     for du in (-MODUL / 2, MODUL / 2):
         for s in (1, -1):
             zylinder(f'{name}Schraube{du}{s}', k(u + du, 0.088, zr + s * 0.062), k(u + du, 0.094, zr + s * 0.062), 0.01, CHROM, 0.002)
+
+
+N_KLEMME = (0.2, 0.0)           # N-Klemmleiste rechts zwischen den Reihen (u, z)
+
+
+def n_klemme():
+    """Senkrechte N-Klemmleiste mit vier Schrauben; Leitungen kommen von links."""
+    u, z = N_KLEMME
+    teil('NKlemme', u, 0.045, z, (0.028, 0.03, 0.1), KALK, 0.005)
+    for i, dz in enumerate((-0.033, -0.011, 0.011, 0.033)):
+        zylinder(f'NSchraube{i}', k(u, 0.058, z + dz), k(u, 0.064, z + dz), 0.007, CHROM, 0.0015)
+        rohr(f'NLeitung{i}', [tuple(k(u - 0.014, 0.045, z + dz)), tuple(k(u - 0.05, 0.04, z + dz)),
+                              tuple(k(u - 0.07, 0.035, z + dz - 0.03))], 0.0045, PETROL)
 
 
 def innenleben():
@@ -231,20 +246,42 @@ def werkzeugtasche(mitte, drehung):
 
 # ── Fachkraft ──────────────────────────────────────────────────────────────────
 
-def pruefer(spitze, achse, griff):
-    """Spannungsprüfer: Griff Orange mit türkisem Anzeigering, Chromspitze bis zur Klemme; griff = Mitte der Faust."""
+def pruefgriff(name, spitze, achse, griff):
+    """Ein Pol des Spannungsprüfers: isolierter Griff, Fingerschutz, kurze Metallspitze bis zur Klemme;
+    griff = Mitte der Faust. Gibt das hintere Griffende (Kabelanschluss) zurück."""
     a = achse.normalized()
     t, g = Vector(spitze), Vector(griff)
-    zylinder('PrueferSpitze', t - a * 0.075, t, 0.0055, CHROM, 0.0, r2=0.0025)
-    zylinder('PrueferKragen', t - a * 0.095, t - a * 0.075, 0.016, TIEFSEE2, 0.004)
-    zylinder('PrueferGriff', g - a * 0.065, t - a * 0.095, 0.017, PETROL, 0.008)
-    ring('PrueferAnzeige', t - a * 0.115, a, 0.0175, 0.0175, 0.005, TUERKIS)
+    zylinder(f'{name}Spitze', t - a * 0.05, t, 0.0045, CHROM, 0.0, r2=0.002)
+    zylinder(f'{name}Schutz', t - a * 0.07, t - a * 0.05, 0.02, TIEFSEE2, 0.005)
+    zylinder(f'{name}Griff', g - a * 0.075, t - a * 0.07, 0.016, PETROL, 0.007)
+    zylinder(f'{name}Tuelle', g - a * 0.095, g - a * 0.075, 0.009, TIEFSEE2, 0.003)
+    return g - a * 0.095
+
+
+def pruefer(spitze_l, achse_l, griff_l, spitze_r, achse_r, griff_r, kamera):
+    """Zweipoliger Spannungsprüfer: zwei Griffe, Anzeige am rechten Griff (zur Kamera), Kabel hängt dazwischen durch."""
+    ende_l = pruefgriff('PrueferL', spitze_l, achse_l, griff_l)
+    ende_r = pruefgriff('PrueferR', spitze_r, achse_r, griff_r)
+    a = achse_r.normalized()
+    mitte = Vector(spitze_r) - a * 0.1
+    zur_kamera = Vector(kamera) - mitte
+    n = (zur_kamera - a * zur_kamera.dot(a)).normalized()
+    rot = Matrix((n.cross(a), -n, a)).transposed()
+    gerundet('PrueferAnzeigerahmen', mitte + n * 0.012, rot, (0.026, 0.012, 0.042), TIEFSEE2, 0.004)
+    gerundet('PrueferAnzeige', mitte + n * 0.018, rot, (0.018, 0.004, 0.032), TUERKIS, 0.0015)
+    # Kabel als weiche Schlaufe (kubische Bézier): verlässt beide Griffe gerade nach hinten und hängt durch
+    p0, p3 = ende_l, ende_r
+    p1 = p0 - achse_l.normalized() * 0.08 - Z * 0.32
+    p2 = p3 - a * 0.08 - Z * 0.32
+    rohr('Prueferkabel', [tuple((1 - t) ** 3 * p0 + 3 * (1 - t) ** 2 * t * p1 + 3 * (1 - t) * t ** 2 * p2 + t ** 3 * p3)
+                          for t in (j / 32 for j in range(33))], 0.0055, TIEFSEE2)
 
 
 def szene():
     wand()
     gehaeuse()
     innenleben()
+    n_klemme()
     tuer()
     werkzeugtasche((0.6, 1.1), -20)
     kabeltrommel((1.2, 1.28), (0.9, 0.42, 0), Vector(KAMERA) - Vector((1.2, 1.28, 0)))
@@ -252,20 +289,23 @@ def szene():
     # Fachkraft rechts vor dem Kasten, zum Kasten gedreht und zugleich der Kamera zugewandt
     becken, richtung, beugung = Vector((*k(0.55, 0.32, 0)[:2], 0.96)), WINKEL - 110, 8
     kamera = Vector(KAMERA)
-    # Prüfer in der linken Hand: Spitze an der unteren Klemme des ausgelösten Automaten, leicht abwärts in den Kasten.
-    # Der Ellbogen hängt, so steht der Unterarm quer zum Prüfer und die Faust umschließt den Griff (griffpunkt_l),
-    # Daumen zur Spitze, Handfläche zur Kamera. Die rechte Hand liegt offen am unteren rechten Rahmen, Finger über
-    # der leeren Ecke unter der unteren Reihe. Orange Handschuhe, damit die Hände vor Kasten und Latzhose lesbar sind.
+    # Linker Pol: Spitze an der unteren Klemme des ausgelösten Automaten, leicht abwärts in den Kasten. Der Ellbogen
+    # hängt, so steht der Unterarm quer zum Griff und die Faust umschließt ihn (griffpunkt_l), Daumen zur Spitze.
+    # Rechter Pol: von rechts unten schräg hinauf an die N-Klemme. Orange Handschuhe, damit die Hände vor Kasten und
+    # Latzhose lesbar sind.
     r, i = AUSGELOEST
     spitze = k(-3 * MODUL + i * MODUL, 0.1, REIHEN[r] - 0.062)
     achse = (-N - Z * 0.2).normalized()
-    griff = spitze - achse * 0.23
-    pruefer(spitze, achse, griff)
+    griff = spitze - achse * 0.2
+    spitze_r = k(N_KLEMME[0], 0.066, N_KLEMME[1] + 0.011)
+    achse_r = (-N * 0.8 - U * 0.35 + Z * 0.35).normalized()
+    griff_r = spitze_r - achse_r * 0.17
+    pruefer(spitze, achse, griff, spitze_r, achse_r, griff_r, kamera)
     # Blick auf die Spitze, ein wenig zur Kamera gedreht, damit beide Augen zu sehen sind
     blick = spitze + (kamera - spitze).normalized() * 0.15 + Z * 0.12
     figur('Fachkraft', becken=becken, richtung=richtung, beugung=beugung,
           griffpunkt_l=tuple(griff), griffradius_l=0.017, daumen_l=tuple(achse), griff_l='greifen', pol_ellbogen_l=tuple(-Z),
-          hand_r=tuple(k(0.3, 0.162, -0.24)), daumen_r=tuple(-U - Z), griff_r='offen', pol_ellbogen_r=tuple(-Z),
+          griffpunkt_r=tuple(griff_r), griffradius_r=0.016, daumen_r=tuple(achse_r), griff_r='greifen', pol_ellbogen_r=tuple(-Z),
           blick=tuple(blick), haut='hell', haar='braun', kappe=ORANGE, handschuhe=ORANGE, aermel='gekrempelt')
     return {
         'kamera': tuple(kamera),

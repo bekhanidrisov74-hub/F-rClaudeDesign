@@ -1,10 +1,12 @@
 """Bild 2 (Karte Installateur): Installateur kniet an der gefliesten Vorwand und zieht die Überwurfmutter am
-Chromrohr mit der Rohrzange nach; aus der Dichtung tropft es in den Eimer, die Taschenlampe leuchtet auf die Stelle.
+Chromrohr mit dem verstellbaren Maulschlüssel nach; aus der Dichtung tropft es in den Eimer, die Taschenlampe
+leuchtet auf die Stelle.
 
-Das Rohr kommt aus der Vorwand auf die Kamera zu, damit die Rohrzange quer dazu steht und von vorne als Umriss zu
-lesen ist (Mutter im Maul, oranger Griff steil nach rechts unten). Hinter der Mutter knickt das Rohr nach links und
-im zweiten Knie in den Boden. Die Fachkraft kniet rechts davon und schaut nach links auf die Mutter: Die linke Faust
-drückt das Griffende nach unten (der Griff liegt quer zum Unterarm), die rechte Hand stützt sich flach an den Fliesen ab.
+Wie im korrigierten Bild (design/bilder-chatgpt/bild-2.png): Das Rohr kommt aus der Vorwand auf die Kamera zu, damit
+der Schlüssel quer dazu steht und von vorne als Umriss zu lesen ist. Seine glatten Backen liegen an zwei Flächen der
+Messingmutter, der orange Griff zeigt schräg nach rechts unten (nachvollziehbarer Hebel). Hinter der Mutter knickt
+das Rohr nach links und im zweiten Knie in den Boden. Die Fachkraft kniet rechts davon und schaut nach links auf die
+Mutter: Die linke Faust umschließt den Griff (quer zum Unterarm), die rechte hält die Taschenlampe auf der Vorwand.
 
 Die Taschenlampe liegt oben auf der Vorwand und zeigt mit leuchtender Linse auf die Verschraubung; ein eigener Spot
 (nur aufs Motiv) hellt die Stelle auf. Mutter und Anschluss sind aus Messing, damit sie sich zwischen den verchromten
@@ -12,7 +14,7 @@ Backen abheben. Ein Kugelhahn im senkrechten Rohr, offener Koffer rechts.
 
 Kamera halbnah: Die Figur füllt von der Kappe bis zum aufgestellten Knie den größten Teil des 4 : 3, eine Hand ist
 etwa 6–7 % der Bildbreite breit. Zuschnitte: Karte 4 : 3 (Desktop) und 16 : 9 (Handy, mittleres Band): Kappe, Gesicht,
-beide Hände, Zange, Mutter, Lampe und Tropfen liegen im Band; Eimerrand, zweites Rohrknie und Koffer kommen im 4 : 3
+beide Hände, Schlüssel, Mutter, Lampe und Tropfen liegen im Band; Eimerrand, zweites Rohrknie und Koffer kommen im 4 : 3
 angeschnitten dazu, Hahn und Stiefel nur im ganzen Bild.
 """
 import math
@@ -22,6 +24,7 @@ import bpy
 from fx3d import (KALK, ORANGE, PETROL, TIEFSEE, TIEFSEE2, TUERKIS, WEISS, farbe, kugel, lage, linear, material, mischung,
                   objekt, quader, rohr, stufen, tropfen, walze)
 from figur import figur, gerundet, ring
+from werkzeug import entlang, maulschluessel, sechskant
 from mathutils import Matrix, Vector
 
 CHROM = material(WEISS, rauheit=0.16, metall=1.0, glanz=0.0)
@@ -38,7 +41,7 @@ LINKS_X = -0.8                     # hier beginnt das zweite Knie (nach unten)
 MUTTER = Vector((ROHR_X, 0.315, ROHR_Z))
 MUTTER_R, MUTTER_L = 0.05, 0.066
 FUGE_Y = MUTTER.y + MUTTER_L / 2 + 0.005   # Dichtfuge zwischen Mutter und Gewinde (orange Dichtung)
-ZANGE_W = math.radians(60)        # Griff steil nach rechts unten, damit die Faust ihn quer zum Unterarm fasst
+ZANGE_W = math.radians(50)        # Griff schräg nach rechts unten, damit die Faust ihn quer zum Unterarm fasst
 ZANGE_D = Vector((math.cos(ZANGE_W), 0, -math.sin(ZANGE_W)))
 ZANGE_S = Vector((math.sin(ZANGE_W), 0, math.cos(ZANGE_W)))    # Schaft über der Mutter
 EIMER = (-0.33, 0.36, 0.0)
@@ -55,24 +58,6 @@ def kegelstumpf(name, r_unten, r_oben, hoehe, token, ort, offen=False, dicke=0.0
         s = ob.modifiers.new('Wand', 'SOLIDIFY')
         s.thickness, s.offset = dicke, -1
     return ob
-
-
-def sechskant(name, r, laenge, mitte, achse, flaeche, token=CHROM, rundung=0.005):
-    """Sechskant (Mutter, Schraubenkopf) mit Achse achse; zwei Schlüsselflächen stehen senkrecht zu flaeche."""
-    a = Vector(achse).normalized()
-    f = (Vector(flaeche) - a * Vector(flaeche).dot(a)).normalized()
-    rot = Matrix((f.cross(a), f, a)).transposed()   # create_cone: lokale ±Y sind Flächennormalen
-    bm = bmesh.new()
-    bmesh.ops.create_cone(bm, cap_ends=True, segments=6, radius1=r, radius2=r, depth=laenge,
-                          matrix=Matrix.Translation(mitte) @ rot.to_4x4())
-    return objekt(name, bm, token, rundung)
-
-
-def entlang(name, r, laenge, token, mitte, d, rundung):
-    """Walze mit Achse entlang d."""
-    o = walze(name, r, laenge, token, rundung, dreh=(0, 0, 0))
-    o.matrix_world = Matrix.Translation(mitte) @ Vector(d).to_track_quat('Z', 'Y').to_matrix().to_4x4()
-    return o
 
 
 def flach(name, umriss, dicke, token, rundung, z=0.0):
@@ -138,7 +123,7 @@ def leitung():
     for i in range(3):
         ring(f'Gewinde{i}', (ROHR_X, FUGE_Y + 0.012 + 0.01 * i, ROHR_Z), Y, 0.027, 0.027, 0.0045, CHROM)
     ring('Dichtung', (ROHR_X, FUGE_Y, ROHR_Z), Y, 0.032, 0.032, 0.0065, ORANGE)
-    sechskant('Mutter', MUTTER_R, MUTTER_L, tuple(MUTTER), Y, ZANGE_D, MESSING)
+    sechskant('Mutter', MUTTER_R, MUTTER_L, tuple(MUTTER), Y, ZANGE_S, MESSING)   # Schlüsselflächen zu den Backen
     vorne = MUTTER.y - MUTTER_L / 2
     walze('Stutzen', 0.03, vorne - (KNIE_Y + 0.05) + 0.004, CHROM, 0.004, ort=(ROHR_X, (vorne + KNIE_Y + 0.05) / 2, ROHR_Z))
 
@@ -188,27 +173,6 @@ def eimer(m):
 
 # ── Werkzeug ───────────────────────────────────────────────────────────────────
 
-def rohrzange(n, d, s):
-    """Rohrzange senkrecht zum Rohr: Mutter zwischen Hakenbacke (u < 0) und Festbacke (u > 0), Schaft und Griff
-    entlang d, um v entlang s versetzt. Gehäuse und Griff orange lackiert, Backen und Stellmutter Chrom.
-    Gibt den Griffpunkt der Faust am Griffende zurück (vor dem Aufhängeloch)."""
-    d, s = Vector(d).normalized(), Vector(s).normalized()
-    w = s.cross(d)
-    rot = Matrix((d, w, s)).transposed()
-    def L(u, v, t=0.0):
-        return n + d * u + s * v + w * t
-    flach_ = MUTTER_R * math.cos(math.radians(30))
-    gerundet('Hakenbacke', L(-flach_ - 0.022, 0.04), rot, (0.044, 0.05, 0.18), CHROM, 0.012)
-    gerundet('Festbacke', L(flach_ + 0.022, 0.04), rot, (0.044, 0.056, 0.18), CHROM, 0.012)
-    gerundet('Hakenschaft', L(0.01, 0.13), rot, (0.22, 0.04, 0.042), CHROM, 0.012)
-    for i in range(6):     # geriffelte Stellmutter
-        entlang(f'Stellmutter{i}', 0.04 if i % 2 else 0.036, 0.0085, CHROM, L(0.0 + 0.0085 * i, 0.13), d, 0.002)
-    gerundet('Gehaeuse', L(0.135, 0.128), rot, (0.15, 0.064, 0.092), ORANGE, 0.022)
-    gerundet('Zangengriff', L(0.39, 0.13), rot, (0.38, 0.026, 0.03), ORANGE, 0.012)     # schlank, damit die Faust ihn fasst
-    ring('Griffloch', L(0.545, 0.13, -0.014), w, 0.013, 0.009, 0.0035, TIEFSEE, quer=d)
-    return L(0.45, 0.13)
-
-
 def werkzeugkoffer(m, winkel):
     """Offener Koffer, Deckel nach hinten aufgeklappt, Werkzeug ragt heraus."""
     rot = Matrix.Rotation(math.radians(winkel), 3, 'Z')
@@ -234,7 +198,7 @@ def werkzeugkoffer(m, winkel):
 def taschenlampe(auflage_x, ziel, neigung=32):
     """Taschenlampe liegt auf der Abdeckung der Vorwand: der Kopf ragt über die Vorderkante (Auflage bei auflage_x),
     das Ende liegt auf einer Lappenrolle, so dass sie um neigung (Grad) nach vorne unten in Richtung ziel leuchtet.
-    Die Linse leuchtet, ein Spot (nur aufs Motiv) hellt Verschraubung, Zange und Hände auf.
+    Die Linse leuchtet, ein Spot (nur aufs Motiv) hellt Verschraubung, Schlüssel und Hände auf.
     Gibt (Spot, Griffpunkt am Lampenkörper, Leuchtrichtung) zurück: die rechte Faust hält die Lampe dort."""
     b = math.radians(neigung)
     oben = WAND_H + 0.04
@@ -310,15 +274,15 @@ def szene():
     leitung()
     tropfen_und_eimer()
     werkzeugkoffer((0.98, 0.04, 0.0), -24)
-    griff = rohrzange(MUTTER, ZANGE_D, ZANGE_S)
+    griff = maulschluessel(MUTTER, ZANGE_D, ZANGE_S, MUTTER_R * math.cos(math.radians(30)))
 
-    becken, richtung, beugung = Vector((0.52, 0.315, 0.585)), -82, 16
+    becken, richtung, beugung = Vector((0.42, 0.315, 0.585)), -82, 16
     w = math.radians(richtung)
     vorne, links = Vector((math.sin(w), -math.cos(w), 0)), Vector((math.cos(w), math.sin(w), 0))
     fuss_l = becken + links * 0.095 + vorne * 0.4         # linkes Bein aufgestellt
     fuss_r = becken - links * 0.095 - vorne * 0.38        # rechtes Knie am Boden, Zehen aufgestellt
-    # Linke Faust am Griffende drückt die Zange nach unten (Ellbogen zur Kamera, damit der Unterarm quer zum Griff
-    # steht); die rechte Faust hält die Taschenlampe auf der Vorwand und leuchtet die Verschraubung aus
+    # Linke Faust umschließt den Schlüsselgriff und drückt ihn nach unten (Ellbogen zur Kamera, damit der Unterarm quer
+    # zum Griff steht); die rechte Faust hält die Taschenlampe auf der Vorwand und leuchtet die Verschraubung aus
     spot, lampe_griff, lampe_a = taschenlampe(0.02, MUTTER + Vector((0, -0.04, 0.03)))
     figur('Fachkraft', becken=tuple(becken), richtung=richtung, beugung=beugung,
           griffpunkt_l=tuple(griff), griffradius_l=0.015, daumen_l=tuple(ZANGE_D), pol_ellbogen_l=(0.4, -1.0, 0.0),

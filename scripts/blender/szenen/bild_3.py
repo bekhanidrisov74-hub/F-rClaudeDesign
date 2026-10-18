@@ -1,9 +1,10 @@
 """Bild 3 (Karte Heizung & Klima): Techniker an der offenen Gastherme, misst mit Fühler und Messgerät.
 
 Halbnah von links vorne: Kopf bis Hüfte füllen den 4:3-Zuschnitt. Die Therme hängt an der Studiowand, ihr
-Abgasrohr und die Anschlüsse gehen in die Wand; unten links steht der Heizkörper (Gewerke-Motiv). Die rechte
-Hand hält den Fühler im Messstutzen der Brennkammer, die linke das Messgerät vor der Brust, der Blick geht auf
-dessen Anzeige. Der türkise Kegel liegt hinter Kopf und Schultern der Figur.
+Abgasrohr und die Anschlüsse gehen in die Wand; unten links steht der Heizkörper (Gewerke-Motiv). Wie im
+korrigierten Bild (design/bilder-chatgpt/bild-3.png): Die rechte Hand führt die Messsonde in den Prüfanschluss am
+Abgasstutzen, ein durchgehender Probenschlauch läuft zum rechteckigen Messgerät, das die linke Hand direkt hält
+(ohne Stiel); der Blick geht auf dessen Anzeige. Der türkise Kegel liegt hinter Kopf und Schultern der Figur.
 """
 import math
 
@@ -20,11 +21,13 @@ TY = WAND_Y - TT / 2             # Therme: Mitte y
 YV = WAND_Y - TT                 # Therme: Vorderkante y
 KX, KZ, KF = TX - 0.02, TZ + 0.44, YV + 0.13   # Brennkammer: Mitte x, Mitte z, Vorderseite y
 
-# Winkelfühler: Griff aufrecht in der rechten Faust vor der Therme (Daumen oben, Handfläche zur Kamera), der Stab
-# steigt auf und knickt waagrecht in den Messstutzen rechts oben an der Brennkammer
-SPITZE = Vector((KX + 0.08, KF, KZ + 0.04))
-GRIFF_F = Vector((-0.18, 1.54, 1.3))
-ACHSE_F = (SPITZE - Vector((GRIFF_F.x, GRIFF_F.y, SPITZE.z))).normalized()
+# Messsonde: Prüfanschluss vorne am Abgasstutzen in der offenen Therme (unter dem Deckel); der Griff liegt in der
+# rechten Faust, der gerade Stab führt durch die offene Front schräg hinauf in den Anschluss
+ABGAS_Z = TZ + 0.7
+PRUEF_N = Vector((0.35, -0.94, 0)).normalized()                 # Anschluss schaut nach vorne, leicht zur Figur
+SPITZE = Vector((KX, TY, ABGAS_Z)) + PRUEF_N * 0.05
+GRIFF_F = Vector((-0.144, 1.56, 1.584))
+ACHSE_F = (SPITZE - GRIFF_F).normalized()                        # vom Griff zur Spitze
 
 # Figur: Becken, Drehung, Neigung; Kopfmitte wie in figur() (Hals 0.50 + 0.03 + 0.95 · KOPF über dem Becken)
 BECKEN = Vector((0.26, 1.15, 0.965))
@@ -85,8 +88,8 @@ def therme():
         walze(f'Schraube{i}', 0.009, 0.012, CHROM, 0.003, ort=(KX + dx, KF - 0.02, KZ + dz))
     quader('Schauglasrahmen', (0.06, 0.008, 0.042), CHROM, 0.006, ort=(KX - 0.07, KF - 0.019, KZ - 0.045))
     quader('Schauglas', (0.044, 0.008, 0.027), TIEFSEE, 0.004, ort=(KX - 0.07, KF - 0.022, KZ - 0.045))
-    rohr('Messstutzen', [tuple(SPITZE + ACHSE_F * 0.02), tuple(SPITZE - ACHSE_F * 0.022)], 0.012, CHROM, 0.003)
-    ring('Stutzenmutter', tuple(SPITZE - ACHSE_F * 0.006), ACHSE_F, 0.018, 0.018, 0.005, CHROM)
+    rohr('Pruefanschluss', [tuple(SPITZE - PRUEF_N * 0.01), tuple(SPITZE + PRUEF_N * 0.018)], 0.011, CHROM, 0.003)
+    ring('Pruefmutter', tuple(SPITZE + PRUEF_N * 0.012), PRUEF_N, 0.016, 0.016, 0.005, CHROM)
     # Zündelektrode rechts unten mit Kabel zur Blende
     quader('Zuender', (0.026, 0.02, 0.03), KALK, 0.006, ort=(KX + 0.105, KF - 0.008, KZ - 0.06))
     rohr('Zuendkabel', glatt([(KX + 0.105, KF - 0.012, KZ - 0.075), (KX + 0.105, KF - 0.012, z0 + 0.25),
@@ -142,40 +145,39 @@ def heizkoerper():
 # ── Messung ────────────────────────────────────────────────────────────────────
 
 def messung():
-    """Fühler im Messstutzen (rechte Hand), Messgerät mit Kabel in der linken Hand. Beide Griffe liegen aufrecht
-    in der Faust, Fühlerstab und Gerät ragen auf der Daumenseite heraus. Gibt je Hand (Griffpunkt, Daumenrichtung)
+    """Sonde im Prüfanschluss (rechte Hand), Messgerät direkt in der linken Hand, dazwischen der Probenschlauch.
+    Die Faust umschließt den Sondengriff bzw. den unteren Teil des Geräts. Gibt je Hand (Griffpunkt, Daumenrichtung)
     rechts und links sowie die Anzeige-Mitte zurück."""
     vorne, links, oben = koerper()
-    # Fühler: Griff 15 cm, Kragen, Stab steigt auf und knickt in den Stutzen
-    g_r, u = GRIFF_F, Vector((0, 0, 1))
-    rohr('Fuehlergriff', [tuple(g_r - u * 0.08), tuple(g_r + u * 0.07)], 0.015, ORANGE, 0.004)
-    rohr('Fuehlerkragen', [tuple(g_r + u * 0.07), tuple(g_r + u * 0.095)], 0.013, TIEFSEE2)
-    knick = Vector((g_r.x, g_r.y, SPITZE.z))
-    rohr('Fuehler', glatt([tuple(g_r + u * 0.095), tuple(knick), tuple(SPITZE + ACHSE_F * 0.01)], 0.04), 0.006, CHROM)
+    # Sonde: oranger Griff in der Faust, dunkler Kragen, gerader Stab bis in den Anschluss
+    g_r, u = GRIFF_F, ACHSE_F
+    rohr('Sondengriff', [tuple(g_r - u * 0.075), tuple(g_r + u * 0.065)], 0.016, ORANGE, 0.004)
+    rohr('Sondenkragen', [tuple(g_r + u * 0.065), tuple(g_r + u * 0.09)], 0.012, TIEFSEE2)
+    rohr('Sonde', [tuple(g_r + u * 0.09), tuple(SPITZE + PRUEF_N * 0.005)], 0.0055, CHROM)
 
-    # Messgerät: Griff aufrecht in der linken Faust vor der Brust, Kopf mit Anzeige darüber, zum Gesicht gedreht
+    # Messgerät: aufrecht in der linken Faust vor der Brust, die Faust hält den unteren Teil, darüber Tasten und
+    # Anzeige, zum Gesicht und halb zur Kamera gedreht
     g_l = BECKEN + vorne * 0.36 + links * 0.14 + oben * 0.36
     achse = Vector((0.2, 0, 1)).normalized()  # quer zum Unterarm, der leicht ansteigt
     kopf = BECKEN + oben * KOPF_HOEHE
     zur_kamera = (KAMERA - g_l).normalized()
-    n = (kopf - g_l).normalized() * 0.55 + zur_kamera * 0.45  # Anzeige zum Gesicht, halb zur Kamera gedreht
+    n = (kopf - g_l).normalized() * 0.55 + zur_kamera * 0.45
     n = (n - achse * n.dot(achse)).normalized()
     rot = achsen(n, achse)
-    rohr('Messgriff', [tuple(g_l - achse * 0.06), tuple(g_l + achse * 0.06)], 0.016, ORANGE, 0.005)
-    mitte = g_l + achse * 0.135
-    gerundet('Messgeraet', mitte, rot, (0.09, 0.04, 0.15), TIEFSEE2, 0.018)
-    gerundet('Messrahmen', mitte - n * 0.004, rot, (0.098, 0.036, 0.158), ORANGE, 0.02)
-    anzeige = mitte + n * 0.02 + achse * 0.03
-    gerundet('Messanzeige', anzeige, rot, (0.064, 0.006, 0.056), TUERKIS, 0.004)
+    mitte = g_l + achse * 0.06
+    gerundet('Messgeraet', mitte, rot, (0.062, 0.034, 0.21), TIEFSEE2, 0.016)
+    gerundet('Messrahmen', mitte - n * 0.004, rot, (0.07, 0.03, 0.218), ORANGE, 0.018)
+    anzeige = g_l + n * 0.018 + achse * 0.12
+    gerundet('Messanzeige', anzeige, rot, (0.046, 0.006, 0.05), TUERKIS, 0.004)
     for i in (-1, 0, 1):
-        ellipsoid(f'Messtaste{i}', mitte + n * 0.021 - achse * 0.04 + rot.col[0] * i * 0.024, rot, (0.009, 0.005, 0.007), KALK, 16)
+        ellipsoid(f'Messtaste{i}', g_l + n * 0.018 + achse * 0.068 + rot.col[0] * i * 0.017, rot, (0.0065, 0.005, 0.0065), KALK, 16)
 
-    # Kabel vom Griffende des Fühlers zum Fuß des Messgeräts, hängt vor dem Bauch durch
-    a = g_r - u * 0.08
-    b = g_l - achse * 0.06
-    tief = min(a.z, b.z) - 0.14
-    rohr('Messkabel', glatt([tuple(a), tuple(a - u * 0.06), tuple((a + b) / 2 + Vector((-0.04, -0.16, tief - (a.z + b.z) / 2))),
-                              tuple(b - achse * 0.07), tuple(b)], 0.07), 0.006, TIEFSEE2)
+    # Probenschlauch vom Griffende der Sonde zum Fuß des Messgeräts, hängt vor dem Bauch durch
+    a = g_r - u * 0.075
+    b = mitte - achse * 0.105
+    tief = min(a.z, b.z) - 0.12
+    rohr('Probenschlauch', glatt([tuple(a), tuple(a - u * 0.06), tuple((a + b) / 2 + Vector((-0.04, -0.14, tief - (a.z + b.z) / 2))),
+                                  tuple(b - achse * 0.06), tuple(b)], 0.07), 0.006, TIEFSEE2)
     return (g_r, u), (g_l, achse), anzeige
 
 
@@ -189,7 +191,7 @@ def szene():
     fuss_l.z = fuss_r.z = 0.09
     figur('Fachkraft', becken=tuple(BECKEN), richtung=RICHTUNG, beugung=BEUGUNG,
           griffpunkt_l=tuple(griff_l), daumen_l=tuple(daumen_l), griffpunkt_r=tuple(griff_r), daumen_r=tuple(daumen_r),
-          griffradius_l=0.016, griffradius_r=0.015,
+          griffradius_l=0.022, griffradius_r=0.016,
           fuss_l=tuple(fuss_l), fuss_r=tuple(fuss_r), blick=tuple(anzeige + Vector((0, 0, 0.1))), haut='hell', haar='grau', kappe=None)
     return {
         'kamera': tuple(KAMERA),

@@ -1,5 +1,6 @@
 """Bild 4 (Karte Schlüsseldienst): Fachkraft kniet vor einer Wohnungstür und öffnet den Profilzylinder mit
-Spanner und Pick; auf der Matte die ausgerollte Werkzeugrolle, ein Schlüsselbund, ein Ersatzzylinder und der offene
+Spanner und Pick (wie im korrigierten Bild design/bilder-chatgpt/bild-4.png: dünner Spanner ohne Griff am selben
+Zylinder wie der Pick); auf der Matte die ausgerollte Werkzeugrolle, ein Schlüsselbund, ein Ersatzzylinder und der offene
 Koffer mit Vorratszylindern, im Deckel Schraubendreher und Taschenlampe (halbnah ist davon nur der Kofferdeckel im Bild).
 
 Halbnah: Kopf bis Knie füllen den 4:3-Zuschnitt, Gesicht, Hände und Zylinder liegen im mittleren Band (16:9).
@@ -222,12 +223,12 @@ def pick(spitze, richtung, laenge):
 
 
 def spanner(innen, knick, richtung, laenge, quer):
-    """Spanner: kurzer Schenkel unten im Kanal, flacher langer Schenkel nach richtung, am Ende der orange Griff."""
+    """Spanner wie im korrigierten Bild: dünner, separater Winkel aus Federstahl ohne Griff, kurzer Schenkel unten im
+    Kanal, langer Schenkel nach richtung; die offene Hand drückt sein Ende. Gibt das Ende zurück."""
     k, r = Vector(knick), Vector(richtung).normalized()
     punkt = k + r * laenge
-    stab('SpannerKurz', innen, k, 0.007, 0.0035, CHROM, quer)
-    stab('SpannerLang', k, punkt + r * 0.06, 0.012, 0.0035, CHROM, quer)
-    rohr('Spannergriff', [tuple(punkt - r * 0.035), tuple(punkt + r * 0.075)], 0.011, ORANGE, 0.004)
+    stab('SpannerKurz', innen, k, 0.006, 0.0025, CHROM, quer)
+    stab('SpannerLang', k, punkt + r * 0.02, 0.008, 0.0025, CHROM, quer)
     return punkt
 
 

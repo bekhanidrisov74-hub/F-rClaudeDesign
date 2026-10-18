@@ -1,7 +1,8 @@
 """Bild 1 (Hero): Installateurin hinter der Küchenzeile zieht die tropfende Armatur mit dem Schlüssel fest.
 
-Halbnah: Kopf, beide Hände, Maulschlüssel und Armatur groß im Bild. Die rechte Faust führt den Schlüssel an der
-Mutter unten am Armaturenfuß, die linke hält den Bogen des Auslaufs gegen; das Gesicht schaut freundlich zur Kamera.
+Halbnah: Kopf, beide Hände, Maulschlüssel und Armatur groß im Bild. Wie im freigegebenen Hero
+(design/bilder-chatgpt/bild-1.png): Die rechte Faust führt den verstellbaren Maulschlüssel an der Sechskantmutter
+unten am Armaturenfuß, die linke hält den Bogen des Auslaufs gegen; das Gesicht schaut freundlich zur Kamera.
 Kamera knapp über der Platte und eine schmale Küchenzeile, damit Gesicht und Armatur in den Handy-Streifen passen und
 die Plattenkante über der Schnellwahl bleibt.
 Zuschnitte: Handy-Streifen 2 : 1 (y 30–80 %), Desktop hohe rechte Spalte (~0,75 : 1, x 19–94 %); unten liegt am
@@ -12,17 +13,20 @@ import math
 from fx3d import KALK, ORANGE, PETROL, TIEFSEE, TIEFSEE2, TUERKIS, WEISS, material, quader, rohr, tropfen, walze
 from figur import figur, gerundet, ring
 from mathutils import Matrix, Vector
+from werkzeug import maulschluessel, sechskant
 
 CHROM = material(WEISS, rauheit=0.16, metall=1.0, glanz=0.0)
 SCHRANK = material(TIEFSEE, rauheit=0.2, glanz=0.0)  # glatter Lack: spiegelt den dunklen Boden, die Front bleibt dunkel
 PLATTE_Z = 0.9225
 ARMATUR = Vector((0.25, 0.42, PLATTE_Z))
-# Maulschlüssel: Maul um die Mutter am Armaturenfuß, Stiel nach links quer zum rechten Unterarm, zur Hand hin
-# leicht angehoben, damit die Kamera knapp über der Platte das Maul als Ring sieht
+# Verstellbarer Maulschlüssel: Backen an der Sechskantmutter am Armaturenfuß, Griff nach links quer zum rechten
+# Unterarm, zur Hand hin leicht angehoben, damit die Kamera knapp über der Platte Kopf und Backen sieht
 MUTTER = ARMATUR + Vector((0, 0, 0.07))
-SCHLUESSEL_D = Vector((-math.cos(math.radians(20)), -math.sin(math.radians(20)), 0.18)).normalized()
-SCHLUESSEL_LAENGE = 0.3
-SCHLUESSEL_GRIFF = MUTTER + SCHLUESSEL_D * (SCHLUESSEL_LAENGE - 0.06)
+SCHLUESSEL_D = Vector((-math.cos(math.radians(20)), -math.sin(math.radians(20)), 0.3)).normalized()
+KAMERA, BLICK = Vector((-0.335, -1.565, 1.24)), Vector((0.15, 0.47, 1.36))
+SCHLUESSEL_G = 0.8                # Schlüssel kleiner als in Bild 2: Griff 24 cm vor der Mutter
+SCHLUESSEL_KIPPUNG = 40           # Grad um den Stiel zur Kamera
+MUTTER_R = 0.046                  # Eckmaß der Sechskantmutter um den Armaturenkörper (r = 0,036)
 
 
 def rundrechteck(cx, cy, b, t, r, z, schritte=8):
@@ -73,15 +77,16 @@ def armatur():
 
 
 def schluessel():
-    """Maulschlüssel: Maul um die Mutter, flacher Stiel, schlanker oranger Griff für die Faust."""
-    k, d = MUTTER, SCHLUESSEL_D
-    s = Vector((0, 0, 1)).cross(d).normalized()
-    maul = [tuple(k + (d * math.cos(a) + s * math.sin(a)) * 0.052) for a in (math.radians(40 + 280 * i / 40) for i in range(41))]
-    rohr('Maul', maul, 0.013, CHROM, 0.003)
-    rot = Matrix((s, -d, s.cross(-d))).transposed()
-    laenge = SCHLUESSEL_LAENGE
-    gerundet('Stiel', k + d * (0.05 + laenge / 2 - 0.03), rot, (0.026, laenge - 0.06, 0.014), CHROM, 0.006)
-    gerundet('Griff', SCHLUESSEL_GRIFF, rot, (0.03, 0.13, 0.022), ORANGE, 0.01)
+    """Sechskantmutter am Armaturenfuß, verstellbarer Maulschlüssel mit glatten Backen an zwei ihrer Flächen.
+    Gibt den Griffpunkt der Faust zurück."""
+    # Wie im freigegebenen Hero um den Stiel zur Kamera gekippt, damit Kopf, Backen und Schnecke von vorne zu lesen
+    # sind (die Kamera steht knapp über der Platte und sähe den waagrechten Schlüssel nur als Kante)
+    quer = Vector((0, 0, 1)).cross(SCHLUESSEL_D).normalized()
+    zur_kamera = (KAMERA - MUTTER).normalized()
+    quer = max((Matrix.Rotation(math.radians(w), 3, SCHLUESSEL_D) @ quer for w in (SCHLUESSEL_KIPPUNG, -SCHLUESSEL_KIPPUNG)),
+               key=lambda q: q.cross(SCHLUESSEL_D).dot(zur_kamera))
+    sechskant('Mutter', MUTTER_R, 0.03, tuple(MUTTER), (0, 0, 1), quer, CHROM)
+    return maulschluessel(MUTTER, SCHLUESSEL_D, quer, MUTTER_R * math.cos(math.radians(30)), g=SCHLUESSEL_G)
 
 
 def werkzeugkiste():
@@ -110,13 +115,13 @@ def szene():
     kueche()
     armatur()
     werkzeugkiste()
-    schluessel()
+    griff = schluessel()
     figur('Fachkraft', becken=(0.0, 0.8, 0.9), richtung=15, beugung=34,
-          griffpunkt_r=tuple(SCHLUESSEL_GRIFF), griffradius_r=0.013, daumen_r=tuple(-SCHLUESSEL_D), pol_ellbogen_r=(-0.4, 0.7, 0.3),
+          griffpunkt_r=tuple(griff), griffradius_r=0.013, daumen_r=tuple(-SCHLUESSEL_D), pol_ellbogen_r=(-0.4, 0.7, 0.3),
           griffpunkt_l=tuple(AUSLAUF_GRIFF), griffradius_l=0.015, daumen_l=tuple(AUSLAUF_ACHSE), pol_ellbogen_l=(0.8, 0.35, 0.25),
           blick=(0.15, -0.5, 1.15), haut='mittel', haar='braun')
     return {
-        'kamera': (-0.335, -1.565, 1.04),
-        'blick': (0.15, 0.47, 1.305),
+        'kamera': tuple(KAMERA),
+        'blick': tuple(BLICK),
         'kegel': (0.3, 2.0, 1.2),
     }

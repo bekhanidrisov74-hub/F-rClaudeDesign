@@ -1,10 +1,11 @@
 """Bild 6 (Karte Haushaltsgeräte): Fachkraft kniet vor der Frontlader-Waschmaschine.
 
-Tür offen, Sockelblende abgenommen und an den Wäschekorb gelehnt. Die Fachkraft hält das herausgedrehte Flusensieb
-waagrecht in der linken Faust vor sich hoch und leuchtet es mit der Taschenlampe in der rechten aus: Flusen und eine
-Münze stecken im Siebkorb. Unten rechts an der Maschine die leere Sieböffnung, daneben fängt eine flache Schale auf
-dem Handtuch das Restwasser aus dem Notentleerungsschlauch auf. Halbnah: Kopf bis Knie füllen den 4 : 3-Zuschnitt
-(Karte Desktop), Gesicht, Hände, Sieb und Lampe liegen im mittleren Band für 16 : 9 (Handy).
+Tür offen, Sockelblende abgenommen und an den Wäschekorb gelehnt. Wie im korrigierten Bild
+(design/bilder-chatgpt/bild-6.png): Die Fachkraft hält das herausgedrehte, kurze Pumpensieb mit Schraubdeckel und
+Dichtung in der linken Faust vor sich hoch, die Taschenlampe in der rechten zeigt in die freie Pumpenöffnung unten
+rechts an der Maschine. Daneben fängt eine flache Schale auf dem Handtuch das Restwasser aus dem separaten
+Notentleerungsschlauch am festen Gehäuse auf. Die Kamera steht weiter zurück: Kopf bis Knie und die Pumpenöffnung
+liegen im 4 : 3-Zuschnitt (Karte Desktop), Gesicht, Hände, Sieb, Lampe und Öffnung im Band für 16 : 9 (Handy).
 """
 import math
 
@@ -18,10 +19,9 @@ GLAS = material(TIEFSEE, rauheit=0.05, glanz=0.9)
 GUMMI = material(mischung(KALK, 0.22, TIEFSEE2), rauheit=0.6, glanz=0.1)
 MATT = material(TIEFSEE2, rauheit=0.6, glanz=0.0)
 KORB = mischung(PETROL, 0.55, TIEFSEE2)
-FLUSEN = material(mischung(KALK, 0.55, TIEFSEE2), rauheit=0.95, glanz=0.0)
-MUENZE = material(mischung(ORANGE, 0.5, KALK), rauheit=0.35, metall=0.7, glanz=0.0)
 
-KAMERA, BLICK = Vector((-0.6, -2.9, 1.1)), Vector((0.0, -0.6, 0.88))
+BLICK = Vector((-0.05, -0.6, 0.66))
+KAMERA = BLICK + Vector((-0.6, -2.3, 0.34)) * 1.12        # zurückgesetzt, damit die Pumpenöffnung im Bild bleibt
 MX, FY, H = -0.45, 0.0, 0.85                      # Maschine: Mitte x, Vorderseite y, Höhe (0,6 × 0,6 × 0,85 m)
 SOCKEL = 0.13                                     # Höhe der abgenommenen Sockelblende
 SIEB = Vector((MX + 0.17, FY + 0.05, 0.066))      # Sieböffnung unten rechts
@@ -31,11 +31,11 @@ TUCH = 0.012                                      # Handtuchdicke
 
 # Fachkraft: kniet rechts vor der Maschine auf beiden Knien, Zehen aufgestellt, zur Kamera und etwas nach links gedreht.
 # Hände in Körperlage (vor, links, hoch ab Becken): links das Sieb waagrecht wie am Lenker (Handrücken oben, Sieb ragt
-# am Daumen zur Körpermitte), rechts darunter die Lampe, leuchtet schräg von unten in den Siebkorb.
+# am Daumen zur Körpermitte), rechts tiefer die Lampe, zeigt schräg hinab in die Pumpenöffnung.
 BECKEN, RICHTUNG, BEUGUNG = Vector((0.2, -0.4, 0.42)), -35.0, 15.0
 KNIE_Z = 0.095                                    # Kniemitte über dem Boden
 SIEB_LAGE = (0.58, 0.19, 0.5)
-LAMPE_LAGE, LAMPE_RICHTUNG = (0.62, -0.21, 0.32), (-0.2, 0.65, 0.73)
+LAMPE_LAGE = (0.15, -0.25, 0.05)                   # neben der rechten Hüfte, nah an der Maschine
 
 
 def koerper():
@@ -234,34 +234,28 @@ def taschenlampe(mitte, a):
     return ob
 
 
-def flusensieb(mitte, a, g=1.2):
-    """Herausgedrehtes Sieb waagrecht in der Faust: Griffzapfen quer durch die Faust (mitte, Achse a), die Kappe sitzt
-    am Daumen, dahinter der Siebkorb mit Flusen und einer Münze. g vergrößert das Sieb etwas über die echte Größe,
-    damit es neben den kräftigen Händen lesbar bleibt. Gibt die Mitte des Siebkorbs zurück."""
+def pumpensieb(mitte, a, g=1.2):
+    """Herausgedrehtes Pumpensieb waagrecht in der Faust: Griffsteg des Schraubdeckels quer durch die Faust (mitte,
+    Achse a), am Daumen der Deckel mit Gewinde und dunkler Dichtung, dahinter der kurze Siebkorb mit Schlitzen.
+    g vergrößert das Sieb etwas über die echte Größe, damit es neben den kräftigen Händen lesbar bleibt."""
     rohr('Siebgriff', [tuple(mitte - a * 0.062), tuple(mitte + a * 0.06)], 0.013, KALK)
     walze_achse('Griffende', 0.017, 0.012, KALK, 0.004, mitte - a * 0.062, a)
-    kappe = mitte + a * 0.06
-    walze_achse('Siebkappe', 0.05 * g, 0.026 * g, KALK, 0.01, kappe + a * 0.013 * g, a)
-    unten = kappe + a * 0.026 * g                 # Unterkante der Kappe, dort beginnt der Siebkorb
-    walze_achse('Siebkorb', 0.033 * g, 0.115 * g, KALK, 0.008, unten + a * 0.0575 * g, a)
-    walze_achse('Siebspitze', 0.022 * g, 0.02 * g, KALK, 0.006, unten + a * 0.122 * g, a)
-    for i, t in enumerate((0.028, 0.068, 0.108)):
-        ring(f'Siebrippe{i}', unten + a * t * g, a, 0.0335 * g, 0.0335 * g, 0.0045 * g, ORANGE)
+    deckel = mitte + a * 0.06
+    walze_achse('Schraubdeckel', 0.05 * g, 0.024 * g, KALK, 0.01, deckel + a * 0.012 * g, a)
+    ring('Deckelgriffrand', deckel + a * 0.004 * g, a, 0.05 * g, 0.05 * g, 0.004 * g, ORANGE)
+    walze_achse('Gewinde', 0.04 * g, 0.014 * g, KALK, 0.003, deckel + a * 0.031 * g, a)
+    ring('Dichtung', deckel + a * 0.026 * g, a, 0.041 * g, 0.041 * g, 0.0055 * g, TIEFSEE2)
+    unten = deckel + a * 0.038 * g                # Ende des Gewindes, dort beginnt der Siebkorb
+    walze_achse('Siebkorb', 0.033 * g, 0.07 * g, KALK, 0.008, unten + a * 0.035 * g, a)
+    walze_achse('Siebboden', 0.024 * g, 0.012 * g, KALK, 0.005, unten + a * 0.074 * g, a)
+    ring('Siebrippe', unten + a * 0.035 * g, a, 0.0335 * g, 0.0335 * g, 0.0045 * g, KALK)
     zur_kamera = KAMERA - mitte
     q = (zur_kamera - a * zur_kamera.dot(a)).normalized()
     for i in range(8):
         s = Matrix.Rotation(math.radians(22.5 + 45 * i), 3, a) @ q
-        rohr(f'Siebschlitz{i}', [tuple(unten + (a * 0.035 + s * 0.032) * g), tuple(unten + (a * 0.101 + s * 0.032) * g)],
-             0.0045 * g, TIEFSEE2)
-    seite = a.cross(q)
-    for i, (t, w, r) in enumerate(((0.036, 0.75, 0.014), (0.052, 0.3, 0.017), (0.068, 0.85, 0.012), (0.084, 0.55, 0.015),
-                                   (0.1, 1.0, 0.011))):
-        n = q * math.cos(w) + seite * math.sin(w)  # flach auf dem Siebkorb, zur Kamera
-        ellipsoid(f'Flusen{i}', unten + (a * t + n * 0.033) * g, Matrix((a, n.cross(a), n)).transposed(),
-                  (r * 1.3 * g, r * g, r * 0.55 * g), FLUSEN, 24)
-    m = q * math.cos(-0.4) + seite * math.sin(-0.4)  # Münze vorne unten zwischen zwei Rippen, frei sichtbar
-    walze_achse('Muenze', 0.016 * g, 0.004 * g, MUENZE, 0.0015, unten + (a * 0.088 + m * 0.036) * g, m)
-    return unten + a * 0.06 * g
+        for t0, t1 in ((0.008, 0.03), (0.04, 0.062)):
+            rohr(f'Siebschlitz{i}{t0}', [tuple(unten + (a * t0 + s * 0.032) * g), tuple(unten + (a * t1 + s * 0.032) * g)],
+                 0.0042 * g, TIEFSEE2)
 
 
 def schraubendreher(mitte, winkel):
@@ -322,16 +316,18 @@ def szene():
     vorne, links = koerper()
     sieb_griff, sieb_a = ort(*SIEB_LAGE), -links
     lampe_griff = ort(*LAMPE_LAGE)
-    lampe_a = (vorne * LAMPE_RICHTUNG[0] + links * LAMPE_RICHTUNG[1] + Vector((0, 0, LAMPE_RICHTUNG[2]))).normalized()
-    ellbogen = tuple(vorne * -0.3 - Vector((0, 0, 1)))  # Ellbogen unter dem Unterarm: beide Unterarme zeigen nach vorne
+    lampe_a = (SIEB - lampe_griff).normalized()          # Lampe zeigt in die Pumpenöffnung
+    ellbogen = tuple(vorne * -0.3 - Vector((0, 0, 1)))  # Ellbogen unter dem Unterarm: der linke Unterarm zeigt nach vorne
+    # Rechter Ellbogen nach hinten außen: So steht die Faustachse (und mit ihr die Lampe) schräg hinab zur Pumpenöffnung
+    ellbogen_r = tuple(-links * 0.5 - vorne * 0.6)
     teile = figur('Fachkraft', becken=tuple(BECKEN), richtung=RICHTUNG, beugung=BEUGUNG,
                   griffpunkt_l=tuple(sieb_griff), daumen_l=tuple(sieb_a), griffpunkt_r=tuple(lampe_griff), daumen_r=tuple(lampe_a),
                   griffradius_l=0.013, griffradius_r=0.014,
                   fuss_l=tuple(kniend(1)), fuss_r=tuple(kniend(-1)), zehen_l=True, zehen_r=True,
-                  pol_knie_l=tuple(vorne), pol_knie_r=tuple(vorne), pol_ellbogen_l=ellbogen, pol_ellbogen_r=ellbogen,
+                  pol_knie_l=tuple(vorne), pol_knie_r=tuple(vorne), pol_ellbogen_l=ellbogen, pol_ellbogen_r=ellbogen_r,
                   blick=tuple(sieb_griff + sieb_a * 0.16 + Vector((0, 0, 0.06))), haut='mittel', haar='dunkel', kappe=None,
                   uhr=False)
-    flusensieb(sieb_griff, faustachse(teile, 1, sieb_a))
+    pumpensieb(sieb_griff, faustachse(teile, 1, sieb_a))
     nur_aufs_motiv(taschenlampe(lampe_griff, faustachse(teile, -1, lampe_a)))
     return {
         'kamera': tuple(KAMERA),
