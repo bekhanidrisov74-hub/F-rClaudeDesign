@@ -31,4 +31,4 @@ Die Texte unten gehören nicht auf die Website.
 | 5 | Karte Elektro | Fachkraft mit orangen Handschuhen hält den Spannungsprüfer an eine Klemme im geöffneten Sicherungskasten, ein ausgelöster Hebel in Orange; die andere Hand am Kastenrahmen; Kabelrolle am Boden | Kasten, Prüfer, Hände und Gesicht |
 | 6 | Karte Haushaltsgeräte | Fachkraft kniet vor der Frontlader-Waschmaschine und prüft das herausgedrehte Flusensieb, die Taschenlampe in der anderen Hand; Werkzeugkiste daneben | Maschine, Sieb, Lampe, Hände und Gesicht |
 
-Seitenverhältnisse im Layout: Hero-Fläche Desktop füllt die rechte Spalte (mind. 640 px hoch), Handy 300 px hoch bzw. ab 600 px 2 : 1; Karten 4 : 3 (Handy 16 : 9). Die Lage im Hero steuert `object-position` in `Hero.tsx`.
+Seitenverhältnisse im Layout: Hero-Fläche Desktop füllt die rechte Spalte (mind. 640 px hoch), unter 920 px mindestens 300 px hoch, darüber 62 % der Breite; Karten 4 : 3 (Handy 16 : 9). Die Lage im Hero steuert `object-position` in `Hero.tsx`.
