@@ -1,6 +1,6 @@
 import { Button } from '../../components/ui/Button'
 import { CallButton } from '../../components/ui/CallButton'
-import { Icon } from '../../components/ui/Icon'
+import { Symbol3D } from '../../components/ui/Symbol3D'
 import { copy } from '../../content/copy'
 
 export interface SendefehlerProps {
@@ -20,7 +20,7 @@ export function Sendefehler({ sendend, onErneut }: SendefehlerProps) {
   return (
     <div role="alert" className="flex flex-col gap-s3 rounded-card border-2 border-tiefsee bg-weiss p-s4">
       <div className="flex items-start gap-s3">
-        <Icon name="ui-warnung" className="size-[28px] text-tiefsee" />
+        <Symbol3D name="ui-warnung" className="size-[28px]" />
         <div className="flex min-w-0 flex-col gap-s2">
           <h2 className="font-display text-h3 dialog:text-h4">{t.titel}</h2>
           <p className="text-small">{t.text}</p>

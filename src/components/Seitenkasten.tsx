@@ -2,7 +2,7 @@ import { whatsappHref } from '../content/contact'
 import { copy } from '../content/copy'
 import { Button } from './ui/Button'
 import { CallButton } from './ui/CallButton'
-import { Icon } from './ui/Icon'
+import { Symbol3D } from './ui/Symbol3D'
 
 const t = copy.anfrage.seitenkasten
 
@@ -23,7 +23,7 @@ export function Seitenkasten() {
       <CallButton variante="karte" nummer className="max-nav:hidden" />
       <CallButton variante="block" className="nav:hidden" />
       <Button art="dunkel" href={whatsappHref} className="min-h-[54px] w-full px-s2 text-body">
-        <Icon name="ui-chat" className="size-[20px] nav:size-[22px]" />
+        <Symbol3D name="ui-chat" hell className="size-[20px] nav:size-[22px]" />
         <span>{t.whatsapp}</span>
       </Button>
       <p className="text-note text-nebel">{t.hinweis}</p>

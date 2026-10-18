@@ -401,7 +401,8 @@ test.describe('KI-Erfassung', () => {
     await antworteLuna(page, 'Bei mir ist es seit gestern eiskalt, was kostet das?')
     const c = chat(page)
     await expect(c.getByText(antwort, { exact: true })).toBeVisible()
-    await expect(c.locator('img')).toHaveCount(0)
+    // Kein eingeschleustes Bild; die 3D-Symbole (Anrufen, Senden) kommen aus /icons/
+    await expect(c.locator('img:not([src^="/icons/"])')).toHaveCount(0)
     expect(await page.evaluate(() => (window as { angriff?: number }).angriff)).toBeUndefined()
     await expect(c).toContainText('Geht es um die Heizung, das Warmwasser oder die Klimaanlage?')
   })

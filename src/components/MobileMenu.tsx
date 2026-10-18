@@ -5,6 +5,7 @@ import { useOverlays } from '../overlays'
 import { Button } from './ui/Button'
 import { CallButton } from './ui/CallButton'
 import { Icon } from './ui/Icon'
+import { Symbol3D } from './ui/Symbol3D'
 
 // Wie --breakpoint-nav in app.css (920 px): ab hier gibt es keinen Menü-Knopf mehr.
 const AB_NAV = '(min-width: 57.5rem)'
@@ -92,7 +93,7 @@ function OffenesMenue({ aufStartseite }: { aufStartseite: boolean }) {
           <p className="m-0 font-display text-h5 font-[750] [font-stretch:100%]">{copy.menue.kontaktTitel}</p>
           <CallButton variante="karte" nummer className="w-full" />
           <Button art="dunkel" href={whatsappHref} className="min-h-[52px] w-full rounded-btn-lg text-btn">
-            <Icon name="ui-chat" className="size-[20px]" />
+            <Symbol3D name="ui-chat" hell className="size-[20px]" />
             <span>{copy.menue.whatsapp}</span>
           </Button>
         </div>

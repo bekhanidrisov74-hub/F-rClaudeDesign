@@ -4,7 +4,7 @@ Diese Punkte sind entschieden und gelten **nicht** als Abweichung. Quelle: PLAN.
 
 ## Immer
 
-- Bildflächen zeigen die echten Fotos (siehe „Bilder und Icons“), **ohne** Text. Die Bildbrief-Texte, „Bild N: …“ und die Marke „Platzhalter“ aus den Entwürfen erscheinen nie auf der Website.
+- Bildflächen zeigen 3D-Szenen statt der Platzhalter (siehe „Bilder und Icons“), **ohne** Text. Die Bildbrief-Texte, „Bild N: …“ und die Marke „Platzhalter“ aus den Entwürfen erscheinen nie auf der Website.
 - Die Wortmarke „fixit247“ steht in Bricolage 800, nicht 900.
 - Schriftgrößen, Radien, Abstände und Schatten kommen nur aus `src/styles/tokens.css`. Halbe Pixel aus den Entwürfen (13,5 / 14,5 / 15,5 px) sind auf die nächste Token-Stufe gerundet, ebenso Abstände (10/14/18/20/22 px) auf die `--fx-s-*`-Stufen. Unterschiede bis 2 px bei Schriftgrößen und bis 4 px bei Abständen sind deshalb gewollt.
 - Telefonnummer, WhatsApp, E-Mail, Firmenname und Domain zeigen die Klammer-Platzhalter wie in den Entwürfen.
@@ -110,9 +110,10 @@ Beide Änderungen sind bewusst und stehen nicht im Entwurf:
 
 ## Bilder und Icons
 
-- Bildflächen zeigen die echten Fotos (`public/images/bild-1` bis `bild-6`): sehr dunkler Rand in Tiefsee, türkise Lichtmitte, ein oranger Akzent pro Bild. Die Farben sind mit `scripts/prepare-images.mjs` an die Tokens angeglichen. Zu prüfen ist nur, dass das Motiv vollständig sichtbar ist und die Schnellwahl das Hero-Motiv nicht überdeckt.
+- Bildflächen zeigen 3D-Szenen aus Blender (`public/images/bild-1` bis `bild-6`, `design/IMAGE-BRIEFS.md`): eine stilisierte Fachkraft arbeitet an der Schadstelle ihres Gewerks, dunkles Tiefsee-Studio, gedämpfter türkiser Kegel hinter der Figur, orange Akzente. Völlig andere Motive als in den Entwürfen, gewollt. Zu prüfen sind nur: Gesicht, Hände und Werkzeug vollständig sichtbar, nichts Wichtiges abgeschnitten, und die Schnellwahl überdeckt das Hero-Motiv nicht.
 - Zuschnitt: Karten unter 920 px 16 : 9, ab 920 px 4 : 3. Hero-Streifen unter 920 px mindestens 300 px hoch, ab 600 px halb so hoch wie breit (2 : 1). Ab 920 px füllt Bild 1 die rechte Spalte.
-- Alle Icons in `design/icons/*.svg` sind neu gezeichnet. Form und Rundung weichen leicht von den Entwurfs-Icons ab. Farben und Platz müssen stimmen: Bedien-Icons in der Textfarbe der Umgebung, Luna-Mond auf Tiefsee. X, Chevrons und Häkchen sind etwas größer als im Entwurf.
+- Alle Icons in `design/icons/*.svg` sind neu gezeichnet. Form und Rundung weichen leicht von den Entwurfs-Icons ab. Farben und Platz müssen stimmen: Steuer- und Feldzeichen in der Textfarbe der Umgebung, Luna-Mond auf Tiefsee. X, Chevrons und Häkchen sind etwas größer als im Entwurf.
+- Die Symbole (Telefon in allen Anruf-Knöpfen, Chat, Formular, Senden, Vertrauensleiste, Zusagen, Preisrechner, Fuß, Luna, Erfolgs- und Fehlerkarten) sind farbige 3D-Renders statt flacher Icons (SPEC 3): Körper Tiefsee auf hellen und türkisen Flächen, Türkis auf dunklen, Warnung Orange. Form und Farbe weichen deshalb vom Entwurf ab. Zu prüfen sind nur: gleiche Größe und Lage wie vorher, gut erkennbar, und der Anruf-Knopf bleibt das auffälligste Element.
 - Die Gewerke-Icons in Schnellwahl und Preisübersicht sind farbige 3D-Renders statt flacher Piktogramme (SPEC 3, freigegeben am 17.10.2026). Motive: Wasserhahn mit Tropfen, Heizkörper mit Thermostat, Schlüssel vor einem Türschild, Steckdose und Waschmaschine. Sie sind größer als im Entwurf: in der Schnellwahl 56 px (Handy) bzw. 64 px (ab 920 px) statt 41/47 px, in der Preisübersicht 40 px statt 32 px. Zu prüfen sind nur: Hauptfarbe Petrol bzw. Orange, keine Fläche dahinter, Motiv nicht abgeschnitten und der Abstand zum Kacheltitel.
 
 ## Glanz (Branch `glanz`, docs/glanz/BRIEF.md)

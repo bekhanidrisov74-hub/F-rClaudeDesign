@@ -1,6 +1,6 @@
 import type { ReactNode, Ref } from 'react'
 import { Chip } from '../components/ui/Chip'
-import { Icon } from '../components/ui/Icon'
+import { Symbol3D } from '../components/ui/Symbol3D'
 import { Loader } from '../components/ui/Loader'
 import { AUFTRAG_AUFGEGEBEN, copy } from '../content/copy'
 import { Erfolg } from './cards/Erfolg'
@@ -23,7 +23,7 @@ function Blase({ von, children }: { von: Nachricht['von']; children: ReactNode }
     return (
       // Notruf-Hinweis (Aufgabe, EMERGENCY): wird sofort vorgelesen, der Ablauf läuft danach weiter.
       <div role="alert" className={`${BLASE} ${VON.notruf} flex items-start gap-s2`}>
-        <Icon name="ui-warnung" className="mt-px size-[22px] shrink-0" />
+        <Symbol3D name="ui-warnung" className="mt-px size-[22px]" />
         <span>{children}</span>
       </div>
     )

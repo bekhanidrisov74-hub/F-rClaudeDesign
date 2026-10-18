@@ -59,10 +59,14 @@ Dazu kommen schwebend: der Luna-Knopf und der Anstupser. Als Überlagerungen gib
   - Die Hauptfarbe entspricht `kategorie` in den Daten: Technik (Heizung & Klima, Elektro, Haushaltsgeräte) in `--fx-icon-technik`, Handwerk (Installateur, Schlüsseldienst) in `--fx-icon-handwerk`. Sie ist im Render festgelegt; ein e2e-Test gleicht sie mit `kategorie` ab.
   - Akzente nur in `--fx-tiefsee` (Öffnungen, Füße), `--fx-tuerkis` (Wasser, Anzeige) und `--fx-weiss` (Bedienteile). Weiß liegt immer innerhalb der Form, nie am Umriss, damit das Icon auf weißen Kacheln nicht ausfranst.
   - Größe: Schnellwahl 56 px (Handy), ab 920 px 64 px; Preisübersicht 40 px.
-  - Auf der Seite als AVIF und WebP in doppelter Anzeigegröße (80, 112 und 128 px) aus `public/icons/`. Neu rendern mit `scripts/render-icons-3d.py` (Blender 5.2, headless), danach exportiert `scripts/icons-3d.mjs` die Dateien und das Kontaktblatt `ICON-3D-KONTAKTBLATT.png`.
-- **Bedien-Icons:** `icons/ui-*.svg`, gefüllt, `currentColor`. Ein Icon steht nie allein: immer mit Text oder `aria-label`. Dekorative Icons bekommen `aria-hidden="true"`.
+  - Auf der Seite als AVIF und WebP in doppelter Anzeigegröße (80, 112 und 128 px) aus `public/icons/`. Neu rendern mit `scripts/render-icons-3d.py` (Blender 5.2, headless), danach exportiert `scripts/export-3d.mjs` die Dateien und das Kontaktblatt `ICON-3D-KONTAKTBLATT.png`.
+- **Symbole** (Telefon, Chat, Formular, Senden, Region, Uhr, Richtpreis, Vermittlung, Info, Häkchen, Warnung): 3D-Renders im Stil der Gewerke-Icons (`icons-3d/ui-*.png`, Komponente `Symbol3D`), dieselbe Kamera und dasselbe Licht, mittig im Bild.
+  - Ein Bild erbt keine Textfarbe, darum zwei Farbstellungen: Körper Tiefsee auf hellen und türkisen Flächen (Anruf-Knopf, weiße Karten, Kalk-Kacheln), Körper Türkis (`-hell`) auf dunklen Flächen (Fuß, Kreis im großen Anruf-Knopf, dunkle Knöpfe und Karten). Details in Weiß; die Warnung bleibt Orange mit Tiefsee.
+  - Größe wie bisher an jeder Stelle; Dateien 96 px (AVIF/WebP) aus `public/icons/`, gerendert mit `scripts/render-icons-3d.py`, exportiert mit `scripts/export-3d.mjs` (Kontaktblatt `SYMBOLE-3D-KONTAKTBLATT.png`).
+  - Ein Symbol steht nie allein: immer mit Text oder `aria-label`. Dekorativ mit `alt=""`.
+- **Steuer- und Feldzeichen** (X, Pfeile, Plus/Minus, Menü; Häkchen in Checkbox und Chip; Warnung an Feldfehlern): `icons/ui-*.svg`, gefüllt, `currentColor`, `aria-hidden="true"`. Sie bleiben flach, damit sie in jeder Größe scharf und in der Farbe ihrer Umgebung sind.
 - **WhatsApp:** die Sprechblase ist ein Platzhalter. Live das offizielle Logo nach den Markenrichtlinien von Meta verwenden.
-- **Bildflächen:** Türkisblau, bis die Bilder da sind (`IMAGE-BRIEFS.md`). Die Bildbrief-Texte aus den Entwürfen erscheinen nicht auf der Website.
+- **Bilder 1–6:** 3D-Szenen aus Blender nach `IMAGE-BRIEFS.md`: Fachleute bei der Arbeit im dunklen Tiefsee-Studio. Solange ein Bild lädt, bleibt die Fläche Türkisblau. Die Bildbrief-Texte aus den Entwürfen erscheinen nicht auf der Website.
 
 ## 4. Responsiv
 
@@ -261,3 +265,6 @@ Am Desktop gelten dieselben Zustände im Fenster (Screen 11 und 12). Im Fenster 
 | Endpunkt für Anfragen | lokaler Ersatz | URL für `VITE_LEAD_ENDPOINT` |
 | Sicherheitstipps in Luna | Vorschlag aus Abschnitt 8 | prüfen |
 | Luna-Kasten in der Schnellwahl neben den 3D-Icons | 46/52 px wie im Entwurf, die Gewerke-Icons sind 56/64 px (SPEC 3) | mitwachsen auf 56/64 px? |
+| Gesichter der Figuren in den Bildern | freundlich: glänzende Augen, Brauen, Nase, leichtes Lächeln | so lassen oder schlichter? |
+| Hauttöne der Figuren | vier Mischungen aus Orange, Weiß und Tiefsee (`figur.py`, `IMAGE-BRIEFS.md`), über die Bilder verteilt | Auswahl passend? |
+| Welche Zeichen 3D werden | alle bildhaften Symbole; Steuer- und Feldzeichen bleiben SVG (SPEC 3) | auch X, Pfeile, Plus/Minus als 3D? |

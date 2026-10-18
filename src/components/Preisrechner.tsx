@@ -17,6 +17,7 @@ import { Button } from './ui/Button'
 import { CallButton } from './ui/CallButton'
 import { Chip } from './ui/Chip'
 import { Icon } from './ui/Icon'
+import { Symbol3D } from './ui/Symbol3D'
 
 const START_GEWERK = (gewerke.find((g) => g.id === 'installateur') ?? gewerke[0]).id
 
@@ -131,7 +132,7 @@ function EinsatzHinweis() {
         aria-hidden="true"
         className="flex size-[40px] shrink-0 items-center justify-center rounded-icon bg-tuerkis text-tiefsee"
       >
-        <Icon name="ui-richtpreis" className="size-[24px]" />
+        <Symbol3D name="ui-richtpreis" className="size-[24px]" />
       </span>
       <div className="flex min-w-0 flex-col gap-s1">
         <p className="font-display text-h5 font-[750] [font-stretch:100%]">{copy.rechner.einsatz.titel}</p>
@@ -147,7 +148,7 @@ function ZuschlagHinweis({ gewaehlt }: { gewaehlt: string[] }) {
   const text = gewaehlt.length > 2 ? copy.rechner.hinweisAlle : copy.rechner.hinweisMehrere
   return (
     <div className="rahmen flex items-start gap-s3 rounded-btn border-tiefsee bg-weiss px-s4 py-s3">
-      <Icon name="ui-info" className="size-[24px]" />
+      <Symbol3D name="ui-info" className="size-[24px]" />
       <p className="min-w-0 text-text">
         <span className="font-bold">{copy.rechner.hinweisMehrereFett}</span> {fuelle(text, { namen: aufzaehlung(gewaehlt) })}
       </p>

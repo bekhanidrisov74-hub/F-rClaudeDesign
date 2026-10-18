@@ -1,7 +1,7 @@
 import { copy, fuelle } from '../content/copy'
 import { EMAIL, FIRMA, TELEFON, WHATSAPP, mailHref, telHref, whatsappHref } from '../content/contact'
 import { Globus } from './ui/Globus'
-import { Icon } from './ui/Icon'
+import { Symbol3D } from './ui/Symbol3D'
 
 // Links: sichtbar so dicht wie im Entwurf, die Trefferfläche ist 44 px hoch
 // (die Kästen überlappen dafür je 4 px, deshalb -my-s1).
@@ -24,7 +24,7 @@ export function Footer() {
           <div className="flex flex-col gap-s4">
             <span className="flex items-center gap-s3">
               <span className="flex size-s7 shrink-0 items-center justify-center rounded-pill bg-tiefsee-2 text-tuerkis">
-                <Icon name="ui-rund-um-die-uhr" className="size-s5" />
+                <Symbol3D name="ui-rund-um-die-uhr" hell trage className="size-s5" />
               </span>
               <span className="font-display text-logo-fuss font-extrabold tracking-[-0.035em] [font-stretch:100%]">
                 {copy.kopf.logo}
@@ -59,7 +59,7 @@ export function Footer() {
               <ul className={LISTE}>
                 <li className="flex">
                   <a href={telHref} className={LINK}>
-                    <Icon name="ui-anrufen" className={KONTAKT_ICON} />
+                    <Symbol3D name="ui-anrufen" hell trage className={KONTAKT_ICON} />
                     <span className="nav:hidden">{TELEFON}</span>
                     <span className="max-nav:hidden">
                       {fuss.telefon} {TELEFON}
@@ -68,7 +68,7 @@ export function Footer() {
                 </li>
                 <li className="flex">
                   <a href={whatsappHref} className={LINK}>
-                    <Icon name="ui-chat" className={KONTAKT_ICON} />
+                    <Symbol3D name="ui-chat" hell trage className={KONTAKT_ICON} />
                     <span className="nav:hidden">{fuss.whatsapp}</span>
                     <span className="max-nav:hidden">
                       {fuss.whatsapp} {WHATSAPP}
@@ -77,7 +77,7 @@ export function Footer() {
                 </li>
                 <li className="flex">
                   <a href={mailHref} className={LINK}>
-                    <Icon name="ui-senden" className={KONTAKT_ICON} />
+                    <Symbol3D name="ui-senden" hell trage className={KONTAKT_ICON} />
                     {EMAIL}
                   </a>
                 </li>

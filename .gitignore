@@ -11,3 +11,6 @@ fixit247-konfig.php
 fixit247-daten/
 *.log
 .claude/worktrees/
+
+# Python-Bytecode der Blender-Skripte
+__pycache__/

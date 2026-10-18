@@ -4,7 +4,7 @@ import { gewerke, zahlwort } from '../content/gewerke'
 import { Hilfekarte } from './Hilfekarte'
 import { LeistungKarte } from './LeistungKarte'
 import { Button } from './ui/Button'
-import { Icon } from './ui/Icon'
+import { Symbol3D } from './ui/Symbol3D'
 
 export function Leistungen() {
   const { oeffnePreise } = useOverlays()
@@ -25,7 +25,7 @@ export function Leistungen() {
             onClick={(e) => oeffnePreise(e.currentTarget)}
             className="min-h-[50px] w-full px-s4 text-btn nav:min-h-[48px] nav:w-auto"
           >
-            <Icon name="ui-richtpreis" className="size-[20px]" />
+            <Symbol3D name="ui-richtpreis" className="size-[20px]" />
             <span>{copy.leistungen.ueberblick}</span>
           </Button>
         </div>

@@ -6,6 +6,7 @@ import { WEISS_NICHT_ID, formularZuLead, pruefeFeld, pruefeFormular, type Formul
 import { Button } from './ui/Button'
 import { CallButton } from './ui/CallButton'
 import { Icon } from './ui/Icon'
+import { Symbol3D } from './ui/Symbol3D'
 
 const t = copy.anfrage
 const GEWERK_IDS = gewerke.map((g) => g.id)
@@ -277,7 +278,7 @@ export function AnfrageFormular() {
       {status === 'sendefehler' && (
         <div role="alert" className="col-span-full flex flex-col gap-s3 rounded-card border-2 border-tiefsee bg-weiss p-s4">
           <div className="flex items-start gap-s3">
-            <Icon name="ui-warnung" className="size-[28px] text-tiefsee" />
+            <Symbol3D name="ui-warnung" className="size-[28px]" />
             <div className="flex min-w-0 flex-col gap-s2">
               <h3 className="font-display text-h3 dialog:text-h4">{t.sendefehler.titel}</h3>
               <p className="text-small">{t.sendefehler.text}</p>
@@ -317,7 +318,7 @@ function Erfolg({ danke }: { danke: Danke }) {
     <div className="flex min-w-0 flex-col gap-s4 rounded-card-lg border border-linie bg-weiss px-s4 py-s5 dialog:p-s6">
       <div className="flex flex-col gap-s3 dialog:flex-row dialog:items-center dialog:gap-s4">
         <div className="flex size-[52px] shrink-0 items-center justify-center rounded-pill bg-tiefsee text-weiss">
-          <Icon name="ui-haekchen" className="size-[28px]" />
+          <Symbol3D name="ui-haekchen" hell className="size-[28px]" />
         </div>
         <h3 ref={titel} tabIndex={-1} className="font-display text-h3-karte dialog:text-h3">
           {danke.match === 'FOUND' ? t.erfolg.titel : t.erfolg.keinerTitel}

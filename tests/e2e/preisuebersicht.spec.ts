@@ -90,7 +90,7 @@ test('Auslöser im Rechner öffnet ebenfalls', async ({ page }) => {
 test('Gewerke-Icons: 40 px, als AVIF in doppelter Größe geladen', async ({ page }) => {
   await page.goto('/')
   await oeffnePreisuebersicht(page)
-  const icons = preisDialog(page).locator('img:visible')
+  const icons = preisDialog(page).locator('img[src*="/icons/gewerk-"]:visible')
   await expect(icons).toHaveCount(gewerke.length)
   for (const [i, icon] of (await icons.all()).entries()) {
     await expect.poll(() => icon.evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth > 0)).toBe(true)

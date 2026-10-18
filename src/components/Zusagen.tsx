@@ -1,5 +1,5 @@
 import { copy } from '../content/copy'
-import { Icon } from './ui/Icon'
+import { Symbol3D } from './ui/Symbol3D'
 import { Wirbelflaeche } from './ui/Wirbelflaeche'
 
 /** Spalten des Bento-Rasters ab 920 px: Handy untereinander. dunkel = Tiefsee-Fläche; groß = mit Wirbel. */
@@ -29,7 +29,7 @@ function ZusageKarte({ index, gross, dunkel }: { index: number; gross: boolean; 
             dunkel ? 'bg-tiefsee text-tuerkis' : 'bg-kalk text-icon-technik'
           }`}
         >
-          <Icon name={karte.icon} className="size-s6" />
+          <Symbol3D name={karte.icon} hell={dunkel} trage className="size-s6" />
         </span>
       </div>
     </li>

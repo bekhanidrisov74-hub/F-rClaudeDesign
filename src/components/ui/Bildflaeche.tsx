@@ -2,8 +2,10 @@
 export function Bildflaeche({ bild, className = '' }: { bild: number; className?: string }) {
   const hero = bild === 1
   const sizes = hero
-    ? '(min-width: 1440px) calc(50vw - 50px), (min-width: 920px) 50vw, 100vw'
-    : '(min-width: 1200px) 365px, (min-width: 920px) 33vw, 100vw'
+    // ab 920 px füllt das quadratische Bild die hohe Spalte (mind. 640 px hoch) per cover: Breite folgt der Höhe
+    ? '(min-width: 1440px) calc(50vw - 50px), (min-width: 920px) max(calc(100vw - 640px), 760px), 100vw'
+    // Karten wie das Raster in Leistungen.tsx: auto-fill ab 340 px, Abstand 24 px, Rand 16/24 px, Inhalt höchstens 1140 px
+    : '(min-width: 1188px) 364px, (min-width: 1116px) calc((100vw - 96px) / 3), (min-width: 752px) calc((100vw - 72px) / 2), (min-width: 640px) calc(100vw - 48px), calc(100vw - 32px)'
   const srcSet = (format: string) => [480, 800, 1200, 2400]
     .map(width => `/images/bild-${bild}${width === 2400 ? '' : `-${width}`}.${format} ${width}w`)
     .join(', ')

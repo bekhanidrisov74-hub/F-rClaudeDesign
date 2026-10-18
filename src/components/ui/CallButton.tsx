@@ -1,6 +1,6 @@
 import { TELEFON, telHref } from '../../content/contact'
 import { copy } from '../../content/copy'
-import { Icon } from './Icon'
+import { Symbol3D } from './Symbol3D'
 
 /**
  * Anruf-Knopf: überall Türkis mit Tiefsee-Schrift, als Pille, das auffälligste Element (SPEC 3).
@@ -28,7 +28,7 @@ export function CallButton({ variante, label, nummer = false, className = '' }: 
         href={telHref}
         className={`${BASIS} h-[44px] shrink-0 gap-s2 pr-s4 pl-s3 text-body leading-none whitespace-nowrap nav:h-[48px] nav:pr-s5 nav:pl-s4 ${className}`}
       >
-        <Icon name="ui-anrufen" className="size-[18px] nav:size-[20px]" />
+        <Symbol3D name="ui-anrufen" className="size-[18px] nav:size-[20px]" />
         <span>{label ?? copy.kopf.anrufen}</span>
         <span className="text-small font-semibold max-kopf:hidden">{TELEFON}</span>
       </a>
@@ -50,7 +50,7 @@ export function CallButton({ variante, label, nummer = false, className = '' }: 
             hero ? 'size-[50px] nav:size-[54px]' : 'size-[48px] nav:size-[50px]'
           }`}
         >
-          <Icon name="ui-anrufen" className={hero ? 'size-[24px] nav:size-[26px]' : 'size-[22px] nav:size-[24px]'} />
+          <Symbol3D name="ui-anrufen" hell className={hero ? 'size-[24px] nav:size-[26px]' : 'size-[22px] nav:size-[24px]'} />
         </span>
         <span className="flex flex-col gap-px">
           <span className={hero ? 'text-hero-call' : 'text-h4 leading-[1.1]'}>{label ?? copy.anruf.jetzt}</span>
@@ -62,7 +62,7 @@ export function CallButton({ variante, label, nummer = false, className = '' }: 
 
   return (
     <a href={telHref} className={`${BASIS} min-h-[56px] justify-center gap-s3 px-s4 text-btn-l ${className}`}>
-      <Icon name="ui-anrufen" className="size-[20px]" />
+      <Symbol3D name="ui-anrufen" className="size-[20px]" />
       <span>
         {label ?? copy.anruf.jetzt}
         {nummer && ` ${TELEFON}`}

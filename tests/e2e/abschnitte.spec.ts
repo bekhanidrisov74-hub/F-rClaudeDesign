@@ -161,3 +161,21 @@ test('Häufige Fragen: Tastatur öffnet, immer nur eine Antwort offen', async ({
   await expect(fragen.nth(1)).toHaveAttribute('open')
   await expect(fragen.nth(0)).not.toHaveAttribute('open')
 })
+
+test('Symbole: 3D-Renders in der Farbstellung ihrer Fläche, geladen und dekorativ', async ({ page }) => {
+  await page.goto('/')
+  // Die Farbstellung steckt im Dateinamen; src steht auch fest, bevor das träge geladene Bild da ist
+  const datei = (img: HTMLImageElement) => img.getAttribute('src')!.slice(img.getAttribute('src')!.lastIndexOf('/') + 1)
+  // Türkiser Anruf-Knopf im Kopf → Körper Tiefsee; Kreis Tiefsee im großen Anruf-Knopf → Körper Türkis (-hell)
+  expect(await page.locator('header a[href^="tel:"] img').first().evaluate(datei)).toBe('ui-anrufen-96.webp')
+  expect(await page.locator('#start a[href^="tel:"] img').first().evaluate(datei)).toBe('ui-anrufen-hell-96.webp')
+  for (const name of await page.locator('footer img[src*="/icons/ui-"]').evaluateAll((els) => els.map((el) => el.getAttribute('src'))))
+    expect(name).toMatch(/-hell-96\.webp$/)
+  const alle = page.locator('img[src*="/icons/ui-"]:visible')
+  expect(await alle.count()).toBeGreaterThan(10)
+  for (const img of await alle.all()) {
+    await img.scrollIntoViewIfNeeded()
+    await expect.poll(() => img.evaluate((el: HTMLImageElement) => el.complete && el.naturalWidth > 0)).toBe(true)
+    expect(await img.getAttribute('alt')).toBe('')
+  }
+})

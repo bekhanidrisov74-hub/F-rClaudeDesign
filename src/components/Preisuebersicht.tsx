@@ -101,7 +101,7 @@ export function Preisuebersicht({ aufStartseite = true }: { aufStartseite?: bool
               <tr key={g.id} className="border-t border-linie last:border-b">
                 <th scope="row" className="py-s3 text-left font-normal">
                   <span className="flex items-center gap-s3">
-                    <GewerkIcon gewerk={g} sizes="40px" className="size-[40px]" />
+                    <GewerkIcon gewerk={g} sizes="40px" trage className="size-[40px]" />
                     <span className="font-display text-body font-[750]">{g.name}</span>
                   </span>
                 </th>
@@ -118,7 +118,7 @@ export function Preisuebersicht({ aufStartseite = true }: { aufStartseite?: bool
         <ul className="border-t border-linie dialog:hidden">
           {gewerke.map((g) => (
             <li key={g.id} className="flex items-center gap-s3 border-b border-linie py-s2">
-              <GewerkIcon gewerk={g} sizes="40px" className="mr-s1 size-[40px]" />
+              <GewerkIcon gewerk={g} sizes="40px" trage className="mr-s1 size-[40px]" />
               <span className="flex min-w-0 flex-1 flex-col">
                 <span className="font-display text-text leading-tight font-[750]">{g.name}</span>
                 <span className="text-note text-schiefer">

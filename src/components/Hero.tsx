@@ -5,7 +5,7 @@ import { Bildflaeche } from './ui/Bildflaeche'
 import { Button } from './ui/Button'
 import { CallButton } from './ui/CallButton'
 import { GridPulse } from './ui/GridPulse'
-import { Icon } from './ui/Icon'
+import { Symbol3D } from './ui/Symbol3D'
 
 /**
  * Ab 920 px vier Spalten: Randabstand bis zum Inhalt (max. 1140 px breit), Text (höchstens 560 px),
@@ -41,11 +41,11 @@ export function Hero() {
             <CallButton variante="hero" nummer />
             <div className="grid grid-cols-2 gap-s3">
               <Button art="hell" href={whatsappHref} className={ZWEITKNOPF}>
-                <Icon name="ui-chat" className={ZWEITICON} />
+                <Symbol3D name="ui-chat" className={ZWEITICON} />
                 <span>{copy.hero.whatsapp}</span>
               </Button>
               <Button art="hell" href="#anfrage" className={ZWEITKNOPF}>
-                <Icon name="ui-formular" className={ZWEITICON} />
+                <Symbol3D name="ui-formular" className={ZWEITICON} />
                 <span>{copy.hero.anfrage}</span>
               </Button>
             </div>
@@ -60,10 +60,10 @@ export function Hero() {
         <Schnellwahl />
       </div>
 
-      {/* Handy: 300 px hoch, ab 600 px 2 : 1 (50vw), damit Düse und Wasserkrone im Streifen bleiben; Desktop: Krone in der schmalen Spalte halten */}
+      {/* Handy: 300 px hoch, ab 600 px 2 : 1 (50vw); der Streifen zeigt Kappe bis Tropfen (Bildhöhe 23–73 %). Desktop: Figur und Armatur in der Spalte */}
       <Bildflaeche
         bild={1}
-        className="tiefe h-[max(300px,50vw)] kopf:[&_img]:object-[50%_60%] nav:col-start-4 nav:row-start-1 nav:h-auto nav:min-h-[640px] nav:[&_img]:object-[75%_50%]"
+        className="tiefe h-[max(300px,50vw)] kopf:[&_img]:object-[50%_46%] nav:col-start-4 nav:row-start-1 nav:h-auto nav:min-h-[640px] nav:[&_img]:object-[50%_50%]"
       />
     </div>
   )

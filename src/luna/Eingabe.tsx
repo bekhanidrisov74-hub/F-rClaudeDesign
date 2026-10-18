@@ -1,5 +1,5 @@
 import type { FormEvent } from 'react'
-import { Icon } from '../components/ui/Icon'
+import { Symbol3D } from '../components/ui/Symbol3D'
 import { copy } from '../content/copy'
 
 const t = copy.luna.eingabe
@@ -41,7 +41,7 @@ export function Eingabe({ wert, onWert, onSenden, mitAuswahl, deaktiviert }: Pro
         disabled={deaktiviert}
         className="flex size-[48px] shrink-0 cursor-pointer items-center justify-center rounded-btn bg-tiefsee text-kalk disabled:cursor-default"
       >
-        <Icon name="ui-senden" className="size-[22px]" />
+        <Symbol3D name="ui-senden" hell className="size-[22px]" />
       </button>
     </form>
   )

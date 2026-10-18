@@ -3,6 +3,7 @@ import { telHref } from '../content/contact'
 import { copy, fuelle } from '../content/copy'
 import { useOverlays } from '../overlays'
 import { ANZAHL_SCHRITTE, fortschritt, type Zustand } from './flow'
+import { Symbol3D } from '../components/ui/Symbol3D'
 
 const t = copy.luna
 
@@ -36,7 +37,7 @@ export function Kopf() {
         href={telHref}
         className="ml-auto flex min-h-[44px] shrink-0 items-center gap-s2 rounded-pill bg-tuerkis pr-s4 pl-s3 font-display text-small font-extrabold text-tiefsee no-underline transition-colors hover:bg-tuerkis-tief selection:bg-tiefsee selection:text-tuerkis dialog:hidden"
       >
-        <Icon name="ui-anrufen" className="size-[16px]" />
+        <Symbol3D name="ui-anrufen" className="size-[16px]" />
         <span>{copy.kopf.anrufen}</span>
       </a>
       <button

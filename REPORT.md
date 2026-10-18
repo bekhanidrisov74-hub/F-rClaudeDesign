@@ -118,9 +118,9 @@ Bewusste Abweichungen vom Entwurf stehen in `tests/accepted-deviations.md`.
 | `[Impressum folgt]` | `src/content/copy.ts:322` | `/impressum` |
 | `[Datenschutzerklärung folgt]` | `src/content/copy.ts:323` | `/datenschutz` |
 | `[AGB folgen]` | `src/content/copy.ts:324` | `/agb` |
-| Bilder 1–6 | `src/components/ui/Bildflaeche.tsx` | Hero und Leistungskarten (türkisblaue Flächen) |
+| Bilder 1–6 | 3D-Szenen `design/bilder-3d/` (`scripts/render-bilder-3d.py`), eingebunden über `src/components/ui/Bildflaeche.tsx` | Hero und Leistungskarten |
 | Logo | Wortmarke im Kopf und Fuß, Favicon `public/favicon.svg` (Luna-Signet) | überall |
-| WhatsApp-Symbol | Sprechblase `design/icons/ui-chat.svg` | Hero, Seitenkasten, Menü |
+| WhatsApp-Symbol | 3D-Sprechblase `ui-chat` (`scripts/blender/symbole.py`, `Symbol3D`) | Hero, Seitenkasten, Menü, Fuß |
 
 Der Build meldet sie im Log (`scripts/prerender.mjs`), ebenso eine fehlende Domain und fehlende `VITE_FORM_ENDPOINT` und `VITE_CHAT_ENDPOINT`.
 

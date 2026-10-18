@@ -107,6 +107,8 @@ for (const z of ZUSTAENDE)
       // Kartenbilder laden verzögert; ohne das zeigt der Vollseiten-Screenshot leeres Türkis.
       await page.evaluate(() => Promise.all([...document.images].map((img) => { img.loading = 'eager'; return img.decode().catch(() => {}) })))
       await z.vorbereiten?.(page)
+      // Die Vorbereitung blendet Teile mit weiteren Bildern ein (z. B. das Info-Symbol im Rechner): auch diese dekodieren.
+      await page.evaluate(() => Promise.all([...document.images].map((img) => { img.loading = 'eager'; return img.decode().catch(() => {}) })))
       // Grundzustand fotografieren: der Zeiger bleibt sonst nach dem letzten Klick auf einem Knopf (Hover-Farbe).
       await page.mouse.move(0, 0)
       // Steht der Fuß-Globus schon im Bild, lädt er gerade; auf ihn warten statt auf das Timing zu hoffen.

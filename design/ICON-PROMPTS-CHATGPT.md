@@ -4,7 +4,7 @@ Diese Datei ist die Anleitung für neue Icons: Stilanker, ein fertiger Prompt pr
 
 Die Prompts sind auf Englisch, weil Bildmodelle Englisch am genauesten umsetzen.
 
-> **Seit 17.10.2026 sind die fünf Gewerke-Icons 3D-Renders** (SPEC 3). Sie entstehen headless in Blender mit `scripts/render-icons-3d.py`, und `scripts/icons-3d.mjs` exportiert sie. Die Gewerke-Prompts unten beschreiben nur noch die Motive; ein neues Gewerk bekommt eine eigene Motiv-Funktion im Skript. Nachgezeichnet werden nur noch Luna und die Bedien-Icons.
+> **Seit 17.10.2026 sind die fünf Gewerke-Icons 3D-Renders** (SPEC 3). Sie entstehen headless in Blender mit `scripts/render-icons-3d.py`, und `scripts/export-3d.mjs` exportiert sie. Die Gewerke-Prompts unten beschreiben nur noch die Motive; ein neues Gewerk bekommt eine eigene Motiv-Funktion im Skript. Auch die Symbole (Telefon, Chat, Formular …) sind 3D-Renders (`scripts/blender/symbole.py`). Nachgezeichnet werden nur noch Luna und die Steuer- und Feldzeichen.
 
 ## Was an den jetzigen Icons stört
 
@@ -27,7 +27,7 @@ Die Prompts sind auf Englisch, weil Bildmodelle Englisch am genauesten umsetzen.
 
 Der helle Ton ist genau 30 % der vollen Farbe auf Weiß. So entspricht das PNG dem, was die Seite später mit `opacity="0.3"` zeigt.
 
-**Empfehlung:** Nur die fünf Gewerke-Icons neu erzeugen. Sie sieht man groß (Schnellwahl, Preisübersicht). Die Bedien-Icons (`ui-*`) sind klein, funktional und als SVG scharf; sie bleiben, wie sie sind. Luna nur, wenn das Signet ohnehin neu soll.
+**Empfehlung:** Nur die fünf Gewerke-Icons neu erzeugen. Sie sieht man groß (Schnellwahl, Preisübersicht). Die Bedien-Icons (`ui-*`) sind klein, funktional und als SVG scharf; sie bleiben, wie sie sind (galt bis 17.10.2026; seitdem sind die Symbole 3D, nur Steuer- und Feldzeichen bleiben SVG). Luna nur, wenn das Signet ohnehin neu soll.
 
 ## So gehen Sie vor
 
@@ -173,7 +173,7 @@ Arrange all icons generated so far on ONE image in an even row, each icon at the
 
 ## Nach dem Erzeugen (im Projekt)
 
-Gewerke-Icons: Motiv in `scripts/render-icons-3d.py` ergänzen oder ändern, rendern, dann `scripts/icons-3d.mjs` ausführen (SPEC 3). Für Luna und die Bedien-Icons gilt, sobald die PNGs in `design/icons-roh/` liegen:
+Gewerke-Icons und Symbole: Motiv in `scripts/blender/fx3d.py` bzw. `scripts/blender/symbole.py` ergänzen oder ändern, mit `scripts/render-icons-3d.py` rendern, dann `scripts/export-3d.mjs` ausführen (SPEC 3). Für Luna und die Steuer- und Feldzeichen gilt, sobald die PNGs in `design/icons-roh/` liegen:
 
 1. Die PNGs in `scripts/prepare-icons.mjs` als SVG-Pfade nachzeichnen (`fill="currentColor"`).
 2. Die Dateien in `design/icons/` ersetzen. Namen und Einbindung bleiben, `Icon.tsx` lädt sie wie bisher.

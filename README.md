@@ -19,8 +19,9 @@
 | `design/screens/` | 14 Entwürfe als PNG |
 | `design/reference-html/` | Dieselben Entwürfe als HTML (Texte, Icons, Maße) |
 | `design/tokens.css`, `tokens.json` | Design-Tokens |
-| `design/icons/` | 17 Bedien-Icons und Luna-Signet als SVG |
-| `design/icons-3d/` | 5 Gewerke-Icons als 3D-Renders (`scripts/render-icons-3d.py`), für die Seite exportiert nach `public/icons/` |
+| `design/icons/` | Steuer- und Feldzeichen (X, Pfeile, Plus/Minus, Menü, Häkchen, Warnung) und Luna-Signet als SVG |
+| `design/icons-3d/` | 5 Gewerke-Icons und 11 Symbole (je zwei Farbstellungen) als 3D-Renders (`scripts/render-icons-3d.py`) |
+| `design/bilder-3d/` | Bilder 1–6 als 3D-Szenen (`scripts/render-bilder-3d.py`); `scripts/export-3d.mjs` exportiert alles nach `public/` |
 | `design/IMAGE-BRIEFS.md` | Briefe für die 6 Bilder |
 
 ## Hinweise

@@ -1,4 +1,4 @@
-// Icons direkt aus design/icons (eine Quelle, keine Kopien). Bedien-Icons nutzen currentColor.
+// Steuer- und Feldzeichen direkt aus design/icons (eine Quelle, keine Kopien), in currentColor. Symbole: Symbol3D.tsx.
 const dateien = import.meta.glob<string>('/design/icons/*.svg', { query: '?raw', import: 'default', eager: true })
 
 export const icons: Record<string, string> = Object.fromEntries(

@@ -1,7 +1,7 @@
 import { useId } from 'react'
 import { Button } from '../../components/ui/Button'
 import { CallButton } from '../../components/ui/CallButton'
-import { Icon } from '../../components/ui/Icon'
+import { Symbol3D } from '../../components/ui/Symbol3D'
 import { copy, fuelle } from '../../content/copy'
 import { gewerke } from '../../content/gewerke'
 import type { Kontakt, Zustand } from '../flow'
@@ -30,7 +30,7 @@ export function Erfolg({ luna, kontakt, onNeu, onSchliessen }: ErfolgProps) {
     <section aria-labelledby={titelId} className="flex flex-col gap-s3 rounded-card border border-linie bg-weiss p-s4">
       <div className="flex flex-col gap-s3 dialog:flex-row dialog:items-start">
         <div className="flex size-[52px] shrink-0 dialog:size-[44px] items-center justify-center rounded-pill bg-tiefsee text-weiss">
-          <Icon name="ui-haekchen" className="size-[28px]" />
+          <Symbol3D name="ui-haekchen" hell className="size-[28px]" />
         </div>
         <h2 id={titelId} className="font-display text-h3-karte dialog:text-h4">
           {fuelle(gefunden ? t.titel : t.keinerTitel, werte)}
