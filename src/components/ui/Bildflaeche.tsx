@@ -1,3 +1,5 @@
+import { Szene3D } from './Szene3D'
+
 /** Dekorative Bildserie laut IMAGE-BRIEFS.md; Maße und Zuschnitt kommen vom Aufrufer. */
 export function Bildflaeche({ bild, className = '' }: { bild: number; className?: string }) {
   const hero = bild === 1
@@ -27,6 +29,7 @@ export function Bildflaeche({ bild, className = '' }: { bild: number; className?
           className="absolute inset-0 h-full w-full object-cover"
         />
       </picture>
+      <Szene3D bild={bild} />
     </div>
   )
 }

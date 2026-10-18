@@ -12,7 +12,7 @@ import bmesh
 from mathutils import Matrix, Vector
 
 from figur import figur, gerundet, ring
-from fx3d import KALK, ORANGE, PETROL, TIEFSEE, TIEFSEE2, TUERKIS, WEISS, material, objekt, rohr
+from fx3d import KALK, ORANGE, PETROL, TIEFSEE, TIEFSEE2, TUERKIS, WEISS, material, objekt, rohr, stufen
 
 CHROM = material(WEISS, rauheit=0.16, metall=1.0, glanz=0.0)
 WAND = material(TIEFSEE, rauheit=1.0, glanz=0.0)
@@ -42,7 +42,7 @@ def zylinder(name, a, b, r1, farbe, rundung=0.0, r2=None):
     achse = b - a
     rot = achse.to_track_quat('Z', 'Y').to_matrix().to_4x4()
     bm = bmesh.new()
-    bmesh.ops.create_cone(bm, cap_ends=True, segments=48, radius1=r1, radius2=r1 if r2 is None else r2,
+    bmesh.ops.create_cone(bm, cap_ends=True, segments=stufen(48, 16), radius1=r1, radius2=r1 if r2 is None else r2,
                           depth=achse.length, matrix=Matrix.Translation((a + b) / 2) @ rot)
     return objekt(name, bm, farbe, rundung)
 

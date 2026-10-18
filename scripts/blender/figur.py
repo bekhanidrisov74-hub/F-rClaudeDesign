@@ -17,7 +17,7 @@ import bmesh
 import bpy
 from mathutils import Matrix, Vector
 
-from fx3d import KALK, ORANGE, PETROL, TIEFSEE, TIEFSEE2, WEISS, material, mischung, objekt, rohr
+from fx3d import KALK, ORANGE, PETROL, TIEFSEE, TIEFSEE2, WEISS, glaettung, material, mischung, objekt, rohr, stufen
 
 HAUT = {
     'hell': mischung(ORANGE, 0.30, WEISS),
@@ -86,7 +86,7 @@ def achsen(vorne, oben):
 def ellipsoid(name, mitte, rot, radien, farbe, segmente=48):
     bm = bmesh.new()
     m = Matrix.Translation(mitte) @ rot.to_4x4() @ Matrix.Diagonal((*radien, 1))
-    bmesh.ops.create_uvsphere(bm, u_segments=segmente, v_segments=segmente // 2, radius=1, matrix=m)
+    bmesh.ops.create_uvsphere(bm, u_segments=stufen(segmente, 16), v_segments=stufen(segmente // 2, 8), radius=1, matrix=m)
     return objekt(name, bm, farbe)
 
 
@@ -106,7 +106,7 @@ def kette(name, punkte, radien, farbe, glatt=2):
     haut = ob.modifiers.new('Haut', 'SKIN')
     haut.use_smooth_shade = True
     sub = ob.modifiers.new('Glatt', 'SUBSURF')
-    sub.levels = sub.render_levels = glatt
+    sub.levels = sub.render_levels = glaettung(glatt)
     return ob
 
 
@@ -393,7 +393,7 @@ def figur(name, becken, richtung=0.0, beugung=0.0, hand_l=None, hand_r=None, fus
 def _schale(name, mitte, rot, radien, farbe, unten, vorne_bis):
     """Ellipsoid-Schale oberhalb von z=unten (lokal); vorne_bis begrenzt die Stirn (lokal −Y, Anteil des Radius)."""
     bm = bmesh.new()
-    bmesh.ops.create_uvsphere(bm, u_segments=48, v_segments=24, radius=1)
+    bmesh.ops.create_uvsphere(bm, u_segments=stufen(48, 16), v_segments=stufen(24, 8), radius=1)
     bmesh.ops.bisect_plane(bm, geom=bm.verts[:] + bm.edges[:] + bm.faces[:], plane_co=(0, 0, unten / radien[2]), plane_no=(0, 0, -1), clear_outer=True)
     bmesh.ops.bisect_plane(bm, geom=bm.verts[:] + bm.edges[:] + bm.faces[:], plane_co=(0, vorne_bis, 0), plane_no=(0, -1, 0.35), clear_outer=True)
     bmesh.ops.transform(bm, matrix=Matrix.Translation(mitte) @ rot.to_4x4() @ Matrix.Diagonal((*radien, 1)), verts=bm.verts)

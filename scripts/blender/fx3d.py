@@ -14,6 +14,18 @@ from mathutils import Matrix, Vector
 
 ROOT = Path(__file__).resolve().parents[2]
 TOKENS = json.loads((ROOT / 'design' / 'tokens.json').read_text(encoding='utf-8'))
+# Auflösung der Rundungen: 1 für die Renders; render-bilder-3d.py --glb setzt weniger für die 3D-Objekte der Seite
+FEIN = 1.0
+
+
+def stufen(n, mindestens=3):
+    """n Segmente bei voller Auflösung, entsprechend weniger für die 3D-Objekte der Seite."""
+    return max(mindestens, round(n * FEIN))
+
+
+def glaettung(n):
+    """Subdivision-Stufen: eine weniger für die 3D-Objekte der Seite."""
+    return n if FEIN >= 1 else max(1, n - 1)
 
 
 def linear(hexwert):
@@ -69,7 +81,7 @@ def objekt(name, bm, token, rundung=0.0):
     bpy.context.scene.collection.objects.link(ob)
     if rundung:
         b = ob.modifiers.new('Rundung', 'BEVEL')
-        b.width, b.segments = rundung, 6
+        b.width, b.segments = rundung, stufen(6, 2)
         b.limit_method, b.angle_limit = 'ANGLE', math.radians(35)
         b.harden_normals = True
     return ob
@@ -92,20 +104,20 @@ def quader(name, groesse, token, rundung, ort=(0, 0, 0), dreh=(0, 0, 0)):
 def walze(name, radius, tiefe, token, rundung, ort=(0, 0, 0), dreh=(90, 0, 0)):
     """Zylinder, Achse standardmäßig zur Kamera (−Y)."""
     bm = bmesh.new()
-    bmesh.ops.create_cone(bm, cap_ends=True, segments=96, radius1=radius, radius2=radius, depth=tiefe, matrix=lage(ort, dreh))
+    bmesh.ops.create_cone(bm, cap_ends=True, segments=stufen(96, 16), radius1=radius, radius2=radius, depth=tiefe, matrix=lage(ort, dreh))
     return objekt(name, bm, token, rundung)
 
 
 def kugel(name, radius, token, ort=(0, 0, 0), mass=(1, 1, 1), dreh=(0, 0, 0)):
     bm = bmesh.new()
-    bmesh.ops.create_uvsphere(bm, u_segments=96, v_segments=48, radius=radius, matrix=lage(ort, dreh, mass))
+    bmesh.ops.create_uvsphere(bm, u_segments=stufen(96, 16), v_segments=stufen(48, 8), radius=radius, matrix=lage(ort, dreh, mass))
     return objekt(name, bm, token)
 
 
 def tropfen(name, hoehe, token, ort):
     """Klassischer Tropfen: Kugel, oben zur Spitze gezogen (Radius sin θ · sin(θ/2))."""
     bm = bmesh.new()
-    bmesh.ops.create_uvsphere(bm, u_segments=96, v_segments=64, radius=1)
+    bmesh.ops.create_uvsphere(bm, u_segments=stufen(96, 16), v_segments=stufen(64, 12), radius=1)
     for v in bm.verts:
         theta = math.acos(max(-1, min(1, v.co.z)))
         r = math.hypot(v.co.x, v.co.y)
@@ -129,7 +141,7 @@ def platte(name, umriss, tiefe, token, rundung, y=0.0):
 def rohr(name, punkte, radius, token, rundung=0.0, ring=False):
     """Rohr mit rundem Querschnitt entlang einer Punktfolge (Kurve mit Fase, dann Netz)."""
     cu = bpy.data.curves.new(name, 'CURVE')
-    cu.dimensions, cu.bevel_depth, cu.bevel_resolution, cu.use_fill_caps = '3D', radius, 10, True
+    cu.dimensions, cu.bevel_depth, cu.bevel_resolution, cu.use_fill_caps = '3D', radius, stufen(10, 2), True
     sp = cu.splines.new('POLY')
     sp.points.add(len(punkte) - 1)
     for p, co in zip(sp.points, punkte):

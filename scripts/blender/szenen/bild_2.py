@@ -20,7 +20,7 @@ import math
 import bmesh
 import bpy
 from fx3d import (KALK, ORANGE, PETROL, TIEFSEE, TIEFSEE2, TUERKIS, WEISS, farbe, kugel, lage, linear, material, mischung,
-                  objekt, quader, rohr, tropfen, walze)
+                  objekt, quader, rohr, stufen, tropfen, walze)
 from figur import figur, gerundet, ring
 from mathutils import Matrix, Vector
 
@@ -46,7 +46,7 @@ EIMER = (-0.33, 0.36, 0.0)
 
 def kegelstumpf(name, r_unten, r_oben, hoehe, token, ort, offen=False, dicke=0.0, rundung=0.0, segmente=64):
     bm = bmesh.new()
-    bmesh.ops.create_cone(bm, cap_ends=True, segments=segmente, radius1=r_unten, radius2=r_oben, depth=hoehe,
+    bmesh.ops.create_cone(bm, cap_ends=True, segments=stufen(segmente, 16), radius1=r_unten, radius2=r_oben, depth=hoehe,
                           matrix=lage((ort[0], ort[1], ort[2] + hoehe / 2)))
     if offen:
         bmesh.ops.delete(bm, geom=[max(bm.faces, key=lambda f: f.calc_center_median().z)], context='FACES_ONLY')
@@ -288,7 +288,7 @@ def kegelstumpf_entlang(name, r0, r1, laenge, p0, d, token=TIEFSEE2):
     d = Vector(d).normalized()
     bm = bmesh.new()
     rot = d.to_track_quat('Z', 'Y').to_matrix().to_4x4()
-    bmesh.ops.create_cone(bm, cap_ends=True, segments=48, radius1=r0, radius2=r1, depth=laenge,
+    bmesh.ops.create_cone(bm, cap_ends=True, segments=stufen(48, 16), radius1=r0, radius2=r1, depth=laenge,
                           matrix=Matrix.Translation(Vector(p0) + d * laenge / 2) @ rot)
     return objekt(name, bm, token, 0.004)
 

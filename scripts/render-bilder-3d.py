@@ -9,9 +9,11 @@ Bühne für alle gleich: dunkle Hohlkehle in Tiefsee, ein gedämpfter türkiser 
 Softbox von links oben, schmales türkises Streiflicht von rechts hinten, 50-mm-Objektiv.
 Jede Szene (scripts/blender/szenen/bild_N.py) baut nur Figur und Requisiten und nennt Kamera und Kegel.
 Ausgabe: design/bilder-3d/bild-N.png, 2400 × 2400, Motiv mittig mit Luft für die Zuschnitte.
+Mit --glb statt Render die Szenen als 3D-Objekte für die Seite: public/modelle/bild-N.glb (three.js, Szene3D.tsx).
 """
 import importlib
 import math
+import subprocess
 import sys
 import tempfile
 from pathlib import Path
@@ -29,6 +31,8 @@ PIXEL, PROBEN = 2400, 256
 VORSCHAU_PIXEL, VORSCHAU_PROBEN = 600, 64
 PRUEF_PIXEL, PRUEF_PROBEN = 1200, 128
 OBJEKTIV = 50
+KEGEL_WINKEL = 38
+GLB_FEIN = 1 / 3  # Rundungen mit einem Drittel der Segmente: ~200–300 KB je Szene
 
 
 def hohlkehle(wand_y=2.0, radius=0.9):
@@ -87,6 +91,13 @@ def buehne(pixel, proben):
     return s, cam
 
 
+def kegel_quelle(cam_ort, blick, kegel_auf, kegel_von=None):
+    """Kegel von oben dicht vor der Wand: kleiner, weicher Lichtfleck hinter der Figur (höchstens ein Fünftel des Bildes)."""
+    f = Vector(blick) - Vector(cam_ort)
+    f.z = 0
+    return Vector(kegel_von) if kegel_von else Vector(kegel_auf) - f.normalized() * 1.2 + Vector((0, 0, 2.2))
+
+
 def lichter(cam_ort, blick, kegel_auf, motiv, kegel_von=None):
     """Licht relativ zur Kamera, damit alle Szenen gleich ausgeleuchtet sind. Softbox, Aufhellung und Streiflicht
     treffen nur das Motiv (Light-Linking): Die Hohlkehle bleibt Tiefsee und bekommt nur den türkisen Kegel."""
@@ -100,9 +111,8 @@ def lichter(cam_ort, blick, kegel_auf, motiv, kegel_von=None):
                licht('Aufhellung', 'AREA', mitte - f * 4 + rechts * 3.5 + z * 1.2, mitte, 260, 5),
                licht('Streiflicht', 'AREA', mitte + f * 2.5 + rechts * 2.4 + z * 2.6, mitte + z * 0.4, 700, 1.2, farbe(TUERKIS))):
         ob.light_linking.receiver_collection = motiv
-    # Kegel von oben dicht vor der Wand: kleiner, weicher Lichtfleck hinter der Figur (höchstens ein Fünftel des Bildes)
-    von = Vector(kegel_von) if kegel_von else Vector(kegel_auf) - f * 1.2 + z * 2.2
-    licht('Kegel', 'SPOT', von, kegel_auf, 2600, 0.8, farbe(TUERKIS), kegel=38)  # Wand ist fast schwarz: viel Leistung
+    von = kegel_quelle(cam_ort, blick, kegel_auf, kegel_von)
+    licht('Kegel', 'SPOT', von, kegel_auf, 2600, 0.8, farbe(TUERKIS), kegel=KEGEL_WINKEL)  # Wand ist fast schwarz: viel Leistung
 
 
 def main():
@@ -113,6 +123,8 @@ def main():
     namen = [a for a in argumente if not a.startswith('--')] or BILDER
     if unbekannt := [n for n in namen if n not in BILDER]:
         sys.exit(f'Unbekanntes Bild: {", ".join(unbekannt)}. Vorhanden: {", ".join(BILDER)}')
+    if '--glb' in argumente:
+        return glb(namen)
     ziel_ordner = Path(tempfile.gettempdir()) / 'fixit247-vorschau' if vorschau else AUSGABE
     ziel_ordner.mkdir(parents=True, exist_ok=True)
     for name in namen:
@@ -128,6 +140,33 @@ def main():
         s.render.filepath = str(ziel_ordner / f'{name}{"-pruefen" if pruefen else ""}.png')
         bpy.ops.render.render(write_still=True)
         print(f'GESPEICHERT {s.render.filepath}')
+
+
+def glb(namen):
+    """Dieselben Szenen als 3D-Objekte für three.js (Szene3D.tsx): nur Motiv und Kamera, ohne Hohlkehle und Licht.
+    Die Wand mit dem türkisen Kegel zeichnet die Seite selbst, das Licht setzt Szene3D.tsx relativ zur Kamera.
+    Blickpunkt, Kegelmitte und Kegelradius auf der Wand stehen als extras an der Kamera, in glTF-Achsen (Y oben, Z zur Kamera)."""
+    import fx3d
+    fx3d.FEIN = GLB_FEIN
+    roh_ordner = Path(tempfile.gettempdir()) / 'fixit247-glb'
+    roh_ordner.mkdir(parents=True, exist_ok=True)
+    (ROOT / 'public' / 'modelle').mkdir(exist_ok=True)
+    gltf = lambda p: [round(p[0], 4), round(p[2], 4), round(-p[1], 4)]  # noqa: E731
+    for name in namen:
+        s, cam = buehne(VORSCHAU_PIXEL, VORSCHAU_PROBEN)
+        szene = importlib.import_module(f'szenen.{name.replace("-", "_")}').szene()
+        ziel(cam, szene['kamera'], szene['blick'])
+        cam['blick'], cam['kegel'] = gltf(szene['blick']), gltf(szene['kegel'])
+        von = kegel_quelle(szene['kamera'], szene['blick'], szene['kegel'], szene.get('kegel_von'))
+        cam['kegelradius'] = round((von - Vector(szene['kegel'])).length * math.tan(math.radians(KEGEL_WINKEL / 2)), 3)
+        roh, datei = roh_ordner / f'{name}.glb', ROOT / 'public' / 'modelle' / f'{name}.glb'
+        bpy.ops.export_scene.gltf(filepath=str(roh), export_format='GLB', export_apply=True, export_cameras=True,
+                                  export_lights=False, export_extras=True, export_texcoords=False)
+        # Quantisieren und mit Meshopt packen. Nicht automatisch vereinfachen: Das verbiegt die Normalen der Rundungen
+        # (flache Teile glänzen dann wie Kissen); weniger Segmente kommen schon aus fx3d.stufen().
+        subprocess.run(f'npx gltf-transform optimize "{roh}" "{datei}" --palette false --texture-compress false --simplify false',
+                       shell=True, check=True, cwd=ROOT, stdout=subprocess.DEVNULL)
+        print(f'GESPEICHERT {datei} ({roh.stat().st_size // 1024} KB roh, {datei.stat().st_size // 1024} KB gepackt)')
 
 
 main()
