@@ -63,13 +63,10 @@ Alles als Datei in `fixit247-daten/`, keine Datenbank nötig.
 
 ## Offen
 
-- Telefonnummer und E-Mail-Adresse in `src/content/contact.ts` (und die Kopie `KONTAKT` in `_basis.php`) vor dem Livegang eintragen. Solange dort `[Telefonnummer]` und `[E-Mail-Adresse]` stehen, erscheinen sie auch in der Bestätigungsmail an den Kunden.
-- DMARC-Eintrag für `fixit247.at` in KAS (DNS) empfohlen. SPF und DKIM legt ALL-INKL selbst an.
+Was vor dem Livegang noch fehlt, steht als Checkliste in `docs/livegang.md`. Technisch offen:
+
 - MySQL ja oder nein: Standard ist die Datei (siehe oben).
 - Steht beim Hoster ein Proxy vor PHP, ist `REMOTE_ADDR` für alle gleich und das Kontingent gilt dann für alle Kunden gemeinsam. Nach der Einrichtung prüfen.
-- Löschfrist für `anfragen-*.jsonl` festlegen.
-- Datenschutz: Auftragsverarbeitung mit dem Hoster, Speicherung der Anfragen und die Weitergabe an OpenAI in der Datenschutzerklärung.
-- Monatslimit im OpenAI-Konto setzen. Das Kontingent je IP bremst einzelne Absender, aber keine verteilten Angriffe.
 
 ## Folgen für den Code
 

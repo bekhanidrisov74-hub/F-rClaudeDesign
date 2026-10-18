@@ -27,5 +27,5 @@
 ## Hinweise
 
 - In den Agent-Dateien steht `model: sonnet` bzw. `model: haiku`. Falls deine Claude-Code-Version damit nicht Sonnet 5.5 und Haiku 5.5 wählt, dort `claude-sonnet-5-5` bzw. `claude-haiku-5-5` eintragen.
-- Vor dem Livegang ausfüllen: Telefonnummer, WhatsApp, E-Mail, Firmenname (`src/content/contact.ts`), Endpunkte für Anfragen und Luna (`VITE_FORM_ENDPOINT`, `VITE_CHAT_ENDPOINT`, siehe `docs/hosting.md`), Logo, Bilder, Rechtstexte.
+- Vor dem Livegang: Checkliste in `docs/livegang.md` (Einrichtung bei ALL-INKL, fehlende Daten, Rechtstexte).
 - Offene Entscheidungen stehen in `design/SPEC.md`, Abschnitt 11. Claude Code baut dafür Standards und listet sie im Bericht.
