@@ -1,8 +1,8 @@
 import { test, expect } from './test'
 
-test('alle sechs Motive laden im responsiven Layout', async ({ page }) => {
+test('Motive 2–6 laden im responsiven Layout (Bild 1 ist noch eine freie Stelle)', async ({ page }) => {
   await page.goto('/')
-  for (let n = 1; n <= 6; n++) {
+  for (let n = 2; n <= 6; n++) {
     const frame = page.locator(`[data-bild="${n}"]`)
     await frame.scrollIntoViewIfNeeded()
     const image = frame.locator('img')

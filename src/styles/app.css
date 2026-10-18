@@ -42,6 +42,7 @@
   --color-nebel: var(--fx-nebel);
   --color-icon-technik: var(--fx-icon-technik);
   --color-icon-handwerk: var(--fx-icon-handwerk);
+  --color-handwerk-text: var(--fx-handwerk-text);
   --color-abdunklung: var(--fx-abdunklung);
   --color-leuchten: var(--fx-leuchten);
   --color-transparent: transparent;

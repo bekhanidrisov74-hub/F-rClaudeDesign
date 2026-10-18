@@ -46,10 +46,10 @@ Alle Bilder kommen aus **einer quadratischen Datei** und werden je nach Bildschi
 
 | Bild | Desktop (1440 px) | Handy (390 px) |
 |---|---|---|
-| 1 Hero | rechte Spalte bis zum Rand, ca. 670 × 750 px, leicht hochkant; Ausschnitt eher rechts (75 % / 50 %) | volle Breite × 300 px, quer (ca. 1,3 : 1) |
+| 1 Hero | eigene 3:2-Datei (1536 × 1024): rechte Spalte bis zum Rand, ca. 790 × 640 px, linke 40 % ausgeblendet | volle Breite, 3 : 2, oben ausgeblendet |
 | 2–6 Karten | 4 : 3, ca. 365 × 275 px | volle Breite, 16 : 9 |
 
-**Nur Bild 1:** Am Desktop überlappen die Schnellwahl-Kacheln einen **Streifen am unteren Rand** (etwa die unteren 13 %, linke 80 % der Breite). Der Prompt hält deshalb den unteren Rand und das ganze untere linke Viertel ruhig.
+**Nur Bild 1:** Querformat 3:2 statt Quadrat. Am Desktop liegt das linke Drittel unter Text und Knöpfen und wird ausgeblendet, darum bleibt es ruhig.
 
 ## Stilanker (zuerst einfügen)
 
@@ -120,15 +120,22 @@ Shadow falls to the lower right.
 Square 1:1, highest available resolution.
 ```
 
-## Bild 1 – Hero: tropfende Armatur (zuletzt erzeugen)
+## Bild 1 – Hero: Wien-Panorama (seit 18.10.2026, eigener Stil)
+
+Bild 1 gehört nicht mehr zur Studio-Serie oben: Es ist ein helles Stadtfoto nach dem Entwurfsbild vom 18.10.2026. In einem **neuen Chat** erzeugen, ohne Stilanker. Das Entwurfsbild am besten anhängen.
 
 ```
-Generate image 1 of the series, the hero image. Match the attached reference image exactly: same navy infinity cove, same muted turquoise light pool, same softbox from the upper left, same chrome rendering.
-Subject: a modern single-lever kitchen mixer tap in polished chrome, in the same three-quarter view from slightly above as the reference. The tall spout arcs in from the right edge of the frame, so the aerator sits at about 60% of the frame width and 35% of its height. A thin orange (#E8842A) rubber seal ring sits between the spout tip and the aerator, right where the drop forms, the only warm spot. One single water drop has just left the aerator and hangs frozen in mid-air (the only droplet in the whole series); below it, on the navy floor, a small, perfectly round ripple spreads in a thin film of water. No other droplets, no splash crown.
-Framing: the tap is cut off by the right edge. Keep the bottom 15% of the image across its full width, and the entire lower-left quarter, as calm, dark navy only, with nothing in it (interface elements will overlap that area).
-Shadow falls to the lower right.
-Square 1:1, highest available resolution.
+Photorealistic landscape photograph of the Vienna skyline at golden hour, seen from an elevated terrace above the rooftops.
+St. Stephen's Cathedral (Stephansdom) is the hero: its tall Gothic south spire and the steep roof with the colourful zigzag tile pattern stand in the right half of the frame, about 70% of the frame width from the left, the spire reaching to about 10% below the top edge.
+The low sun sits just above the horizon at about 15% of the width from the left, behind the city, with warm golden light and a soft glow; blue sky with scattered golden clouds above.
+Foreground and middle ground: historic Viennese apartment buildings with ornate cream facades and red-brown tiled roofs, small church towers in the distance, a few modern high-rises far away on the horizon.
+Bottom edge: a low stone balustrade runs across the lower right; lush green tree foliage fills the lower right corner.
+Keep the left third calm (sky, sun and distant rooftops only), because the website fades it out beneath the headline.
+Do not fade the image to white anywhere, no vignette. No text, no logos, no watermark, no people in focus.
+Landscape 3:2, 1536 x 1024 pixels, highest quality.
 ```
+
+**Einbau (im Projekt):** PNG als `design/bilder-chatgpt/bild-1.png` speichern. In `scripts/export-3d.mjs` die Bildschleife wieder bei 1 beginnen lassen und exportieren. In `Hero.tsx` das leere `div data-bild="1"` durch `<Bildflaeche bild={1} …>` mit denselben Klassen ersetzen. `Bildflaeche.tsx` braucht dafür das Querformat 3:2 (Höhe 836 bei 1254 Breite), `loading="eager"`, `fetchPriority="high"` und die Hero-`sizes`. Danach `tests/e2e/bilder.spec.ts` wieder ab Bild 1 laufen lassen. Das Ausblenden nach links (Desktop) bzw. oben (Handy) macht die Seite per CSS.
 
 ## Prüfliste vor dem Speichern
 
@@ -139,7 +146,6 @@ Square 1:1, highest available resolution.
 - [ ] Gleiche Kamerahöhe und gleicher Maßstab wie das Referenzbild
 - [ ] Kein Text, keine Marke, kein Logo, keine Menschen, keine Hände
 - [ ] Motiv liegt im mittleren Bereich, rundum Luft
-- [ ] Bild 1: unterer Rand und unteres linkes Viertel leer
 - [ ] Alle sechs nebeneinander wirken wie ein Shooting (am besten als Raster ansehen)
 
 Typische Nachbesserungen, einfach im selben Chat schreiben:

@@ -4,6 +4,7 @@ import { Fragen } from './Fragen'
 import { Hero } from './Hero'
 import { Leistungen } from './Leistungen'
 import { Preisrechner } from './Preisrechner'
+import { Schnellwahl } from './Schnellwahl'
 import { Seitenrahmen } from './Seitenrahmen'
 import { Vertrauensleiste } from './Vertrauensleiste'
 import { Zusagen } from './Zusagen'
@@ -13,6 +14,7 @@ export function Startseite() {
     <Seitenrahmen>
       <Hero />
       <Vertrauensleiste />
+      <Schnellwahl />
       <Leistungen />
       <Ablauf />
       <Preisrechner />

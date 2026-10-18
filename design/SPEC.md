@@ -28,9 +28,9 @@ Abschnitte in dieser Reihenfolge. Die Texte kommen exakt aus `reference-html/02-
 | # | Abschnitt | Anker | Screen |
 |---|---|---|---|
 | 1 | Kopf (sticky): Logo, Navigation, Anruf-Knopf; unter 920 px Menü-Knopf | – | 01, 02 |
-| 2 | Hero: H1, Unterzeile, Anruf-Knopf groß, WhatsApp, Anfrage senden, Hinweis „Vermittlung kostenlos“, Bild 1 | `#start` | 01, 02 |
-| 3 | Schnellwahl „Was ist passiert?“: 5 Gewerke und „Nicht sicher? Luna hilft beim Zuordnen“ | – | 01, 02 |
-| 4 | Vertrauensleiste: 4 Punkte mit Icons | – | 01, 02 |
+| 2 | Hero: H1 (letzte Zeile Orange), Unterzeile, Anruf-Knopf groß, Anfrage senden, Infobox, Bild 1 | `#start` | Entwurfsbild 18.10.2026 |
+| 3 | Vertrauensleiste: 4 Punkte, Symbol im Kreis | – | Entwurfsbild 18.10.2026 |
+| 4 | Schnellwahl „Was ist passiert?“: 5 Gewerke und „Nicht sicher? Luna hilft beim Zuordnen“ | – | 01, 02 |
 | 5 | Leistungen: 5 Karten und Hilfekarte „Ihr Problem ist nicht dabei?“ | `#leistungen` | 01, 02 |
 | 6 | So funktioniert's: 3 Schritte auf Tiefsee | `#ablauf` | 01, 02 |
 | 7 | Preisrechner | `#preisrechner` | 01, 02, 13 |
@@ -66,7 +66,8 @@ Dazu kommen schwebend: der Luna-Knopf und der Anstupser. Als Überlagerungen gib
   - Ein Symbol steht nie allein: immer mit Text oder `aria-label`. Dekorativ mit `alt=""`.
 - **Steuer- und Feldzeichen** (X, Pfeile, Plus/Minus, Menü; Häkchen in Checkbox und Chip; Warnung an Feldfehlern): `icons/ui-*.svg`, gefüllt, `currentColor`, `aria-hidden="true"`. Sie bleiben flach, damit sie in jeder Größe scharf und in der Farbe ihrer Umgebung sind.
 - **WhatsApp:** die Sprechblase ist ein Platzhalter. Live das offizielle Logo nach den Markenrichtlinien von Meta verwenden.
-- **Bilder 1–6:** 3D-Szenen, mit ChatGPT erzeugt, nach `IMAGE-BRIEFS.md`: Fachleute bei der Arbeit im dunklen Tiefsee-Studio. Solange ein Bild lädt, bleibt die Fläche Türkisblau. Die Bildbrief-Texte aus den Entwürfen erscheinen nicht auf der Website.
+- **Bild 1 (Hero):** Wien-Panorama mit dem Stephansdom, Querformat 3:2, mit ChatGPT erzeugt (`IMAGE-PROMPTS-CHATGPT.md`). Bis es da ist, bleibt die Stelle frei (helle Fläche).
+- **Bilder 2–6:** 3D-Szenen, mit ChatGPT erzeugt, nach `IMAGE-BRIEFS.md`: Fachleute bei der Arbeit im dunklen Tiefsee-Studio. Solange ein Bild lädt, bleibt die Fläche Türkisblau. Die Bildbrief-Texte aus den Entwürfen erscheinen nicht auf der Website.
 
 ## 4. Responsiv
 
@@ -76,8 +77,8 @@ Dazu kommen schwebend: der Luna-Knopf und der Anstupser. Als Überlagerungen gib
 - **Unter 640 px:**
   - Preisübersicht als Bottom-Sheet statt Dialog.
   - Luna als Vollbild statt Fenster.
-- **Hero Desktop:** Text links, Bildfläche rechts bis zum Rand. Die Schnellwahl-Kacheln überlappen die Bildfläche, siehe Screen 02.
-- **Falz:** Auf 390 × 844 müssen Anrufen, WhatsApp und Anfrage senden vollständig über 660 px liegen. Im Entwurf enden sie bei etwa 470 px. Das ist ein automatischer Test (Abschnitt 10).
+- **Hero Desktop:** Text links, Bildfläche rechts bis zum Rand, ihr linker Teil liegt ausgeblendet unter dem Text (Entwurfsbild vom 18.10.2026). Nichts überlappt die Bildfläche.
+- **Falz:** Auf 390 × 844 müssen Anrufen und Anfrage senden vollständig über 660 px liegen. Im Entwurf enden sie bei etwa 470 px. Das ist ein automatischer Test (Abschnitt 10).
 - **Touch-Ziele:** mindestens 44 × 44 px.
 - **Kein horizontales Scrollen** zwischen 320 und 1920 px.
 

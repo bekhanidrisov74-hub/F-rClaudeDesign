@@ -49,7 +49,8 @@ function tiefseeAnheben(daten) {
     for (let k = 0; k < 3; k++) daten[i + k] += gewicht * Math.max(0, TIEFSEE_RGB[k] - daten[i + k])
   }
 }
-for (let n = 1; n <= 6; n++) {
+// Bild 1 (Hero) fehlt, bis das Wien-Panorama aus ChatGPT da ist (design/IMAGE-PROMPTS-CHATGPT.md); dann wieder ab 1
+for (let n = 2; n <= 6; n++) {
   const { data, info } = await sharp(`design/bilder-chatgpt/bild-${n}.png`).removeAlpha().raw().toBuffer({ resolveWithObject: true })
   tiefseeAnheben(data)
   for (const breite of BILD_BREITEN) {

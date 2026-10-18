@@ -17,6 +17,7 @@
   --fx-nebel: #B7CBD4;          /* Zweittext auf Tiefsee (10,5:1) */
   --fx-icon-technik: #3F7D88;   /* Gewerke-Icons Technik: Heizung & Klima, Elektro, Haushaltsgeräte */
   --fx-icon-handwerk: #E8842A;  /* Gewerke-Icons Handwerk: Installateur, Schlüsseldienst */
+  --fx-handwerk-text: #E0601C;  /* Orange als Schrift, nur groß: „Rund um die Uhr.“ in der H1 (Entwurfsbild 18.10.2026); röter als das Icon-Orange, damit es 3,3:1 auf Kalk erreicht */
   --fx-abdunklung: rgba(0, 27, 42, 0.64); /* hinter Dialog und Bottom-Sheet */
 
   /* Schriften */
@@ -25,7 +26,7 @@
   /* Überschriften: font-weight 700, font-stretch 96 %; Knöpfe/Chips 700–800 */
 
   /* Schriftgrößen (fließend 390 → 1440 px) */
-  --fx-h1: clamp(44px, calc(1.71vw + 37.3px), 62px);   /* lh 0.95, letter-spacing -0.02em */
+  --fx-h1: clamp(44px, calc(3.05vw + 32.1px), 76px);   /* lh 0.95, letter-spacing -0.02em; Desktop 76 laut Entwurfsbild vom 18.10.2026 */
   --fx-h2: clamp(34px, calc(0.95vw + 30.3px), 44px);   /* lh 1.0, letter-spacing -0.012em */
   --fx-h3: clamp(23px, calc(0.286vw + 21.89px), 26px); /* Handy 23–26, Desktop 26–28, lh 1.15, Gewicht 750 */
   --fx-total: clamp(24px, calc(0.571vw + 21.77px), 30px); /* Gesamtpreis, Gewicht 700, nowrap; Handy 24 (Screen 01) */

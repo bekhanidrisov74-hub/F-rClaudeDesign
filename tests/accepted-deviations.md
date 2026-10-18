@@ -131,3 +131,13 @@ Bewusst, auf Wunsch „schöner, attraktiver, Schrift verbessern“:
 ## Wirbel (Worktree `shader-karten`)
 
 - Zusagen: Die zwei großen dunklen Karten („Vermittlung statt Reparatur“, „Richtpreise, keine Festpreise“) zeigen statt des Türkis-Rasters einen langsam fließenden Wirbel (Paper-Shader „Warp“, `Wirbelflaeche.tsx`) in Tiefsee-2, Technik und Türkis, 50 % Deckkraft, nach unten zum Text hin ausgeblendet; die zweite Karte ist um 135° gedreht. Ohne WebGL 2 und vor dem Laden steht das Raster, bei prefers-reduced-motion ein Standbild. Die Struktur unterscheidet sich zwischen zwei Aufnahmen, das ist kein Befund. Für den Abschnitt gibt es keinen Entwurf; `zusagen-*.png` nur auf Stimmigkeit prüfen.
+
+## Hero nach dem Entwurfsbild vom 18.10.2026
+
+Für Hero und Vertrauensleiste gilt ab hier das Entwurfsbild des Nutzers (Wien-Panorama rechts) statt Screen 01/02. Ältere Punkte oben zu Hero, Bild 1 und Schnellwahl-Überlappung sind damit überholt.
+- Hero: H1 76 px am Desktop, letzte Zeile Orange (`--fx-handwerk-text`), Anrufen und „Anfrage senden“ nebeneinander (unter 560 px untereinander), darunter die Infobox. WhatsApp und der Hinweis „Die Vermittlung ist kostenlos …“ stehen nicht mehr im Hero.
+- Bild 1 ist eine freie Stelle (helle Fläche, Desktop nach links, Handy nach oben ausgeblendet), bis der Nutzer das Wien-Panorama aus ChatGPT liefert. Eine leere Fläche dort ist kein Befund.
+- Vertrauensleiste: Symbol im türkis getönten Kreis, ab 920 px Trennlinien; die letzte Spalte ist etwas breiter.
+- Die Schnellwahl steht nach der Vertrauensleiste, ohne Überlappung.
+- Texte in Hero und Leiste wortgleich aus dem Bild (Wunsch des Nutzers), auch wo sie dem Vermittlungsmodell widersprechen. Das steht im Bericht, ist aber kein Befund der Optik.
+- Inhaltsbreite bleibt 1140 px; im Bild wirkt der Inhalt breiter.

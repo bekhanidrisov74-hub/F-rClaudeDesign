@@ -17,12 +17,12 @@ test('Abschnitte in der richtigen Reihenfolge', async ({ page }) => {
   expect(oben).toEqual([...oben].sort((a, b) => a - b))
 })
 
-test('Falz 390 × 844: Anrufen, WhatsApp und Anfrage senden liegen über 660 px', async ({ page }, info) => {
+test('Falz 390 × 844: Anrufen und Anfrage senden liegen über 660 px', async ({ page }, info) => {
   nurEinmal(info.project.name)
   await page.setViewportSize({ width: 390, height: 844 })
   await page.goto('/')
   const hero = page.locator('#start')
-  for (const name of [/Jetzt anrufen/, /WhatsApp/, /Anfrage senden/]) {
+  for (const name of [/Jetzt anrufen/, /Anfrage senden/]) {
     const box = await hero.getByRole('link', { name }).first().boundingBox()
     expect(box, String(name)).not.toBeNull()
     expect(box!.y + box!.height, String(name)).toBeLessThan(660)
