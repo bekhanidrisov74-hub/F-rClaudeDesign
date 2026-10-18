@@ -22,6 +22,7 @@
 | `design/icons/` | Steuer- und Feldzeichen (X, Pfeile, Plus/Minus, Menü, Häkchen, Warnung) und Luna-Signet als SVG |
 | `design/icons-3d/` | 5 Gewerke-Icons und 11 Symbole (je zwei Farbstellungen) als 3D-Renders (`scripts/render-icons-3d.py`) |
 | `design/bilder-3d/` | Bilder 1–6 als 3D-Szenen (`scripts/render-bilder-3d.py`); `scripts/export-3d.mjs` exportiert alles nach `public/` |
+| `public/modelle/` | Dieselben Szenen als 3D-Objekte (GLB) für three.js (`render-bilder-3d.py -- --glb`, gezeigt von `src/components/ui/Szene3D.tsx`) |
 | `design/IMAGE-BRIEFS.md` | Briefe für die 6 Bilder |
 
 ## Hinweise

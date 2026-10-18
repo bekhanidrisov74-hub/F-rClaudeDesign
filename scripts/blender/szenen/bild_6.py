@@ -20,8 +20,8 @@ GUMMI = material(mischung(KALK, 0.22, TIEFSEE2), rauheit=0.6, glanz=0.1)
 MATT = material(TIEFSEE2, rauheit=0.6, glanz=0.0)
 KORB = mischung(PETROL, 0.55, TIEFSEE2)
 
-BLICK = Vector((-0.05, -0.6, 0.66))
-KAMERA = BLICK + Vector((-0.6, -2.3, 0.34)) * 1.12        # zurückgesetzt, damit die Pumpenöffnung im Bild bleibt
+BLICK = Vector((-0.05, -0.6, 0.8))        # Kopf bis Pumpenöffnung im Handy-Band 16 : 9 (Bildhöhe 27–74 %)
+KAMERA = BLICK + Vector((-0.6, -2.3, 0.34)) * 1.3        # zurückgesetzt, damit die Pumpenöffnung im Bild bleibt
 MX, FY, H = -0.45, 0.0, 0.85                      # Maschine: Mitte x, Vorderseite y, Höhe (0,6 × 0,6 × 0,85 m)
 SOCKEL = 0.13                                     # Höhe der abgenommenen Sockelblende
 SIEB = Vector((MX + 0.17, FY + 0.05, 0.066))      # Sieböffnung unten rechts
@@ -34,7 +34,7 @@ TUCH = 0.012                                      # Handtuchdicke
 # am Daumen zur Körpermitte), rechts tiefer die Lampe, zeigt schräg hinab in die Pumpenöffnung.
 BECKEN, RICHTUNG, BEUGUNG = Vector((0.2, -0.4, 0.42)), -35.0, 15.0
 KNIE_Z = 0.095                                    # Kniemitte über dem Boden
-SIEB_LAGE = (0.58, 0.19, 0.5)
+SIEB_LAGE = (0.5, 0.2, 0.36)                     # auf Brusthöhe, das Gesicht bleibt frei
 LAMPE_LAGE = (0.15, -0.25, 0.05)                   # neben der rechten Hüfte, nah an der Maschine
 
 
@@ -120,10 +120,6 @@ def waschmaschine():
         a = math.radians(-90 + 120 * i)
         gerundet(f'Mitnehmer{i}', TUER + Vector((0.11 * math.cos(a), -0.008, 0.11 * math.sin(a))),
                  Matrix.Rotation(-a, 3, 'Y'), (0.05, 0.012, 0.018), TIEFSEE2, 0.005)
-    # Die zweite orange Socke hängt aus der Trommel über die Manschette
-    x = MX + 0.06
-    rohr('Trommelsocke', [tuple(TUER + Vector(p)) for p in ((x - MX - 0.035, -0.03, -0.14), (x - MX, -0.045, -0.17), (x - MX, -0.057, -0.205),
-                                                            (x - MX + 0.005, -0.06, -0.25), (x - MX + 0.018, -0.05, -0.29))], 0.018, ORANGE)
     # Waschmittelflasche mit Griff obenauf
     f = Vector((MX - 0.15, FY + 0.32, H))
     gerundet('Flasche', f + Vector((0, 0, 0.085)), Matrix.Identity(3), (0.12, 0.075, 0.17), PETROL, 0.03)
@@ -214,22 +210,22 @@ def waeschekorb():
 
 # ── Werkzeug in den Händen ─────────────────────────────────────────────────────
 
-def taschenlampe(mitte, a):
+def taschenlampe(mitte, a, g=1.35):
     """Stablampe quer durch die Faust (mitte, Achse a): Ende am kleinen Finger, Kopf ragt am Daumen heraus.
-    Gibt den Spot zurück."""
-    rohr('Lampenkoerper', [tuple(mitte - a * 0.07), tuple(mitte + a * 0.1)], 0.014, ORANGE)
+    g vergrößert den Teil vor der Faust, damit die Lampe bei Kartengröße als Lampe lesbar bleibt. Gibt den Spot zurück."""
+    rohr('Lampenkoerper', [tuple(mitte - a * 0.07), tuple(mitte + a * 0.1 * g)], 0.014, ORANGE)
     for i, t in enumerate((0.066, 0.082)):
-        ring(f'Lampenrille{i}', mitte + a * t, a, 0.0145, 0.0145, 0.003, TIEFSEE2)
-    walze_achse('Lampenhals', 0.022, 0.03, TIEFSEE2, 0.008, mitte + a * 0.11, a)
-    walze_achse('Lampenkopf', 0.028, 0.045, TIEFSEE2, 0.01, mitte + a * 0.14, a)
-    walze_achse('Lampenglas', 0.022, 0.005, leuchtend(WEISS, 8), 0.002, mitte + a * 0.163, a)
+        ring(f'Lampenrille{i}', mitte + a * t * g, a, 0.0145, 0.0145, 0.003, TIEFSEE2)
+    walze_achse('Lampenhals', 0.022 * g, 0.03 * g, TIEFSEE2, 0.008, mitte + a * 0.11 * g, a)
+    walze_achse('Lampenkopf', 0.028 * g, 0.045 * g, TIEFSEE2, 0.01, mitte + a * 0.14 * g, a)
+    walze_achse('Lampenglas', 0.022 * g, 0.005, leuchtend(WEISS, 8), 0.002, mitte + a * 0.163 * g, a)
     walze_achse('Lampenende', 0.015, 0.014, CHROM, 0.004, mitte - a * 0.075, a)
     ld = bpy.data.lights.new('Lampenlicht', 'SPOT')
     ld.energy, ld.color = 4, linear(farbe(WEISS))[:3]
     ld.spot_size, ld.spot_blend, ld.shadow_soft_size = math.radians(30), 0.4, 0.01
     ob = bpy.data.objects.new('Lampenlicht', ld)
     bpy.context.scene.collection.objects.link(ob)
-    ob.location = mitte + a * 0.17
+    ob.location = mitte + a * 0.17 * g
     ob.rotation_euler = a.to_track_quat('-Z', 'Y').to_euler()
     return ob
 

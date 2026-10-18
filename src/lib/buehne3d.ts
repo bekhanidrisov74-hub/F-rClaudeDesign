@@ -5,12 +5,14 @@ import {
   MathUtils,
   Mesh,
   MeshBasicMaterial,
+  MeshStandardMaterial,
   PerspectiveCamera,
   PlaneGeometry,
   PMREMGenerator,
   Scene,
   ShadowMaterial,
   SpotLight,
+  Texture,
   PCFShadowMap,
   Vector3,
   WebGLRenderer,
@@ -29,7 +31,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
  * Schatten. */
 const WEICH = 0.4
 /** Der weiche Rand des Kegels (Blend 1, große Lampe) reicht so weit über den Kegelwinkel hinaus. */
-const HOF = 2.4
+const HOF = 1.5
 /** Höchstens so weit dreht die Kamera um den Blickpunkt (Grad). */
 const SCHWENK = { scroll: 7, zeiger: 5, neigung: 3 }
 
@@ -38,7 +40,8 @@ type Optionen = { url: string; bild: HTMLImageElement; bereit: () => void }
 export function buehne(huelle: HTMLCanvasElement, { url, bild, bereit }: Optionen) {
   const token = (name: string) => getComputedStyle(document.documentElement).getPropertyValue(name).trim()
   const renderer = new WebGLRenderer({ canvas: huelle, antialias: true, alpha: true, powerPreference: 'low-power' })
-  renderer.setPixelRatio(Math.min(devicePixelRatio, 2))
+  // Immer doppelt gerechnet: glättet auf einfachen Bildschirmen die Kanten, mehr bringt auf Handys nichts
+  renderer.setPixelRatio(2)
   renderer.shadowMap.enabled = true
   renderer.shadowMap.type = PCFShadowMap
 
@@ -60,9 +63,10 @@ export function buehne(huelle: HTMLCanvasElement, { url, bild, bereit }: Optione
   const ist = { gier: 0, neigung: 0 }
   let zeiger = { x: 0, y: 0 }
   let rahmen = 0
+  let spiegel: Texture | undefined
   let erstesBild: (() => void) | undefined = bereit
 
-  new GLTFLoader().setMeshoptDecoder(MeshoptDecoder).load(url, (gltf) => {
+  new GLTFLoader().setMeshoptDecoder(MeshoptDecoder).load(url, async (gltf) => {
     if (aus) return
     gltf.scene.updateMatrixWorld(true)
     const cam = gltf.cameras[0] as PerspectiveCamera
@@ -72,6 +76,8 @@ export function buehne(huelle: HTMLCanvasElement, { url, bild, bereit }: Optione
     kegel.fromArray(cam.userData.kegel as number[])
     gltf.scene.traverse((o) => {
       if (o instanceof Mesh) o.castShadow = o.receiveShadow = true
+      // Lampen der Szene (Taschenlampen) kommen in Blender-Watt: Ein Spot strahlt P / (4π) je Raumwinkel
+      if (o instanceof SpotLight) o.intensity /= 4 * Math.PI
     })
     szene.add(gltf.scene)
 
@@ -108,19 +114,49 @@ export function buehne(huelle: HTMLCanvasElement, { url, bild, bereit }: Optione
     const softbox = licht(weiss, 1300, 4.5, ort(-3.5, -3.2, 4.2), blick, WEICH)
     licht(weiss, 260, 5, ort(-4, 3.5, 1.2))
     szene.environment = pmrem.fromScene(studio).texture
-    studio.traverse((o) => {
-      if (o instanceof Mesh) o.geometry.dispose()
+    // Shader im Hintergrund übersetzen (KHR_parallel_shader_compile), damit das erste Bild das Scrollen nicht blockiert
+    await renderer.compileAsync(szene, kamera)
+    if (aus) return
+    // Chrom wie in Cycles: Die beleuchtete Szene samt Softbox einmal dort aufnehmen, wo das Metall ist (Schwerpunkt der
+    // Metallteile, nach Größe gewichtet), und nur den Metallen als Umgebung geben. So spiegeln sie Hemd, Arbeitsplatte
+    // und Softbox wie im Render. Alles andere bleibt bei der Studio-Umgebung, sonst hellt die nahe Figur sich selbst auf.
+    const flaeche = studio.children[0] as Mesh<PlaneGeometry, MeshBasicMaterial>
+    flaeche.position.copy(softbox.position)
+    flaeche.lookAt(blick)
+    szene.add(flaeche)
+    szene.background = studio.background
+    const metalle: Mesh[] = []
+    gltf.scene.traverse((o) => {
+      if (o instanceof Mesh && o.material instanceof MeshStandardMaterial && o.material.metalness >= 0.5) metalle.push(o)
     })
+    const metall = new Vector3()
+    let gewicht = 0
+    for (const o of metalle) {
+      const b = new Box3().setFromObject(o)
+      const g = b.getSize(new Vector3()).length()
+      metall.addScaledVector(b.getCenter(new Vector3()), g)
+      gewicht += g
+    }
+    if (gewicht) metall.divideScalar(gewicht)
+    else metall.copy(blick)
+    const gespiegelt = pmrem.fromScene(szene, 0, 0.05, 50, { position: metall }).texture
+    spiegel = gespiegelt
+    szene.background = null
+    szene.remove(flaeche)
+    flaeche.geometry.dispose()
+    flaeche.material.dispose()
+    for (const o of metalle) (o.material as MeshStandardMaterial).envMap = gespiegelt
 
     // Weicher Schatten der Softbox; der Boden fängt nur den Schatten (die Wand zeichnet die Seite)
     softbox.castShadow = true
     softbox.shadow.mapSize.set(1024, 1024)
-    softbox.shadow.radius = 4
-    softbox.shadow.bias = -0.0002
-    softbox.shadow.normalBias = 0.01
+    softbox.shadow.radius = 10   // weich wie die große Softbox
+    softbox.shadow.intensity = 0.7   // die 4,5-m-Softbox und Subsurface der Haut lassen in Cycles kaum harte Schatten
+    softbox.shadow.bias = -0.0005
+    softbox.shadow.normalBias = 0.03   // sonst Schattenakne als Punktraster auf Haut, Hemd und Kappe
     softbox.shadow.camera.near = 1
     softbox.shadow.camera.far = softbox.position.distanceTo(blick) + radius * 2
-    const boden = new Mesh(new PlaneGeometry(radius * 6, radius * 6).rotateX(-Math.PI / 2), new ShadowMaterial({ opacity: 0.35 }))
+    const boden = new Mesh(new PlaneGeometry(radius * 6, radius * 6).rotateX(-Math.PI / 2), new ShadowMaterial({ opacity: 0.25 }))
     boden.position.set(blick.x, box.min.y + 0.001, blick.z)
     boden.receiveShadow = true
     szene.add(boden)
@@ -215,6 +251,7 @@ export function buehne(huelle: HTMLCanvasElement, { url, bild, bereit }: Optione
       for (const m of [o.material].flat() as Material[]) m.dispose()
     })
     szene.environment?.dispose()
+    spiegel?.dispose()
     pmrem.dispose()
     renderer.dispose()
   }

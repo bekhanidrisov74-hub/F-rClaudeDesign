@@ -103,6 +103,12 @@ Bewusste Abweichungen vom Entwurf stehen in `tests/accepted-deviations.md`.
 - „… anfragen“ und Schnellwahl-Kacheln wählen das Gewerk im Formular vor. Nach einer erfolgreich gesendeten Anfrage blendet ein solcher Klick die Dankeskarte aus und zeigt ein leeres Formular mit vorgewähltem Gewerk (für eine zweite Anfrage ohne Neuladen).
 - Payload-Regeln: „Weiß ich nicht“ und Freitext statt Gewerk → `gewerk: null`, Freitext in `beschreibung`; Freitext statt Dringlichkeit → `dringlichkeit: null`; das Formular sendet `dringlichkeit: null`.
 
+**3D-Objekte (18.10.2026, Branch `objekte-3d`)**: Die sechs Bilder sind zusätzlich echte 3D-Szenen. Werkzeuge und Griffe folgen den korrigierten ChatGPT-Bildern (`design/bilder-chatgpt/README.md`), Standbild und GLB kommen aus derselben Blender-Szene. `Szene3D.tsx` lädt three.js und `public/modelle/bild-N.glb` erst nach der ersten Bewegung (Scrollen, Zeiger, Touch, Taste) und in der Nähe der Fläche und blendet die Szene nach dem ersten gezeichneten Bild über das Standbild (ohne Bewegung gleicht sie dem Standbild, Lighthouse bleibt wie in `main`); die Kamera schwenkt beim Scrollen (bis 7°) und unter dem Zeiger (bis 5°, nur mit Maus). Als Standard gebaut, zu entscheiden:
+- Ohne WebGL und bei `prefers-reduced-motion` bleibt das Standbild (keine Bewegung, kein Nachladen).
+- Auf Touch-Geräten schwenkt die Kamera nur beim Scrollen.
+- Nach dem Laden gleitet die Kamera einmal kurz aus der Standbild-Lage in die Scroll-Lage.
+- Die Standbilder sind Renders der korrigierten Szenen. Eine andere Sitzung hat im Haupt-Checkout (unkommittet) die ChatGPT-Bilder als Standbilder exportiert; beide ändern `public/images/bild-*`. Mit ChatGPT-Standbildern springt das Bild beim Einblenden der 3D-Szene.
+
 **Texte, die nicht im Design stehen** (in `copy.ts` mit „nicht im Design“ markiert): Seitentitel und Meta-Beschreibung, Unterseiten-Titel, „Menü schließen“-Label, Name der Menü-Fläche, „Stunde“ (Einzahl), Hinweis bei drei Zuschlägen, „Zur Startseite“, Platzhaltertexte der Rechtsseiten, Luna-Nachfragen, „Gewerk wählen“, „Fachbetrieb“ bei „Weiß ich nicht“, Formular-Erfolg und -Fehler (aus Luna 09/10).
 
 ## 7. Verbliebene Platzhalter
@@ -118,7 +124,7 @@ Bewusste Abweichungen vom Entwurf stehen in `tests/accepted-deviations.md`.
 | `[Impressum folgt]` | `src/content/copy.ts:322` | `/impressum` |
 | `[Datenschutzerklärung folgt]` | `src/content/copy.ts:323` | `/datenschutz` |
 | `[AGB folgen]` | `src/content/copy.ts:324` | `/agb` |
-| Bilder 1–6 | 3D-Szenen `design/bilder-3d/` (`scripts/render-bilder-3d.py`), eingebunden über `src/components/ui/Bildflaeche.tsx` | Hero und Leistungskarten |
+| Bilder 1–6 | 3D-Szenen `design/bilder-3d/` (`scripts/render-bilder-3d.py`), eingebunden über `src/components/ui/Bildflaeche.tsx`; darüber live als three.js-Szene aus `public/modelle/` (`Szene3D.tsx`) | Hero und Leistungskarten |
 | Logo | Wortmarke im Kopf und Fuß, Favicon `public/favicon.svg` (Luna-Signet) | überall |
 | WhatsApp-Symbol | 3D-Sprechblase `ui-chat` (`scripts/blender/symbole.py`, `Symbol3D`) | Hero, Seitenkasten, Menü, Fuß |
 

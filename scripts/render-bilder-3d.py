@@ -32,6 +32,7 @@ VORSCHAU_PIXEL, VORSCHAU_PROBEN = 600, 64
 PRUEF_PIXEL, PRUEF_PROBEN = 1200, 128
 OBJEKTIV = 50
 KEGEL_WINKEL = 38
+AO_WEITE, AO_STAERKE, AO_PROBEN = 0.2, 0.6, 64   # Umgebungsverdeckung für die GLB: Reichweite (m), Anteil, Proben
 GLB_FEIN = 1 / 3  # Rundungen mit einem Drittel der Segmente: ~200–300 KB je Szene
 
 
@@ -142,9 +143,30 @@ def main():
         print(f'GESPEICHERT {s.render.filepath}')
 
 
+def verdeckung_backen(s):
+    """Umgebungsverdeckung (AO) als Vertex-Farbe „AO“, die three.js mit der Grundfarbe multipliziert: Ohne indirekte
+    Verschattung wirken Kasteninnenraum, Fugen und Achseln heller als im Render. Modifier werden dafür angewendet."""
+    netze = [ob for ob in s.objects if ob.type == 'MESH']
+    for ob in s.objects:
+        ob.select_set(ob in netze)
+    bpy.context.view_layer.objects.active = netze[0]
+    bpy.ops.object.convert(target='MESH')
+    for ob in netze:
+        ob.data.color_attributes.active_color = ob.data.color_attributes.new('AO', 'FLOAT_COLOR', 'POINT')
+    s.render.bake.target = 'VERTEX_COLORS'
+    s.world.light_settings.distance = AO_WEITE
+    s.cycles.samples = AO_PROBEN
+    bpy.ops.object.bake(type='AO')
+    for ob in netze:
+        for w in ob.data.color_attributes['AO'].data:
+            v = 1 - AO_STAERKE * (1 - w.color[0])
+            w.color = (v, v, v, 1)
+
+
 def glb(namen):
-    """Dieselben Szenen als 3D-Objekte für three.js (Szene3D.tsx): nur Motiv und Kamera, ohne Hohlkehle und Licht.
-    Die Wand mit dem türkisen Kegel zeichnet die Seite selbst, das Licht setzt Szene3D.tsx relativ zur Kamera.
+    """Dieselben Szenen als 3D-Objekte für three.js (Szene3D.tsx): Motiv, Kamera und die Lampen der Szene
+    (Taschenlampen, in Blender-Watt), ohne Hohlkehle und Bühnenlicht. Die Wand mit dem türkisen Kegel zeichnet die Seite
+    selbst, das Bühnenlicht setzt Szene3D.tsx relativ zur Kamera.
     Blickpunkt, Kegelmitte und Kegelradius auf der Wand stehen als extras an der Kamera, in glTF-Achsen (Y oben, Z zur Kamera)."""
     import fx3d
     fx3d.FEIN = GLB_FEIN
@@ -159,9 +181,12 @@ def glb(namen):
         cam['blick'], cam['kegel'] = gltf(szene['blick']), gltf(szene['kegel'])
         von = kegel_quelle(szene['kamera'], szene['blick'], szene['kegel'], szene.get('kegel_von'))
         cam['kegelradius'] = round((von - Vector(szene['kegel'])).length * math.tan(math.radians(KEGEL_WINKEL / 2)), 3)
+        verdeckung_backen(s)
         roh, datei = roh_ordner / f'{name}.glb', ROOT / 'public' / 'modelle' / f'{name}.glb'
         bpy.ops.export_scene.gltf(filepath=str(roh), export_format='GLB', export_apply=True, export_cameras=True,
-                                  export_lights=False, export_extras=True, export_texcoords=False)
+                                  export_lights=True, export_import_convert_lighting_mode='RAW', export_extras=True,
+                                  export_texcoords=False,
+                                  export_vertex_color='NAME', export_vertex_color_name='AO')
         # Quantisieren und mit Meshopt packen. Nicht automatisch vereinfachen: Das verbiegt die Normalen der Rundungen
         # (flache Teile glänzen dann wie Kissen); weniger Segmente kommen schon aus fx3d.stufen().
         subprocess.run(f'npx gltf-transform optimize "{roh}" "{datei}" --palette false --texture-compress false --simplify false',

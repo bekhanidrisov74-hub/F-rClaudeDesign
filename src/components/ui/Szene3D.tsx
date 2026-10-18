@@ -1,5 +1,20 @@
 import { useEffect, useRef, useState } from 'react'
 
+/** Ohne Scrollen oder Zeiger gleicht die Szene dem Standbild: three.js lädt erst nach der ersten Bewegung, nie vor
+ * dem ersten Zeichnen und nicht für Besucher, die nur schauen. */
+let bewegt: Promise<void> | undefined
+function ersteBewegung() {
+  bewegt ??= new Promise((weiter) => {
+    const arten = ['scroll', 'wheel', 'pointermove', 'touchstart', 'keydown'] as const
+    const los = () => {
+      for (const art of arten) removeEventListener(art, los)
+      weiter()
+    }
+    for (const art of arten) addEventListener(art, los, { passive: true })
+  })
+  return bewegt
+}
+
 function webgl() {
   const gl = document.createElement('canvas').getContext('webgl2')
   gl?.getExtension('WEBGL_lose_context')?.loseContext()
@@ -8,7 +23,8 @@ function webgl() {
 
 /**
  * Das Bild als echte 3D-Szene (three.js, public/modelle/bild-N.glb) über dem Standbild. three.js und das Modell
- * laden erst, wenn die Fläche in die Nähe kommt und der Browser Zeit hat; bis zum ersten gezeichneten Bild bleibt das
+ * laden erst nach der ersten Bewegung, wenn die Fläche in die Nähe kommt und der Browser Zeit hat; bis zum ersten
+ * gezeichneten Bild bleibt das
  * Standbild sichtbar, ohne WebGL oder bei prefers-reduced-motion bleibt es ganz. Die Wand mit dem türkisen Kegel ist
  * der Hintergrund der Zeichenfläche, die Kamera schwenkt beim Scrollen und unter dem Zeiger ein paar Grad.
  */
@@ -36,7 +52,9 @@ export function Szene3D({ bild }: { bild: number }) {
       },
       { rootMargin: '50%' },
     )
-    sicht.observe(el)
+    ersteBewegung().then(() => {
+      if (!aus) sicht.observe(el)
+    })
     return () => {
       aus = true
       sicht.disconnect()

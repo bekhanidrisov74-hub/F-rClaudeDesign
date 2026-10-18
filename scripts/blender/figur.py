@@ -83,10 +83,11 @@ def achsen(vorne, oben):
     return Matrix((links, -f, o)).transposed()
 
 
-def ellipsoid(name, mitte, rot, radien, farbe, segmente=48):
+def ellipsoid(name, mitte, rot, radien, farbe, segmente=48, mindestens=16):
+    """mindestens: Segmente, die auch die 3D-Objekte der Seite behalten (fx3d.stufen)."""
     bm = bmesh.new()
     m = Matrix.Translation(mitte) @ rot.to_4x4() @ Matrix.Diagonal((*radien, 1))
-    bmesh.ops.create_uvsphere(bm, u_segments=stufen(segmente, 16), v_segments=stufen(segmente // 2, 8), radius=1, matrix=m)
+    bmesh.ops.create_uvsphere(bm, u_segments=stufen(segmente, mindestens), v_segments=stufen(segmente // 2, mindestens // 2), radius=1, matrix=m)
     return objekt(name, bm, farbe)
 
 
@@ -359,7 +360,7 @@ def figur(name, becken, richtung=0.0, beugung=0.0, hand_l=None, hand_r=None, fus
         y = -ry * math.sqrt(max(1 - (x / rx) ** 2 - (zz / rz) ** 2, 0.0)) - aussen
         return k(x, y, zz)
 
-    obs.append(ellipsoid(f'{name}Kopf', kopf, krot, (rx, ry, rz), haut_m))
+    obs.append(ellipsoid(f'{name}Kopf', kopf, krot, (rx, ry, rz), haut_m, mindestens=40))   # Haaransatz = Schnittkante mit den Haaren
     auge = material(TIEFSEE, rauheit=0.12, glanz=0.6)
     glanz = material(WEISS, rauheit=0.3, glanz=0.0)
     for seite in (1, -1):
@@ -377,7 +378,7 @@ def figur(name, becken, richtung=0.0, beugung=0.0, hand_l=None, hand_r=None, fus
         obs.append(rohr(f'{name}Mund', [tuple(p) for p in mund], 0.0045, haut_material(mischung(haut_f, 0.45, HAAR['braun']))))
     # Haare wie bei Spielfiguren: geschlossenes Ellipsoid, nach hinten oben versetzt. Wo der Kopf vorsteht, bleibt das
     # Gesicht frei; der Haaransatz ist die weiche Schnittkante, die Ohren schauen seitlich heraus.
-    obs.append(ellipsoid(f'{name}Haare', k(0, 0.025, 0.03), krot, (rx * 1.04, ry, rz), haar_f))
+    obs.append(ellipsoid(f'{name}Haare', k(0, 0.025, 0.03), krot, (rx * 1.04, ry, rz), haar_f, mindestens=40))
     if kappe:
         obs.append(_schale(f'{name}Kappe', kopf + krot @ _v((0, 0, 0.01)), krot, (KOPF * 1.0, KOPF * 1.04, KOPF * 1.1), kappe, unten=0.05, vorne_bis=-1.1))
         schirm = k(0, -KOPF * 0.95, 0.07)
@@ -393,7 +394,7 @@ def figur(name, becken, richtung=0.0, beugung=0.0, hand_l=None, hand_r=None, fus
 def _schale(name, mitte, rot, radien, farbe, unten, vorne_bis):
     """Ellipsoid-Schale oberhalb von z=unten (lokal); vorne_bis begrenzt die Stirn (lokal −Y, Anteil des Radius)."""
     bm = bmesh.new()
-    bmesh.ops.create_uvsphere(bm, u_segments=stufen(48, 16), v_segments=stufen(24, 8), radius=1)
+    bmesh.ops.create_uvsphere(bm, u_segments=stufen(48, 32), v_segments=stufen(24, 16), radius=1)   # Kappenrand bleibt glatt
     bmesh.ops.bisect_plane(bm, geom=bm.verts[:] + bm.edges[:] + bm.faces[:], plane_co=(0, 0, unten / radien[2]), plane_no=(0, 0, -1), clear_outer=True)
     bmesh.ops.bisect_plane(bm, geom=bm.verts[:] + bm.edges[:] + bm.faces[:], plane_co=(0, vorne_bis, 0), plane_no=(0, -1, 0.35), clear_outer=True)
     bmesh.ops.transform(bm, matrix=Matrix.Translation(mitte) @ rot.to_4x4() @ Matrix.Diagonal((*radien, 1)), verts=bm.verts)
