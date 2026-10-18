@@ -1,0 +1,215 @@
+{
+  "exports": 48,
+  "report": [
+    {
+      "width": 390,
+      "images": [
+        {
+          "bild": "1",
+          "src": "http://127.0.0.1:5188/images/bild-1-480.avif",
+          "naturalWidth": 389,
+          "position": "50% 50%"
+        },
+        {
+          "bild": "2",
+          "src": "http://127.0.0.1:5188/images/bild-2-480.avif",
+          "naturalWidth": 358,
+          "position": "50% 40%"
+        },
+        {
+          "bild": "3",
+          "src": "http://127.0.0.1:5188/images/bild-3-480.avif",
+          "naturalWidth": 358,
+          "position": "50% 35%"
+        },
+        {
+          "bild": "4",
+          "src": "http://127.0.0.1:5188/images/bild-4-480.avif",
+          "naturalWidth": 358,
+          "position": "50% 50%"
+        },
+        {
+          "bild": "5",
+          "src": "http://127.0.0.1:5188/images/bild-5-480.avif",
+          "naturalWidth": 358,
+          "position": "50% 25%"
+        },
+        {
+          "bild": "6",
+          "src": "http://127.0.0.1:5188/images/bild-6-480.avif",
+          "naturalWidth": 358,
+          "position": "50% 50%"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "width": 600,
+      "images": [
+        {
+          "bild": "1",
+          "src": "http://127.0.0.1:5188/images/bild-1-800.avif",
+          "naturalWidth": 600,
+          "position": "50% 46%"
+        },
+        {
+          "bild": "2",
+          "src": "http://127.0.0.1:5188/images/bild-2-800.avif",
+          "naturalWidth": 568,
+          "position": "50% 40%"
+        },
+        {
+          "bild": "3",
+          "src": "http://127.0.0.1:5188/images/bild-3-800.avif",
+          "naturalWidth": 568,
+          "position": "50% 35%"
+        },
+        {
+          "bild": "4",
+          "src": "http://127.0.0.1:5188/images/bild-4-800.avif",
+          "naturalWidth": 568,
+          "position": "50% 50%"
+        },
+        {
+          "bild": "5",
+          "src": "http://127.0.0.1:5188/images/bild-5-800.avif",
+          "naturalWidth": 568,
+          "position": "50% 25%"
+        },
+        {
+          "bild": "6",
+          "src": "http://127.0.0.1:5188/images/bild-6-800.avif",
+          "naturalWidth": 568,
+          "position": "50% 50%"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "width": 800,
+      "images": [
+        {
+          "bild": "1",
+          "src": "http://127.0.0.1:5188/images/bild-1-800.avif",
+          "naturalWidth": 800,
+          "position": "50% 46%"
+        },
+        {
+          "bild": "2",
+          "src": "http://127.0.0.1:5188/images/bild-2-480.avif",
+          "naturalWidth": 364,
+          "position": "50% 40%"
+        },
+        {
+          "bild": "3",
+          "src": "http://127.0.0.1:5188/images/bild-3-480.avif",
+          "naturalWidth": 364,
+          "position": "50% 35%"
+        },
+        {
+          "bild": "4",
+          "src": "http://127.0.0.1:5188/images/bild-4-480.avif",
+          "naturalWidth": 364,
+          "position": "50% 50%"
+        },
+        {
+          "bild": "5",
+          "src": "http://127.0.0.1:5188/images/bild-5-480.avif",
+          "naturalWidth": 364,
+          "position": "50% 25%"
+        },
+        {
+          "bild": "6",
+          "src": "http://127.0.0.1:5188/images/bild-6-480.avif",
+          "naturalWidth": 364,
+          "position": "50% 50%"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "width": 1024,
+      "images": [
+        {
+          "bild": "1",
+          "src": "http://127.0.0.1:5188/images/bild-1-800.avif",
+          "naturalWidth": 760,
+          "position": "50% 50%"
+        },
+        {
+          "bild": "2",
+          "src": "http://127.0.0.1:5188/images/bild-2-480.avif",
+          "naturalWidth": 475,
+          "position": "50% 50%"
+        },
+        {
+          "bild": "3",
+          "src": "http://127.0.0.1:5188/images/bild-3-480.avif",
+          "naturalWidth": 475,
+          "position": "50% 50%"
+        },
+        {
+          "bild": "4",
+          "src": "http://127.0.0.1:5188/images/bild-4-480.avif",
+          "naturalWidth": 475,
+          "position": "50% 50%"
+        },
+        {
+          "bild": "5",
+          "src": "http://127.0.0.1:5188/images/bild-5-480.avif",
+          "naturalWidth": 475,
+          "position": "50% 50%"
+        },
+        {
+          "bild": "6",
+          "src": "http://127.0.0.1:5188/images/bild-6-480.avif",
+          "naturalWidth": 475,
+          "position": "50% 50%"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "width": 1440,
+      "images": [
+        {
+          "bild": "1",
+          "src": "http://127.0.0.1:5188/images/bild-1-800.avif",
+          "naturalWidth": 670,
+          "position": "50% 50%"
+        },
+        {
+          "bild": "2",
+          "src": "http://127.0.0.1:5188/images/bild-2-480.avif",
+          "naturalWidth": 364,
+          "position": "50% 50%"
+        },
+        {
+          "bild": "3",
+          "src": "http://127.0.0.1:5188/images/bild-3-480.avif",
+          "naturalWidth": 364,
+          "position": "50% 50%"
+        },
+        {
+          "bild": "4",
+          "src": "http://127.0.0.1:5188/images/bild-4-480.avif",
+          "naturalWidth": 364,
+          "position": "50% 50%"
+        },
+        {
+          "bild": "5",
+          "src": "http://127.0.0.1:5188/images/bild-5-480.avif",
+          "naturalWidth": 364,
+          "position": "50% 50%"
+        },
+        {
+          "bild": "6",
+          "src": "http://127.0.0.1:5188/images/bild-6-480.avif",
+          "naturalWidth": 364,
+          "position": "50% 50%"
+        }
+      ],
+      "errors": []
+    }
+  ]
+}
