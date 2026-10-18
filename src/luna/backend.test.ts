@@ -184,6 +184,8 @@ describe.skipIf(!phpDa)('Endpunkte über php -S', { timeout: PHP_ZEIT }, () => {
     const [intern, kunde] = [mails().find((m) => m.an === 'eingang@example.at')!, mails().find((m) => m.an === 'kunde@example.at')!]
     expect(intern.inhalt).toContain('Heizung kalt. Besuchen Sie www.werbung.example')
     expect(intern.inhalt).toContain('NONE – kein aktiver Partner passt')
+    expect(intern.inhalt).toContain('PLZ und Ort:      1100 Wien')
+    expect(kunde.inhalt).toContain('PLZ und Ort:      1100 Wien')
     expect(kunde.inhalt).toContain('Guten Tag Max Muster,')
     expect(kunde.inhalt).toContain('meldet sich telefonisch unter 0660 123 45 67')
     expect(kunde.inhalt).not.toMatch(/werbung|spam\.example|Heizung kalt/)

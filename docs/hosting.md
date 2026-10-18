@@ -9,7 +9,7 @@ Stand: 16.10.2026
   - `anfrage.php` nimmt Formular und Luna entgegen, speichert die Anfrage als Datei und verschickt die Mails.
   - `chat.php` leitet Lunas KI-Anfragen an OpenAI weiter. Der Schlüssel liegt nur auf dem Server.
   - `_basis.php` enthält das Gemeinsame (Kopien aus `src/content`, Konfiguration, Kontingent). Direkt aufgerufen gibt sie nichts aus.
-- **Endpunkte:** beim Build `VITE_FORM_ENDPOINT=/anfrage.php` und `VITE_CHAT_ENDPOINT=/chat.php`. Gleiche Herkunft, also keine CORS-Probleme.
+- **Endpunkte:** `VITE_FORM_ENDPOINT=/anfrage.php` und `VITE_CHAT_ENDPOINT=/chat.php` stehen in `.env.production` und gelten für jeden `npm run build`. Abweichend nur in `.env.production.local`. Gleiche Herkunft, also keine CORS-Probleme.
 - **Nicht gewählt:** Supabase. Begründung in der Konversation: Anfragen werden nur weitergeleitet, und externe Requests widersprechen den Projektregeln.
 
 ## Einrichtung beim Hoster

@@ -160,6 +160,8 @@ function anfrageEingang(array $p): array {
   $kategorie = preg_match('/^[a-z]{2,20}$/', $p['kategorie'] ?? '') ? $p['kategorie'] : '';
   $dringlichkeit = preg_match('/^(NORMAL|URGENT|ACUTE)$/', $p['dringlichkeit'] ?? '') ? $p['dringlichkeit'] : '';
   $ort = $p['ort'] ?? '';
+  /* Website und Luna schicken PLZ und Ort getrennt; der Betrieb braucht beides („1100 Wien“, nicht nur „Wien“). */
+  $plzOrt = str_starts_with($ort, $plz) ? $ort : trim("$plz $ort");
   $bereich = ($p['bereich'] ?? '') ?: $kategorie;
   $text = $p['text'] ?? '';
   $wunschtermin = $p['wunschtermin'] ?? '';
@@ -185,7 +187,7 @@ function anfrageEingang(array $p): array {
   $f = FARBE;
   $e = [
     'name' => esc($name), 'tel' => esc($tel), 'telLink' => esc(preg_replace('/[^\d+]/', '', $tel)),
-    'ort' => esc($ort ?: '—'), 'bereich' => esc($bereich ?: '—'),
+    'ort' => esc($plzOrt ?: '—'), 'bereich' => esc($bereich ?: '—'),
     'text' => str_replace("\n", '<br>', esc($text ?: '—')),
     'dring' => esc(['ACUTE' => 'AKUT – Gefahr oder laufender Schaden', 'URGENT' => 'Dringend', 'NORMAL' => 'Normal'][$dringlichkeit] ?? '—'),
     'wunschtermin' => esc($wunschtermin ?: '—'), 'id' => esc($id ?: '—'),
@@ -251,7 +253,7 @@ function anfrageEingang(array $p): array {
     'Name:             ' . $name,
     'Telefon:          ' . $tel,
     'E-Mail:           ' . ($email ?: '-'),
-    'PLZ und Ort:      ' . ($ort ?: '-'),
+    'PLZ und Ort:      ' . ($plzOrt ?: '-'),
     'Gewerk:           ' . ($bereich ?: '-'),
     'Dringlichkeit:    ' . ($dringlichkeit ?: '-'),
     'Wunschtermin:     ' . ($wunschtermin ?: '-'),
@@ -274,7 +276,7 @@ function anfrageEingang(array $p): array {
      Weitergabe an einen Partnerbetrieb. */
   if ($treffer && !empty($treffer['partner']['email'])) {
     try {
-      sende($treffer['partner']['email'], 'Vermittlung fixit247: ' . $bereich . ' in ' . ($plz ?: $ort),
+      sende($treffer['partner']['email'], 'Vermittlung fixit247: ' . $bereich . ' in ' . ($plzOrt ?: '—'),
         "Neue Anfrage über fixit247 – bitte den Kunden direkt kontaktieren.\n\n" . $plain, null, 'fixit247 Vermittlung', $empfaenger);
     } catch (Throwable $fehler) {
       error_log('fixit247 Partnermail fehlgeschlagen: ' . $fehler->getMessage());
@@ -288,7 +290,7 @@ function anfrageEingang(array $p): array {
       bestaetigungSenden($email, [
         'name' => nurZeichen(preg_replace('/\S+\.\S+/u', ' ', $name), "/[^A-Za-zÀ-ÖØ-öø-ÿ' .-]/u", 60),
         'tel' => nurZeichen($tel, '/[^\d+()\/ .-]/u', 25),
-        'ort' => nurZeichen(preg_replace('/\S+\.\S+/u', ' ', $ort), '/[^A-Za-zÀ-ÖØ-öø-ÿ0-9 .,\/-]/u', 60) ?: '—',
+        'ort' => nurZeichen(preg_replace('/\S+\.\S+/u', ' ', $plzOrt), '/[^A-Za-zÀ-ÖØ-öø-ÿ0-9 .,\/-]/u', 60) ?: '—',
         'bereich' => gewerkName($p['bereich'] ?? '', $kategorie) ?: '—',
       ], $empfaenger);
     } catch (Throwable $fehler) {
