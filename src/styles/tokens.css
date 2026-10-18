@@ -59,6 +59,7 @@
   --fx-section-y: clamp(56px, calc(3.81vw + 41.14px), 96px);     /* Handy 56/64, Desktop 96/104: oben */
   --fx-section-y-end: clamp(64px, calc(3.81vw + 49.14px), 104px); /* unten */
   --fx-container: 1140px;       /* Inhalt; mit 24px Rand max-width 1188px */
+  --fx-hero-max: 1920px;        /* Hero mit Bild höchstens so breit; darüber gleicher Rand rechts, statt Bild bis zum Fensterrand */
 
   /* Bewegung */
   --fx-ease: cubic-bezier(0.2, 0, 0, 1);
