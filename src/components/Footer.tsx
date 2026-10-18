@@ -31,8 +31,8 @@ export function Footer() {
             <p className="m-0 max-w-[32em] text-small leading-[1.6] text-nebel nav:text-text nav:leading-[1.6]">
               {fuss.text}
             </p>
-            {/* Oberer Teil des Globus, unten weich ausgeblendet; nur ab 920 px, wo die Spalte Platz hat. */}
-            <div className="h-[208px] max-w-[320px] overflow-hidden mask-b-from-30% max-nav:hidden">
+            {/* Oberer Teil des Globus, unten weich ausgeblendet. */}
+            <div className="h-[208px] max-w-[320px] overflow-hidden mask-b-from-30%">
               <Globus />
             </div>
           </div>
