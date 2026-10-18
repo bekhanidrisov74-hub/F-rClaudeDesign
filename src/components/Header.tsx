@@ -19,9 +19,10 @@ export function Header({ aufStartseite = true }: { aufStartseite?: boolean }) {
           href={aufStartseite ? '#start' : '/'}
           onClick={() => setMenueOffen(false)}
           aria-label={copy.kopf.logoLabel}
-          className="flex min-h-[44px] items-center font-display text-logo leading-none font-extrabold tracking-[-0.035em] text-tiefsee"
+          className="flex min-h-[44px] shrink-0 items-center text-tiefsee"
         >
-          {copy.kopf.logo}
+          {/* Logo wie im Impeccable-Kopf: 158 px (Handy), 188 px ab 920 px; unter 375 px schmaler, damit Anrufen und Menü daneben passen. */}
+          <Icon name="logo" className="aspect-[188/33.57] w-[min(158px,calc(100vw-216px))] nav:w-[188px]" />
         </a>
 
         <nav aria-label={copy.kopf.navLabel} className="ml-auto flex gap-s5 max-nav:hidden">

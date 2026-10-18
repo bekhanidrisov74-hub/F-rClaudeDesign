@@ -45,7 +45,8 @@ export const copy = {
   },
 
   kopf: {
-    logo: 'fixit247',
+    /** Text im Logo (design/icons/logo.svg), für Screenreader */
+    logo: 'fixit247 – Ihr Partner im Notfall',
     logoLabel: 'fixit247, zur Startseite',
     navLabel: 'Hauptnavigation',
     nav: [

@@ -4,7 +4,7 @@ import { Symbol3D } from './Symbol3D'
 
 /**
  * Anruf-Knopf: überall Türkis mit Tiefsee-Schrift, als Pille, das auffälligste Element (SPEC 3).
- * - kopf:  Seitenkopf, 44/48 px, Nummer ab 560 px
+ * - kopf:  Seitenkopf, 44/48 px, Nummer 560–919 px und ab 1140 px (dazwischen braucht das Logo neben der Navigation den Platz)
  * - hero:  groß mit Kreis und Nummer, 70/76 px (Screen 01/02)
  * - karte: mit Kreis und Nummer in dunklen Karten, 64/68 px (Menü 05, Seitenkasten 02)
  * - block: volle Breite, 56 px, Nummer optional in derselben Zeile (Karten, Dialog, Sheet, Luna)
@@ -30,7 +30,7 @@ export function CallButton({ variante, label, nummer = false, className = '' }: 
       >
         <Symbol3D name="ui-anrufen" className="size-[18px] nav:size-[20px]" />
         <span>{label ?? copy.kopf.anrufen}</span>
-        <span className="text-small font-semibold max-kopf:hidden">{TELEFON}</span>
+        <span className="text-small font-semibold max-kopf:hidden nav:max-[71.25rem]:hidden">{TELEFON}</span>
       </a>
     )
 

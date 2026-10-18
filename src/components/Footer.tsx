@@ -1,6 +1,7 @@
 import { copy, fuelle } from '../content/copy'
 import { EMAIL, FIRMA, TELEFON, WHATSAPP, mailHref, telHref, whatsappHref } from '../content/contact'
 import { Globus } from './ui/Globus'
+import { Icon } from './ui/Icon'
 import { Symbol3D } from './ui/Symbol3D'
 
 // Links: sichtbar so dicht wie im Entwurf, die Trefferfläche ist 44 px hoch
@@ -22,11 +23,8 @@ export function Footer() {
       <div className="wrapper relative flex flex-col gap-s7 pt-s7 pb-s6 nav:gap-s8 nav:pt-s9">
         <div className="grid gap-s7 nav:grid-cols-[minmax(0,1fr)_auto] nav:gap-s9">
           <div className="flex flex-col gap-s4">
-            <span className="flex items-center gap-s3">
-              <Symbol3D name="ui-rund-um-die-uhr" hell trage gross className="size-s7" />
-              <span className="font-display text-logo-fuss font-extrabold tracking-[-0.035em] [font-stretch:100%]">
-                {copy.kopf.logo}
-              </span>
+            <span role="img" aria-label={copy.kopf.logo} className="flex [--logo-zeile:var(--fx-nebel)]">
+              <Icon name="logo" className="aspect-[188/33.57] w-[200px] max-w-full nav:w-[226px]" />
             </span>
             <p className="m-0 max-w-[32em] text-small leading-[1.6] text-nebel nav:text-text nav:leading-[1.6]">
               {fuss.text}

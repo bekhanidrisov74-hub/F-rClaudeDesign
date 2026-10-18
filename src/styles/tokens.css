@@ -68,8 +68,6 @@
   --fx-dur-sheet: 240ms;  /* Bottom-Sheet */
 
   /* ── Ergänzt aus den Screens (Entscheidung 1A). Handy → Desktop, fließend 390 → 1440 px ── */
-  --fx-logo: clamp(23px, calc(0.381vw + 21.51px), 27px);      /* Wortmarke im Kopf (01: 23, 02: 27) */
-  --fx-logo-fuss: clamp(27px, calc(0.286vw + 25.89px), 30px); /* Wortmarke im Fuß (01: 27, 02: 30) */
   --fx-hero-call: clamp(23px, calc(0.19vw + 22.26px), 25px);  /* „Jetzt anrufen“ im Hero (Screen 14: 23/25) */
   --fx-step-nr: clamp(56px, calc(1.524vw + 50.06px), 72px);   /* Schrittnummern So funktioniert's (01: 56, 02: 72) */
   --fx-h2-s: 30px;         /* Menü-Links, Seitenkasten „Lieber sofort sprechen?“, Sheet-Titel (05, 02, 04) */

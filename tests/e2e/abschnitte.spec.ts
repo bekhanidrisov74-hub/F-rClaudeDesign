@@ -29,7 +29,7 @@ test('Falz 390 × 844: Anrufen, WhatsApp und Anfrage senden liegen über 660 px'
   }
 })
 
-test('Navigation ab 920 px, darunter Menü-Knopf; Nummer im Kopf ab 560 px', async ({ page }, info) => {
+test('Navigation ab 920 px, darunter Menü-Knopf; Nummer im Kopf 560–919 px und ab 1140 px', async ({ page }, info) => {
   nurEinmal(info.project.name)
   const kopf = page.locator('header').first()
   const pruefe = async (breite: number, nav: boolean, nummer: boolean) => {
@@ -42,7 +42,9 @@ test('Navigation ab 920 px, darunter Menü-Knopf; Nummer im Kopf ab 560 px', asy
     })
   }
   await pruefe(919, false, true)
-  await pruefe(920, true, true)
+  await pruefe(920, true, false)
+  await pruefe(1139, true, false)
+  await pruefe(1140, true, true)
   await pruefe(559, false, false)
   await pruefe(560, false, true)
 })
