@@ -52,7 +52,7 @@ for (let n = 1; n <= 6; n++) {
   tiefseeAnheben(data)
   for (const breite of BILD_BREITEN) {
     const ziel = `public/images/bild-${n}${breite === 1254 ? '' : `-${breite}`}`
-    const bild = sharp(data, { raw: info }).resize(breite, breite)
+    const bild = sharp(data, { raw: info }).resize({ width: breite })
     await bild.clone().webp({ quality: 85 }).toFile(`${ziel}.webp`)
     await bild.clone().avif({ quality: 60, effort: 4 }).toFile(`${ziel}.avif`)
   }

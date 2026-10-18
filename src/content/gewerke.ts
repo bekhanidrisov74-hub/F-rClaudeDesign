@@ -22,8 +22,10 @@ export interface Gewerk {
   karte: string
   /** Bildnummer laut IMAGE-BRIEFS.md (public/images/bild-N.webp) */
   bild: number
-  /** Höhe des Bildausschnitts in Prozent (object-position): hält Helm und Hände im Karten-Zuschnitt 16:9 und 4:3 */
-  bildY: number
+  /** Bildausschnitt der Karte (object-position): hält Helm und Hände im Zuschnitt 16:9 (Handy) und 4:3 (ab 920 px) */
+  bildFokus: string
+  /** Quellbild ist ein 16:9-Querformat (bild-3): Bildflaeche rechnet die Breite für den 4:3-Zuschnitt ab 920 px mit */
+  bildQuer?: true
   /** 3D-Icon: design/icons-3d/{icon}.png, auf der Seite public/icons/{icon}-{Breite}.avif|webp */
   icon: string
   /** Luna-Erfolg: „Wir geben sie jetzt an einen passenden {betrieb} in Ihrer Nähe weiter.“ (nicht im Design, Frage 2) */
@@ -48,7 +50,7 @@ export const gewerke: Gewerk[] = [
     schnellwahl: 'Rohrbruch, WC verstopft',
     karte: 'Rohrbruch, WC oder Abfluss verstopft, tropfende Armatur',
     bild: 2,
-    bildY: 40,
+    bildFokus: '50% 40%',
     icon: 'gewerk-installateur',
     betrieb: 'Installateur',
     tipp: 'Falls möglich, drehen Sie den Hauptwasserhahn zu.',
@@ -65,7 +67,8 @@ export const gewerke: Gewerk[] = [
     schnellwahl: 'Therme aus, kein Warmwasser',
     karte: 'Therme fällt aus, kein Warmwasser, Klimaanlage',
     bild: 3,
-    bildY: 34,
+    bildFokus: '65% 50%',
+    bildQuer: true,
     icon: 'gewerk-heizung-und-klima',
     betrieb: 'Fachbetrieb für Heizung und Klima',
     tipp: GASNOTRUF,
@@ -82,7 +85,7 @@ export const gewerke: Gewerk[] = [
     schnellwahl: 'Ausgesperrt, Schloss defekt',
     karte: 'Ausgesperrt, Schlüssel abgebrochen, Schloss tauschen',
     bild: 4,
-    bildY: 50,
+    bildFokus: '50% 50%',
     icon: 'gewerk-schluesseldienst',
     betrieb: 'Schlüsseldienst',
     tipp: 'Halten Sie, wenn möglich, einen Ausweis bereit.',
@@ -99,7 +102,7 @@ export const gewerke: Gewerk[] = [
     schnellwahl: 'Strom weg, FI-Schalter fliegt',
     karte: 'Stromausfall, FI-Schalter fliegt, Steckdose defekt',
     bild: 5,
-    bildY: 25,
+    bildFokus: '50% 22%',
     icon: 'gewerk-elektro',
     betrieb: 'Elektriker',
     tipp: 'Berühren Sie keine beschädigten Kabel oder nassen Geräte.',
@@ -116,7 +119,7 @@ export const gewerke: Gewerk[] = [
     schnellwahl: 'Waschmaschine, Herd, Kühlschrank',
     karte: 'Waschmaschine, Geschirrspüler, Herd, Kühlschrank',
     bild: 6,
-    bildY: 34,
+    bildFokus: '50% 56%',
     icon: 'gewerk-haushaltsgeraete',
     betrieb: 'Fachbetrieb für Haushaltsgeräte',
     tipp: 'Trennen Sie das Gerät, wenn möglich, vom Strom.',

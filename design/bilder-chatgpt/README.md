@@ -1,15 +1,18 @@
-# Generated 3D scenes
+# Website-Bildserie – korrigierte Fassung vom 2026-10-18
 
-Generated on 2026-10-18 with the built-in image generation tool.
+Die sechs Dateien `bild-1.png` bis `bild-6.png` sind die aktuellen Website-Quellen, jeweils native 1254 × 1254 px. Die Bearbeitungen wurden mit dem eingebauten Bildgenerator erzeugt. `../BILD-PROMPTS-3D-CHATGPT.md` (Originalprompts) und `PROMPTS-KORREKTUREN.md` dokumentieren die Prompts. Das vom Nutzer freigegebene Hero zeigt den korrigierten Maulschlüssel.
 
-Final files: `bild-1.png` through `bild-6.png`, each 1254 × 1254 pixels, PNG. `figurenblatt.png` is the character reference. `KONTAKTBLATT.png` shows the final six scenes, ordered 1–3 across the top and 4–6 across the bottom.
+| Bild | Geprüfte und korrigierte Details |
+|---|---|
+| 1 Hero | Verstellbarer Maulschlüssel an einer Sechskantmutter, andere Hand am Auslauf; freigegebene Fassung übernommen. |
+| 2 Sanitär | Glatte Schlüsselbacken greifen die Messingmutter, nachvollziehbarer Hebel und geschlossener Handgriff. |
+| 3 Heizung | Messsonde am Abgasstutzen, durchgehender Probenschlauch, rechteckiges Messgerät direkt in der Hand statt auf einem Stiel. |
+| 4 Schloss | Pick und separater dünner Spanner setzen am selben Zylinder an; der frei hängende orange Stab ist entfernt. |
+| 5 Elektro | Zweipoliger Spannungsprüfer mit zwei isolierten Griffen, getrennten Metallkontakten und Verbindungskabel; unbedruckter Schalter. |
+| 6 Geräte | Kurzes Pumpensieb mit Schraubdeckel und Dichtung; freie Pumpenöffnung, separater Schlauch am festen Gehäuse; Taschenlampe zeigt in die Öffnung. Kamera für den Kartenausschnitt zurückgesetzt. |
 
-`PROMPTS.md` preserves the complete source prompt set. Generation order: character sheet, 2, 3, 4, 5, correction to 5, 6, 1. The series block was passed unchanged for each generation.
+Herstellerreferenzen zur Plausibilitätsprüfung: [Wera: parallele glatte Schlüsselbacken](https://www.wera.de/en/tools/6006-joker-m-l-self-setting-double-spanner), [Testo: Abgasanalyse](https://static-int.testo.com/media/44/09/24c5948e0507/testo-310-Instruction-Manual.pdf), [BENNING: zweipolige Spannungsprüfer](https://www.benning.de/products-us/testing-measuring-and-safety-equipment/test-equipment-voltage-tester.html), [Bosch: Pumpenfilter](https://www.bosch-home.com/us/owner-support/get-support/cleaning-the-washing-machine-filter).
 
-The original six Blender renders were assembled into `blender-references.png` because the image tool accepts at most five reference paths. The character sheet request additionally stated: “REFERENCE INPUT: The one attached contact sheet contains all six Blender scene references, in order 1,2,3 across the top and 4,5,6 across the bottom. Use all six character identities for the character lineup task. Output a SINGLE square character lineup, not a collage of scenes.”
+## Einbau
 
-Each scene used its original Blender render and the character sheet as references. Scenes 3–6 and 1 also used the generated scene 2 as a style reference.
-
-The electrician correction prompt was: “Use case: precise-object-edit. Edit this electrician scene with ONLY this change: remove the tiny embossed letter/number-like marking on the orange circuit-breaker toggle in the top row, and any other text, lettering, digits, symbols or engraving on any object. Make that orange toggle a completely plain smooth orange surface. Keep the entire composition, character, facial expression, hands, tool, fuse box, wiring, props, materials, colors, lighting and dark background unchanged. One square image at the same size.” The earlier version is `bild-5-draft.png`.
-
-All final PNGs were decoded and checked for square dimensions and PNG format, and the contact sheet was visually reviewed. These are the native generated files; no upscale, color correction, web-format export or website integration was performed.
+`node scripts/export-3d.mjs` (Sharp per `SHARP_MODULE_PATH`) hebt das Schwarz der Bilder auf Tiefsee an und schreibt AVIF und WebP bei 480, 800, 1200 und 1254 px nach `public/images/`. Den Bildausschnitt der Karten steuert `bildY` in `src/content/gewerke.ts`, im Hero die `object-position` in `Hero.tsx`. Die vollständige Serie zeigt `KONTAKTBLATT.png`.
