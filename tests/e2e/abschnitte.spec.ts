@@ -4,7 +4,7 @@ import { gewerke } from '../../src/content/gewerke'
 const nurEinmal = (name: string) => test.skip(name !== 'm390', 'läuft nur einmal, setzt die Breite selbst')
 
 /** Erwartete Reihenfolge der Abschnitte. Jede Phase ergänzt ihre Abschnitte. */
-const REIHENFOLGE = ['#start', 'section[aria-label="Warum fixit247"]', '#leistungen', '#ablauf', '#preisrechner', '#zusagen', '#anfrage', '#fragen', 'footer']
+const REIHENFOLGE = ['#start', 'section[aria-label="Ihre Vorteile"]', '#leistungen', '#ablauf', '#preisrechner', '#zusagen', '#anfrage', '#fragen', 'footer']
 
 test('Abschnitte in der richtigen Reihenfolge', async ({ page }) => {
   await page.goto('/')
@@ -17,19 +17,19 @@ test('Abschnitte in der richtigen Reihenfolge', async ({ page }) => {
   expect(oben).toEqual([...oben].sort((a, b) => a - b))
 })
 
-test('Falz 390 × 844: Anrufen, WhatsApp und Anfrage senden liegen über 660 px', async ({ page }, info) => {
+test('Falz 390 × 844: Anrufen und Anfrage senden liegen über 660 px', async ({ page }, info) => {
   nurEinmal(info.project.name)
   await page.setViewportSize({ width: 390, height: 844 })
   await page.goto('/')
   const hero = page.locator('#start')
-  for (const name of [/Jetzt anrufen/, /WhatsApp/, /Anfrage senden/]) {
+  for (const name of [/Jetzt anrufen/, /Anfrage senden/]) {
     const box = await hero.getByRole('link', { name }).first().boundingBox()
     expect(box, String(name)).not.toBeNull()
     expect(box!.y + box!.height, String(name)).toBeLessThan(660)
   }
 })
 
-test('Navigation ab 920 px, darunter Menü-Knopf; Nummer im Kopf 560–919 px und ab 1140 px', async ({ page }, info) => {
+test('Navigation und Nummer im Kopf ab 1280 px, darunter Menü-Knopf', async ({ page }, info) => {
   nurEinmal(info.project.name)
   const kopf = page.locator('header').first()
   const pruefe = async (breite: number, nav: boolean, nummer: boolean) => {
@@ -41,12 +41,11 @@ test('Navigation ab 920 px, darunter Menü-Knopf; Nummer im Kopf 560–919 px un
       visible: nummer,
     })
   }
-  await pruefe(919, false, true)
-  await pruefe(920, true, false)
-  await pruefe(1139, true, false)
-  await pruefe(1140, true, true)
-  await pruefe(559, false, false)
-  await pruefe(560, false, true)
+  await pruefe(390, false, false)
+  await pruefe(920, false, false)
+  await pruefe(1279, false, false)
+  await pruefe(1280, true, true)
+  await pruefe(1534, true, true)
 })
 
 test('Menü-Knopf ist mit dem Menü verbunden', async ({ page }, info) => {
@@ -58,16 +57,21 @@ test('Menü-Knopf ist mit dem Menü verbunden', async ({ page }, info) => {
   expect(await page.locator(`#${ziel}`).count()).toBe(1)
 })
 
-test('Anruf-Knöpfe: Türkis mit Tiefsee-Schrift', async ({ page }) => {
+test('Anruf-Knöpfe: Türkis mit Tiefsee-Schrift, in Kopf und Hero im Türkis des Entwurfs „Hero – Desktop 1586“', async ({ page }) => {
   await page.goto('/')
   const knoepfe = page.locator('a[href^="tel:"]:visible').filter({ hasNot: page.locator('footer') })
   const farben = await knoepfe.evaluateAll((els) =>
     els
       .filter((el) => !el.closest('footer'))
-      .map((el) => [getComputedStyle(el).backgroundColor, getComputedStyle(el).color].join(' / ')),
+      .map((el) => ({
+        entwurf: !!el.closest('.hd-kopf, .hd'),
+        farbe: [getComputedStyle(el).backgroundColor, getComputedStyle(el).color].join(' / '),
+      })),
   )
-  expect(farben.length).toBeGreaterThan(0)
-  for (const f of farben) expect(f).toBe('rgb(58, 168, 184) / rgb(0, 27, 42)')
+  expect(farben.filter((f) => f.entwurf).length).toBe(2)
+  expect(farben.filter((f) => !f.entwurf).length).toBeGreaterThan(0)
+  for (const f of farben)
+    expect(f.farbe).toBe(f.entwurf ? 'rgb(34, 181, 192) / rgb(3, 16, 31)' : 'rgb(58, 168, 184) / rgb(0, 27, 42)')
 })
 
 test('Gewerke-Icons: 3D-Render in der Farbe der Kategorie, ohne Fläche, 56/64 px', async ({ page }, info) => {
@@ -110,10 +114,10 @@ test('Gewerke-Icons: 3D-Render in der Farbe der Kategorie, ohne Fläche, 56/64 p
   }
 })
 
-test('Bild 1 reicht am Desktop bis zum rechten Rand', async ({ page }, info) => {
+test('Hero-Foto reicht am Desktop bis zum rechten Rand', async ({ page }, info) => {
   test.skip(info.project.name !== 'd1440', 'nur Desktop')
   await page.goto('/')
-  const box = await page.locator('[data-bild="1"]:visible').boundingBox()
+  const box = await page.locator('.hd-foto').boundingBox()
   expect(box).not.toBeNull()
   expect(Math.round(box!.x + box!.width)).toBe(1440)
 })
@@ -168,9 +172,13 @@ test('Symbole: 3D-Renders in der Farbstellung ihrer Fläche, geladen und dekorat
   await page.goto('/')
   // Die Farbstellung steckt im Dateinamen; src steht auch fest, bevor das träge geladene Bild da ist
   const datei = (img: HTMLImageElement) => img.getAttribute('src')!.slice(img.getAttribute('src')!.lastIndexOf('/') + 1)
-  // Türkiser Anruf-Knopf im Kopf → Körper Tiefsee; Kreis Tiefsee im großen Anruf-Knopf → Körper Türkis (-hell)
-  expect(await page.locator('header a[href^="tel:"] img').first().evaluate(datei)).toBe('ui-anrufen-96.webp')
-  expect(await page.locator('#start a[href^="tel:"] img').first().evaluate(datei)).toBe('ui-anrufen-hell-96.webp')
+  // Türkiser Anruf-Knopf (Hilfekarte in den Leistungen) → Körper Tiefsee
+  expect(await page.locator('#leistungen a[href^="tel:"] img').first().evaluate(datei)).toBe('ui-anrufen-96.webp')
+  // Kopf und Hero zeigen den flachen Hörer aus dem Entwurf „Hero – Desktop 1586“ (SVG), kein 3D-Symbol
+  for (const wo of ['header', '#start']) {
+    await expect(page.locator(`${wo} a[href^="tel:"] svg`), wo).toHaveCount(1)
+    await expect(page.locator(`${wo} a[href^="tel:"] img`), wo).toHaveCount(0)
+  }
   for (const name of await page.locator('footer img[src*="/icons/ui-"]').evaluateAll((els) => els.map((el) => el.getAttribute('src'))))
     expect(name).toMatch(/-hell-(96|168)\.webp$/)
   const alle = page.locator('img[src*="/icons/ui-"]:visible')

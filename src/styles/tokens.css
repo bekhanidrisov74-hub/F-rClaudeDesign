@@ -79,7 +79,7 @@
   --fx-btn: 16px;          /* Knöpfe, Chips (Screen 14: 16–18) */
   --fx-btn-l: 18px;        /* Anruf-Pillen in Karten, Senden-Knopf */
   --fx-text: 16px;         /* Kartentext, Tabellen, Labels, Luna-Verlauf */
-  --fx-kopf: 64px;         /* Höhe Seitenkopf: Handy 64, ab 920 px 76 (01, 02) */
+  --fx-kopf: 76px;         /* Höhe Seitenkopf: unter 1280 px 76, darüber 100 Entwurfs-px (Entwurf „Hero – Desktop 1586“) */
   --fx-border: 1.5px;      /* Umrandung von Feldern, Chips, Zweitknöpfen (alle Screens) */
 
   /* ── Ergänzt für „Glanz“ (16.10.2026, docs/glanz/BRIEF.md). Nur Mischungen der Farben oben ── */
@@ -96,6 +96,95 @@
   /* Große Wortmarke so breit wie der Inhalt (in einem Container gemessen): 0,32 em je px passt zu „fixit247“ in Bricolage 800,
      in Chrome gemessen; ein e2e-Test prüft es. Ändern sich Wort oder Schrift, neu messen. */
   --fx-wortmarke-gross: calc(min(100cqi - 2 * var(--fx-gutter), var(--fx-container)) * 0.32);
+
+  /* ── Kopf, Hero und Vorteile nach dem Entwurf „Hero – Desktop 1586“ (19.10.2026), Werte 1:1 aus dem Entwurf (styles/hero.css).
+     Desktop-Werte stehen in Entwurfs-px × --fx-hd-px: ab 1534 px fest wie im Entwurf, von 1280 bis 1534 px schrumpft alles
+     mit der Fensterbreite, damit Text, Bild und die vier Vorteile so zueinander stehen wie im Entwurf. Unter 1280 px gilt die
+     Handy-Fassung des Entwurfs (-handy-Werte, fest). Eigene Farben und Schrift, weil der Entwurf sie so vorgibt (Bericht 19.10.2026). ── */
+  --fx-hd-px: 1px;
+  --fx-hd-font: 'Inter Variable', Inter, system-ui, sans-serif;
+
+  --fx-hd-tiefsee: #03101F;        /* Text und Icons */
+  --fx-hd-orange: #EC5315;         /* „Rund um die Uhr.“ */
+  --fx-hd-tuerkis: #22B5C0;        /* Anruf-Knöpfe in Kopf und Hero */
+  --fx-hd-kalk: #FBFCFD;           /* Fläche von Hero und Vorteilen */
+  --fx-hd-kalk-kopf: #F7FBFE;      /* Fläche des Kopfs */
+  --fx-hd-linie-kopf: #E8ECF0;     /* Linie unter dem Kopf */
+  --fx-hd-linie: #ECEDF0;          /* Trennlinien zwischen den Vorteilen */
+  --fx-hd-schiefer-nav: #4F5360;   /* Navigation */
+  --fx-hd-schiefer: #5C606C;       /* Unterzeile */
+  --fx-hd-schiefer-hell: #646872;  /* Text der Vorteile */
+  --fx-hd-rand: #7C8494;           /* Rand von „Anfrage senden“ */
+  --fx-hd-nacht: #021022;          /* Kreis im großen Anruf-Knopf */
+  --fx-hd-tuerkis-hell: #8FE6EC;   /* Hörer im Kreis */
+  --fx-hd-eis: #E8F4F8;            /* Hinweiskasten */
+  --fx-hd-lagune: #BEF0F6;         /* Kreise der Vorteile */
+  --fx-hd-schaum: #E6F8FA;         /* Häkchen im Schild */
+  --fx-hd-raster: rgba(40, 70, 120, 0.05); /* Raster am linken Rand des Hero */
+  --fx-hd-shadow-anruf: 0 4px 10px rgba(3, 16, 31, 0.06);
+  --fx-hd-shadow-anfrage: 0 3px 8px rgba(3, 16, 31, 0.05);
+  --fx-hd-shadow-anfrage-hover: 0 6px 18px rgba(3, 16, 31, 0.08);
+
+  --fx-hd-nav: calc(19 * var(--fx-hd-px));
+  --fx-hd-anrufen: calc(23 * var(--fx-hd-px));      /* „Anrufen“ im Kopf */
+  --fx-hd-anrufen-handy: 18px;
+  --fx-hd-nummer: calc(18 * var(--fx-hd-px));       /* Nummer im Kopf */
+  --fx-hd-h1: calc(88 * var(--fx-hd-px));
+  --fx-hd-h1-handy: 46px;
+  --fx-hd-h1-akzent: calc(82 * var(--fx-hd-px));
+  --fx-hd-h1-akzent-handy: min(43px, calc((100vw - 30px) / 7.75)); /* unter 364 px kleiner, damit „Rund um die Uhr.“ einzeilig bleibt */
+  --fx-hd-lead: calc(20.2 * var(--fx-hd-px));
+  --fx-hd-lead-handy: 17px;
+  --fx-hd-cta: calc(29.5 * var(--fx-hd-px));        /* „Jetzt anrufen“ */
+  --fx-hd-cta-nummer: calc(18.2 * var(--fx-hd-px));
+  --fx-hd-anfrage: calc(19.5 * var(--fx-hd-px));
+  --fx-hd-info: calc(20.5 * var(--fx-hd-px));
+  --fx-hd-info-stark: calc(21.5 * var(--fx-hd-px));
+  --fx-hd-info-handy: 17px;                          /* beide Zeilen */
+  --fx-hd-vorteil-titel: calc(18 * var(--fx-hd-px));
+  --fx-hd-vorteil-text: calc(15.9 * var(--fx-hd-px));
+
+  --fx-hd-r-anfrage: calc(16 * var(--fx-hd-px));
+  --fx-hd-r-info: calc(20 * var(--fx-hd-px));
+
+  --fx-hd-s-kopf-l: calc(92 * var(--fx-hd-px));
+  --fx-hd-s-kopf-r: calc(79 * var(--fx-hd-px));
+  --fx-hd-s-nav: calc(40 * var(--fx-hd-px));
+  --fx-hd-s-anrufen: calc(41 * var(--fx-hd-px));    /* vor dem Anruf-Knopf */
+  --fx-hd-s-anrufen-hoch: calc(-2 * var(--fx-hd-px));
+  --fx-hd-s-anrufen-x: calc(28 * var(--fx-hd-px));
+  --fx-hd-s-anrufen-x-handy: 18px;
+  --fx-hd-s-anrufen-gap: calc(19 * var(--fx-hd-px));
+  --fx-hd-s-anrufen-gap-handy: 10px;
+  --fx-hd-s-nummer: calc(8 * var(--fx-hd-px));
+  --fx-hd-s-text-o: calc(72 * var(--fx-hd-px));
+  --fx-hd-s-text-o-handy: 36px;
+  --fx-hd-s-text-l: calc(100 * var(--fx-hd-px));
+  --fx-hd-s-h1: calc(-4 * var(--fx-hd-px));
+  --fx-hd-s-h1-handy: -2px;
+  --fx-hd-s-lead: calc(22 * var(--fx-hd-px));
+  --fx-hd-s-ctas: calc(30 * var(--fx-hd-px));
+  --fx-hd-s-ctas-gap: calc(12 * var(--fx-hd-px));
+  --fx-hd-s-cta-l: calc(9 * var(--fx-hd-px));
+  --fx-hd-s-cta-gap: calc(23 * var(--fx-hd-px));
+  --fx-hd-s-anfrage-o: calc(2 * var(--fx-hd-px));
+  --fx-hd-s-anfrage-l: calc(33 * var(--fx-hd-px));
+  --fx-hd-s-anfrage-gap: calc(24 * var(--fx-hd-px));
+  --fx-hd-s-info: calc(26 * var(--fx-hd-px));
+  --fx-hd-s-info-l: calc(38 * var(--fx-hd-px));
+  --fx-hd-s-info-gap: calc(33 * var(--fx-hd-px));
+  --fx-hd-s-info-handy: 18px;
+  --fx-hd-s-vorteile-o: calc(29 * var(--fx-hd-px));
+  --fx-hd-s-vorteile-o-handy: 36px;
+  --fx-hd-s-vorteile-r: calc(80 * var(--fx-hd-px));
+  --fx-hd-s-vorteile-u: calc(72 * var(--fx-hd-px));
+  --fx-hd-s-vorteile-u-handy: 48px;
+  --fx-hd-s-vorteile-l: calc(93 * var(--fx-hd-px));
+  --fx-hd-s-vorteile-zeilen-handy: 22px;
+  --fx-hd-s-vorteil-gap: calc(25 * var(--fx-hd-px));
+  --fx-hd-s-vorteil-l: calc(26 * var(--fx-hd-px));
+  --fx-hd-s-vorteil-text: calc(10 * var(--fx-hd-px));
+  --fx-hd-s-vorteil-p: calc(6 * var(--fx-hd-px));
 }
 
 @media (min-width: 40rem) {
@@ -105,14 +194,16 @@
   }
 }
 
-@media (min-width: 57.5rem) {
+/* Kopf, Hero und Vorteile in der Desktop-Fassung; 100vw / 1534 ist ein Entwurfs-px bei 1534 px Fensterbreite */
+@media (min-width: 80rem) {
   :root {
-    --fx-kopf: 76px;
+    --fx-hd-px: min(1px, 100vw / 1534);
+    --fx-kopf: calc(100 * var(--fx-hd-px));
   }
 }
 
-/* Umbrüche: 920px (darunter Navigation → Menü-Knopf), 640px (darunter Sheet statt Dialog, Luna Vollbild),
-   560px (darunter Telefonnummer im Kopf ausblenden) */
+/* Umbrüche: 1280px (darunter Menü-Knopf statt Navigation, Handy-Fassung von Kopf und Hero), 920px (Abschnitte der Seite),
+   640px (darunter Sheet statt Dialog, Luna Vollbild) */
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after, *::backdrop { animation: none !important; transition: none !important; scroll-behavior: auto !important; }

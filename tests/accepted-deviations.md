@@ -36,13 +36,9 @@ Entschiedene Standards:
   - Fuß-Kontakt am Handy ohne „Telefon“-Präfix und „WhatsApp“ ohne Nummer
 - Leistungen sind auf allen Breiten ein Raster (`auto-fill` ab 340 px) mit 24 px Abstand. Im Entwurf hat die Handy-Spalte 20 px.
 - Kartenradius 22 px (`--fx-r-card-lg`) auf allen Breiten, im Entwurf am Handy 20 px.
-- Zweitknöpfe im Hero (WhatsApp, Anfrage senden) haben auf allen Breiten Radius 16 px (`--fx-r-btn-lg`), im Entwurf am Handy 14 px.
-- Abstände sind auf `--fx-s-*` gerundet, z. B. Hero oben 72 statt 76 px und Überlappung der Kacheln 96 statt 104 px.
-- Zwischen 560 und 920 px gibt es keinen Entwurf: Dort gilt der kompakte Handy-Kopf (64 px) mit Menü-Knopf, Bild 1 steht nach der Schnellwahl.
-- Kopf ab 920 px: Abstand zwischen den Navigations-Links 24 statt 32 px und zum Anruf-Knopf 32 statt 40 px. So bleibt die Zeile bei 920 px einzeilig.
 - Schnellwahl ab 920 px: Kacheln mindestens 176 statt 160 px breit, damit „Haushaltsgeräte“ bei 19 px Titelgröße passt. Bei 1024 px stehen 5 Kacheln in der ersten Reihe, die Luna-Kachel allein darunter. Für 1024 gibt es keinen Entwurf.
-- Schnellwahl-Titel „Was ist passiert?“ in `text-h4` (22 px bei 1440, Entwurf 24 px). Kachel-, Vertrauens- und Spaltentitel in `text-h5` (19 px bei 1440, Entwurf 18 px).
-- Zwischen 640 und 919 px: Schnellwahl mit 3 Spalten, Vertrauensleiste mit 2 Spalten, Fuß im Handy-Layout (kein Entwurf).
+- Schnellwahl-Titel „Was ist passiert?“ in `text-h4` (22 px bei 1440, Entwurf 24 px). Kachel- und Spaltentitel in `text-h5` (19 px bei 1440, Entwurf 18 px).
+- Zwischen 640 und 919 px: Schnellwahl mit 3 Spalten, Fuß im Handy-Layout (kein Entwurf).
 - So funktioniert's: eine Spalte bis 919 px, drei ab 920 px.
 - Fuß: Abstände gerundet, am Handy oben 40 statt 48 px, am Desktop vor der unteren Zeile 56 statt 48 px.
 - Preis in den Leistungskarten in Bricolage 800 wie im Entwurf.
@@ -104,16 +100,15 @@ Die Aufgabe ersetzt den Ablauf aus SPEC 8. Optik wie Screens 06–12, Verhalten 
 
 ## Auf Wunsch nach Phase 5 (Hero und Fuß)
 
-Beide Änderungen sind bewusst und stehen nicht im Entwurf:
-- Hero-Raster (`GridPulse`, Commit 1ea98be): Hinter Hero-Text und Schnellwahl liegt ein Haarlinien-Raster aus 24-px-Zellen (`--fx-s-5`), das nach unten ausläuft. Unter dem Zeiger und von selbst leuchten einzelne Zellen gedämpft in Türkis, Technik, Nebel und Orange auf, bei prefers-reduced-motion bleibt es still. Der Entwurf 01/02 hat einen glatten Kalk-Grund. Einzelne helle oder orange Zellen in den Screenshots sind kein Befund.
+Bewusst und nicht im Entwurf (das Hero-Raster `GridPulse` ist mit dem Hero vom 19.10.2026 entfallen):
 - Fuß (nach Vorlage am 16.10.2026, Lichtstrahl seit 18.10.2026): vier Spalten (Marke mit Uhr-Abzeichen und ab 920 px Globus, Seiten, Kontakt mit 24-px-Icons in Türkis, Rechtliches), Spaltentitel in Türkis über einer türkisen Haarlinie. Über dem Tiefsee-Grund liegt ein schräger türkiser Lichtstrahl, oben eine türkise Lichtkante statt des Tiefsee-2-Randes. Unten schließt eine große Wortmarke „fixit247“ über die volle Inhaltsbreite ab, petrolfarben und nach unten ins Dunkle auslaufend; der Strahl läuft durch die Buchstaben. Beim Hinscrollen kommt der Strahl von links und steht dann still, die Wortmarke steigt auf, die Haarlinien ziehen sich auf; mit der Maus wandert ein weicher Schein durch die Buchstaben. Der Entwurf 01/02 hat einen flachen Tiefsee-Grund, weiße Titel, Links ohne Icons und keine Wortmarke unten; der Fuß ist dadurch deutlich höher. Die Größe der Wortmarke folgt der Inhaltsbreite und ist kein Token. Ein heller schräger Streifen im Fuß oder auf der Wortmarke ist kein Bildfehler.
 
 ## Bilder und Icons
 
-- Bildflächen zeigen 3D-Szenen aus Blender (`public/images/bild-1` bis `bild-6`, `design/IMAGE-BRIEFS.md`): eine stilisierte Fachkraft arbeitet an der Schadstelle ihres Gewerks, dunkles Tiefsee-Studio, gedämpfter türkiser Kegel hinter der Figur, orange Akzente. Völlig andere Motive als in den Entwürfen, gewollt. Zu prüfen sind nur: Gesicht, Hände und Werkzeug vollständig sichtbar, nichts Wichtiges abgeschnitten, und die Schnellwahl überdeckt das Hero-Motiv nicht.
-- Zuschnitt: Karten unter 920 px 16 : 9, ab 920 px 4 : 3. Hero-Streifen unter 920 px mindestens 300 px hoch, darüber 62 % der Breite (Entwurf: 2 : 1, dort schnitt er Hände und Werkzeug ab; auf Wunsch am 18.10.2026 höher). Ab 920 px füllt Bild 1 die rechte Spalte.
+- Bildflächen der Leistungskarten zeigen 3D-Szenen aus Blender (`public/images/bild-2` bis `bild-6`, `design/IMAGE-BRIEFS.md`): eine stilisierte Fachkraft arbeitet an der Schadstelle ihres Gewerks, dunkles Tiefsee-Studio, gedämpfter türkiser Kegel hinter der Figur, orange Akzente. Völlig andere Motive als in den Entwürfen, gewollt. Zu prüfen sind nur: Gesicht, Hände und Werkzeug vollständig sichtbar, nichts Wichtiges abgeschnitten.
+- Zuschnitt: Karten unter 920 px 16 : 9, ab 920 px 4 : 3.
 - Alle Icons in `design/icons/*.svg` sind neu gezeichnet. Form und Rundung weichen leicht von den Entwurfs-Icons ab. Farben und Platz müssen stimmen: Steuer- und Feldzeichen in der Textfarbe der Umgebung, Luna-Mond auf Tiefsee. X, Chevrons und Häkchen sind etwas größer als im Entwurf.
-- Die Symbole (Telefon in allen Anruf-Knöpfen, Chat, Formular, Senden, Vertrauensleiste, Zusagen, Preisrechner, Fuß, Luna, Erfolgs- und Fehlerkarten) sind farbige 3D-Renders statt flacher Icons (SPEC 3): Körper Tiefsee auf hellen und türkisen Flächen, Türkis auf dunklen, Warnung Orange. Form und Farbe weichen deshalb vom Entwurf ab. Zu prüfen sind nur: gleiche Größe und Lage wie vorher, gut erkennbar, und der Anruf-Knopf bleibt das auffälligste Element.
+- Die Symbole (Telefon in den Anruf-Knöpfen außer Kopf und Hero, Chat, Senden, Zusagen, Preisrechner, Fuß, Luna, Erfolgs- und Fehlerkarten) sind farbige 3D-Renders statt flacher Icons (SPEC 3): Körper Tiefsee auf hellen und türkisen Flächen, Türkis auf dunklen, Warnung Orange. Form und Farbe weichen deshalb vom Entwurf ab. Zu prüfen sind nur: gleiche Größe und Lage wie vorher, gut erkennbar, und der Anruf-Knopf bleibt das auffälligste Element.
 - Die Gewerke-Icons in Schnellwahl und Preisübersicht sind farbige 3D-Renders statt flacher Piktogramme (SPEC 3, freigegeben am 17.10.2026). Motive: Wasserhahn mit Tropfen, Heizkörper mit Thermostat, Schlüssel vor einem Türschild, Steckdose und Waschmaschine. Sie sind größer als im Entwurf: in der Schnellwahl 56 px (Handy) bzw. 64 px (ab 920 px) statt 41/47 px, in der Preisübersicht 40 px statt 32 px. Zu prüfen sind nur: Hauptfarbe Petrol bzw. Orange, keine Fläche dahinter, Motiv nicht abgeschnitten und der Abstand zum Kacheltitel.
 
 ## Glanz (Branch `glanz`, docs/glanz/BRIEF.md)
@@ -121,7 +116,6 @@ Beide Änderungen sind bewusst und stehen nicht im Entwurf:
 Bewusst, auf Wunsch „schöner, attraktiver, Schrift verbessern“:
 - So funktioniert's: weiches türkises Leuchten oben rechts im Hintergrund (auch am Handy sichtbar). Über der Linie jedes Schritts liegt eine türkise Linie, die sich beim Scrollen von links füllt; die Ziffern sind vorher gedämpft (70 %, Kontrast über 3:1). In Ganzseiten-Screenshots sind Linien und Ziffern voll; ist eine Linie teilweise oder eine Ziffer blass, hängt das nur von der Scroll-Position ab.
 - Leistungskarten: Beim Scrollen gleitet ein diagonales Glanzlicht über die Fotos, je Spalte etwas später. Ein heller schräger Streifen auf einem Kartenfoto ist kein Bildfehler.
-- Hero-Foto: wird beim Wegscrollen bis 7 % größer (Ausschnitt rückt minimal nach innen).
 - Dunkle Karten (Zusagen, Hilfekarte, Rechner-Ergebnis, Seitenkasten, Kontaktkarte im Menü) haben oben eine 1-px-Lichtkante.
 - Beträge in Rechner und Preisübersicht stehen in Bricolage mit gleich breiten Ziffern statt in Atkinson (Atkinson zeichnet die Null durchgestrichen). Gewicht wie bisher.
 - Überschriften sind ausgeglichen umbrochen (`text-wrap: balance`), Absätze ohne Einzelwort in der letzten Zeile. Zeilenumbrüche können deshalb vom Entwurf abweichen.
@@ -131,3 +125,16 @@ Bewusst, auf Wunsch „schöner, attraktiver, Schrift verbessern“:
 ## Wirbel (Worktree `shader-karten`)
 
 - Zusagen: Die zwei großen dunklen Karten („Vermittlung statt Reparatur“, „Richtpreise, keine Festpreise“) zeigen statt des Türkis-Rasters einen langsam fließenden Wirbel (Paper-Shader „Warp“, `Wirbelflaeche.tsx`) in Tiefsee-2, Technik und Türkis, 50 % Deckkraft, nach unten zum Text hin ausgeblendet; die zweite Karte ist um 135° gedreht. Ohne WebGL 2 und vor dem Laden steht das Raster, bei prefers-reduced-motion ein Standbild. Die Struktur unterscheidet sich zwischen zwei Aufnahmen, das ist kein Befund. Für den Abschnitt gibt es keinen Entwurf; `zusagen-*.png` nur auf Stimmigkeit prüfen.
+
+## Kopf, Hero und Vorteile (Entwurf „Hero – Desktop 1586“, 19.10.2026)
+
+Quelle: Zip „Hero – Desktop 1586-html“ (`Main.dc.html`), verglichen bei 1534 × 960 px. Kopf, Hero und die vier Vorteile folgen diesem Entwurf, nicht den Screens 01/02. Bewusst:
+- Schrift Inter, Farben, Größen und Abstände 1:1 aus dem Entwurf (`--fx-hd-*` in `tokens.css`), auch wo sie von den übrigen Tokens abweichen: Türkis #22B5C0 statt #3AA8B8, Tiefsee #03101F statt #001B2A, Fokusrahmen an Links in Kopf und Hero Tiefsee statt Türkis.
+- Logo: das bisherige (`design/icons/logo.svg`, Wunsch vom 19.10.2026), so breit wie Zeichen, Wortmarke und Zeile im Entwurf. Formen und Orange weichen vom Entwurfslogo ab.
+- Großer Anruf-Knopf: „Jetzt anrufen“ und die Nummer in Tiefsee #03101F statt Weiß bzw. #D4F7F9 (Entscheidung 19.10.2026, WCAG AA: Weiß hatte auf dem Türkis nur 2,5:1). Wie der Anruf-Knopf im Kopf.
+- Ab 1534 px feste Werte wie im Entwurf, von 1280 bis 1534 px schrumpft alles proportional mit der Breite. Das Foto ist höchstens 1006 px breit: auf breiten Fenstern bleibt sein Verlauf unten erhalten, zwischen Text und Foto liegt mehr weißer Raum.
+- Unter 1280 px die Handy-Fassung des Entwurfs (dort ≤ 900 px). Dazu, nicht im Entwurf: Menü-Knopf neben „Anrufen“, das Logo deshalb höchstens 205 px breit; Foto im Seitenverhältnis des Bildes (mindestens 280 px hoch, Entwurf fest 280 px); Titel der Vorteile dürfen umbrechen; unter 364 px wird „Rund um die Uhr.“ etwas kleiner, damit die Zeile hält; von 920 bis 1279 px Vorteile in zwei Spalten.
+- Der Weißverlauf links im Foto hat im Bild selbst einen gezackten Rand mit zwei grauen Spitzen. Ab 1600 px und unter 1280 px, wo er frei läge, blendet eine Maske ihn weich aus; das Foto beginnt dort optisch etwas weiter rechts als im Entwurf.
+- Schnellwahl „Was ist passiert?“ als eigener Abschnitt unter den Vorteilen (nicht im Entwurf).
+- Luna-Knopf und Anstupser erscheinen auf der Startseite erst, wenn die vier Vorteile nach oben aus dem Bild gescrollt sind (Wunsch vom 19.10.2026; sonst verdeckte der Knopf je nach Fensterhöhe das Ende des vierten Vorteils). War der Chat einmal offen, bleibt der Knopf. Auf Seiten ohne Hero ist er sofort da. Ein fehlender Luna-Knopf im ersten Bildschirm der Startseite ist kein Befund.
+- Prüfstand 19.10.2026: bei 1534 × 960 außerhalb des Logos und der Schrift im großen Anruf-Knopf pixelgleich mit dem Entwurf.

@@ -1,18 +1,24 @@
 import { copy } from '../content/copy'
-import { Symbol3D } from './ui/Symbol3D'
+import { Icon } from './ui/Icon'
 
-/** Vertrauensleiste (Screen 01/02): vier Punkte, Handy untereinander, ab 920 px vier Spalten. */
+/** Die vier Vorteile unter dem Hero (Entwurf „Hero – Desktop 1586“, styles/hero.css); unter 1280 px untereinander. */
 export function Vertrauensleiste() {
   return (
-    <section aria-label={copy.vertrauen.label} className="border-b border-linie bg-weiss nav:border-t">
-      <ul className="wrapper grid gap-y-s4 py-s5 dialog:grid-cols-2 nav:grid-cols-4 nav:gap-x-s5 nav:py-s6">
+    <section id="vorteile" aria-label={copy.vertrauen.label}>
+      <ul className="hd-vorteile">
         {copy.vertrauen.punkte.map((punkt) => (
-          <li key={punkt.titel} className="flex items-start gap-s3">
-            <Symbol3D name={punkt.icon} className="mt-px size-[26px] nav:size-[28px]" />
-            <span className="flex flex-col nav:gap-px">
-              <span className="font-display text-h5 font-[750]">{punkt.titel}</span>
-              <span className="text-small text-schiefer">{punkt.text}</span>
+          <li key={punkt.titel} className="hd-vorteil">
+            <span className="hd-vorteil-kreis">
+              <Icon name={punkt.icon} className={`hd-vorteil-icon ${punkt.icon}`} />
             </span>
+            <div className="hd-vorteil-text">
+              <h3>{punkt.titel}</h3>
+              <p>
+                {punkt.text[0]}
+                <br />
+                {punkt.text[1]}
+              </p>
+            </div>
           </li>
         ))}
       </ul>

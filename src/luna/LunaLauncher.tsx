@@ -4,14 +4,15 @@ import { useOverlays } from '../overlays'
 
 /**
  * Runder Luna-Knopf (SPEC 8). Das Label bleibt immer gleich, nur aria-expanded und das Icon wechseln.
- * Am Handy liegt das Vollbild darüber, dort bleibt das Signet stehen.
+ * Am Handy liegt das Vollbild darüber, dort bleibt das Signet stehen. Wann er sichtbar ist, entscheidet Luna.tsx.
  */
-export function LunaLauncher() {
+export function LunaLauncher({ sichtbar }: { sichtbar: boolean }) {
   const { lunaOffen, oeffneLuna, schliesseLuna } = useOverlays()
   return (
     <button
       id="luna-knopf"
       type="button"
+      hidden={!sichtbar}
       aria-label={copy.luna.oeffnen}
       aria-expanded={lunaOffen}
       aria-controls="luna-chat"

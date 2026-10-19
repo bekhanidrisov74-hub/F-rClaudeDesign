@@ -6,7 +6,7 @@ const BREITEN = [320, 360, 390, 559, 560, 639, 640, 768, 919, 920, 1024, 1280, 1
 
 const UEBERLAGERUNGEN: { name: string; oeffnen: (p: Page) => Promise<unknown>; element: (p: Page) => ReturnType<Page['locator']>; nurUnter?: number }[] = [
   { name: 'Preisübersicht', oeffnen: oeffnePreisuebersicht, element: preisDialog },
-  { name: 'Handy-Menü', oeffnen: oeffneMenue, element: (p) => p.locator('#menue'), nurUnter: 920 },
+  { name: 'Handy-Menü', oeffnen: oeffneMenue, element: (p) => p.locator('#menue'), nurUnter: 1280 },
   { name: 'Luna (Zusammenfassung)', oeffnen: lunaBisZusammenfassung, element: chat },
 ]
 

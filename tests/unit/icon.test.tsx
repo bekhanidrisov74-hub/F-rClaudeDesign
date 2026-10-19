@@ -27,8 +27,9 @@ test('jedes 3D-Symbol hat beide Farbstellungen als Render und als Export', () =>
       expect(existsSync(datei), datei).toBe(true)
 })
 
-test('Symbole in den Texten haben ein 3D-Render', () => {
-  for (const { icon } of [...copy.vertrauen.punkte, ...copy.zusagen.karten]) expect(SYMBOLE_3D, icon).toContain(icon)
+test('Symbole in den Texten haben ein 3D-Render, die Vorteile unter dem Hero ein SVG aus design/icons', () => {
+  for (const { icon } of copy.zusagen.karten) expect(SYMBOLE_3D, icon).toContain(icon)
+  for (const { icon } of copy.vertrauen.punkte) expect(Object.keys(icons), icon).toContain(icon)
 })
 
 test('Symbol3D ist dekorativ, wählt die Farbstellung und meldet unbekannte Namen', () => {

@@ -30,8 +30,9 @@ function merke() {
 /**
  * Sprechblase über dem Knopf (Screen 02, 06). Der Container ist von Anfang an da, damit die Ansage
  * beim Einblenden zuverlässig vorgelesen wird. Der Text ist ein Knopf und öffnet den Chat.
+ * Ist der Knopf noch verborgen (Startseite, Vorteile im Bild), wartet die Blase auf ihn.
  */
-export function Anstupser() {
+export function Anstupser({ knopfSichtbar }: { knopfSichtbar: boolean }) {
   const { lunaOffen, oeffneLuna } = useOverlays()
   const [sichtbar, setSichtbar] = useState(false)
 
@@ -77,7 +78,7 @@ export function Anstupser() {
 
   return (
     <div role="status" data-anstupser className="fixed right-s4 bottom-[90px] z-8 dialog:right-[28px] dialog:bottom-[146px]">
-      {sichtbar && (
+      {sichtbar && knopfSichtbar && (
         <div className="flex w-[286px] items-start gap-s2 rounded-card rounded-br-ecke border border-linie bg-weiss py-s2 pr-0 pl-s3 text-tiefsee shadow-s transition-opacity duration-(--fx-dur-dialog) ease-fx starting:opacity-0 dialog:w-[262px] dialog:gap-0 dialog:pl-s4">
           <span
             aria-hidden="true"

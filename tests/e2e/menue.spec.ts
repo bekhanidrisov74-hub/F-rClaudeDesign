@@ -2,7 +2,7 @@ import { expect, test } from './test'
 import { oeffneMenue, preisDialog } from './hilfen'
 
 test.beforeEach(async ({ page }, info) => {
-  test.skip(info.project.name !== 'm390', 'Menü gibt es nur unter 920 px')
+  test.skip(info.project.name !== 'm390', 'Menü gibt es nur unter 1280 px, einmal am Handy reicht')
   await page.goto('/')
 })
 
@@ -60,9 +60,9 @@ test('„Preisübersicht“ öffnet ein bedienbares Sheet, danach Fokus auf dem 
   await expect(page.locator('#menue-knopf')).toBeFocused()
 })
 
-test('schließt, wenn das Fenster 920 px oder breiter wird', async ({ page }) => {
+test('schließt, wenn das Fenster 1280 px oder breiter wird', async ({ page }) => {
   await oeffneMenue(page)
-  await page.setViewportSize({ width: 1024, height: 800 })
+  await page.setViewportSize({ width: 1280, height: 800 })
   await expect(page.locator('#menue')).toBeHidden()
   expect(await page.evaluate(() => getComputedStyle(document.documentElement).overflow)).not.toBe('hidden')
 })

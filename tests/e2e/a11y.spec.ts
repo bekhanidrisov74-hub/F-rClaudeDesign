@@ -19,7 +19,8 @@ interface Zustand {
   name: string
   pfad: string
   vorbereiten?: (page: Page) => Promise<unknown>
-  nurUnter920?: boolean
+  /** nur mit Menü-Knopf, also unter 1280 px */
+  nurMitMenue?: boolean
   /** Playwright-Uhr installieren (Anstupser nach 8 s) */
   uhr?: boolean
 }
@@ -38,7 +39,7 @@ const ZUSTAENDE: Zustand[] = [
       await schalteZuschlag(p, 'Nacht')
     },
   },
-  { name: 'menue', pfad: '/', nurUnter920: true, vorbereiten: oeffneMenue },
+  { name: 'menue', pfad: '/', nurMitMenue: true, vorbereiten: oeffneMenue },
   { name: 'luna-anstupser', pfad: '/', uhr: true, vorbereiten: zeigeAnstupser },
   { name: 'luna-gespraech', pfad: '/', vorbereiten: lunaImGespraech },
   { name: 'luna-zusammenfassung', pfad: '/', vorbereiten: lunaBisZusammenfassung },
@@ -65,7 +66,7 @@ const ZUSTAENDE: Zustand[] = [
 
 for (const z of ZUSTAENDE)
   test(`axe: ${z.name}`, async ({ page }) => {
-    test.skip(!!z.nurUnter920 && page.viewportSize()!.width >= 920, 'nur unter 920 px')
+    test.skip(!!z.nurMitMenue && page.viewportSize()!.width >= 1280, 'nur unter 1280 px')
     if (z.uhr) await page.clock.install()
     await page.goto(z.pfad)
     await z.vorbereiten?.(page)

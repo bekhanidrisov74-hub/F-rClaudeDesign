@@ -52,7 +52,7 @@ export const copy = {
     navLabel: 'Hauptnavigation',
     nav: [
       { text: 'Leistungen', href: '#leistungen' },
-      { text: "So funktioniert's", href: '#ablauf' },
+      { text: 'So funktioniert’s', href: '#ablauf' },
       { text: 'Preisrechner', href: '#preisrechner' },
       { text: 'Anfrage', href: '#anfrage' },
     ],
@@ -72,12 +72,17 @@ export const copy = {
   /** Ort, den Luna aus der PLZ ableitet (Entscheidung 2: nur Wien) */
   orte: { wien: 'Wien' },
 
+  /**
+   * Hero, Kopf und Vorteile laut Entwurf „Hero – Desktop 1586“ (19.10.2026). Offen (Bericht 19.10.2026): „Wir sind sofort
+   * für Sie da“ und „Unsere eigenen, geprüften Fachkräfte“ widersprechen dem Vermittlungsmodell, bleiben bis zur Entscheidung so.
+   */
   hero: {
     h1: ['Handwerker-', 'Notdienst.', 'Rund um die Uhr.'],
-    lead: 'Rohrbruch, ausgesperrt, Strom weg? Wir vermitteln Ihnen sofort einen geprüften Fachbetrieb aus Ihrer Region.',
-    whatsapp: 'WhatsApp',
+    lead: 'Rohrbruch, ausgesperrt, Strom weg? Wir sind sofort für Sie da – ein geprüfter Fachbetrieb aus Ihrer Region. Schnell, zuverlässig und zu fairen Preisen. Direkt hier in Wien.',
     anfrage: 'Anfrage senden',
-    hinweis: 'Die Vermittlung ist kostenlos. Der Vertrag kommt direkt mit dem Betrieb zustande.',
+    /** Hinweiskasten, zwei Zeilen; die zweite fett */
+    hinweis: ['Sie rufen an oder kontaktieren uns', 'und wir kümmern uns sofort um Ihr Anliegen.'],
+    foto: 'Blick über die Dächer Wiens mit dem Stephansdom im Abendlicht',
   },
 
   schnellwahl: {
@@ -90,13 +95,14 @@ export const copy = {
     },
   },
 
+  /** Die vier Vorteile unter dem Hero, Text je in zwei Zeilen wie im Entwurf; icon = design/icons */
   vertrauen: {
-    label: 'Warum fixit247',
+    label: 'Ihre Vorteile',
     punkte: [
-      { icon: 'ui-rund-um-die-uhr', titel: 'Rund um die Uhr', text: 'Auch nachts, an Sonn- und Feiertagen' },
-      { icon: 'ui-region', titel: 'Fachbetriebe aus Ihrer Region', text: 'Geprüft und in Ihrer Nähe' },
-      { icon: 'ui-richtpreis', titel: 'Richtpreise vorab', text: 'Sie kennen die Spanne, bevor jemand kommt' },
-      { icon: 'ui-vermittlung', titel: 'Vermittlung kostenlos', text: 'Sie zahlen nur den Betrieb' },
+      { icon: 'vorteil-schild', titel: 'Einzigartig in Wien', text: ['Schneller, zuverlässiger', 'und persönlicher als andere.'] },
+      { icon: 'vorteil-uhr', titel: '24/7 für Sie da', text: ['Tag und Nacht', 'auch an Feiertagen.'] },
+      { icon: 'vorteil-team', titel: 'Lokale Fachkräfte', text: ['Unsere eigenen, geprüften', 'Fachkräfte in ganz Wien.'] },
+      { icon: 'vorteil-auszeichnung', titel: 'Faire & transparente Preise', text: ['Keine versteckten Kosten –', 'Ehrlich und verlässlich.'] },
     ],
   },
 

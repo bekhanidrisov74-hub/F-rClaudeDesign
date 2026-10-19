@@ -44,7 +44,17 @@ export async function zumRechner(page: Page) {
 export const lunaKnopf = (page: Page) => page.getByRole('button', { name: 'Chat mit Luna öffnen' })
 export const chat = (page: Page) => page.getByRole('dialog', { name: 'Chat mit Luna' })
 
+/** Auf der Startseite erscheint der Knopf erst, wenn die vier Vorteile (#vorteile) nach oben aus dem Bild gescrollt sind. */
+export async function zeigeLunaKnopf(page: Page) {
+  await page.evaluate(() => {
+    const unten = document.getElementById('vorteile')?.getBoundingClientRect().bottom ?? 0
+    if (unten > 0) window.scrollTo(0, window.scrollY + unten + 1)
+  })
+  await expect(lunaKnopf(page)).toBeVisible()
+}
+
 export async function oeffneLuna(page: Page) {
+  await zeigeLunaKnopf(page)
   await lunaKnopf(page).click()
   await expect(chat(page)).toBeVisible()
 }
@@ -88,6 +98,7 @@ export async function lunaAbsenden(page: Page) {
 
 export async function zeigeAnstupser(page: Page) {
   await page.clock.fastForward(26_000)
+  await zeigeLunaKnopf(page)
   await expect(page.getByRole('status').filter({ hasText: 'Notfall?' })).toBeVisible()
 }
 

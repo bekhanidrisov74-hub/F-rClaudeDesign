@@ -19,10 +19,10 @@ const starter = bundle.replace(/\/([^/]+)\.js$/, '/start-$1.js')
 fs.writeFileSync(path.join(dist, starter), `requestAnimationFrame(() => setTimeout(() => import('${bundle}')))\n`)
 const vorlage = roh.replace(skriptTag, `<script type="module" src="${starter}"></script>`)
 
-// Die beiden lateinischen Schriftdateien vorladen (Namen enthalten einen Hash).
+// Die lateinischen Schriftdateien vorladen (Namen enthalten einen Hash); Inter trägt Kopf und Hero.
 const schriften = fs
   .readdirSync(path.join(dist, 'assets'))
-  .filter((f) => /^(bricolage-grotesque-latin-standard|atkinson-hyperlegible-next-latin-wght)-normal.*\.woff2$/.test(f))
+  .filter((f) => /^(bricolage-grotesque-latin-standard|atkinson-hyperlegible-next-latin-wght|inter-latin-wght)-normal.*\.woff2$/.test(f))
 const preload = schriften
   .map((f) => `<link rel="preload" href="/assets/${f}" as="font" type="font/woff2" crossorigin />`)
   .join('\n    ')

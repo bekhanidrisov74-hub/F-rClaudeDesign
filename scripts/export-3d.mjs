@@ -4,7 +4,8 @@ import { mkdir, readdir, readFile } from 'node:fs/promises'
 // Alle 3D-Renders für die Seite aufbereiten (SPEC 3, IMAGE-BRIEFS.md), danach Kontaktblätter zur Kontrolle:
 // - Gewerke-Icons design/icons-3d/gewerk-*.png → public/icons, doppelte Anzeigegröße 80/112/128 px (GewerkIcon.tsx)
 // - Symbole design/icons-3d/ui-*.png (zwei Farbstellungen) → public/icons, 96 und 168 px (Symbol3D.tsx)
-// - Bilder design/bilder-chatgpt/bild-N.png (mit ChatGPT erzeugt, 1254 px) → public/images, 480/800/1200/1254 px (Bildflaeche.tsx)
+// - Bilder design/bilder-chatgpt/bild-N.png (mit ChatGPT erzeugt, 1254 px) → public/images, 480/800/1200/1254 px (Bildflaeche.tsx);
+//   Bild 1 (alter Hero) nicht mehr, der Hero zeigt public/images/hero-wien.jpg aus dem Entwurf „Hero – Desktop 1586“
 // Die Icons und Symbole werden mit scripts/render-icons-3d.py gerendert, die Bilder mit ChatGPT erzeugt (design/BILD-PROMPTS-3D-CHATGPT.md).
 // Aufruf: SHARP_MODULE_PATH=… node scripts/export-3d.mjs (Sharp ist keine Projektabhängigkeit)
 const require = createRequire(import.meta.url)
@@ -49,7 +50,7 @@ function tiefseeAnheben(daten) {
     for (let k = 0; k < 3; k++) daten[i + k] += gewicht * Math.max(0, TIEFSEE_RGB[k] - daten[i + k])
   }
 }
-for (let n = 1; n <= 6; n++) {
+for (let n = 2; n <= 6; n++) {
   const { data, info } = await sharp(`design/bilder-chatgpt/bild-${n}.png`).removeAlpha().raw().toBuffer({ resolveWithObject: true })
   tiefseeAnheben(data)
   for (const breite of BILD_BREITEN) {

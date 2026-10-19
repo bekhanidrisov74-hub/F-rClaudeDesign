@@ -16,7 +16,7 @@ const TITEL = 'font-display text-h5 font-[750] -mr-s3 break-words hyphens-auto t
 export function Schnellwahl() {
   return (
     <section aria-labelledby="schnellwahl-titel">
-      <div className="wrapper pt-s2 pb-s6 nav:pt-0 nav:pb-s8">
+      <div className="wrapper py-s6 nav:py-s8">
         <h2 id="schnellwahl-titel" className="mb-s3 text-h4 font-[750] [font-stretch:100%] nav:mb-s4">
           {copy.schnellwahl.titel}
         </h2>

@@ -9,6 +9,7 @@ import {
   lunaKnopf,
   oeffneLuna,
   preisDialog,
+  zeigeLunaKnopf,
 } from './hilfen'
 
 const handy = (breite: number) => breite < 640
@@ -27,6 +28,7 @@ test.describe('Anstupser', () => {
   test('erscheint nach 25 s, einmal pro Besuch; Text öffnet den Chat', async ({ page }) => {
     await page.clock.install()
     await page.goto('/')
+    await zeigeLunaKnopf(page)
     await page.clock.fastForward(24_000)
     await expect(anstupser(page)).toHaveCount(0)
     await page.clock.fastForward(1500)
@@ -47,9 +49,19 @@ test.describe('Anstupser', () => {
     await expect(anstupser(page)).toBeVisible()
   })
 
+  test('wartet, solange der Knopf über den Vorteilen noch verborgen ist', async ({ page }) => {
+    await page.clock.install()
+    await page.goto('/')
+    await page.clock.fastForward(26_000)
+    await expect(anstupser(page)).toHaveCount(0)
+    await zeigeLunaKnopf(page)
+    await expect(anstupser(page)).toBeVisible()
+  })
+
   test('Schließen blendet aus, nach dem Neuladen kommt er nicht wieder', async ({ page }) => {
     await page.clock.install()
     await page.goto('/')
+    await zeigeLunaKnopf(page)
     await page.clock.fastForward(26_000)
     await anstupser(page).getByRole('button', { name: 'Hinweis schließen' }).click()
     await expect(anstupser(page)).toHaveCount(0)
@@ -68,8 +80,29 @@ test.describe('Anstupser', () => {
   })
 })
 
+test('Luna-Knopf erst, wenn die vier Vorteile aus dem Bild gescrollt sind; ohne Vorteile sofort', async ({ page }) => {
+  await page.goto('/')
+  await expect(page.locator('#luna-knopf')).toBeHidden()
+  await zeigeLunaKnopf(page)
+  await page.evaluate(() => window.scrollTo(0, 0))
+  await expect(page.locator('#luna-knopf')).toBeHidden()
+  await page.goto('/impressum/')
+  await expect(lunaKnopf(page)).toBeVisible()
+})
+
+test('Luna-Knopf bleibt, wenn der Chat einmal offen war: Fokus kehrt zu ihm zurück', async ({ page }) => {
+  await page.goto('/')
+  await oeffneLuna(page)
+  await page.evaluate(() => window.scrollTo(0, 0))
+  await chat(page).getByRole('button', { name: 'Installateur' }).focus()
+  await page.keyboard.press('Escape')
+  await expect(chat(page)).toBeHidden()
+  await expect(lunaKnopf(page)).toBeFocused()
+})
+
 test('Luna-Knopf: Label, Größe, Position', async ({ page }) => {
   await page.goto('/')
+  await zeigeLunaKnopf(page)
   const knopf = lunaKnopf(page)
   await expect(knopf).toHaveAttribute('aria-expanded', 'false')
   await expect(knopf).toHaveAttribute('aria-controls', 'luna-chat')

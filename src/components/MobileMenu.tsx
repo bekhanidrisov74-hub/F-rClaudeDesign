@@ -7,8 +7,8 @@ import { CallButton } from './ui/CallButton'
 import { Icon } from './ui/Icon'
 import { Symbol3D } from './ui/Symbol3D'
 
-// Wie --breakpoint-nav in app.css (920 px): ab hier gibt es keinen Menü-Knopf mehr.
-const AB_NAV = '(min-width: 57.5rem)'
+// Wie --breakpoint-hd in app.css (1280 px): ab hier gibt es keinen Menü-Knopf mehr.
+const AB_NAV = '(min-width: 80rem)'
 
 // Links und der Knopf „Preisübersicht“ sehen gleich aus (Screen 05).
 const EINTRAG =
@@ -41,16 +41,16 @@ function OffenesMenue({ aufStartseite }: { aufStartseite: boolean }) {
       setMenueOffen(false)
       document.getElementById('menue-knopf')?.focus()
     }
-    // Ab 920 px zeigt der Kopf die Navigation, das Menü schließt sich.
-    const ab920 = window.matchMedia(AB_NAV)
+    // Ab 1280 px zeigt der Kopf die Navigation, das Menü schließt sich.
+    const abNav = window.matchMedia(AB_NAV)
     const beiBreite = (e: MediaQueryListEvent) => {
       if (e.matches) setMenueOffen(false)
     }
     document.addEventListener('keydown', beiTaste)
-    ab920.addEventListener('change', beiBreite)
+    abNav.addEventListener('change', beiBreite)
     return () => {
       document.removeEventListener('keydown', beiTaste)
-      ab920.removeEventListener('change', beiBreite)
+      abNav.removeEventListener('change', beiBreite)
     }
   }, [setMenueOffen])
 

@@ -1,7 +1,9 @@
 @import '@fontsource-variable/bricolage-grotesque/standard.css';
 @import '@fontsource-variable/atkinson-hyperlegible-next/wght.css';
+@import '@fontsource-variable/inter/wght.css';
 @import 'tailwindcss';
 @import './tokens.css';
+@import './hero.css';
 
 /* Tailwind kennt nur die fixit247-Tokens. Alle Standardpaletten sind entfernt,
    damit niemand zu Werten außerhalb von tokens.css greifen kann. */
@@ -25,6 +27,7 @@
   --breakpoint-kopf: 35rem;   /* 560 px */
   --breakpoint-dialog: 40rem; /* 640 px */
   --breakpoint-nav: 57.5rem;  /* 920 px */
+  --breakpoint-hd: 80rem;     /* 1280 px: Navigation im Kopf, Desktop-Fassung des Hero */
 }
 
 @theme inline {
@@ -144,15 +147,6 @@
   border-style: solid;
 }
 
-/* Haarlinien-Raster unter dem Hero (GridPulse), Zelle = --fx-s-5; läuft unten aus */
-@utility raster {
-  background-image:
-    linear-gradient(to right, var(--fx-linie) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--fx-linie) 1px, transparent 1px);
-  background-size: var(--fx-s-5) var(--fx-s-5);
-  mask-image: linear-gradient(to bottom, black 92%, transparent);
-}
-
 /* Haarlinien-Raster in dunklen Karten (Zusagen), oben kräftig, nach unten auslaufend */
 @utility raster-karte {
   background-image:
@@ -202,17 +196,6 @@
       animation: glanz linear both;
       animation-timeline: view();
       animation-range: cover var(--von) cover var(--bis);
-    }
-  }
-}
-
-/* Hero-Foto: rückt beim Wegscrollen minimal zurück (Tiefe, ohne dass Text sich bewegt) */
-@utility tiefe {
-  @supports (animation-timeline: view()) {
-    & img {
-      animation: tiefe linear both;
-      animation-timeline: view();
-      animation-range: exit 0% exit 100%;
     }
   }
 }
@@ -479,10 +462,6 @@
 
 @keyframes glanz {
   to { translate: 100% 0; }
-}
-
-@keyframes tiefe {
-  to { scale: 1.07; }
 }
 
 @keyframes linie {

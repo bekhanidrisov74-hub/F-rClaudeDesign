@@ -1,0 +1,542 @@
+/* Kopf, Hero und die vier Vorteile nach dem Entwurf „Hero – Desktop 1586“ (19.10.2026).
+   Werte 1:1 aus dem Entwurf: Maße in Entwurfs-px × --fx-hd-px, alles andere als --fx-hd-Token (tokens.css).
+   Unter 1280 px gilt die Handy-Fassung des Entwurfs (dort ≤ 900 px). */
+
+/* ── Kopf ── */
+
+.hd-kopf {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  height: var(--fx-kopf);
+  box-sizing: border-box;
+  padding: 0 var(--fx-hd-s-kopf-r) 0 var(--fx-hd-s-kopf-l);
+  border-bottom: 1px solid var(--fx-hd-linie-kopf);
+  background: var(--fx-hd-kalk-kopf);
+  color: var(--fx-hd-tiefsee);
+  font-family: var(--fx-hd-font);
+}
+
+.hd-logo {
+  display: flex;
+  flex: none;
+  align-items: center;
+  min-height: 44px;
+  color: var(--fx-hd-tiefsee);
+}
+
+/* Bisheriges Logo (design/icons/logo.svg) so breit wie Zeichen, Wortmarke und Zeile im Entwurf */
+.hd-logo-bild {
+  width: calc(298 * var(--fx-hd-px));
+  aspect-ratio: 188 / 33.57;
+}
+
+.hd-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--fx-hd-s-nav);
+  margin-left: auto;
+}
+
+.hd-nav a {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--fx-hd-schiefer-nav);
+  font-size: var(--fx-hd-nav);
+  line-height: calc(24 * var(--fx-hd-px));
+  font-weight: 400;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.hd-nav a:hover {
+  color: var(--fx-hd-tiefsee);
+}
+
+.hd-anrufen {
+  display: flex;
+  align-items: center;
+  gap: var(--fx-hd-s-anrufen-gap);
+  height: calc(59 * var(--fx-hd-px));
+  box-sizing: border-box;
+  margin: var(--fx-hd-s-anrufen-hoch) 0 0 var(--fx-hd-s-anrufen);
+  padding: 0 var(--fx-hd-s-anrufen-x);
+  border-radius: var(--fx-r-pill);
+  background: var(--fx-hd-tuerkis);
+  color: var(--fx-hd-tiefsee);
+  text-decoration: none;
+}
+
+.hd-anrufen-icon {
+  width: calc(27 * var(--fx-hd-px));
+  height: calc(27 * var(--fx-hd-px));
+}
+
+.hd-anrufen-text {
+  display: flex;
+  align-items: baseline;
+  gap: var(--fx-hd-s-nummer);
+  white-space: nowrap;
+}
+
+.hd-anrufen-label {
+  font-size: var(--fx-hd-anrufen);
+  line-height: calc(28 * var(--fx-hd-px));
+  font-weight: 700;
+}
+
+.hd-anrufen-nummer {
+  font-size: var(--fx-hd-nummer);
+  line-height: calc(28 * var(--fx-hd-px));
+  font-weight: 400;
+}
+
+/* ── Hero ── */
+
+/* Eigene Stapelebene: sonst liegt der Text (z-index 1) über den Scroll-Effekten der Leistungskarten, Chrome legt ihn auf
+   eine eigene, durchsichtige Ebene und glättet ihn unter Windows nur grau statt wie im Entwurf mit Subpixeln. */
+.hd {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: var(--fx-hd-kalk);
+  color: var(--fx-hd-tiefsee);
+  font-family: var(--fx-hd-font);
+}
+
+.hd-hero {
+  position: relative;
+  height: calc(697 * var(--fx-hd-px));
+}
+
+.hd-raster {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(170 * var(--fx-hd-px));
+  height: 100%;
+  background-image:
+    linear-gradient(var(--fx-hd-raster) 1px, transparent 1px),
+    linear-gradient(90deg, var(--fx-hd-raster) 1px, transparent 1px);
+  background-size: calc(22 * var(--fx-hd-px)) calc(22 * var(--fx-hd-px));
+  mask-image: linear-gradient(to right, black 0, transparent 100%);
+}
+
+/* Weiß-zu-Bild-Verlauf: links 90 px Maske, dazu der Verlauf im Bild selbst (links und unten).
+   Höchstens so breit wie das Bild, damit es auch auf breiten Fenstern unten nicht abgeschnitten wird. */
+.hd-foto {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 0;
+  width: min(63.43%, calc(1006 * var(--fx-hd-px)));
+  height: calc(724 * var(--fx-hd-px));
+  mask-image: linear-gradient(to right, transparent 0, black calc(90 * var(--fx-hd-px)));
+}
+
+.hd-foto img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: left top;
+}
+
+.hd-text {
+  position: relative;
+  z-index: 1;
+  max-width: calc(760 * var(--fx-hd-px));
+  box-sizing: border-box;
+  padding: var(--fx-hd-s-text-o) 0 0 var(--fx-hd-s-text-l);
+}
+
+.hd-titel {
+  margin: 0 0 0 var(--fx-hd-s-h1);
+  color: var(--fx-hd-tiefsee);
+  font-family: inherit;
+  font-size: var(--fx-hd-h1);
+  line-height: calc(80 * var(--fx-hd-px));
+  font-weight: 750;
+  font-stretch: normal;
+  letter-spacing: -0.052em;
+  text-wrap: wrap;
+}
+
+.hd-titel span {
+  display: block;
+}
+
+.hd-titel .hd-akzent {
+  position: relative;
+  top: calc(1 * var(--fx-hd-px));
+  color: var(--fx-hd-orange);
+  font-size: var(--fx-hd-h1-akzent);
+  letter-spacing: -0.052em;
+  word-spacing: 0.065em;
+}
+
+.hd-lead {
+  max-width: calc(620 * var(--fx-hd-px));
+  margin: var(--fx-hd-s-lead) 0 0;
+  color: var(--fx-hd-schiefer);
+  font-size: var(--fx-hd-lead);
+  line-height: calc(30 * var(--fx-hd-px));
+  font-weight: 400;
+  text-wrap: wrap;
+}
+
+.hd-ctas {
+  display: flex;
+  align-items: center;
+  gap: var(--fx-hd-s-ctas-gap);
+  margin-top: var(--fx-hd-s-ctas);
+}
+
+.hd-anrufen,
+.hd-cta,
+.hd-anfrage {
+  transition: filter var(--fx-dur-fast) var(--fx-ease), box-shadow var(--fx-dur-fast) var(--fx-ease);
+}
+
+.hd-cta:hover,
+.hd-anfrage:hover,
+.hd-anrufen:hover {
+  filter: brightness(1.05);
+}
+
+.hd-cta {
+  display: flex;
+  align-items: center;
+  gap: var(--fx-hd-s-cta-gap);
+  width: calc(358 * var(--fx-hd-px));
+  height: calc(79 * var(--fx-hd-px));
+  box-sizing: border-box;
+  padding-left: var(--fx-hd-s-cta-l);
+  border-radius: var(--fx-r-pill);
+  background: var(--fx-hd-tuerkis);
+  box-shadow: var(--fx-hd-shadow-anruf);
+  /* Tiefsee wie im Anruf-Knopf des Kopfs (Entscheidung 19.10.2026): Weiß und Helltürkis aus dem Entwurf erreichen
+     auf diesem Türkis nur 2,5:1 bzw. 2,2:1, WCAG AA verlangt 3:1 bzw. 4,5:1; Tiefsee hat 7,6:1. */
+  color: var(--fx-hd-tiefsee);
+  text-decoration: none;
+}
+
+.hd-cta-kreis {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: calc(60 * var(--fx-hd-px));
+  height: calc(60 * var(--fx-hd-px));
+  border-radius: var(--fx-r-pill);
+  background: var(--fx-hd-nacht);
+  color: var(--fx-hd-tuerkis-hell);
+}
+
+.hd-cta-icon {
+  width: calc(28 * var(--fx-hd-px));
+  height: calc(28 * var(--fx-hd-px));
+}
+
+.hd-cta-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.hd-cta-label {
+  font-size: var(--fx-hd-cta);
+  line-height: calc(32 * var(--fx-hd-px));
+  font-weight: 700;
+}
+
+.hd-cta-nummer {
+  position: relative;
+  top: calc(2 * var(--fx-hd-px));
+  font-size: var(--fx-hd-cta-nummer);
+  line-height: calc(22 * var(--fx-hd-px));
+  font-weight: 400;
+}
+
+.hd-anfrage {
+  display: flex;
+  align-items: center;
+  gap: var(--fx-hd-s-anfrage-gap);
+  width: calc(288 * var(--fx-hd-px));
+  height: calc(72 * var(--fx-hd-px));
+  box-sizing: border-box;
+  padding: var(--fx-hd-s-anfrage-o) 0 0 var(--fx-hd-s-anfrage-l);
+  border: var(--fx-border) solid var(--fx-hd-rand);
+  border-radius: var(--fx-hd-r-anfrage);
+  background: var(--fx-weiss);
+  box-shadow: var(--fx-hd-shadow-anfrage);
+  color: var(--fx-hd-tiefsee);
+  text-decoration: none;
+}
+
+.hd-anfrage:hover {
+  box-shadow: var(--fx-hd-shadow-anfrage-hover);
+}
+
+.hd-anfrage-icon {
+  width: calc(27 * var(--fx-hd-px));
+  height: calc(27 * var(--fx-hd-px));
+}
+
+.hd-anfrage-label {
+  font-size: var(--fx-hd-anfrage);
+  line-height: calc(24 * var(--fx-hd-px));
+  font-weight: 650;
+}
+
+.hd-info {
+  display: flex;
+  align-items: center;
+  gap: var(--fx-hd-s-info-gap);
+  width: calc(659 * var(--fx-hd-px));
+  height: calc(103 * var(--fx-hd-px));
+  box-sizing: border-box;
+  margin-top: var(--fx-hd-s-info);
+  padding-left: var(--fx-hd-s-info-l);
+  border-radius: var(--fx-hd-r-info);
+  background: var(--fx-hd-eis);
+}
+
+.hd-info-icon {
+  width: calc(61 * var(--fx-hd-px));
+  height: calc(68 * var(--fx-hd-px));
+}
+
+.hd-info p {
+  position: relative;
+  top: calc(-1 * var(--fx-hd-px));
+  margin: 0;
+  color: var(--fx-hd-tiefsee);
+  font-size: var(--fx-hd-info);
+  line-height: calc(30 * var(--fx-hd-px));
+  font-weight: 400;
+  text-wrap: wrap;
+}
+
+.hd-info strong {
+  font-size: var(--fx-hd-info-stark);
+  font-weight: 700;
+}
+
+/* Fokus wie im Entwurf: Tiefsee statt Türkis, damit der Rahmen neben den türkisen Knöpfen sichtbar bleibt */
+.hd-kopf a:focus-visible,
+.hd a:focus-visible {
+  outline-color: var(--fx-hd-tiefsee);
+}
+
+/* ── Vier Vorteile ── */
+
+.hd-vorteile {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 332fr) minmax(0, 350fr) minmax(0, 378fr) minmax(0, 353fr);
+  padding: var(--fx-hd-s-vorteile-o) var(--fx-hd-s-vorteile-r) var(--fx-hd-s-vorteile-u) var(--fx-hd-s-vorteile-l);
+}
+
+.hd-vorteil {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--fx-hd-s-vorteil-gap);
+  height: calc(94 * var(--fx-hd-px));
+  box-sizing: border-box;
+}
+
+.hd-vorteil + .hd-vorteil {
+  padding-left: var(--fx-hd-s-vorteil-l);
+  border-left: 1px solid var(--fx-hd-linie);
+}
+
+.hd-vorteil-kreis {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: calc(74 * var(--fx-hd-px));
+  height: calc(74 * var(--fx-hd-px));
+  border-radius: var(--fx-r-pill);
+  background: var(--fx-hd-lagune);
+  color: var(--fx-hd-tiefsee);
+}
+
+/* Icon-Maße wie im Entwurf, je Motiv verschieden */
+.hd-vorteil-icon.vorteil-schild { width: calc(39 * var(--fx-hd-px)); height: calc(48 * var(--fx-hd-px)); }
+.hd-vorteil-icon.vorteil-uhr { width: calc(45 * var(--fx-hd-px)); height: calc(45 * var(--fx-hd-px)); }
+.hd-vorteil-icon.vorteil-team { width: calc(43 * var(--fx-hd-px)); height: calc(38 * var(--fx-hd-px)); }
+.hd-vorteil-icon.vorteil-auszeichnung { width: calc(39 * var(--fx-hd-px)); height: calc(51 * var(--fx-hd-px)); }
+
+.hd-vorteil-text {
+  padding-top: var(--fx-hd-s-vorteil-text);
+}
+
+.hd-vorteil h3 {
+  margin: 0;
+  color: var(--fx-hd-tiefsee);
+  font-family: inherit;
+  font-size: var(--fx-hd-vorteil-titel);
+  line-height: calc(24 * var(--fx-hd-px));
+  font-weight: 600;
+  font-stretch: normal;
+  white-space: nowrap;
+}
+
+.hd-vorteil p {
+  margin: var(--fx-hd-s-vorteil-p) 0 0;
+  color: var(--fx-hd-schiefer-hell);
+  font-size: var(--fx-hd-vorteil-text);
+  line-height: calc(24 * var(--fx-hd-px));
+  font-weight: 400;
+  text-wrap: wrap;
+}
+
+/* ── Handy-Fassung des Entwurfs; dazu der Menü-Knopf im Kopf (Header.tsx) ── */
+
+@media (width < 80rem) {
+  .hd-kopf {
+    gap: var(--fx-s-2);
+    padding: 0 var(--fx-s-4);
+  }
+
+  /* Neben Anrufen und dem Menü-Knopf: so breit wie im Entwurf (205 px); wird es eng, gibt nur das Logo nach */
+  .hd-logo {
+    flex: 0 1 auto;
+    min-width: 0;
+  }
+
+  .hd-logo-bild {
+    width: 205px;
+    max-width: 100%;
+  }
+
+  .hd-nav,
+  .hd-anrufen-nummer {
+    display: none;
+  }
+
+  .hd-anrufen {
+    gap: var(--fx-hd-s-anrufen-gap-handy);
+    height: 48px;
+    margin-left: auto;
+    padding: 0 var(--fx-hd-s-anrufen-x-handy);
+  }
+
+  .hd-anrufen-label {
+    font-size: var(--fx-hd-anrufen-handy);
+  }
+
+  .hd-hero {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+  }
+
+  /* Entwurf: 280 px hoch, das ist bei 390 px das Seitenverhältnis des Bildes. Breiter wächst es mit, damit der Stephansdom
+     auf Tablets ganz zu sehen ist statt als Streifen. Die zweite Maske blendet links den gezackten Rand des Verlaufs aus,
+     der im Bild selbst steckt (Bild-x 130–300). */
+  .hd-foto {
+    position: relative;
+    order: 2;
+    width: 100%;
+    height: auto;
+    min-height: 280px;
+    aspect-ratio: 1006 / 724;
+    mask-image: linear-gradient(to bottom, transparent 0, black 30%), linear-gradient(to right, transparent 16%, black 33%);
+    mask-composite: intersect;
+  }
+
+  .hd-foto img {
+    object-position: 85% 40%;
+  }
+
+  .hd-text {
+    padding: var(--fx-hd-s-text-o-handy) var(--fx-s-4) 0;
+  }
+
+  .hd-titel {
+    margin-left: var(--fx-hd-s-h1-handy);
+    font-size: var(--fx-hd-h1-handy);
+    line-height: 46px;
+  }
+
+  .hd-titel .hd-akzent {
+    font-size: var(--fx-hd-h1-akzent-handy);
+    white-space: nowrap;
+  }
+
+  .hd-lead {
+    font-size: var(--fx-hd-lead-handy);
+    line-height: 26px;
+  }
+
+  .hd-ctas {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hd-cta,
+  .hd-anfrage {
+    width: 100%;
+  }
+
+  .hd-info {
+    gap: var(--fx-s-4);
+    width: 100%;
+    height: auto;
+    padding: var(--fx-hd-s-info-handy);
+  }
+
+  .hd-info-icon {
+    width: 44px;
+    height: 49px;
+  }
+
+  .hd-info p {
+    font-size: var(--fx-hd-info-handy);
+    line-height: 25px;
+  }
+
+  .hd-info strong {
+    font-size: var(--fx-hd-info-handy);
+  }
+
+  .hd-vorteile {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: var(--fx-hd-s-vorteile-zeilen-handy);
+    padding: var(--fx-hd-s-vorteile-o-handy) var(--fx-s-4) var(--fx-hd-s-vorteile-u-handy);
+  }
+
+  .hd-vorteil,
+  .hd-vorteil + .hd-vorteil {
+    height: auto;
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  /* Unter 390 px passt „Faire & transparente Preise“ nicht in eine Zeile */
+  .hd-vorteil h3 {
+    white-space: normal;
+  }
+}
+
+/* Tablet quer (nicht im Entwurf): die Vorteile in zwei Spalten statt einer langen Liste */
+@media (57.5rem <= width < 80rem) {
+  .hd-vorteile {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--fx-s-5);
+  }
+}
+
+/* Ab 1600 px steht das Foto in voller Größe frei neben dem Text: dort blendet die Maske links den gezackten Rand des
+   Verlaufs aus, der im Bild selbst steckt (Bild-x 130–300). Darunter liegt er hinter Knöpfen und Hinweiskasten wie im Entwurf. */
+@media (min-width: 100rem) {
+  .hd-foto {
+    mask-image: linear-gradient(to right, transparent calc(160 * var(--fx-hd-px)), black calc(330 * var(--fx-hd-px)));
+  }
+}

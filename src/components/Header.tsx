@@ -4,55 +4,49 @@ import { CallButton } from './ui/CallButton'
 import { Icon } from './ui/Icon'
 
 /**
- * Sticky Seitenkopf (Screen 01/02): Wortmarke, Navigation ab 920 px, Anrufen, darunter der Menü-Knopf.
+ * Sticky Seitenkopf nach dem Entwurf „Hero – Desktop 1586“ (styles/hero.css): Logo, Navigation ab 1280 px, Anrufen.
+ * Logo: das bisherige (design/icons/logo.svg). Darunter statt der Navigation der Menü-Knopf (nicht im Entwurf);
+ * er öffnet und schließt das Handy-Menü (MobileMenu, Screen 05).
  * aufStartseite=false (Rechtsseiten): Anker zeigen auf „/#…“, das Logo auf „/“.
- * Der Menü-Knopf (nur unter 920 px) öffnet und schließt das Handy-Menü (MobileMenu, Screen 05).
  */
 export function Header({ aufStartseite = true }: { aufStartseite?: boolean }) {
   const { menueOffen, setMenueOffen } = useOverlays()
   const anker = (href: string) => (aufStartseite ? href : `/${href}`)
 
   return (
-    <header className="sticky top-0 z-10 border-b border-linie bg-kalk">
-      <div className="wrapper flex h-kopf items-center gap-s2 nav:gap-s6">
-        <a
-          href={aufStartseite ? '#start' : '/'}
-          onClick={() => setMenueOffen(false)}
-          aria-label={copy.kopf.logoLabel}
-          className="flex min-h-[44px] shrink-0 items-center text-tiefsee"
-        >
-          {/* Logo wie im Impeccable-Kopf: 158 px (Handy), 188 px ab 920 px; unter 375 px schmaler, damit Anrufen und Menü daneben passen. */}
-          <Icon name="logo" className="aspect-[188/33.57] w-[min(158px,calc(100vw-216px))] nav:w-[188px]" />
-        </a>
+    <header className="hd-kopf">
+      <a
+        href={aufStartseite ? '#start' : '/'}
+        onClick={() => setMenueOffen(false)}
+        aria-label={copy.kopf.logoLabel}
+        className="hd-logo"
+      >
+        <Icon name="logo" className="hd-logo-bild" />
+      </a>
 
-        <nav aria-label={copy.kopf.navLabel} className="ml-auto flex gap-s5 max-nav:hidden">
-          {copy.kopf.nav.map((link) => (
-            <a
-              key={link.href}
-              href={anker(link.href)}
-              className="flex min-h-[44px] items-center font-display text-btn font-semibold whitespace-nowrap text-schiefer hover:text-tiefsee"
-            >
-              {link.text}
-            </a>
-          ))}
-        </nav>
+      <nav aria-label={copy.kopf.navLabel} className="hd-nav">
+        {copy.kopf.nav.map((link) => (
+          <a key={link.href} href={anker(link.href)}>
+            {link.text}
+          </a>
+        ))}
+      </nav>
 
-        <CallButton variante="kopf" className="ml-auto nav:ml-0" />
+      <CallButton variante="kopf" />
 
-        <button
-          type="button"
-          aria-label={menueOffen ? copy.kopf.menueSchliessen : copy.kopf.menueOeffnen}
-          aria-expanded={menueOffen}
-          aria-controls="menue"
-          id="menue-knopf"
-          onClick={() => setMenueOffen(!menueOffen)}
-          className={`-mr-s2 flex size-[44px] shrink-0 cursor-pointer items-center justify-center rounded-chip text-tiefsee nav:hidden ${
-            menueOffen ? 'rahmen border-rand bg-weiss' : ''
-          }`}
-        >
-          <Icon name={menueOffen ? 'ui-schliessen' : 'ui-menue'} className={menueOffen ? 'size-[22px]' : 'size-[24px]'} />
-        </button>
-      </div>
+      <button
+        type="button"
+        aria-label={menueOffen ? copy.kopf.menueSchliessen : copy.kopf.menueOeffnen}
+        aria-expanded={menueOffen}
+        aria-controls="menue"
+        id="menue-knopf"
+        onClick={() => setMenueOffen(!menueOffen)}
+        className={`-mr-s2 flex size-[44px] shrink-0 cursor-pointer items-center justify-center rounded-chip text-tiefsee hd:hidden ${
+          menueOffen ? 'rahmen border-rand bg-weiss' : ''
+        }`}
+      >
+        <Icon name={menueOffen ? 'ui-schliessen' : 'ui-menue'} className={menueOffen ? 'size-[22px]' : 'size-[24px]'} />
+      </button>
     </header>
   )
 }
