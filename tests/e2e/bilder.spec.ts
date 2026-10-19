@@ -6,6 +6,10 @@ test('Hero-Foto und die fünf Motive der Leistungen laden im responsiven Layout'
   await expect(foto).toBeVisible()
   await expect.poll(() => foto.evaluate((img) => img instanceof HTMLImageElement && img.complete && img.naturalWidth > 0)).toBe(true)
   expect((await page.locator('.hd-foto').boundingBox())?.height).toBeGreaterThanOrEqual(280)
+  // Ab 1280 px das Original-JPG (pixelgleich mit dem Entwurf), darunter die kleineren AVIF/WebP-Fassungen
+  expect(await foto.evaluate((img) => (img as HTMLImageElement).currentSrc)).toMatch(
+    page.viewportSize()!.width >= 1280 ? /\/images\/hero-wien\.jpg$/ : /\/images\/hero-wien(?:-\d+)?\.(avif|webp)$/,
+  )
   for (let n = 2; n <= 6; n++) {
     const frame = page.locator(`[data-bild="${n}"]`)
     await frame.scrollIntoViewIfNeeded()
