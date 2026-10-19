@@ -36,7 +36,7 @@ export function Erfolg({ luna, kontakt, onNeu, onSchliessen }: ErfolgProps) {
       </div>
 
       <p className="text-text">{fuelle(gefunden ? t.text : t.keinerText, werte)}</p>
-      <p className="text-note text-schiefer">{fuelle(t.nummer, { nummer: luna.anfrageId })}</p>
+      <p className="text-small text-schiefer">{fuelle(t.nummer, { nummer: luna.anfrageId })}</p>
 
       {gewerk && gefunden && (
         <p className="rounded-chip bg-eis px-s3 py-s3 text-small">

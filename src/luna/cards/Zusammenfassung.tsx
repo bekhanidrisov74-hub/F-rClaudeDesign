@@ -99,7 +99,7 @@ export function Zusammenfassung({
                 className={FELD}
               />
               {fehler && (
-                <p id={`luna-${feld}-fehler`} className="flex items-start gap-s2 text-note font-bold">
+                <p id={`luna-${feld}-fehler`} className="flex items-start gap-s2 text-small font-bold">
                   <Icon name="ui-warnung" className="mt-px size-[16px] shrink-0" />
                   {fehler}
                 </p>
@@ -124,7 +124,7 @@ export function Zusammenfassung({
       )}
 
       <div className="flex flex-col gap-s2">
-        <label htmlFor={checkboxId} className="flex min-h-[44px] cursor-pointer items-start gap-s3 text-note">
+        <label htmlFor={checkboxId} className="flex min-h-[44px] cursor-pointer items-start gap-s3 text-small">
           <input
             ref={einwilligungRef}
             id={checkboxId}
@@ -144,14 +144,14 @@ export function Zusammenfassung({
           </span>
         </label>
         {einwilligungFehlt && (
-          <p id={fehlerId} className="flex items-start gap-s2 text-note font-bold">
+          <p id={fehlerId} className="flex items-start gap-s2 text-small font-bold">
             <Icon name="ui-warnung" className="mt-px size-[16px] shrink-0" />
             {t.einwilligungFehlt}
           </p>
         )}
       </div>
 
-      <p className="text-note text-schiefer">{t.hinweis}</p>
+      <p className="text-small text-schiefer">{t.hinweis}</p>
 
       {/* Die Reihenfolge im Quelltext folgt der sichtbaren: Handy Auftrag, dann Textlink; Fenster Ändern, dann Auftrag. */}
       <div className="flex flex-col gap-s3 dialog:flex-row dialog:gap-s2">

@@ -12,7 +12,7 @@ export function Vertrauensleiste() {
               <Icon name={punkt.icon} className={`hd-vorteil-icon ${punkt.icon}`} />
             </span>
             <div className="hd-vorteil-text">
-              <h3>{punkt.titel}</h3>
+              <h2>{punkt.titel}</h2>
               <p>
                 {punkt.text[0]}
                 <br />

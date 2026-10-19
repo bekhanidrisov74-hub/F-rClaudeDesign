@@ -12,7 +12,10 @@
   align-items: center;
   height: var(--fx-kopf);
   box-sizing: border-box;
-  padding: 0 var(--fx-hd-s-kopf-r) 0 var(--fx-hd-s-kopf-l);
+  /* Die Leiste (Fläche, Linie) füllt die ganze Breite, der Inhalt steht im Rahmen (--fx-rahmen): ab 1586 px kommt der Rand
+     neben dem Rahmen zum Innenabstand dazu, bis dahin ist er 0. Prozent meint die Breite des Kopfs. Unter 1280 px überschreibt
+     die Handy-Fassung unten. */
+  padding: 0 calc(max(0px, (100% - var(--fx-rahmen)) / 2) + var(--fx-hd-s-kopf-r)) 0 calc(max(0px, (100% - var(--fx-rahmen)) / 2) + var(--fx-hd-s-kopf-l));
   border-bottom: 1px solid var(--fx-hd-linie-kopf);
   background: var(--fx-hd-kalk-kopf);
   color: var(--fx-hd-tiefsee);
@@ -107,9 +110,13 @@
   font-family: var(--fx-hd-font);
 }
 
+/* Hero und Vorteile stehen im Rahmen (--fx-rahmen), die Fläche bleibt auf dem vollbreiten .hd. Bis 1586 px füllt der Rahmen das
+   Fenster, dort ist alles wie im Entwurf; darüber hängt das Foto (right: 0) an der rechten Rahmenkante statt am Fensterrand. */
 .hd-hero {
   position: relative;
+  max-width: var(--fx-rahmen);
   height: calc(697 * var(--fx-hd-px));
+  margin-inline: auto;
 }
 
 .hd-raster {
@@ -337,6 +344,8 @@
   position: relative;
   z-index: 1;
   display: grid;
+  max-width: var(--fx-rahmen);
+  margin-inline: auto;
   grid-template-columns: minmax(0, 332fr) minmax(0, 350fr) minmax(0, 378fr) minmax(0, 353fr);
   padding: var(--fx-hd-s-vorteile-o) var(--fx-hd-s-vorteile-r) var(--fx-hd-s-vorteile-u) var(--fx-hd-s-vorteile-l);
 }
@@ -376,7 +385,7 @@
   padding-top: var(--fx-hd-s-vorteil-text);
 }
 
-.hd-vorteil h3 {
+.hd-vorteil h2 {
   margin: 0;
   color: var(--fx-hd-tiefsee);
   font-family: inherit;
@@ -520,7 +529,7 @@
   }
 
   /* Unter 390 px passt „Faire & transparente Preise“ nicht in eine Zeile */
-  .hd-vorteil h3 {
+  .hd-vorteil h2 {
     white-space: normal;
   }
 }
@@ -541,10 +550,15 @@
   }
 }
 
-/* Ab 1600 px steht das Foto in voller Größe frei neben dem Text: dort blendet die Maske links den gezackten Rand des
-   Verlaufs aus, der im Bild selbst steckt (Bild-x 130–300). Darunter liegt er hinter Knöpfen und Hinweiskasten wie im Entwurf. */
-@media (min-width: 100rem) {
+/* Über 1586 px (breiter als der Rahmen) endet das Foto nicht mehr am Fensterrand, sondern 1006 px breit in der Kalk-Fläche:
+   rechts läuft es aus, statt hart abzubrechen. Das Raster links beginnt ebenso weich an der Rahmenkante. Genau 1586 px
+   bleibt wie im Entwurf, dort liegt der Rahmen am Fensterrand. */
+@media (width > 99.125rem) {
   .hd-foto {
-    mask-image: linear-gradient(to right, transparent calc(160 * var(--fx-hd-px)), black calc(330 * var(--fx-hd-px)));
+    mask-image: linear-gradient(to right, transparent 0, black calc(90 * var(--fx-hd-px)), black calc(100% - var(--fx-hd-s-ausblend)), transparent 100%);
+  }
+
+  .hd-raster {
+    mask-image: linear-gradient(to right, transparent 0, black calc(var(--fx-hd-s-ausblend) / 2), transparent 100%);
   }
 }

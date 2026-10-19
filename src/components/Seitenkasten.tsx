@@ -28,7 +28,7 @@ export function Seitenkasten() {
         <Icon name="ui-chat" className="size-[22px]" />
         <span>{t.whatsapp}</span>
       </Button>
-      <p className="text-note text-schiefer">{t.hinweis}</p>
+      <p className="text-small text-schiefer">{t.hinweis}</p>
     </aside>
   )
 }

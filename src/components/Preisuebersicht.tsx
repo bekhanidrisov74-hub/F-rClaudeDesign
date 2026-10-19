@@ -84,7 +84,7 @@ export function Preisuebersicht({ aufStartseite = true }: { aufStartseite?: bool
         {/* ab 640 px: Tabelle */}
         <table className="w-full table-fixed border-collapse text-text max-dialog:hidden">
           <thead>
-            <tr className="text-note text-schiefer">
+            <tr className="text-small text-schiefer">
               <th scope="col" className="w-[47%] pb-s3 text-left font-bold">
                 {t.spalten.gewerk}
               </th>
@@ -121,13 +121,13 @@ export function Preisuebersicht({ aufStartseite = true }: { aufStartseite?: bool
               <IconKreis name={g.icon} className="mr-s1 size-[40px]" icon="size-[22px]" />
               <span className="flex min-w-0 flex-1 flex-col">
                 <span className="font-display text-text leading-tight font-bold">{g.name}</span>
-                <span className="text-note text-schiefer">
+                <span className="text-small text-schiefer">
                   {t.anfahrt} {anfahrtText(g)}
                 </span>
               </span>
               <span className="flex flex-col items-end whitespace-nowrap">
                 <span className="betrag text-text font-bold">{spanne(g)}</span>
-                <span className="text-note text-schiefer">{einheit(g)}</span>
+                <span className="text-small text-schiefer">{einheit(g)}</span>
               </span>
             </li>
           ))}
@@ -138,7 +138,7 @@ export function Preisuebersicht({ aufStartseite = true }: { aufStartseite?: bool
             <li key={h}>{h}</li>
           ))}
         </ul>
-        <p className="text-note text-schiefer dialog:hidden">{t.hinweisSheet}</p>
+        <p className="text-small text-schiefer dialog:hidden">{t.hinweisSheet}</p>
 
         <div className="flex items-center gap-s3 max-dialog:hidden">
           <Button art="hell" href={ziel} onClick={zumRechner} className="min-h-[56px] rounded-btn-lg px-s5 text-btn">

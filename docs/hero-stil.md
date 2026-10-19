@@ -4,17 +4,25 @@ Auftrag von Beks am 19.10.2026: Jeder Abschnitt und jedes Fenster der Website si
 (Entwurf „Hero – Desktop 1586“: Kopf, Hero und die vier Vorteile). Stil, Look und Schrift wie dort.
 **Texte und Fotos bleiben unverändert**; Icons und Grafiken durften ersetzt werden.
 
-Der Hero selbst (`styles/hero.css`, `--fx-hd-*`) ist unverändert, bis auf eine Handy-Regel: Unter 560 px fällt der feste
-Umbruch im Hinweiskasten weg, damit „uns“ nicht allein in einer Zeile steht. Alles andere nutzt die Basis-Tokens in
+Der Hero selbst (`styles/hero.css`, `--fx-hd-*`) ist bis 1586 px unverändert, bis auf eine Handy-Regel: Unter 560 px fällt
+der feste Umbruch im Hinweiskasten weg, damit „uns“ nicht allein in einer Zeile steht. Alles andere nutzt die Basis-Tokens in
 `src/styles/tokens.css`, deren Werte jetzt die des Hero sind. Die Namen der Tokens sind geblieben.
+
+Seit 19.10.2026 (Branch `design/raster-rhythmus`) gilt ein gemeinsames Raster für die ganze Seite (Zeile „Raster“ unten),
+design/screens gelten dafür nicht mehr. Über 1586 px stehen Kopfinhalt, Hero und Vorteile im zentrierten Rahmen: Das Foto
+(nur 1006 × 724 px vorhanden, daher nie hochskaliert) hängt an der rechten Rahmenkante, überlappt den Text wie im Entwurf und
+läuft rechts weich in die Kalk-Fläche aus. Die Titel der Vorteile sind h2 (vorher h3 direkt nach der h1), die Optik ist gleich.
+Geplant, aber noch nicht umgesetzt: Flächenplan mit Eis-Bändern und Tiefsee für So funktioniert's und den Fuß, neues Raster
+für „Was ist passiert?“ und die Zusagen, Fenster im Rahmen (Plan in `docs/plans/2026-10-19-optik-raster.md`).
 
 ## Grundlagen
 
 | Thema | Wert |
 |---|---|
 | Schrift | Inter (Variable, lokal über `@fontsource-variable/inter`) für alles. Bricolage und Atkinson sind entfernt. |
-| Überschriften | Gewicht 750, eng gesetzt wie die H1 (H2 −0,045 em, H3 −0,025 em, H4 −0,02 em). Abschnittstitel bis 54 px. |
-| Fließtext | Inter 400, Zweittext in Schiefer. Unterzeilen der Abschnitte wie die Unterzeile im Hero (bis 20,2 px). |
+| Überschriften | Gewicht 750, eng gesetzt wie die H1 (H2 −0,045 em, H3 −0,025 em, H4 −0,02 em). Abschnittstitel bis 60 px. |
+| Fließtext | Inter 400, Zweittext in Schiefer. Unterzeilen der Abschnitte wie die Unterzeile im Hero (bis 20,2 px). Fließtext bis 18 px, Kleintext 15 px (`--fx-small`, nichts darunter). Alle Größen wachsen fließend von 390 bis 1534 px. |
+| Raster | Alle Abschnitte, der Fuß, das Menü und die Rechtsseiten stehen auf den Kanten des Hero (`--fx-kante-l` / `--fx-kante-r`: unter 1280 px 16 px, ab 1280 px 100 / 80 Entwurfs-px). Der Rahmen (`--fx-rahmen`) ist 1586 px breit und wird darüber zentriert; Kopfleiste, Flächen und Linien laufen voll breit. |
 | Fokus | überall 3 px Tiefsee, 3 px Abstand (wie in Kopf und Hero). |
 | Radien | Anruf-Knöpfe, Kreise und Luna-Knopf als Pille; Zweitknöpfe 16; Karten und Hinweiskästen 20; Kacheln 18; Felder und Chips 12. |
 | Schatten | weich wie unter den Knöpfen des Hero: Zweitknöpfe `--fx-shadow-knopf`, Anruf-Knöpfe `--fx-shadow-anruf`, Karten `--fx-shadow-karte`. |

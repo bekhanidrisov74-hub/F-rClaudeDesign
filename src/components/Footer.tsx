@@ -97,7 +97,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="flex flex-col gap-s2 border-t border-linie pt-s5 text-note text-schiefer nav:flex-row nav:flex-wrap nav:justify-between nav:gap-x-s5">
+        <div className="flex flex-col gap-s2 border-t border-linie pt-s5 text-small text-schiefer nav:flex-row nav:flex-wrap nav:justify-between nav:gap-x-s5">
           <span>{fuelle(fuss.copyright, { jahr: __JAHR__, firma: FIRMA })}</span>
           <span>{fuss.preise}</span>
         </div>

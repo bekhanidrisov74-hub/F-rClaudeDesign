@@ -29,7 +29,7 @@ export function Kopf() {
       </span>
       <span className="flex min-w-0 flex-col">
         <span className="font-display text-h5 font-bold">{t.name}</span>
-        <span className="text-note text-schiefer">{t.rolle}</span>
+        <span className="text-small text-schiefer">{t.rolle}</span>
       </span>
 
       <a

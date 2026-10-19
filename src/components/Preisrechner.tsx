@@ -50,7 +50,7 @@ export function Preisrechner() {
         </div>
 
         <div className="grid gap-s5 nav:grid-cols-[minmax(0,1fr)_420px]">
-          <div className="flex min-w-0 flex-col gap-s5 rounded-card-lg border border-linie bg-weiss px-s4 py-s5 shadow-karte dialog:gap-s6 dialog:p-s6">
+          <div className="flex min-w-0 flex-col justify-between gap-s5 rounded-card-lg border border-linie bg-weiss px-s4 py-s5 shadow-karte dialog:gap-s6 dialog:p-s6">
             <fieldset className={FELDGRUPPE}>
               <legend className={LEGENDE}>{copy.rechner.gewerk}</legend>
               <div className={REIHE}>
@@ -162,7 +162,7 @@ function Zeile({ label, unter, children }: { label: string; unter?: string; chil
         {unter ? (
           <>
             <span className="block">{label}</span>
-            <span className="block text-note">{unter}</span>
+            <span className="block text-small">{unter}</span>
           </>
         ) : (
           label
@@ -185,7 +185,7 @@ function Ergebniskarte({ ergebnis: e }: { ergebnis: Ergebnis }) {
     >
       <div className="flex flex-col gap-s1">
         <h3 className="text-h4">{t.titel}</h3>
-        <p className="text-note text-schiefer">{e.unterzeile}</p>
+        <p className="text-small text-schiefer">{e.unterzeile}</p>
       </div>
 
       <dl className="flex flex-col gap-s3 text-body">
@@ -211,7 +211,7 @@ function Ergebniskarte({ ergebnis: e }: { ergebnis: Ergebnis }) {
         </div>
       </dl>
 
-      <p className="text-note text-schiefer">{t.hinweis}</p>
+      <p className="text-small text-schiefer">{t.hinweis}</p>
 
       <div className="mt-auto flex flex-col gap-s3">
         <CallButton variante="block" />

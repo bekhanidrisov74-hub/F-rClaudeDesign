@@ -63,7 +63,7 @@ describe('Token-Wächter', () => {
       expect(verstoesse(richtig, 'tsx'), richtig).toEqual([])
     for (const richtig of [
       'transition: color var(--fx-dur-fast) var(--fx-ease);',
-      '.x { font-size: var(--fx-note); padding: 0; color: inherit; }',
+      '.x { font-size: var(--fx-small); padding: 0; color: inherit; }',
     ])
       expect(verstoesse(richtig, 'css'), richtig).toEqual([])
   })
