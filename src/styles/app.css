@@ -177,8 +177,9 @@
    wie an einer Vitrine vorbei. Ohne Scroll-Animationen oder mit reduced motion bleibt es unsichtbar. */
 @utility glanz {
   @supports (animation-timeline: view()) {
-    /* Versatz je Spalte: das Licht wandert von links nach rechts über die Reihe.
-       Die Spaltenzahl folgt dem Leistungsraster (@container, auto-fill ab 340 px, Abstand 24 px). */
+    /* Versatz je Spalte: das Licht wandert von links nach rechts über die Reihe. Die Spaltenzahl folgt dem Leistungsraster
+       (@container, auto-fill ab 340 px, Abstand 24 px): zwei Spalten ab 704 px Inhalt, drei ab 1068 px. Der Inhalt wird nie
+       breiter als 1406 px, vier Spalten (1432 px) gibt es nicht; Fensterbreiten dazu: 736 und 1100 px. */
     --von: 20%;
     --bis: 70%;
     @container (min-width: 704px) and (max-width: 1067.98px) {
