@@ -1,5 +1,3 @@
-@import '@fontsource-variable/bricolage-grotesque/standard.css';
-@import '@fontsource-variable/atkinson-hyperlegible-next/wght.css';
 @import '@fontsource-variable/inter/wght.css';
 @import 'tailwindcss';
 @import './tokens.css';
@@ -38,7 +36,13 @@
   --color-tiefsee: var(--fx-tiefsee);
   --color-tiefsee-2: var(--fx-tiefsee-2);
   --color-kalk: var(--fx-kalk);
+  --color-kalk-2: var(--fx-kalk-2);
   --color-weiss: var(--fx-weiss);
+  --color-eis: var(--fx-eis);
+  --color-lagune: var(--fx-lagune);
+  --color-orange: var(--fx-orange);
+  --color-nacht: var(--fx-nacht);
+  --color-tuerkis-hell: var(--fx-tuerkis-hell);
   --color-schiefer: var(--fx-schiefer);
   --color-rand: var(--fx-rand);
   --color-linie: var(--fx-linie);
@@ -46,7 +50,6 @@
   --color-icon-technik: var(--fx-icon-technik);
   --color-icon-handwerk: var(--fx-icon-handwerk);
   --color-abdunklung: var(--fx-abdunklung);
-  --color-leuchten: var(--fx-leuchten);
   --color-transparent: transparent;
   --color-current: currentColor;
 
@@ -54,25 +57,35 @@
   --font-text: var(--fx-font-text);
 
   --text-h1: var(--fx-h1);
-  --text-h1--line-height: 0.95;
-  --text-h1--letter-spacing: -0.02em;
+  --text-h1--line-height: 1;
+  --text-h1--letter-spacing: -0.045em;
   --text-h2: var(--fx-h2);
-  --text-h2--line-height: 1;
-  --text-h2--letter-spacing: -0.012em;
+  --text-h2--line-height: 1.02;
+  --text-h2--letter-spacing: -0.045em;
   --text-h2-s: var(--fx-h2-s);
   --text-h2-s--line-height: 1.1;
+  --text-h2-s--letter-spacing: -0.03em;
   --text-h2-dialog: var(--fx-h2-dialog);
   --text-h2-dialog--line-height: 1.05;
+  --text-h2-dialog--letter-spacing: -0.035em;
   --text-h3: var(--fx-h3);
   --text-h3--line-height: 1.15;
+  --text-h3--letter-spacing: -0.025em;
   --text-h3-karte: var(--fx-h3-karte);
-  --text-h3-karte--line-height: 1.05;
+  --text-h3-karte--line-height: 1.1;
+  --text-h3-karte--letter-spacing: -0.03em;
   --text-h4: var(--fx-h4);
   --text-h4--line-height: 1.2;
+  --text-h4--letter-spacing: -0.02em;
   --text-h5: var(--fx-h5);
   --text-h5--line-height: 1.25;
+  --text-h5--letter-spacing: -0.01em;
+  --text-kachel: var(--fx-kachel);
+  --text-kachel--line-height: 1.25;
+  --text-kachel--letter-spacing: -0.01em;
   --text-total: var(--fx-total);
   --text-total--line-height: 1.1;
+  --text-total--letter-spacing: -0.03em;
   --text-lead: var(--fx-lead);
   --text-lead--line-height: 1.5;
   --text-body: var(--fx-body);
@@ -91,6 +104,7 @@
   --text-hero-call--line-height: 1.05;
   --text-step-nr: var(--fx-step-nr);
   --text-step-nr--line-height: 1;
+  --text-step-nr--letter-spacing: -0.05em;
 
   --radius-pill: var(--fx-r-pill);
   --radius-dialog: var(--fx-r-dialog);
@@ -103,6 +117,11 @@
   --radius-tile: var(--fx-r-tile);
   --radius-ecke: var(--fx-r-ecke);
 
+  --shadow-knopf: var(--fx-shadow-knopf);
+  --shadow-knopf-hover: var(--fx-shadow-knopf-hover);
+  --shadow-anruf: var(--fx-shadow-anruf);
+  --shadow-karte: var(--fx-shadow-karte);
+  --shadow-karte-hover: var(--fx-shadow-karte-hover);
   --shadow-s: var(--fx-shadow-s);
   --shadow-m: var(--fx-shadow-m);
   --shadow-l: var(--fx-shadow-l);
@@ -147,20 +166,6 @@
   border-style: solid;
 }
 
-/* Haarlinien-Raster in dunklen Karten (Zusagen), oben kräftig, nach unten auslaufend */
-@utility raster-karte {
-  background-image:
-    linear-gradient(to right, var(--fx-tuerkis) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--fx-tuerkis) 1px, transparent 1px);
-  background-size: var(--fx-s-8) var(--fx-s-8);
-  mask-image: radial-gradient(ellipse 80% 50% at 50% 0%, black 70%, transparent 110%);
-}
-
-/* Wirbel in dunklen Karten (Zusagen, ersetzt dort das Raster): oben sichtbar, zum Text hin auslaufend */
-@utility wirbel-karte {
-  mask-image: linear-gradient(to bottom, black, transparent 85%);
-}
-
 /* Karten gleiten beim Hineinscrollen ein (nur wo Scroll-Animationen gehen; sonst sind sie einfach da) */
 @utility einblenden {
   @supports (animation-timeline: view()) {
@@ -170,7 +175,7 @@
   }
 }
 
-/* Signatur (docs/glanz/BRIEF.md): beim Scrollen gleitet ein Glanzlicht über das Chrom der Fotos,
+/* Signatur (docs/glanz/BRIEF.md): beim Scrollen gleitet ein Glanzlicht über die Bilder der Leistungen,
    wie an einer Vitrine vorbei. Ohne Scroll-Animationen oder mit reduced motion bleibt es unsichtbar. */
 @utility glanz {
   @supports (animation-timeline: view()) {
@@ -227,82 +232,34 @@
   }
 }
 
-/* Fuß (ui/Strahlfuss, nach „Beam Wordmark Footer“): ein türkiser Lichtstrahl liegt schräg über dem Fuß und läuft durch
-   die große Wortmarke. Er kommt beim Hinscrollen von links, wie das Glanzlicht der Fotos, während die Wortmarke aufsteigt;
-   die Maus trägt einen weichen Schein durch die Buchstaben. Strahl und Schein sind an der Ecke unten rechts verankert und
-   in cqi gemessen, darum liegt der Strahl im Hintergrund und in den Buchstaben an derselben Stelle. Gedämpft, damit Anrufen
-   das Auffälligste bleibt und türkiser Text darüber 4,5:1 hält; mit reduced motion steht der Strahl, der Schein bleibt aus. */
-@property --strahl {
-  syntax: '<number>';
-  inherits: true;
-  initial-value: 44; /* Abstand von der Ecke unten rechts in cqi: der Strahl kreuzt die Wortmarke rechts der Mitte */
-}
-@property --schein {
-  syntax: '<number>';
-  inherits: true;
-  initial-value: 0;
-}
-
-@utility strahlfuss {
-  /* Breite des Strahls: wächst mit dem Fuß, am Handy etwas breiter */
-  --strahl-breite: calc(1cqi + 2px);
-  container-type: inline-size;
-  transition: --schein var(--fx-dur-fast) var(--fx-ease);
-  @supports (animation-timeline: view()) {
-    timeline-scope: --wortmarke;
-    animation: strahl linear both;
-    animation-timeline: --wortmarke;
-    animation-range: entry 0% entry 100%;
-  }
-  @media (prefers-reduced-motion: reduce) {
-    --schein: 0 !important;
-  }
-}
-
-/* Licht hinter dem Inhalt: der Strahl, ein schwacher zweiter links oben; oben eine Lichtkante */
-@utility strahl {
-  background-image:
-    linear-gradient(298deg, transparent calc(var(--strahl) * 1cqi - 9 * var(--strahl-breite)), var(--fx-strahl-hauch) calc(var(--strahl) * 1cqi - 4 * var(--strahl-breite)), var(--fx-strahl) calc(var(--strahl) * 1cqi), var(--fx-strahl-hauch) calc(var(--strahl) * 1cqi + 5 * var(--strahl-breite)), transparent calc(var(--strahl) * 1cqi + 11 * var(--strahl-breite))),
-    linear-gradient(298deg, transparent calc(var(--strahl) * 1cqi + 20 * var(--strahl-breite)), var(--fx-strahl-hauch) calc(var(--strahl) * 1cqi + 26 * var(--strahl-breite)), transparent calc(var(--strahl) * 1cqi + 32 * var(--strahl-breite)));
-  /* Lichtkante: dieselbe Fläche, nur die oberste Pixelreihe; am hellsten, wo der Strahl sie kreuzt */
-  &::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(298deg, transparent calc(var(--strahl) * 1cqi - 14 * var(--strahl-breite)), var(--fx-strahl-kante) calc(var(--strahl) * 1cqi), transparent calc(var(--strahl) * 1cqi + 14 * var(--strahl-breite))),
-      linear-gradient(var(--fx-leuchten), var(--fx-leuchten));
-    mask-image: linear-gradient(to bottom, black 1px, transparent 1px);
-  }
-}
-
-/* Große Wortmarke, schließt den Fuß unten über die volle Breite ab; der Text steht innen in einem wrapper und füllt die
-   Inhaltsbreite (--fx-wortmarke-gross). Unten 0,09 em unter der Grundlinie abgeschnitten, läuft ins Dunkle aus.
-   Die Buchstaben malen das Licht des Hintergrunds kräftiger nach. */
+/* Große Wortmarke, schließt den hellen Fuß unten über die volle Breite ab, wie ein Wasserzeichen: Lagune, die nach unten
+   in die Fläche ausläuft. Der Text steht innen in einem wrapper und füllt die Inhaltsbreite (--fx-wortmarke-gross).
+   Unten unter der Grundlinie abgeschnitten; steigt beim Hinscrollen aus dem unteren Rand auf. Reine Dekoration. */
 @utility wortmarke {
   position: relative;
+  container-type: inline-size;
   font-family: var(--fx-font-display);
-  font-size: var(--fx-wortmarke-gross);
   font-weight: 800;
-  font-stretch: 100%;
-  letter-spacing: -0.035em;
   line-height: 1;
-  height: 0.92em;
   white-space: nowrap;
   user-select: none;
-  color: transparent;
-  background-image:
-    radial-gradient(circle 22cqi at var(--zeiger-x, 50%) calc(100% + var(--zeiger-y, -50%)), var(--fx-leuchten), transparent calc(var(--schein) * 70%)),
-    linear-gradient(298deg, transparent calc(var(--strahl) * 1cqi - 8 * var(--strahl-breite)), var(--fx-leuchten) calc(var(--strahl) * 1cqi - 3.5 * var(--strahl-breite)), var(--fx-strahl-kante) calc(var(--strahl) * 1cqi), var(--fx-strahl-kante) calc(var(--strahl) * 1cqi + 1.5 * var(--strahl-breite)), transparent calc(var(--strahl) * 1cqi + 9 * var(--strahl-breite))),
-    linear-gradient(to bottom, var(--fx-wortmarke) 12%, var(--fx-tiefsee-2) 85%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  mask-image: linear-gradient(to bottom, black 50%, transparent);
-  view-timeline: --wortmarke block;
-  @supports (animation-timeline: view()) {
-    animation: aufsteigen linear both;
-    animation-timeline: --wortmarke;
-    animation-range: entry 0% entry 100%;
+  overflow: clip;
+  /* Größe und Laufweite am Kind: erst dort gilt cqi des Fußes, und em bezieht sich auf die große Schrift */
+  & > * {
+    font-size: var(--fx-wortmarke-gross);
+    letter-spacing: -0.05em;
+    height: 0.84em; /* knapp über der Grundlinie: die Buchstaben stehen auf der Kante */
+    overflow: clip;
+    color: transparent;
+    background-image: linear-gradient(to bottom, var(--fx-lagune) 10%, var(--fx-kalk-2) 95%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    view-timeline: --wortmarke block;
+    @supports (animation-timeline: view()) {
+      animation: aufsteigen linear both;
+      animation-timeline: --wortmarke;
+      animation-range: entry 0% entry 100%;
+    }
   }
   /* Im Kontrastmodus fallen Verlauf und Ausschnitt weg, übrig bliebe riesige Schrift */
   @media (forced-colors: active) {
@@ -318,8 +275,9 @@
     content: '';
     position: absolute;
     inset: auto 0 0;
-    height: 1px;
-    background-image: linear-gradient(to right, var(--fx-strahl-kante), var(--fx-leuchten));
+    height: 2px;
+    border-radius: var(--fx-r-pill);
+    background-image: linear-gradient(to right, var(--fx-tuerkis), var(--fx-lagune));
     transform-origin: left;
   }
   @supports (animation-timeline: view()) {
@@ -331,12 +289,7 @@
   }
 }
 
-/* Lichtkante oben an dunklen Karten: wie eine polierte Kante, die das Licht fängt */
-@utility kante {
-  box-shadow: var(--fx-kante);
-}
-
-/* Beträge: Bricolage mit gleich breiten Ziffern (Atkinson zeichnet die Null durchgestrichen) */
+/* Beträge: Inter mit gleich breiten Ziffern, damit Spannen und Summen ruhig stehen */
 @utility betrag {
   font-family: var(--fx-font-display);
   font-variant-numeric: tabular-nums;
@@ -370,7 +323,7 @@
     line-height: 1.5;
     scroll-padding-top: var(--fx-kopf);
     -webkit-text-size-adjust: 100%;
-    /* macOS: Graustufen-Glättung, damit helle Schrift auf Tiefsee nicht aufquillt */
+    /* macOS: Graustufen-Glättung wie im Hero */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -380,10 +333,10 @@
     background: var(--fx-kalk);
   }
 
+  /* Überschriften wie im Hero: Inter 750, eng gesetzt (Laufweite je Stufe in @theme) */
   h1, h2, h3, h4 {
     font-family: var(--fx-font-display);
-    font-weight: 700;
-    font-stretch: 96%;
+    font-weight: 750;
     text-wrap: balance;
   }
 
@@ -399,7 +352,7 @@
   }
 
   ::selection {
-    background-color: var(--fx-tuerkis);
+    background-color: var(--fx-lagune);
     color: var(--fx-tiefsee);
   }
 
@@ -409,8 +362,9 @@
     opacity: 1;
   }
 
+  /* Fokus wie im Hero: Tiefsee, damit der Rahmen auf den hellen Flächen und neben den türkisen Knöpfen sichtbar bleibt */
   :focus-visible {
-    outline: 3px solid var(--fx-tuerkis);
+    outline: 3px solid var(--fx-tiefsee);
     outline-offset: 3px;
   }
 
@@ -468,16 +422,12 @@
   from { scale: 0 1; }
 }
 
-/* Fuß: der Strahl kommt von links, die Wortmarke steigt aus dem unteren Rand auf */
-@keyframes strahl {
-  from { --strahl: 74; }
-}
-
+/* Fuß: die Wortmarke steigt aus dem unteren Rand auf */
 @keyframes aufsteigen {
   from { translate: 0 60%; }
 }
 
-/* Gedämpft, aber lesbar: 70 % Türkis auf Tiefsee bleibt über 3:1 (große Schrift), egal wo das Scrollen stoppt */
+/* Die orangen Ziffern in So funktioniert's heben sich nacheinander; sie sind Zierde (aria-hidden), die Liste trägt die Reihenfolge */
 @keyframes ziffer {
   from { opacity: 0.7; translate: 0 var(--fx-s-2); }
 }

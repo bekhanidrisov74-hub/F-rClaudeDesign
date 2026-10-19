@@ -276,13 +276,13 @@ export const copy = {
         zusatz: 'Der Vertrag kommt direkt mit dem Betrieb zustande',
       },
       {
-        icon: 'ui-haekchen',
+        icon: 'ui-kostenlos',
         text: 'Die Vermittlung ist kostenlos. Sie zahlen nur den Betrieb.',
         titel: 'Kostenlos für Sie',
         zusatz: 'Keine Gebühr für die Vermittlung',
       },
       {
-        icon: 'ui-rund-um-die-uhr',
+        icon: 'vorteil-uhr',
         text: 'Auch nachts, an Sonn- und Feiertagen sind wir erreichbar.',
         titel: 'Rund um die Uhr',
         zusatz: 'Anruf, WhatsApp oder Formular',
@@ -300,7 +300,7 @@ export const copy = {
         zusatz: 'Im Preisrechner und in den Leistungen',
       },
       {
-        icon: 'ui-anrufen',
+        icon: 'telefon',
         text: 'Der Betrieb ruft Sie zurück, nennt den Preis und kommt zu Ihnen.',
         titel: 'Direkt zum Betrieb',
         zusatz: 'Rückruf nach Ihrer Anfrage',

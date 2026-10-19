@@ -21,10 +21,9 @@ import { expect } from '../e2e/test'
 const HOEHE: Record<number, number> = { 390: 844, 1024: 768, 1440: 900 }
 const ALLE = [390, 1024, 1440]
 
-/** Der Wirbel in den Zusagen lädt erst beim Hinscrollen, wie der Fuß-Globus. */
-const wirbel = async (p: Page) => {
+/** Die Zusagen-Karten blenden beim Hinscrollen ein: einmal hinscrollen, damit sie im Bild stehen. */
+const zusagen = async (p: Page) => {
   await p.locator('#zusagen').scrollIntoViewIfNeeded()
-  await expect(p.locator('#zusagen [data-paper-shader]')).toHaveCount(2)
 }
 
 interface Zustand {
@@ -45,9 +44,9 @@ const ZUSTAENDE: Zustand[] = [
     name: 'startseite',
     pfad: '/',
     ganzeSeite: true,
-    // Wirbel und Fuß-Globus laden erst beim Hinscrollen; Ganzseiten-Shots scrollen nie.
+    // Der Fuß-Globus lädt erst beim Hinscrollen; Ganzseiten-Shots scrollen nie.
     vorbereiten: async (p) => {
-      await wirbel(p)
+      await zusagen(p)
       const globus = p.locator('footer canvas')
       if (await globus.isVisible()) {
         await globus.scrollIntoViewIfNeeded()
@@ -58,7 +57,7 @@ const ZUSTAENDE: Zustand[] = [
       await p.addStyleTag({ content: '[data-anstupser] { display: none !important; }' })
     },
   },
-  { name: 'zusagen', pfad: '/', element: (p) => p.locator('#zusagen'), vorbereiten: wirbel },
+  { name: 'zusagen', pfad: '/', element: (p) => p.locator('#zusagen'), vorbereiten: zusagen },
   { name: 'falz', pfad: '/', breiten: [390] },
   { name: 'impressum', pfad: '/impressum/', breiten: [390, 1440] },
   { name: 'preisuebersicht', pfad: '/', vorbereiten: oeffnePreisuebersicht },
@@ -101,6 +100,9 @@ for (const z of ZUSTAENDE)
   for (const breite of z.breiten ?? ALLE)
     test(`${z.name}-${breite}`, async ({ page }) => {
       await page.setViewportSize({ width: breite, height: HOEHE[breite] })
+      // Ganze Seite: Scroll-Animationen (Einblenden, Linien, Wortmarke) hängen an der Scroll-Position, die Aufnahme
+      // scrollt nicht. Mit reduced motion zeigt sie die Endzustände, wie sie beim Lesen erscheinen.
+      if (z.ganzeSeite) await page.emulateMedia({ reducedMotion: 'reduce' })
       if (z.uhr) await page.clock.install()
       await page.goto(z.pfad)
       await page.evaluate(() => document.fonts.ready)

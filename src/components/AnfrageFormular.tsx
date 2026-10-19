@@ -6,7 +6,7 @@ import { WEISS_NICHT_ID, formularZuLead, pruefeFeld, pruefeFormular, type Formul
 import { Button } from './ui/Button'
 import { CallButton } from './ui/CallButton'
 import { Icon } from './ui/Icon'
-import { Symbol3D } from './ui/Symbol3D'
+import { IconKreis } from './ui/IconKreis'
 
 const t = copy.anfrage
 const GEWERK_IDS = gewerke.map((g) => g.id)
@@ -48,12 +48,12 @@ interface Danke {
 const feldId = (feld: FormularFeld) => `anfrage-${feld}`
 const fehlerId = (feld: FormularFeld) => `${feldId(feld)}-fehler`
 
-const FELD = 'rahmen w-full rounded-chip border-rand bg-weiss px-s4 text-body text-tiefsee aria-invalid:border-tiefsee'
+const FELD = 'rahmen w-full rounded-chip border-rand bg-weiss px-s4 text-body text-tiefsee transition-[border-color] hover:border-tiefsee aria-invalid:border-tiefsee'
 const FELDHOEHE = 'min-h-[54px]'
 
 function Beschriftung({ feld, pflicht = false, children }: { feld: FormularFeld; pflicht?: boolean; children: ReactNode }) {
   return (
-    <label htmlFor={feldId(feld)} className="font-display text-text font-bold">
+    <label htmlFor={feldId(feld)} className="font-display text-text font-semibold">
       {children}
       {pflicht && (
         <>
@@ -163,7 +163,7 @@ export function AnfrageFormular() {
       ref={formular}
       noValidate
       onSubmit={absenden}
-      className="grid min-w-0 grid-cols-1 gap-y-s4 rounded-card-lg border border-linie bg-weiss px-s4 py-s5 dialog:grid-cols-2 dialog:gap-x-s5 dialog:gap-y-s5 dialog:p-s6"
+      className="grid min-w-0 grid-cols-1 gap-y-s4 rounded-card-lg border border-linie bg-weiss px-s4 py-s5 shadow-karte dialog:grid-cols-2 dialog:gap-x-s5 dialog:gap-y-s5 dialog:p-s6"
     >
       <div className="flex flex-col gap-s2">
         <Beschriftung feld="name" pflicht>
@@ -259,7 +259,7 @@ export function AnfrageFormular() {
             {/* Gezeichnetes Kästchen mit Häkchen darin; sichtbar wird das Häkchen über den Zustand der Checkbox davor */}
             <span
               aria-hidden="true"
-              className="rahmen pointer-events-none flex size-[24px] items-center justify-center rounded-ecke border-rand bg-weiss peer-checked:border-tiefsee peer-checked:bg-tiefsee peer-checked:[&>span]:visible peer-aria-invalid:border-tiefsee peer-focus-visible:outline-3 peer-focus-visible:outline-offset-3 peer-focus-visible:outline-tuerkis"
+              className="rahmen pointer-events-none flex size-[24px] items-center justify-center rounded-ecke border-rand bg-weiss peer-checked:border-tiefsee peer-checked:bg-tiefsee peer-checked:[&>span]:visible peer-aria-invalid:border-tiefsee peer-focus-visible:outline-3 peer-focus-visible:outline-offset-3 peer-focus-visible:outline-tiefsee"
             >
               <Icon name="ui-haekchen" className="invisible size-[20px] text-weiss" />
             </span>
@@ -278,7 +278,7 @@ export function AnfrageFormular() {
       {status === 'sendefehler' && (
         <div role="alert" className="col-span-full flex flex-col gap-s3 rounded-card border-2 border-tiefsee bg-weiss p-s4">
           <div className="flex items-start gap-s3">
-            <Symbol3D name="ui-warnung" className="size-[28px]" />
+            <IconKreis name="ui-warnung" className="size-[44px]" icon="size-[24px]" />
             <div className="flex min-w-0 flex-col gap-s2">
               <h3 className="font-display text-h3 dialog:text-h4">{t.sendefehler.titel}</h3>
               <p className="text-small">{t.sendefehler.text}</p>
@@ -296,7 +296,7 @@ export function AnfrageFormular() {
             type={hydriert ? 'submit' : 'button'}
             aria-disabled={sendend}
             laedt={sendend}
-            className="min-h-[56px] w-full px-s6 text-btn-l font-[750] aria-disabled:cursor-default dialog:w-auto"
+            className="min-h-[58px] w-full rounded-btn-lg px-s6 text-btn-l font-bold aria-disabled:cursor-default dialog:w-auto"
           >
             {sendend ? t.sendend : t.senden}
           </Button>
@@ -315,11 +315,9 @@ function Erfolg({ danke }: { danke: Danke }) {
   }, [])
 
   return (
-    <div className="flex min-w-0 flex-col gap-s4 rounded-card-lg border border-linie bg-weiss px-s4 py-s5 dialog:p-s6">
+    <div className="flex min-w-0 flex-col gap-s4 rounded-card-lg border border-linie bg-weiss px-s4 py-s5 shadow-karte dialog:p-s6">
       <div className="flex flex-col gap-s3 dialog:flex-row dialog:items-center dialog:gap-s4">
-        <div className="flex size-[52px] shrink-0 items-center justify-center rounded-pill bg-tiefsee text-weiss">
-          <Symbol3D name="ui-haekchen" hell className="size-[28px]" />
-        </div>
+        <IconKreis name="ui-haekchen" dunkel className="size-[52px]" icon="size-[28px]" />
         <h3 ref={titel} tabIndex={-1} className="font-display text-h3-karte dialog:text-h3">
           {danke.match === 'FOUND' ? t.erfolg.titel : t.erfolg.keinerTitel}
         </h3>
@@ -329,7 +327,7 @@ function Erfolg({ danke }: { danke: Danke }) {
       </p>
       <p className="text-note text-schiefer">{fuelle(t.erfolg.nummer, { nummer: danke.anfragenummer })}</p>
       {danke.tipp && danke.match === 'FOUND' && (
-        <p className="rounded-chip bg-kalk p-s4 text-small">
+        <p className="rounded-chip bg-eis p-s4 text-small">
           <strong>{copy.luna.erfolg.tippTitel}</strong> {danke.tipp}
         </p>
       )}

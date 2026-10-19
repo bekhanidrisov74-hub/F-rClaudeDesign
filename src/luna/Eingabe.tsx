@@ -1,5 +1,5 @@
 import type { FormEvent } from 'react'
-import { Symbol3D } from '../components/ui/Symbol3D'
+import { Icon } from '../components/ui/Icon'
 import { copy } from '../content/copy'
 
 const t = copy.luna.eingabe
@@ -33,15 +33,15 @@ export function Eingabe({ wert, onWert, onSenden, mitAuswahl, deaktiviert }: Pro
         disabled={deaktiviert}
         onChange={(e) => onWert(e.target.value)}
         placeholder={mitAuswahl ? t.mitAuswahl : t.ohneAuswahl}
-        className="rahmen h-[48px] min-w-0 flex-1 rounded-btn border-rand bg-weiss px-s4 text-text text-tiefsee"
+        className="rahmen h-[48px] min-w-0 flex-1 rounded-pill border-rand bg-weiss px-s5 text-text text-tiefsee"
       />
       <button
         type="submit"
         aria-label={t.senden}
         disabled={deaktiviert}
-        className="flex size-[48px] shrink-0 cursor-pointer items-center justify-center rounded-btn bg-tiefsee text-kalk disabled:cursor-default"
+        className="flex size-[48px] shrink-0 cursor-pointer items-center justify-center rounded-pill bg-tiefsee text-tuerkis-hell transition-colors hover:bg-tiefsee-2 disabled:cursor-default"
       >
-        <Symbol3D name="ui-senden" hell className="size-[22px]" />
+        <Icon name="ui-senden" className="size-[22px]" />
       </button>
     </form>
   )

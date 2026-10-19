@@ -5,14 +5,13 @@ import { useOverlays } from '../overlays'
 import { Button } from './ui/Button'
 import { CallButton } from './ui/CallButton'
 import { Icon } from './ui/Icon'
-import { Symbol3D } from './ui/Symbol3D'
 
 // Wie --breakpoint-hd in app.css (1280 px): ab hier gibt es keinen Menü-Knopf mehr.
 const AB_NAV = '(min-width: 80rem)'
 
 // Links und der Knopf „Preisübersicht“ sehen gleich aus (Screen 05).
 const EINTRAG =
-  'flex min-h-[64px] w-full cursor-pointer items-center justify-between text-left font-display text-h2-s font-bold [font-stretch:96%] text-tiefsee no-underline'
+  'flex min-h-[64px] w-full cursor-pointer items-center justify-between text-left font-display text-h2-s font-[750] text-tiefsee no-underline'
 
 // Rechtslinks: sichtbar wie im Entwurf, die Trefferfläche ist mindestens 44 px groß.
 const RECHTSLINK = 'flex min-h-[44px] min-w-[44px] items-center text-small text-schiefer underline underline-offset-4'
@@ -89,11 +88,11 @@ function OffenesMenue({ aufStartseite }: { aufStartseite: boolean }) {
           </ul>
         </nav>
 
-        <div className="kante mt-s5 flex flex-col gap-s3 rounded-card-lg bg-tiefsee px-s4 py-s5 text-kalk">
-          <p className="m-0 font-display text-h5 font-[750] [font-stretch:100%]">{copy.menue.kontaktTitel}</p>
+        <div className="mt-s5 flex flex-col gap-s3 rounded-card-lg bg-eis px-s4 py-s5 text-tiefsee">
+          <p className="m-0 font-display text-h5 font-bold">{copy.menue.kontaktTitel}</p>
           <CallButton variante="karte" nummer className="w-full" />
-          <Button art="dunkel" href={whatsappHref} className="min-h-[52px] w-full rounded-btn-lg text-btn">
-            <Symbol3D name="ui-chat" hell className="size-[20px]" />
+          <Button art="hell" href={whatsappHref} className="min-h-[54px] w-full gap-s3 rounded-btn-lg text-btn">
+            <Icon name="ui-chat" className="size-[22px]" />
             <span>{copy.menue.whatsapp}</span>
           </Button>
         </div>

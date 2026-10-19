@@ -120,7 +120,7 @@ Bewusste Abweichungen vom Entwurf stehen in `tests/accepted-deviations.md`.
 | `[AGB folgen]` | `src/content/copy.ts:324` | `/agb` |
 | Bilder 1–6 | 3D-Szenen `design/bilder-chatgpt/` (mit ChatGPT erzeugt), eingebunden über `src/components/ui/Bildflaeche.tsx` | Hero und Leistungskarten |
 | Logo | Wortmarke im Kopf und Fuß, Favicon `public/favicon.svg` (Luna-Signet) | überall |
-| WhatsApp-Symbol | 3D-Sprechblase `ui-chat` (`scripts/blender/symbole.py`, `Symbol3D`) | Hero, Seitenkasten, Menü, Fuß |
+| WhatsApp-Symbol | flache Sprechblase `design/icons/ui-chat.svg` (seit 19.10.2026, vorher 3D-Render) | Seitenkasten, Menü, Fuß |
 
 Der Build meldet sie im Log (`scripts/prerender.mjs`), ebenso eine fehlende Domain und fehlende `VITE_FORM_ENDPOINT` und `VITE_CHAT_ENDPOINT`.
 
@@ -147,3 +147,22 @@ Gebaut am 14.10.2026 nach [docs/luna-ki/AUFGABE.md](docs/luna-ki/AUFGABE.md): Fr
 - Der Datenschutz-Link in Luna und im Formular öffnet `/datenschutz` im selben Tab. Luna setzt das Gespräch danach fort (sessionStorage). Eingetippte Kontaktdaten und ein halb ausgefülltes Formular gehen verloren.
 - Playwright und Lighthouse nutzen das installierte Google Chrome (`channel: 'chrome'`, Pfad in `lighthouserc.json`).
 - `tests/accepted-deviations.md` listet alle bewussten Abweichungen vom Entwurf je Phase.
+
+## 11. Ganze Seite im Stil des Hero (19.10.2026)
+
+Auf Wunsch von Beks folgen alle Abschnitte und Fenster dem Stil des Entwurfs „Hero – Desktop 1586“. Texte und Fotos sind unverändert (`git diff` in `src/content/`: nur drei Icon-Namen und ein Kommentar). Beschreibung des Stils, der Bausteine und was entfallen ist: [docs/hero-stil.md](docs/hero-stil.md). Bewusste Abweichungen: letzter Abschnitt in `tests/accepted-deviations.md`.
+
+- **Basis-Tokens** in `src/styles/tokens.css` tragen jetzt die Werte des Hero (Tiefsee #03101F, Türkis #22B5C0, Kalk #FBFCFD, Eis, Lagune, Orange), neue Tokens `--fx-kalk-2`, `--fx-eis`, `--fx-lagune`, `--fx-orange`, `--fx-nacht`, `--fx-tuerkis-hell`, Schatten `--fx-shadow-knopf|anruf|karte`, Kacheltitel `--fx-kachel`.
+- **Schrift**: Inter überall. `@fontsource-variable/bricolage-grotesque` und `@fontsource-variable/atkinson-hyperlegible-next` sind entfernt, vorgeladen wird nur noch Inter.
+- **Icons**: 12 flache SVGs neu in `design/icons` (5 Gewerke, 7 Symbole), dazu `ui/IconKreis`; vorhandene wie Hörer und Uhr aus dem Hero werden mitgenutzt. `Symbol3D`, `GewerkIcon` und `public/icons` (3D-Exporte) sind entfernt; die Renders bleiben in `design/icons-3d`.
+- **Entfallen**: dunkle Flächen, Wirbel-Shader (`@paper-design/shaders-react` deinstalliert), Lichtstrahl im Fuß (`ui/Strahlfuss`), Lichtkanten. Der Fuß ist hell wie der Kopf, die Wortmarke ein helles Wasserzeichen.
+- **Tests**: Sollwerte an den neuen Stil angepasst, keine Prüfung gestrichen; neu sind Prüfungen für die Nacht-Kreise der Anruf-Knöpfe, die Lagune-Kreise der Gewerke-Icons und „keine Bilddateien als Icons“.
+
+| Prüfung | Ergebnis (19.10.2026) |
+|---|---|
+| `npm run check` | grün: Typen, Lint, Vitest 131/131 (2 übersprungen), Build mit 4 Seiten |
+| `npm run test:e2e` | **283 bestanden, 0 fehlgeschlagen**, 59 übersprungen; darin axe (WCAG 2.2 AA) ohne Verstöße in allen Zuständen, kein horizontales Scrollen von 320 bis 1920 px, Tastatur und Fokus |
+| `npm run shots` | 43 Aufnahmen; unabhängige Sichtprüfung gegen den Hero: freigegeben, ohne hohe oder mittlere Befunde. Die kleinen Punkte sind behoben oder in `tests/accepted-deviations.md` begründet |
+
+Lokal liefen Playwright und die Aufnahmen mit Chromium statt mit dem installierten Google Chrome (eigene, nicht eingecheckte Konfiguration mit `executablePath`).
+

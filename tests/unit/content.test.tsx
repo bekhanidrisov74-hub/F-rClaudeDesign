@@ -1,7 +1,6 @@
 import { renderToString } from 'react-dom/server'
 import { describe, expect, test, vi } from 'vitest'
 import { existsSync } from 'node:fs'
-import { BREITEN } from '../../src/components/ui/GewerkIcon'
 import { gewerke, type Gewerk } from '../../src/content/gewerke'
 
 describe('Gewerke-Daten', () => {
@@ -10,9 +9,8 @@ describe('Gewerke-Daten', () => {
     expect(new Set(ids).size).toBe(ids.length)
     for (const g of gewerke) {
       expect(g.min, g.id).toBeLessThan(g.max)
-      expect(existsSync(`design/icons-3d/${g.icon}.png`), g.icon).toBe(true)
-      for (const datei of BREITEN.flatMap((b) => ['avif', 'webp'].map((f) => `public/icons/${g.icon}-${b}.${f}`)))
-        expect(existsSync(datei), datei).toBe(true)
+      // Flaches Icon im Stil des Hero (ui/IconKreis), eine Datei je Gewerk
+      expect(existsSync(`design/icons/${g.icon}.svg`), g.icon).toBe(true)
       for (const feld of ['name', 'schnellwahl', 'karte', 'betrieb', 'tipp', 'tippErfolg'] as const) expect(g[feld], `${g.id}.${feld}`).not.toBe('')
     }
   })

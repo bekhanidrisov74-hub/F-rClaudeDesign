@@ -3,7 +3,6 @@ import { telHref } from '../content/contact'
 import { copy, fuelle } from '../content/copy'
 import { useOverlays } from '../overlays'
 import { ANZAHL_SCHRITTE, fortschritt, type Zustand } from './flow'
-import { Symbol3D } from '../components/ui/Symbol3D'
 
 const t = copy.luna
 
@@ -25,19 +24,19 @@ export function Kopf() {
         <Icon name="ui-schliessen" className="size-[22px]" />
       </button>
 
-      <span aria-hidden="true" className="flex size-[40px] shrink-0 items-center justify-center rounded-pill bg-tiefsee">
+      <span aria-hidden="true" className="flex size-[40px] shrink-0 items-center justify-center rounded-pill bg-nacht">
         <Icon name="luna-signet-glyph" className="size-[24px]" />
       </span>
       <span className="flex min-w-0 flex-col">
-        <span className="font-display text-h5 font-[750] [font-stretch:100%]">{t.name}</span>
+        <span className="font-display text-h5 font-bold">{t.name}</span>
         <span className="text-note text-schiefer">{t.rolle}</span>
       </span>
 
       <a
         href={telHref}
-        className="ml-auto flex min-h-[44px] shrink-0 items-center gap-s2 rounded-pill bg-tuerkis pr-s4 pl-s3 font-display text-small font-extrabold text-tiefsee no-underline transition-colors hover:bg-tuerkis-tief selection:bg-tiefsee selection:text-tuerkis dialog:hidden"
+        className="ml-auto flex min-h-[44px] shrink-0 items-center gap-s2 rounded-pill bg-tuerkis pr-s4 pl-s3 font-display text-small font-bold text-tiefsee no-underline shadow-anruf transition-colors hover:bg-tuerkis-tief selection:bg-tiefsee selection:text-tuerkis dialog:hidden"
       >
-        <Symbol3D name="ui-anrufen" className="size-[16px]" />
+        <Icon name="telefon" className="size-[16px]" />
         <span>{copy.kopf.anrufen}</span>
       </a>
       <button

@@ -27,7 +27,7 @@ const t = copy.luna.zusammenfassung
 const PRIMAER =
   'min-h-[52px] w-full px-s4 text-btn-l font-[750] aria-disabled:cursor-default dialog:min-h-[50px] dialog:flex-1 dialog:px-s2 dialog:text-btn dialog:whitespace-nowrap'
 
-const FELD = 'rahmen min-h-[48px] w-full rounded-chip border-rand bg-weiss px-s4 text-text text-tiefsee aria-invalid:border-tiefsee'
+const FELD = 'rahmen min-h-[48px] w-full rounded-chip border-rand bg-weiss px-s4 text-text text-tiefsee transition-[border-color] hover:border-tiefsee aria-invalid:border-tiefsee'
 
 /** Kontaktfelder (Aufgabe): erst hier erfasst, gehen nur an den Anfrage-Eingang. */
 const KONTAKTFELDER = [
@@ -110,7 +110,7 @@ export function Zusammenfassung({
       </div>
 
       {gewerk && (
-        <p className="rounded-chip bg-kalk px-s3 py-s2 text-small">
+        <p className="rounded-chip bg-eis px-s3 py-s2 text-small">
           <span className="block">
             {t.richtpreis}{' '}
             <span className="font-bold">

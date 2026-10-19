@@ -57,7 +57,7 @@ test('Menü-Knopf ist mit dem Menü verbunden', async ({ page }, info) => {
   expect(await page.locator(`#${ziel}`).count()).toBe(1)
 })
 
-test('Anruf-Knöpfe: Türkis mit Tiefsee-Schrift, in Kopf und Hero im Türkis des Entwurfs „Hero – Desktop 1586“', async ({ page }) => {
+test('Anruf-Knöpfe: überall Türkis mit Tiefsee-Schrift wie im Entwurf „Hero – Desktop 1586“', async ({ page }) => {
   await page.goto('/')
   const knoepfe = page.locator('a[href^="tel:"]:visible').filter({ hasNot: page.locator('footer') })
   const farben = await knoepfe.evaluateAll((els) =>
@@ -70,47 +70,43 @@ test('Anruf-Knöpfe: Türkis mit Tiefsee-Schrift, in Kopf und Hero im Türkis de
   )
   expect(farben.filter((f) => f.entwurf).length).toBe(2)
   expect(farben.filter((f) => !f.entwurf).length).toBeGreaterThan(0)
-  for (const f of farben)
-    expect(f.farbe).toBe(f.entwurf ? 'rgb(34, 181, 192) / rgb(3, 16, 31)' : 'rgb(58, 168, 184) / rgb(0, 27, 42)')
+  for (const f of farben) expect(f.farbe).toBe('rgb(34, 181, 192) / rgb(3, 16, 31)')
 })
 
-test('Gewerke-Icons: 3D-Render in der Farbe der Kategorie, ohne Fläche, 56/64 px', async ({ page }, info) => {
+test('Anruf-Knöpfe außerhalb des Hero: Nacht-Kreis mit hellem Hörer wie „Jetzt anrufen“ im Hero', async ({ page }) => {
+  await page.goto('/')
+  const kreise = await page
+    .locator('#leistungen a[href^="tel:"], #preisrechner a[href^="tel:"], #anfrage a[href^="tel:"]:visible')
+    .evaluateAll((els) =>
+      els.map((el) => {
+        const kreis = el.querySelector('svg')!.parentElement!.parentElement!
+        const s = getComputedStyle(kreis)
+        return { flaeche: s.backgroundColor, hoerer: s.color, rund: s.borderRadius === '999px' }
+      }),
+    )
+  expect(kreise.length).toBeGreaterThanOrEqual(3)
+  for (const k of kreise) expect(k).toEqual({ flaeche: 'rgb(2, 16, 34)', hoerer: 'rgb(143, 230, 236)', rund: true })
+})
+
+test('Gewerke-Icons: flaches SVG im Lagune-Kreis wie bei den Vorteilen, 56/64 px, oben links in der Kachel', async ({ page }, info) => {
   await page.goto('/')
   const soll = info.project.name === 'm390' ? 56 : 64
   for (const g of gewerke) {
-    const icon = page.locator(`[data-gewerk="${g.id}"] img`)
-    await icon.scrollIntoViewIfNeeded()
-    await expect.poll(() => icon.evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth > 0), { message: g.id }).toBe(true)
-    const befund = await icon.evaluate(async (img: HTMLImageElement) => {
-      await img.decode() // sonst zeichnet drawImage ein noch nicht dekodiertes Bild leer
-      const canvas = document.createElement('canvas')
-      canvas.width = canvas.height = 64
-      const ctx = canvas.getContext('2d')!
-      ctx.drawImage(img, 0, 0, 64, 64)
-      const px = ctx.getImageData(0, 0, 64, 64).data
-      // Deckende Pixel nahe Petrol (63, 125, 136) bzw. Orange (232, 132, 42) zählen
-      let technik = 0, handwerk = 0, leer = 0
-      for (let i = 0; i < px.length; i += 4) {
-        if (px[i + 3] < 8) leer++ // fast 0: AVIF-Alpha rauscht leicht
-        if (px[i + 3] < 250) continue
-        const naehe = (r: number, gr: number, b: number) => Math.hypot(px[i] - r, px[i + 1] - gr, px[i + 2] - b) < 60
-        if (naehe(63, 125, 136)) technik++
-        if (naehe(232, 132, 42)) handwerk++
-      }
-      // Lage: oben links genau am Innenabstand der Kachel (kein zusätzlicher Abstand davor)
-      const kachel = img.closest('a')!, k = kachel.getBoundingClientRect(), r = img.getBoundingClientRect(), s = getComputedStyle(kachel)
+    const kachel = page.locator(`section[aria-labelledby="schnellwahl-titel"] [data-gewerk="${g.id}"]`)
+    await expect(kachel.locator('img'), g.id).toHaveCount(0)
+    const befund = await kachel.evaluate((a: HTMLElement) => {
+      const kreis = a.querySelector('svg')!.parentElement!.parentElement!
+      const k = a.getBoundingClientRect(), r = kreis.getBoundingClientRect(), s = getComputedStyle(a), ks = getComputedStyle(kreis)
       return {
         breite: Math.round(r.width),
+        hoehe: Math.round(r.height),
         versatz: [r.left - k.left - parseFloat(s.borderLeftWidth) - parseFloat(s.paddingLeft), r.top - k.top - parseFloat(s.borderTopWidth) - parseFloat(s.paddingTop)].map(Math.round),
-        flaeche: getComputedStyle(img).backgroundColor,
-        // keine Fläche dahinter: ein guter Teil des Quadrats bleibt durchsichtig
-        durchsichtig: leer / (64 * 64) > 0.3,
-        // ein leeres Bild darf nicht als Handwerk durchgehen: Mindestmenge an Farbpixeln (heute ≥ 700)
-        hauptfarbe: technik + handwerk < 100 ? 'keine' : technik > handwerk ? 'technik' : 'handwerk',
+        flaeche: ks.backgroundColor,
+        farbe: ks.color,
+        dekorativ: kreis.getAttribute('aria-hidden'),
       }
     })
-    expect(befund, g.id).toEqual({ breite: soll, versatz: [0, 0], flaeche: 'rgba(0, 0, 0, 0)', durchsichtig: true, hauptfarbe: g.kategorie })
-    expect(await icon.evaluate((img: HTMLImageElement) => img.currentSrc)).toMatch(new RegExp(`/icons/${g.icon}-(80|112|128)\\.avif$`))
+    expect(befund, g.id).toEqual({ breite: soll, hoehe: soll, versatz: [0, 0], flaeche: 'rgb(190, 240, 246)', farbe: 'rgb(3, 16, 31)', dekorativ: 'true' })
   }
 })
 
@@ -168,26 +164,17 @@ test('Häufige Fragen: Tastatur öffnet, immer nur eine Antwort offen', async ({
   await expect(fragen.nth(0)).not.toHaveAttribute('open')
 })
 
-test('Symbole: 3D-Renders in der Farbstellung ihrer Fläche, geladen und dekorativ', async ({ page }) => {
+test('Symbole: flache SVGs aus design/icons wie im Hero, keine Bilddateien als Icons', async ({ page }) => {
   await page.goto('/')
-  // Die Farbstellung steckt im Dateinamen; src steht auch fest, bevor das träge geladene Bild da ist
-  const datei = (img: HTMLImageElement) => img.getAttribute('src')!.slice(img.getAttribute('src')!.lastIndexOf('/') + 1)
-  // Türkiser Anruf-Knopf (Hilfekarte in den Leistungen) → Körper Tiefsee
-  expect(await page.locator('#leistungen a[href^="tel:"] img').first().evaluate(datei)).toBe('ui-anrufen-96.webp')
-  // Kopf und Hero zeigen den flachen Hörer aus dem Entwurf „Hero – Desktop 1586“ (SVG), kein 3D-Symbol
-  for (const wo of ['header', '#start']) {
-    await expect(page.locator(`${wo} a[href^="tel:"] svg`), wo).toHaveCount(1)
-    await expect(page.locator(`${wo} a[href^="tel:"] img`), wo).toHaveCount(0)
-  }
-  for (const name of await page.locator('footer img[src*="/icons/ui-"]').evaluateAll((els) => els.map((el) => el.getAttribute('src'))))
-    expect(name).toMatch(/-hell-(96|168)\.webp$/)
-  const alle = page.locator('img[src*="/icons/ui-"]:visible')
-  expect(await alle.count()).toBeGreaterThan(10)
-  for (const img of await alle.all()) {
-    await img.scrollIntoViewIfNeeded()
-    await expect.poll(() => img.evaluate((el: HTMLImageElement) => el.complete && el.naturalWidth > 0)).toBe(true)
-    expect(await img.getAttribute('alt')).toBe('')
-  }
+  // Alle Bilder der Seite sind Fotos bzw. Motive (Hero, Leistungen), keine Icons
+  const quellen = await page.locator('img').evaluateAll((els) => els.map((el) => el.getAttribute('src') ?? ''))
+  expect(quellen.filter((q) => q.includes('/icons/'))).toEqual([])
+  for (const q of quellen) expect(q).toMatch(/^\/images\//)
+  // Anruf-Knöpfe in Kopf, Hero, Leistungen und Fuß zeigen den flachen Hörer
+  for (const wo of ['header', '#start', '#leistungen', 'footer']) await expect(page.locator(`${wo} a[href^="tel:"] svg`).first(), wo).toBeAttached()
+  // dekorativ: jedes Icon steckt in einem aria-hidden-Element
+  const offen = await page.locator('svg').evaluateAll((els) => els.filter((el) => !el.closest('[aria-hidden="true"]')).length)
+  expect(offen).toBe(0)
 })
 
 test('Fuß: Wortmarke füllt die Inhaltsbreite und schließt den Fuß unten über die volle Breite ab', async ({ page }) => {
@@ -210,9 +197,9 @@ test('Fuß: Wortmarke füllt die Inhaltsbreite und schließt den Fuß unten übe
       fuellt: text.getBoundingClientRect().width / (innen.clientWidth - parseFloat(s.paddingLeft) - parseFloat(s.paddingRight)),
     }
   })
-  // Das Licht sitzt in Hintergrund und Buchstaben nur gleich, wenn die Wortmarke unten rechts mit dem Fuß abschließt (app.css, strahl)
+  // Die Wortmarke schließt den Fuß unten über die volle Breite ab (app.css, wortmarke)
   expect({ links: m.links, breite: m.breite, unten: m.unten }).toEqual({ links: 0, breite: 0, unten: true })
-  // 0,32 em je px Inhaltsbreite passt zu „fixit247“ in Bricolage 800 (app.css, wortmarke); ändern sich Wort oder Schrift, neu messen
+  // 0,288 em je px Inhaltsbreite passt zu „fixit247“ in Inter 800 mit −0,05 em (tokens.css); ändern sich Wort oder Schrift, neu messen
   expect(m.fuellt).toBeGreaterThan(0.97)
   expect(m.fuellt).toBeLessThan(1.01)
 })

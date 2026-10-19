@@ -1,5 +1,9 @@
 # Bewusste Abweichungen (für den visual-reviewer)
 
+> **Seit 19.10.2026 folgt die ganze Seite dem Stil des Hero** (Abschnitt „Ganze Seite im Stil des Hero“ ganz unten,
+> docs/hero-stil.md). Wo ältere Abschnitte unten Farben, Schriften, Icons oder dunkle Flächen beschreiben, gilt der neue
+> Abschnitt. Aufbau, Inhalte und Verhalten aus den älteren Abschnitten gelten weiter.
+
 Diese Punkte sind entschieden und gelten **nicht** als Abweichung. Quelle: PLAN.md, Abschnitte 7 und 8.
 
 ## Immer
@@ -138,3 +142,26 @@ Quelle: Zip „Hero – Desktop 1586-html“ (`Main.dc.html`), verglichen bei 15
 - Schnellwahl „Was ist passiert?“ als eigener Abschnitt unter den Vorteilen (nicht im Entwurf).
 - Luna-Knopf und Anstupser erscheinen auf der Startseite erst, wenn die vier Vorteile nach oben aus dem Bild gescrollt sind (Wunsch vom 19.10.2026; sonst verdeckte der Knopf je nach Fensterhöhe das Ende des vierten Vorteils). War der Chat einmal offen, bleibt der Knopf. Auf Seiten ohne Hero ist er sofort da. Ein fehlender Luna-Knopf im ersten Bildschirm der Startseite ist kein Befund.
 - Prüfstand 19.10.2026: bei 1534 × 960 außerhalb des Logos und der Schrift im großen Anruf-Knopf pixelgleich mit dem Entwurf.
+
+## Ganze Seite im Stil des Hero (19.10.2026, docs/hero-stil.md)
+
+Auf Wunsch von Beks: Jeder Abschnitt und jedes Fenster sieht aus wie der Hero. Texte und Fotos sind unverändert. Bewusst:
+- Inter überall (Überschriften 750, eng gesetzt). Bricolage und Atkinson sind entfernt; Zeilenumbrüche weichen deshalb von den Screens ab.
+- Farben aus dem Hero für die ganze Seite: Tiefsee #03101F, Türkis #22B5C0, Kalk #FBFCFD und Kalk-2 #F4F8FB im Wechsel der Abschnitte, Eis #E8F4F8 für Hinweiskästen, Lagune #BEF0F6 für Icon-Kreise. Fokusrahmen überall Tiefsee.
+- Keine dunklen Flächen mehr: So funktioniert's, Zusagen, Hilfekarte, Rechner-Ergebnis, Seitenkasten, Menü-Kontaktkarte und Fuß sind hell. Der Fuß gleicht dem Kopf (Haarlinie, Logo in Farbe); die große Wortmarke steht dort als helles Lagune-Wasserzeichen, ohne Lichtstrahl und ohne Maus-Schein. Die Wirbel in den Zusagen und die Lichtkanten sind entfallen.
+- Alle Icons sind flache SVGs (design/icons) statt 3D-Renders, Gewerke und Symbole im Lagune-Kreis wie die Vorteile unter dem Hero: Schnellwahl 56/64 px, Preisübersicht 44 px (Tabelle) bzw. 40 px (Sheet), Zusagen 56/64 px, Fuß 32 px. Luna und Erfolg im Nacht-Kreis.
+- Anruf-Knöpfe außerhalb von Kopf und Hero sind wie „Jetzt anrufen“ aufgebaut: Türkis, Tiefsee-Schrift, Nacht-Kreis mit hellem Hörer links neben dem Label.
+- Zweitknöpfe wie „Anfrage senden“ im Hero: weiß, Rand, Radius 16, weicher Schatten; „… anfragen“ trägt das Sprechblasen-Icon. Karten und Kacheln haben eine Haarlinie und einen weichen Schatten (früher: Rand ohne Schatten).
+- So funktioniert's: Ziffern in Orange #EC5315 wie „Rund um die Uhr.“ (3,5:1, große Ziffern, dekorativ).
+- Zusagen: große Karten als Hinweiskasten (Eis), kleine weiß; Icon oben, Titel, Text und Zusatz unten.
+- Luna: Luna-Blasen in Eis ohne Rand, eigene Blasen in Tiefsee, Eingabe und Senden rund.
+- Luna-Knopf mit 2 px weißem Ring, damit der Nacht-Kreis über den dunklen Leistungsfotos sichtbar bleibt.
+- Zusagen: Kopf linksbündig wie alle anderen Abschnitte (früher zentriert).
+- Hero-Hinweiskasten unter 560 px ohne festen Umbruch nach „kontaktieren uns“, sonst stünde „uns“ allein in einer Zeile.
+
+Nach der Sichtprüfung bewusst so gelassen:
+- Breite: Kopf, Hero und Vorteile folgen dem Hero-Entwurf (Textkante bei 1440 px: 94 px), alle Abschnitte darunter dem Raster der Screens (1140 px, Textkante 150 px). Das Raster gehört zum Aufbau, und der richtet sich weiter nach design/screens.
+- Anfrage: Der Seitenkasten bleibt so hoch wie sein Inhalt (Screens 01/02), er wird nicht auf die Höhe des Formulars gezogen.
+- Hilfekarte: Die Knöpfe stehen unten, auf einer Linie mit den Knöpfen der Nachbarkarte; dazwischen bleibt Eis-Fläche frei.
+- „So funktioniert's“ mit geradem Apostroph wie in design/ (Abschnittstitel, Handy-Menü); Kopf-Navigation und Fuß teilen sich die Linkliste aus dem Hero-Entwurf und setzen dort „’“.
+- Zeilenumbrüche der Unterzeilen macht der Browser (etwa „Alle / Preise“); die Texte bleiben unverändert, ohne eingefügte geschützte Leerzeichen.

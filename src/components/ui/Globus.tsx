@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 
 /**
- * Langsam drehender Drahtgitter-Globus, Österreich in Türkis. Reine Dekoration: aria-hidden, ohne
+ * Langsam drehender Drahtgitter-Globus in Tiefsee auf dem hellen Fuß, Österreich in Türkis. Reine Dekoration: aria-hidden, ohne
  * Zeiger-Ereignisse, ein Canvas. Kartendaten und d3-geo werden erst geladen, wenn der Globus ins Bild
  * kommt (kein CDN, alles aus dem eigenen Bundle). Außerhalb des Bildes pausiert er; bei
  * prefers-reduced-motion bleibt er still auf Österreich stehen.
@@ -12,9 +12,9 @@ const OESTERREICH: [number, number] = [14.5, 47.5]
 const OESTERREICH_ID = '040'
 /** Grad je Sekunde. */
 const TEMPO = 6
-/** Gedämpft, damit der Anruf-Knopf das Auffälligste bleibt. */
-const LINIEN = 0.28
-const RASTER = 0.12
+/** Gedämpft, damit der Anruf-Knopf das Auffälligste bleibt (Tiefsee auf hellem Grund). */
+const LINIEN = 0.26
+const RASTER = 0.09
 /** Österreich ist auf 320 px nur ein paar Pixel groß, darf also kräftiger sein. */
 const LAND = 0.9
 
@@ -38,7 +38,7 @@ export function Globus({ className = '' }: { className?: string }) {
       if (aus) return
 
       const stil = getComputedStyle(canvas)
-      const nebel = stil.getPropertyValue('--fx-nebel').trim()
+      const tinte = stil.getPropertyValue('--fx-tiefsee').trim()
       const tuerkis = stil.getPropertyValue('--fx-tuerkis').trim()
       const laender = feature(welt as never, welt.objects.countries as never) as unknown as GeoJSON.FeatureCollection
       const heimat = laender.features.find((f) => f.id === OESTERREICH_ID)
@@ -61,7 +61,7 @@ export function Globus({ className = '' }: { className?: string }) {
         projektion.rotate([-laenge, -OESTERREICH[1] + 20])
         ctx.clearRect(0, 0, breite, breite)
         ctx.lineWidth = 1
-        ctx.strokeStyle = nebel
+        ctx.strokeStyle = tinte
         ctx.globalAlpha = RASTER
         ctx.beginPath()
         pfad(raster)

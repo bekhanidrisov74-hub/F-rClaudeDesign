@@ -17,11 +17,11 @@ import { Button } from './ui/Button'
 import { CallButton } from './ui/CallButton'
 import { Chip } from './ui/Chip'
 import { Icon } from './ui/Icon'
-import { Symbol3D } from './ui/Symbol3D'
+import { IconKreis } from './ui/IconKreis'
 
 const START_GEWERK = (gewerke.find((g) => g.id === 'installateur') ?? gewerke[0]).id
 
-const LEGENDE = 'mb-s3 p-0 font-display text-h5 font-[750] [font-stretch:100%]'
+const LEGENDE = 'mb-s3 p-0 font-display text-h5 font-bold'
 const FELDGRUPPE = 'm-0 flex min-w-0 flex-col gap-s3 border-0 p-0'
 const REIHE = 'flex flex-wrap gap-s2 dialog:gap-s3'
 /** Stepper-Knopf 52 × 52, an der Grenze aria-disabled statt disabled, damit der Fokus bleibt. */
@@ -40,7 +40,7 @@ export function Preisrechner() {
     setZuschlaege((alt) => (alt.includes(id) ? alt.filter((x) => x !== id) : [...alt, id]))
 
   return (
-    <section id="preisrechner" aria-labelledby="rechner-titel" className="bg-weiss">
+    <section id="preisrechner" aria-labelledby="rechner-titel" className="bg-kalk-2">
       <div className="wrapper pt-section pb-section-end">
         <div className="mb-s5 flex max-w-[680px] flex-col gap-s4 nav:mb-s7 nav:gap-s3">
           <h2 id="rechner-titel" className="text-h2">
@@ -50,7 +50,7 @@ export function Preisrechner() {
         </div>
 
         <div className="grid gap-s5 nav:grid-cols-[minmax(0,1fr)_420px]">
-          <div className="flex min-w-0 flex-col gap-s5 rounded-card-lg border border-linie bg-kalk px-s4 py-s5 dialog:gap-s6 dialog:p-s6">
+          <div className="flex min-w-0 flex-col gap-s5 rounded-card-lg border border-linie bg-weiss px-s4 py-s5 shadow-karte dialog:gap-s6 dialog:p-s6">
             <fieldset className={FELDGRUPPE}>
               <legend className={LEGENDE}>{copy.rechner.gewerk}</legend>
               <div className={REIHE}>
@@ -79,7 +79,7 @@ export function Preisrechner() {
                   </Button>
                   <output
                     aria-live="polite"
-                    className="min-w-0 flex-1 text-center font-display text-h3 font-extrabold [font-stretch:100%] dialog:min-w-[128px] dialog:flex-none"
+                    className="min-w-0 flex-1 text-center font-display text-h3 font-extrabold dialog:min-w-[128px] dialog:flex-none"
                   >
                     {stundenText(stunden)}
                   </output>
@@ -127,24 +127,27 @@ export function Preisrechner() {
 /** Schlüsseldienst: statt des Steppers der Hinweis „Preis pro Einsatz“ (Screen 13 oben). */
 function EinsatzHinweis() {
   return (
-    <div className="flex items-start gap-s3 rounded-btn-lg border border-linie bg-weiss px-s4 py-s4">
-      <Symbol3D name="ui-richtpreis" gross className="size-[40px]" />
+    <div className="flex items-start gap-s3 rounded-btn-lg bg-eis px-s4 py-s4">
+      <IconKreis name="ui-richtpreis" weiss className="size-[44px]" icon="size-[22px]" />
       <div className="flex min-w-0 flex-col gap-s1">
-        <p className="font-display text-h5 font-[750] [font-stretch:100%]">{copy.rechner.einsatz.titel}</p>
+        <p className="font-display text-h5 font-bold">{copy.rechner.einsatz.titel}</p>
         <p className="text-small text-schiefer">{copy.rechner.einsatz.text}</p>
       </div>
     </div>
   )
 }
 
-/** Inhalt des dauerhaften Status-Elements: ein Satz bei 0–1 Zuschlägen, ab 2 der Kasten aus Screen 13 unten. */
+/**
+ * Inhalt des dauerhaften Status-Elements: ein Satz bei 0–1 Zuschlägen, ab 2 der Kasten aus Screen 13 unten.
+ * Der Kasten ist gebaut wie „Preis pro Einsatz“ (Icon im weißen Kreis) und hält 24 px Abstand zu den Chips.
+ */
 function ZuschlagHinweis({ gewaehlt }: { gewaehlt: string[] }) {
   if (gewaehlt.length < 2) return <p className="text-small text-schiefer">{copy.rechner.hinweisEiner}</p>
   const text = gewaehlt.length > 2 ? copy.rechner.hinweisAlle : copy.rechner.hinweisMehrere
   return (
-    <div className="rahmen flex items-start gap-s3 rounded-btn border-tiefsee bg-weiss px-s4 py-s3">
-      <Symbol3D name="ui-info" className="size-[24px]" />
-      <p className="min-w-0 text-text">
+    <div className="mt-s3 flex items-start gap-s3 rounded-btn-lg bg-eis px-s4 py-s4">
+      <IconKreis name="ui-info" weiss className="size-[36px]" icon="size-[20px]" />
+      <p className="min-w-0 self-center text-text">
         <span className="font-bold">{copy.rechner.hinweisMehrereFett}</span> {fuelle(text, { namen: aufzaehlung(gewaehlt) })}
       </p>
     </div>
@@ -155,7 +158,7 @@ function ZuschlagHinweis({ gewaehlt }: { gewaehlt: string[] }) {
 function Zeile({ label, unter, children }: { label: string; unter?: string; children: ReactNode }) {
   return (
     <div className="flex flex-wrap justify-between gap-x-s4 gap-y-s1">
-      <dt className="min-w-0 text-nebel">
+      <dt className="min-w-0 text-schiefer">
         {unter ? (
           <>
             <span className="block">{label}</span>
@@ -178,11 +181,11 @@ function Ergebniskarte({ ergebnis: e }: { ergebnis: Ergebnis }) {
   return (
     <div
       aria-live="polite"
-      className="kante @container flex min-w-0 flex-col gap-s4 rounded-card-lg bg-tiefsee px-s4 py-s5 text-kalk dialog:gap-s5 dialog:p-s6"
+      className="@container flex min-w-0 flex-col gap-s4 rounded-card-lg bg-eis px-s4 py-s5 text-tiefsee dialog:gap-s5 dialog:p-s6"
     >
       <div className="flex flex-col gap-s1">
-        <h3 className="text-h4 font-[750] [font-stretch:100%]">{t.titel}</h3>
-        <p className="text-note text-nebel">{e.unterzeile}</p>
+        <h3 className="text-h4">{t.titel}</h3>
+        <p className="text-note text-schiefer">{e.unterzeile}</p>
       </div>
 
       <dl className="flex flex-col gap-s3 text-body">
@@ -195,20 +198,20 @@ function Ergebniskarte({ ergebnis: e }: { ergebnis: Ergebnis }) {
         ) : (
           <Zeile label={t.zuschlag}>{t.keiner}</Zeile>
         )}
-        <div className="flex flex-col gap-s1 border-t border-tiefsee-2 pt-s4">
-          <dt className="text-nebel">{t.gesamt}</dt>
+        <div className="flex flex-col gap-s1 border-t border-tiefsee/10 pt-s4">
+          <dt className="text-schiefer">{t.gesamt}</dt>
           {/* Einzeilig: Die Schrift schrumpft mit der Kartenbreite (cqi) und der Zeichenzahl, höchstens --fx-total.
-              Faktor 2: Die breiteste Summe misst gut 0,47 em je Zeichen (Bricolage 700, 96 %, 16–30 px), dazu etwas Reserve. */}
+              Faktor 1,8: Die breiteste Summe misst gut 0,52 em je Zeichen (Inter 800, Ziffern gleich breit), dazu etwas Reserve. */}
           <dd
             style={{ '--zeichen': gesamt.length } as CSSProperties}
-            className="font-display leading-[1.1] font-bold whitespace-nowrap [font-size:min(var(--fx-total),calc(100cqi/var(--zeichen)*2))] [font-stretch:96%]"
+            className="betrag leading-[1.1] font-extrabold tracking-[-0.03em] whitespace-nowrap [font-size:min(var(--fx-total),calc(100cqi/var(--zeichen)*1.8))]"
           >
             {gesamt}
           </dd>
         </div>
       </dl>
 
-      <p className="text-note text-nebel">{t.hinweis}</p>
+      <p className="text-note text-schiefer">{t.hinweis}</p>
 
       <div className="mt-auto flex flex-col gap-s3">
         <CallButton variante="block" />

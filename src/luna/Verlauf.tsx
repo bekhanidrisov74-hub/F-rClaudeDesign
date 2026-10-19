@@ -1,6 +1,6 @@
 import type { ReactNode, Ref } from 'react'
 import { Chip } from '../components/ui/Chip'
-import { Symbol3D } from '../components/ui/Symbol3D'
+import { Icon } from '../components/ui/Icon'
 import { Loader } from '../components/ui/Loader'
 import { AUFTRAG_AUFGEGEBEN, copy } from '../content/copy'
 import { Erfolg } from './cards/Erfolg'
@@ -13,8 +13,8 @@ const t = copy.luna
 
 const BLASE = 'max-w-[86%] break-words rounded-card px-s4 py-s3 text-text'
 const VON: Record<Nachricht['von'], string> = {
-  luna: 'self-start rounded-bl-ecke border border-linie bg-weiss text-tiefsee',
-  nutzer: 'self-end rounded-br-ecke bg-tiefsee text-kalk',
+  luna: 'self-start rounded-bl-ecke bg-eis text-tiefsee',
+  nutzer: 'self-end rounded-br-ecke bg-tiefsee text-weiss',
   notruf: 'self-start rounded-bl-ecke border-2 border-tiefsee bg-weiss font-bold text-tiefsee',
 }
 
@@ -23,7 +23,7 @@ function Blase({ von, children }: { von: Nachricht['von']; children: ReactNode }
     return (
       // Notruf-Hinweis (Aufgabe, EMERGENCY): wird sofort vorgelesen, der Ablauf läuft danach weiter.
       <div role="alert" className={`${BLASE} ${VON.notruf} flex items-start gap-s2`}>
-        <Symbol3D name="ui-warnung" className="mt-px size-[22px]" />
+        <Icon name="ui-warnung" className="mt-px size-[22px]" />
         <span>{children}</span>
       </div>
     )
@@ -56,7 +56,7 @@ interface Props {
 }
 
 /**
- * Verlauf (Screen 07–12): Kalk-Fläche, scrollt, unten ausgerichtet.
+ * Verlauf (Screen 07–12): helle Fläche, Luna in Eis-Blasen wie der Hinweiskasten des Hero, scrollt, unten ausgerichtet.
  * Der innere Block mit `mt-auto` richtet unten aus, ohne bei langem Inhalt oben abzuschneiden.
  * Die Region aria-live="polite" ist dauerhaft da; Chips stehen außerhalb, damit sie nicht mitgesprochen werden.
  * Nach dem Senden ersetzt der Erfolg den Verlauf (Screen 09, 12 Mitte). Beim Fehler bleibt er im Fenster

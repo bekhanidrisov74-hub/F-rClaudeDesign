@@ -4,15 +4,15 @@ import { gewerke, zahlwort } from '../content/gewerke'
 import { Hilfekarte } from './Hilfekarte'
 import { LeistungKarte } from './LeistungKarte'
 import { Button } from './ui/Button'
-import { Symbol3D } from './ui/Symbol3D'
+import { Icon } from './ui/Icon'
 
 export function Leistungen() {
   const { oeffnePreise } = useOverlays()
   return (
-    <section id="leistungen" aria-labelledby="leistungen-titel" className="bg-kalk">
+    <section id="leistungen" aria-labelledby="leistungen-titel" className="bg-kalk-2">
       <div className="wrapper pt-section pb-section-end">
         <div className="mb-s5 flex flex-col gap-s4 nav:mb-s7 nav:flex-row nav:items-end nav:justify-between nav:gap-x-s7">
-          <div className="flex max-w-[640px] flex-col gap-s4 nav:gap-s3">
+          <div className="flex max-w-[680px] flex-col gap-s4 nav:gap-s3">
             <h2 id="leistungen-titel" className="text-h2">
               {copy.leistungen.titel}
             </h2>
@@ -23,9 +23,9 @@ export function Leistungen() {
           <Button
             art="hell"
             onClick={(e) => oeffnePreise(e.currentTarget)}
-            className="min-h-[50px] w-full px-s4 text-btn nav:min-h-[48px] nav:w-auto"
+            className="min-h-[56px] w-full gap-s3 rounded-btn-lg px-s3 text-btn dialog:px-s5 nav:w-auto nav:shrink-0 nav:whitespace-nowrap"
           >
-            <Symbol3D name="ui-richtpreis" className="size-[20px]" />
+            <Icon name="ui-richtpreis" className="size-[22px]" />
             <span>{copy.leistungen.ueberblick}</span>
           </Button>
         </div>
