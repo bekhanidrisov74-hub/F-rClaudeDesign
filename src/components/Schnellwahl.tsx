@@ -35,7 +35,7 @@ export function Schnellwahl() {
               <IconKreis name={g.icon} className="size-[56px] nav:size-[64px]" icon="size-[30px] nav:size-[34px]" />
               <span className="flex flex-col gap-s1">
                 <span className={TITEL}>{g.name}</span>
-                <span className="text-small text-schiefer text-balance max-nav:hidden hd:min-h-[2lh]">{g.schnellwahl}</span>
+                <span className="text-small text-schiefer text-balance max-nav:hidden min-h-[2lh]">{g.schnellwahl}</span>
               </span>
             </a>
           ))}
@@ -45,7 +45,7 @@ export function Schnellwahl() {
             <span className="flex flex-col gap-s1">
               <span className={`${TITEL} nav:hidden`}>{copy.schnellwahl.luna.handy}</span>
               <span className={`${TITEL} max-nav:hidden`}>{copy.schnellwahl.luna.titel}</span>
-              <span className="text-small text-schiefer text-balance max-nav:hidden hd:min-h-[2lh]">{copy.schnellwahl.luna.unterzeile}</span>
+              <span className="text-small text-schiefer text-balance max-nav:hidden min-h-[2lh]">{copy.schnellwahl.luna.unterzeile}</span>
             </span>
           </a>
         </div>
