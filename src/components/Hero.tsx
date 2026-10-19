@@ -51,7 +51,8 @@ export function Hero() {
           <div className="hd-info">
             <Icon name="hilfe" className="hd-info-icon" />
             <p>
-              {copy.hero.hinweis[0]}
+              {/* Leerzeichen vor dem Umbruch: Am Handy blendet hero.css den Umbruch aus, dann fließt der Satz weiter */}
+              {copy.hero.hinweis[0]}{' '}
               <br />
               <strong>{copy.hero.hinweis[1]}</strong>
             </p>

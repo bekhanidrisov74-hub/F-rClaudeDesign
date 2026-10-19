@@ -5,7 +5,7 @@ import { Seitenkasten } from './Seitenkasten'
 /** Abschnitt „Anfrage senden“ (Screen 01/02): Formular und Seitenkasten, ab 920 px nebeneinander (796 + 320 px). */
 export function Anfrage() {
   return (
-    <section id="anfrage" aria-labelledby="anfrage-titel" className="bg-kalk">
+    <section id="anfrage" aria-labelledby="anfrage-titel" className="bg-kalk-2">
       <div className="wrapper pt-section pb-section-end">
         <div className="mb-s5 flex max-w-[680px] flex-col gap-s4 nav:mb-s7 nav:gap-s3">
           <h2 id="anfrage-titel" className="text-h2">

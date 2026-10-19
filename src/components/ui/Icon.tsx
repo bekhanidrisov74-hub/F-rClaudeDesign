@@ -1,4 +1,4 @@
-// Steuer- und Feldzeichen direkt aus design/icons (eine Quelle, keine Kopien), in currentColor. Symbole: Symbol3D.tsx.
+// Alle Icons der Seite als flache SVGs direkt aus design/icons (eine Quelle, keine Kopien), in currentColor, im Stil des Hero.
 const dateien = import.meta.glob<string>('/design/icons/*.svg', { query: '?raw', import: 'default', eager: true })
 
 export const icons: Record<string, string> = Object.fromEntries(

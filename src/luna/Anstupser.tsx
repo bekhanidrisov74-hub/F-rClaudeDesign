@@ -82,12 +82,12 @@ export function Anstupser({ knopfSichtbar }: { knopfSichtbar: boolean }) {
         <div className="flex w-[286px] items-start gap-s2 rounded-card rounded-br-ecke border border-linie bg-weiss py-s2 pr-0 pl-s3 text-tiefsee shadow-s transition-opacity duration-(--fx-dur-dialog) ease-fx starting:opacity-0 dialog:w-[262px] dialog:gap-0 dialog:pl-s4">
           <span
             aria-hidden="true"
-            className="mt-s1 mr-s1 flex size-[32px] shrink-0 items-center justify-center rounded-pill bg-tiefsee dialog:hidden"
+            className="mt-s1 mr-s1 flex size-[32px] shrink-0 items-center justify-center rounded-pill bg-nacht dialog:hidden"
           >
             <Icon name="luna-signet-glyph" className="size-[19px]" />
           </span>
           <button type="button" onClick={oeffneLuna} className="min-h-[44px] flex-1 cursor-pointer py-s2 text-left text-text">
-            <span className="font-display font-[750] [font-stretch:100%]">{t.fett}</span> {t.text}
+            <span className="font-display font-bold">{t.fett}</span> {t.text}
           </button>
           <button
             type="button"

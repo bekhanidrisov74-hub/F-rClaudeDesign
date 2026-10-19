@@ -1,56 +1,68 @@
-/* fixit247 – Design-Tokens, Richtung B Türkis
-   Quelle: design/tokens.css (Werte 1:1). Darunter:
-   (1) responsive Varianten, die design/tokens.css selbst im Kommentar nennt,
-   (2) ein Block „Ergänzt aus den Screens“ (Entscheidung 1A vom 13.10.2026).
+/* fixit247 – Design-Tokens
+   Seit 19.10.2026 gilt für die ganze Seite der Stil des Entwurfs „Hero – Desktop 1586“ (docs/hero-stil.md):
+   Farben, Schrift (Inter), Radien und Schatten unten sind die Werte des Hero. Die Namen der Tokens sind geblieben,
+   damit Aufbau und Tests der Abschnitte gleich bleiben. Ursprung der übrigen Werte: design/tokens.css, dazu
+   (1) responsive Varianten, (2) „Ergänzt aus den Screens“ (Entscheidung 1A vom 13.10.2026).
    Komponenten verwenden ausschließlich diese Variablen. */
 
 :root {
-  /* Farben */
-  --fx-tuerkis: #3AA8B8;        /* Signalfarbe: Anruf-Knopf (überall gleich), Bildflächen, Luna-Stern, Fokus-Rand */
-  --fx-tiefsee: #001B2A;        /* Text, Primärknöpfe, gewählte Chips, dunkle Abschnitte, Luna-Knopf */
-  --fx-tiefsee-2: #0F2C3C;      /* Linien und Flächen innerhalb von Tiefsee */
-  --fx-kalk: #F2F7F9;           /* Seitenhintergrund, Chat-Verlauf, Hinweisflächen in Karten */
-  --fx-weiss: #FFFFFF;          /* Karten, Felder, Luna-Sprechblasen */
-  --fx-schiefer: #4B5E69;       /* Zweittext auf Hell (6,8:1 auf Weiß, 6,3:1 auf Kalk) */
-  --fx-rand: #72838D;           /* Umrandung von Feldern, Chips, Zweitknöpfen (≥3:1) */
-  --fx-linie: #D6E0E4;          /* Trennlinien, Kartenränder (nur Gliederung) */
-  --fx-nebel: #B7CBD4;          /* Zweittext auf Tiefsee (10,5:1) */
-  --fx-icon-technik: #3F7D88;   /* Gewerke-Icons Technik: Heizung & Klima, Elektro, Haushaltsgeräte */
-  --fx-icon-handwerk: #E8842A;  /* Gewerke-Icons Handwerk: Installateur, Schlüsseldienst */
-  --fx-abdunklung: rgba(0, 27, 42, 0.64); /* hinter Dialog und Bottom-Sheet */
+  /* Farben (Hero) */
+  --fx-tuerkis: #22B5C0;        /* Signalfarbe: Anruf-Knöpfe (überall gleich), Luna-Stern, Fokus auf Tiefsee */
+  --fx-tiefsee: #03101F;        /* Text, Icons, Primärknöpfe, gewählte Chips, Luna-Knopf, Fokus-Rand (18,6:1 auf Kalk) */
+  --fx-tiefsee-2: #13263A;      /* Hover der Primärknöpfe, Linien auf Tiefsee */
+  --fx-kalk: #FBFCFD;           /* Seitenhintergrund (Fläche des Hero) */
+  --fx-kalk-2: #F4F8FB;         /* zweite Abschnittsfläche, damit sich Abschnitte voneinander abheben */
+  --fx-weiss: #FFFFFF;          /* Karten, Felder, Sprechblasen des Nutzers nicht */
+  --fx-eis: #E8F4F8;            /* Hinweiskästen wie im Hero, Luna-Sprechblasen, Tipps */
+  --fx-lagune: #BEF0F6;         /* Kreise hinter Icons wie bei den Vorteilen */
+  --fx-orange: #EC5315;         /* Akzent wie „Rund um die Uhr.“: große Ziffern (3,5:1, nur große Schrift) */
+  --fx-schiefer: #5C606C;       /* Zweittext (6,3:1 auf Weiß, 5,6:1 auf Eis) */
+  --fx-rand: #7C8494;           /* Umrandung von Feldern, Chips, Zweitknöpfen (3,8:1 auf Weiß, ≥3:1 auf Eis) */
+  --fx-linie: #E8ECF0;          /* Trennlinien, Kartenränder (nur Gliederung) */
+  --fx-nebel: #B5BFCC;          /* Zweittext auf Tiefsee (10,3:1) */
+  --fx-nacht: #021022;          /* Kreis in den Anruf-Knöpfen */
+  --fx-tuerkis-hell: #8FE6EC;   /* Hörer im Kreis der Anruf-Knöpfe */
+  --fx-icon-technik: #3F7D88;   /* Ladeanzeige */
+  --fx-icon-handwerk: #E8842A;  /* „247“ und Strich im Logo, Ladeanzeige */
+  --fx-abdunklung: rgba(3, 16, 31, 0.6); /* hinter Dialog und Bottom-Sheet */
 
-  /* Schriften */
-  --fx-font-display: 'Bricolage Grotesque Variable', 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif;
-  --fx-font-text: 'Atkinson Hyperlegible Next Variable', 'Atkinson Hyperlegible Next', Tahoma, Verdana, sans-serif;
-  /* Überschriften: font-weight 700, font-stretch 96 %; Knöpfe/Chips 700–800 */
+  /* Schrift: Inter wie im Hero (lokal über @fontsource-variable/inter) */
+  --fx-font-display: 'Inter Variable', Inter, system-ui, sans-serif;
+  --fx-font-text: 'Inter Variable', Inter, system-ui, sans-serif;
+  /* Überschriften: Gewicht 750, eng gesetzt wie die H1 (−0,052 em); Knöpfe 650–700 */
 
   /* Schriftgrößen (fließend 390 → 1440 px) */
-  --fx-h1: clamp(44px, calc(1.71vw + 37.3px), 62px);   /* lh 0.95, letter-spacing -0.02em */
-  --fx-h2: clamp(34px, calc(0.95vw + 30.3px), 44px);   /* lh 1.0, letter-spacing -0.012em */
-  --fx-h3: clamp(23px, calc(0.286vw + 21.89px), 26px); /* Handy 23–26, Desktop 26–28, lh 1.15, Gewicht 750 */
-  --fx-total: clamp(24px, calc(0.571vw + 21.77px), 30px); /* Gesamtpreis, Gewicht 700, nowrap; Handy 24 (Screen 01) */
-  --fx-lead: clamp(17px, calc(0.286vw + 15.89px), 20px);  /* Handy 17, lh 1.5 */
+  --fx-h1: clamp(44px, calc(1.71vw + 37.3px), 62px);   /* Rechtsseiten; lh 1, letter-spacing -0.045em */
+  --fx-h2: clamp(34px, calc(1.905vw + 26.57px), 54px); /* Abschnitte; lh 1.02, letter-spacing -0.045em */
+  --fx-h3: clamp(23px, calc(0.286vw + 21.89px), 26px); /* lh 1.15, Gewicht 750 */
+  --fx-total: clamp(24px, calc(0.571vw + 21.77px), 30px); /* Gesamtpreis, Gewicht 800, nowrap */
+  --fx-lead: clamp(17px, calc(0.305vw + 15.81px), 20.2px); /* wie die Unterzeile im Hero, lh 1.5 */
   --fx-body: clamp(16px, calc(0.095vw + 15.63px), 17px);  /* Handy 16–17, lh 1.5 */
   --fx-small: 15px;       /* lh 1.45 */
   --fx-note: 14px;        /* 13–14, nie kleiner als 13 */
 
-  /* Radien */
-  --fx-r-pill: 999px;     /* nur Anruf-Knopf; runde Knöpfe (Luna) */
+  /* Radien (Hero: Pille für Anrufen, 16 für Zweitknöpfe, 20 für den Hinweiskasten) */
+  --fx-r-pill: 999px;     /* Anruf-Knöpfe, Kreise, Luna-Knopf */
   --fx-r-dialog: 24px;    /* Dialog, Bottom-Sheet (oben) */
-  --fx-r-card-lg: 22px;   /* große Karten, Rechner, Chat-Fenster */
-  --fx-r-card: 18px;      /* Kacheln (Handy 16), Chat-Karten, Sprechblasen (Sprechecke 6px) */
-  --fx-r-btn-lg: 16px;    /* große Zweitknöpfe (WhatsApp, Anfrage) */
-  --fx-r-btn: 14px;       /* Knöpfe, Chat-Eingabe */
+  --fx-r-card-lg: 20px;   /* große Karten, Hinweiskästen, Rechner, Chat-Fenster */
+  --fx-r-card: 18px;      /* Kacheln, Chat-Karten, Sprechblasen (Sprechecke 6px) */
+  --fx-r-btn-lg: 16px;    /* große Zweitknöpfe wie „Anfrage senden“ im Hero */
+  --fx-r-btn: 16px;       /* Knöpfe, Chat-Eingabe */
   --fx-r-chip: 12px;      /* Chips, Formularfelder, Icon-Knöpfe */
-  --fx-r-icon: 12px;      /* Icon-Flächen 10–13 */
-  --fx-r-tile: 16px;      /* Kacheln: Handy 16, ab 640 px 18 (siehe unten) */
+  --fx-r-icon: 12px;      /* Icon-Flächen */
+  --fx-r-tile: 18px;      /* Kacheln der Schnellwahl */
   --fx-r-ecke: 6px;       /* Sprechecke der Sprechblasen */
 
-  /* Schatten (nur für Schwebendes; Karten haben Ränder statt Schatten) */
-  --fx-shadow-s: 0 12px 28px rgba(0, 27, 42, 0.18);   /* Anstupser */
-  --fx-shadow-m: 0 10px 24px rgba(0, 27, 42, 0.28);   /* Luna-Knopf */
-  --fx-shadow-l: 0 24px 60px rgba(0, 27, 42, 0.30);   /* Chat-Fenster, Preis-Dialog */
-  --fx-shadow-up: 0 -12px 40px rgba(0, 27, 42, 0.30); /* Bottom-Sheet */
+  /* Schatten: weich wie unter den Knöpfen des Hero */
+  --fx-shadow-knopf: 0 3px 8px rgba(3, 16, 31, 0.05);        /* Zweitknöpfe (Hero: „Anfrage senden“) */
+  --fx-shadow-knopf-hover: 0 6px 18px rgba(3, 16, 31, 0.08);
+  --fx-shadow-anruf: 0 4px 10px rgba(3, 16, 31, 0.06);       /* Anruf-Knöpfe (Hero: „Jetzt anrufen“) */
+  --fx-shadow-karte: 0 1px 2px rgba(3, 16, 31, 0.04), 0 10px 28px rgba(3, 16, 31, 0.05); /* Karten und Kacheln */
+  --fx-shadow-karte-hover: 0 2px 4px rgba(3, 16, 31, 0.05), 0 16px 36px rgba(3, 16, 31, 0.09);
+  --fx-shadow-s: 0 12px 28px rgba(3, 16, 31, 0.14);   /* Anstupser */
+  --fx-shadow-m: 0 10px 24px rgba(3, 16, 31, 0.24);   /* Luna-Knopf */
+  --fx-shadow-l: 0 24px 60px rgba(3, 16, 31, 0.22);   /* Chat-Fenster, Preis-Dialog */
+  --fx-shadow-up: 0 -12px 40px rgba(3, 16, 31, 0.22); /* Bottom-Sheet */
 
   /* Abstände (4-px-Raster) */
   --fx-s-1: 4px;  --fx-s-2: 8px;  --fx-s-3: 12px; --fx-s-4: 16px; --fx-s-5: 24px;
@@ -76,6 +88,7 @@
   --fx-h3-karte: clamp(26px, calc(0.19vw + 25.26px), 28px);   /* Leistungskarten: Titel und Preis (02: 28) */
   --fx-h4: clamp(20px, calc(0.19vw + 19.26px), 22px);         /* Ergebnis-, Anfrage-, Fehlerkarten, „Was ist passiert?“ */
   --fx-h5: clamp(17px, calc(0.19vw + 16.26px), 19px);         /* Kachel-, Vertrauens-, Fieldset-, Spaltentitel, Luna-Name */
+  --fx-kachel: clamp(15px, calc(2.5vw + 7px), 17px);         /* Kacheltitel der Schnellwahl unter 920 px: „Haushaltsgeräte“ passt bis 320 px in eine Zeile (Inter 700) */
   --fx-btn: 16px;          /* Knöpfe, Chips (Screen 14: 16–18) */
   --fx-btn-l: 18px;        /* Anruf-Pillen in Karten, Senden-Knopf */
   --fx-text: 16px;         /* Kartentext, Tabellen, Labels, Luna-Verlauf */
@@ -83,19 +96,13 @@
   --fx-border: 1.5px;      /* Umrandung von Feldern, Chips, Zweitknöpfen (alle Screens) */
 
   /* ── Ergänzt für „Glanz“ (16.10.2026, docs/glanz/BRIEF.md). Nur Mischungen der Farben oben ── */
-  --fx-tuerkis-tief: color-mix(in srgb, var(--fx-tuerkis) 88%, var(--fx-tiefsee)); /* Anruf-Knopf beim Überfahren (Tiefsee-Schrift 5,2:1) */
-  --fx-glanz: color-mix(in srgb, var(--fx-weiss) 55%, transparent);     /* Glanzlicht, das beim Scrollen über das Chrom der Fotos wandert */
-  --fx-leuchten: color-mix(in srgb, var(--fx-tuerkis) 22%, transparent); /* weiches Leuchten auf Tiefsee (So funktioniert's) */
-  --fx-kante: inset 0 1px 0 color-mix(in srgb, var(--fx-weiss) 9%, transparent); /* Lichtkante oben an dunklen Karten */
+  --fx-tuerkis-tief: color-mix(in srgb, var(--fx-tuerkis) 88%, var(--fx-tiefsee)); /* Anruf-Knopf beim Überfahren (Tiefsee-Schrift 6,7:1) */
+  --fx-glanz: color-mix(in srgb, var(--fx-weiss) 55%, transparent);     /* Glanzlicht, das beim Scrollen über die Bilder der Leistungen wandert */
 
-  /* ── Ergänzt für den Fuß mit Lichtstrahl (18.10.2026, ui/Strahlfuss). Nur Mischungen der Farben oben ── */
-  --fx-strahl: color-mix(in srgb, var(--fx-tuerkis) 16%, transparent);       /* Kern des Lichtstrahls hinter dem Inhalt; mehr nicht, sonst fällt türkiser Text darüber unter 4,5:1 */
-  --fx-strahl-hauch: color-mix(in srgb, var(--fx-tuerkis) 10%, transparent); /* Saum des Lichtstrahls, zweiter Strahl */
-  --fx-strahl-kante: color-mix(in srgb, var(--fx-tuerkis) 55%, transparent); /* Strahl in der großen Wortmarke, Lichtkante oben, Haarlinien unter den Spaltentiteln */
-  --fx-wortmarke: color-mix(in srgb, var(--fx-icon-technik) 60%, var(--fx-tiefsee)); /* große Wortmarke oben, läuft nach unten in Tiefsee-2 aus */
-  /* Große Wortmarke so breit wie der Inhalt (in einem Container gemessen): 0,32 em je px passt zu „fixit247“ in Bricolage 800,
-     in Chrome gemessen; ein e2e-Test prüft es. Ändern sich Wort oder Schrift, neu messen. */
-  --fx-wortmarke-gross: calc(min(100cqi - 2 * var(--fx-gutter), var(--fx-container)) * 0.32);
+  /* ── Fuß (19.10.2026): große Wortmarke hell auf hellem Fuß, wie ein Wasserzeichen ── */
+  /* Große Wortmarke so breit wie der Inhalt (in einem Container gemessen): 0,288 em je px passt zu „fixit247“ in Inter 800
+     mit −0,05 em Laufweite, in Chrome gemessen; ein e2e-Test prüft es. Ändern sich Wort oder Schrift, neu messen. */
+  --fx-wortmarke-gross: calc(min(100cqi - 2 * var(--fx-gutter), var(--fx-container)) * 0.288);
 
   /* ── Kopf, Hero und Vorteile nach dem Entwurf „Hero – Desktop 1586“ (19.10.2026), Werte 1:1 aus dem Entwurf (styles/hero.css).
      Desktop-Werte stehen in Entwurfs-px × --fx-hd-px: ab 1534 px fest wie im Entwurf, von 1280 bis 1534 px schrumpft alles

@@ -533,6 +533,14 @@
   }
 }
 
+/* Handy (nicht im Entwurf): Unter 560 px passt „Sie rufen an oder kontaktieren uns“ nicht in eine Zeile. Ohne den
+   festen Umbruch fließt der Satz weiter, statt „uns“ allein in eine Zeile zu stellen. */
+@media (width < 35rem) {
+  .hd-info br {
+    display: none;
+  }
+}
+
 /* Ab 1600 px steht das Foto in voller Größe frei neben dem Text: dort blendet die Maske links den gezackten Rand des
    Verlaufs aus, der im Bild selbst steckt (Bild-x 130–300). Darunter liegt er hinter Knöpfen und Hinweiskasten wie im Entwurf. */
 @media (min-width: 100rem) {

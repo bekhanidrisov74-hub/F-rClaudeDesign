@@ -87,22 +87,28 @@ test('Auslöser im Rechner öffnet ebenfalls', async ({ page }) => {
   await expect(ausloeser).toBeFocused()
 })
 
-test('Gewerke-Icons: 40 px, als AVIF in doppelter Größe geladen', async ({ page }) => {
+test('Gewerke-Icons: flache SVGs im Lagune-Kreis wie bei den Vorteilen, bündig am Zeilenanfang', async ({ page }, info) => {
   await page.goto('/')
   await oeffnePreisuebersicht(page)
-  const icons = preisDialog(page).locator('img[src*="/icons/gewerk-"]:visible')
-  await expect(icons).toHaveCount(gewerke.length)
-  for (const [i, icon] of (await icons.all()).entries()) {
-    await expect.poll(() => icon.evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth > 0)).toBe(true)
-    const befund = await icon.evaluate((img: HTMLImageElement) => {
-      const zeile = img.closest('th, li')!
-      return {
-        breite: Math.round(img.getBoundingClientRect().width),
-        // bündig am Zeilenanfang (Spalte „Gewerk“ bzw. Listenrand)
-        links: Math.round(img.getBoundingClientRect().left - zeile.getBoundingClientRect().left - parseFloat(getComputedStyle(zeile).paddingLeft)),
-        quelle: img.currentSrc.slice(img.currentSrc.lastIndexOf('/') + 1),
-      }
-    })
-    expect(befund).toEqual({ breite: 40, links: 0, quelle: `${gewerke[i].icon}-80.avif` })
-  }
+  await expect(preisDialog(page).locator('img')).toHaveCount(0)
+  const kreise = await preisDialog(page)
+    .locator('svg:visible')
+    .evaluateAll((els) =>
+      els
+        .filter((el) => el.closest('th, li'))
+        .map((el) => {
+          const kreis = el.parentElement!.parentElement!
+          const zeile = kreis.closest('th, li')!
+          return {
+            breite: Math.round(kreis.getBoundingClientRect().width),
+            // bündig am Zeilenanfang (Spalte „Gewerk“ bzw. Listenrand)
+            links: Math.round(kreis.getBoundingClientRect().left - zeile.getBoundingClientRect().left - parseFloat(getComputedStyle(zeile).paddingLeft)),
+            flaeche: getComputedStyle(kreis).backgroundColor,
+          }
+        }),
+    )
+  expect(kreise).toHaveLength(gewerke.length)
+  // ab 640 px Tabelle mit 44-px-Kreisen, darunter die Liste im Sheet mit 40 px
+  const breite = info.project.name === 'm390' ? 40 : 44
+  for (const k of kreise) expect(k).toEqual({ breite, links: 0, flaeche: 'rgb(190, 240, 246)' })
 })

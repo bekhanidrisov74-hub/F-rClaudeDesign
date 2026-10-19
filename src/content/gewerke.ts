@@ -26,7 +26,7 @@ export interface Gewerk {
   bildFokus: string
   /** Quellbild ist ein 16:9-Querformat (bild-3): Bildflaeche rechnet die Breite für den 4:3-Zuschnitt ab 920 px mit */
   bildQuer?: true
-  /** 3D-Icon: design/icons-3d/{icon}.png, auf der Seite public/icons/{icon}-{Breite}.avif|webp */
+  /** Flaches Icon im Stil des Hero: design/icons/{icon}.svg (im Lagune-Kreis, ui/IconKreis) */
   icon: string
   /** Luna-Erfolg: „Wir geben sie jetzt an einen passenden {betrieb} in Ihrer Nähe weiter.“ (nicht im Design, Frage 2) */
   betrieb: string

@@ -1,38 +1,37 @@
 import { expect, test } from './test'
 
-test('Schriften kommen lokal: Inter in Kopf und Hero (Entwurf „Hero – Desktop 1586“), sonst Bricolage mit Breitenachse', async ({ page }) => {
+test('Schriften kommen lokal: Inter auf der ganzen Seite wie im Entwurf „Hero – Desktop 1586“', async ({ page }) => {
   await page.goto('/')
   await page.evaluate(() => document.fonts.ready)
   const geladen = await page.evaluate(() => ({
     hero: document.fonts.check('750 88px "Inter Variable"'),
-    display: document.fonts.check('700 44px "Bricolage Grotesque Variable"'),
-    text: document.fonts.check('400 17px "Atkinson Hyperlegible Next Variable"'),
+    text: document.fonts.check('400 17px "Inter Variable"'),
+    // Die früheren Schriften (Bricolage, Atkinson) sind entfernt und werden nicht mehr geladen
+    alt: [...document.fonts].some((f) => /Bricolage|Atkinson/.test(f.family)),
   }))
-  expect(geladen).toEqual({ hero: true, display: true, text: true })
+  expect(geladen).toEqual({ hero: true, text: true, alt: false })
   const stil = (sel: string) =>
     page.locator(sel).evaluate((el) => {
       const s = getComputedStyle(el)
-      return { familie: s.fontFamily, staerke: s.fontWeight, breite: s.fontStretch }
+      return { familie: s.fontFamily, staerke: s.fontWeight }
     })
-  const h1 = await stil('h1')
-  expect(h1.familie).toContain('Inter Variable')
-  expect(h1.staerke).toBe('750')
-  const h2 = await stil('#leistungen-titel')
-  expect(h2.familie).toContain('Bricolage Grotesque Variable')
-  expect(h2.staerke).toBe('700')
-  expect(h2.breite).toBe('96%')
+  for (const sel of ['h1', '#leistungen-titel', '#rechner-titel', '#fragen-titel', 'body']) {
+    const s = await stil(sel)
+    expect(s.familie, sel).toContain('Inter Variable')
+    if (sel !== 'body') expect(s.staerke, sel).toBe('750')
+  }
 })
 
-test('Seite: Kalk-Hintergrund, Tiefsee-Schrift', async ({ page }) => {
+test('Seite: Kalk-Hintergrund und Tiefsee-Schrift wie im Hero', async ({ page }) => {
   await page.goto('/')
   const farben = await page.evaluate(() => {
     const s = getComputedStyle(document.body)
     return { grund: s.backgroundColor, schrift: getComputedStyle(document.documentElement).color }
   })
-  expect(farben).toEqual({ grund: 'rgb(242, 247, 249)', schrift: 'rgb(0, 27, 42)' })
+  expect(farben).toEqual({ grund: 'rgb(251, 252, 253)', schrift: 'rgb(3, 16, 31)' })
 })
 
-test('Fokusrahmen: 3 px, Abstand 3 px; Türkis, an Links im Kopf Tiefsee wie im Entwurf „Hero – Desktop 1586“', async ({ page }) => {
+test('Fokusrahmen: 3 px, Abstand 3 px, überall Tiefsee wie im Entwurf „Hero – Desktop 1586“', async ({ page }) => {
   await page.goto('/impressum/')
   const fokus = () =>
     page.evaluate(() => {
@@ -48,7 +47,7 @@ test('Fokusrahmen: 3 px, Abstand 3 px; Türkis, an Links im Kopf Tiefsee wie im 
     danach = await fokus()
   }
   // Knöpfe mit transition-colors blenden die Rahmenfarbe 120 ms lang über
-  await expect.poll(fokus).toMatchObject({ imKopf: false, stil: 'solid', breite: '3px', farbe: 'rgb(58, 168, 184)', abstand: '3px' })
+  await expect.poll(fokus).toMatchObject({ imKopf: false, stil: 'solid', breite: '3px', farbe: 'rgb(3, 16, 31)', abstand: '3px' })
 })
 
 test('reduced motion schaltet Übergänge ab', async ({ page }) => {

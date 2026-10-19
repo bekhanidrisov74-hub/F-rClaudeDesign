@@ -4,8 +4,8 @@ import { anfahrtText, einheit, gewerke, spanne } from '../content/gewerke'
 import { useOverlays } from '../overlays'
 import { Button } from './ui/Button'
 import { CallButton } from './ui/CallButton'
-import { GewerkIcon } from './ui/GewerkIcon'
 import { Icon } from './ui/Icon'
+import { IconKreis } from './ui/IconKreis'
 
 const t = copy.preisuebersicht
 
@@ -64,7 +64,7 @@ export function Preisuebersicht({ aufStartseite = true }: { aufStartseite?: bool
         <div className="grid grid-cols-[1fr_auto] items-start gap-x-s3 dialog:gap-x-s4">
           <h2
             id="preise-titel"
-            className="col-start-1 row-start-1 mt-s1 text-h2-s tracking-[-0.01em] dialog:mt-0 dialog:text-h2-dialog"
+            className="col-start-1 row-start-1 mt-s1 text-h2-s dialog:mt-0 dialog:text-h2-dialog"
           >
             {t.titel}
           </h2>
@@ -74,7 +74,7 @@ export function Preisuebersicht({ aufStartseite = true }: { aufStartseite?: bool
             autoFocus
             aria-label={t.schliessen}
             onClick={schliessePreise}
-            className="rahmen col-start-2 row-start-1 flex size-[44px] cursor-pointer items-center justify-center rounded-chip border-rand bg-weiss text-tiefsee dialog:row-end-3"
+            className="col-start-2 row-start-1 flex size-[44px] cursor-pointer items-center justify-center rounded-pill bg-lagune text-tiefsee transition-colors hover:bg-tiefsee hover:text-weiss dialog:row-end-3"
           >
             <Icon name="ui-schliessen" className="size-[20px]" />
           </button>
@@ -101,8 +101,8 @@ export function Preisuebersicht({ aufStartseite = true }: { aufStartseite?: bool
               <tr key={g.id} className="border-t border-linie last:border-b">
                 <th scope="row" className="py-s3 text-left font-normal">
                   <span className="flex items-center gap-s3">
-                    <GewerkIcon gewerk={g} sizes="40px" trage className="size-[40px]" />
-                    <span className="font-display text-body font-[750]">{g.name}</span>
+                    <IconKreis name={g.icon} className="size-[44px]" icon="size-[24px]" />
+                    <span className="font-display text-body font-bold">{g.name}</span>
                   </span>
                 </th>
                 <td className="py-s3">
@@ -118,9 +118,9 @@ export function Preisuebersicht({ aufStartseite = true }: { aufStartseite?: bool
         <ul className="border-t border-linie dialog:hidden">
           {gewerke.map((g) => (
             <li key={g.id} className="flex items-center gap-s3 border-b border-linie py-s2">
-              <GewerkIcon gewerk={g} sizes="40px" trage className="mr-s1 size-[40px]" />
+              <IconKreis name={g.icon} className="mr-s1 size-[40px]" icon="size-[22px]" />
               <span className="flex min-w-0 flex-1 flex-col">
-                <span className="font-display text-text leading-tight font-[750]">{g.name}</span>
+                <span className="font-display text-text leading-tight font-bold">{g.name}</span>
                 <span className="text-note text-schiefer">
                   {t.anfahrt} {anfahrtText(g)}
                 </span>
@@ -141,7 +141,7 @@ export function Preisuebersicht({ aufStartseite = true }: { aufStartseite?: bool
         <p className="text-note text-schiefer dialog:hidden">{t.hinweisSheet}</p>
 
         <div className="flex items-center gap-s3 max-dialog:hidden">
-          <Button art="hell" href={ziel} onClick={zumRechner} className="min-h-[54px] px-s5 text-btn">
+          <Button art="hell" href={ziel} onClick={zumRechner} className="min-h-[56px] rounded-btn-lg px-s5 text-btn">
             {t.zumRechner}
           </Button>
           <CallButton variante="block" nummer className="flex-1" />
