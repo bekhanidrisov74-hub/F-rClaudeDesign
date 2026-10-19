@@ -25,6 +25,7 @@
   --breakpoint-kopf: 35rem;   /* 560 px */
   --breakpoint-dialog: 40rem; /* 640 px */
   --breakpoint-nav: 57.5rem;  /* 920 px */
+  --breakpoint-spalten: 70rem; /* 1120 px: Preisrechner zweispaltig */
   --breakpoint-hd: 80rem;     /* 1280 px: Navigation im Kopf, Desktop-Fassung des Hero */
 }
 

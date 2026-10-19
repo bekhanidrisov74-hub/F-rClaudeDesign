@@ -21,7 +21,7 @@ import { IconKreis } from './ui/IconKreis'
 
 const START_GEWERK = (gewerke.find((g) => g.id === 'installateur') ?? gewerke[0]).id
 
-const LEGENDE = 'mb-s3 p-0 font-display text-h5 font-bold'
+const LEGENDE = 'mb-s3 p-0 font-display text-h5 font-bold hd:mb-s4'
 const FELDGRUPPE = 'm-0 flex min-w-0 flex-col gap-s3 border-0 p-0'
 const REIHE = 'flex flex-wrap gap-s2 dialog:gap-s3'
 /** Stepper-Knopf 52 × 52, an der Grenze aria-disabled statt disabled, damit der Fokus bleibt. */
@@ -40,7 +40,7 @@ export function Preisrechner() {
     setZuschlaege((alt) => (alt.includes(id) ? alt.filter((x) => x !== id) : [...alt, id]))
 
   return (
-    <section id="preisrechner" aria-labelledby="rechner-titel" className="bg-kalk-2">
+    <section id="preisrechner" aria-labelledby="rechner-titel" className="bg-kalk">
       <div className="wrapper pt-section pb-section-end">
         <div className="mb-s5 flex max-w-[680px] flex-col gap-s4 nav:mb-s7 nav:gap-s3">
           <h2 id="rechner-titel" className="text-h2">
@@ -49,8 +49,13 @@ export function Preisrechner() {
           <p className="text-lead text-schiefer">{copy.rechner.lead}</p>
         </div>
 
-        <div className="grid gap-s5 nav:grid-cols-[minmax(0,1fr)_420px]">
-          <div className="flex min-w-0 flex-col justify-between gap-s5 rounded-card-lg border border-linie bg-weiss px-s4 py-s5 shadow-karte dialog:gap-s6 dialog:p-s6">
+        {/* Ab 1120 zweispaltig mit gleich hohen Karten. Reicht der Inhalt einer Karte nicht, verteilt sie den Rest
+            gleichmäßig auf Ränder und Gruppenabstände (justify-evenly; die Ergebnis-Karte zwischen ihren Blöcken).
+            Das hält bei 1120–2560 px jeden Abstand bei höchstens --fx-s-8, auch bei mehreren Zuschlägen. Darunter
+            stehen die Karten untereinander: Bis 1119 px wäre die linke Karte nur 444–643 px breit, die Chips liefen
+            in zwei bis drei Zeilen, und die Ergebnis-Karte risse ihre Blöcke bis 97 px auseinander. */}
+        <div className="grid gap-s5 spalten:grid-cols-[minmax(0,1fr)_420px] hd:grid-cols-[minmax(0,1fr)_440px]">
+          <div className="flex min-w-0 flex-col justify-evenly gap-s5 rounded-card-lg border border-linie bg-weiss px-s4 py-s5 shadow-karte dialog:gap-s6 dialog:p-s6">
             <fieldset className={FELDGRUPPE}>
               <legend className={LEGENDE}>{copy.rechner.gewerk}</legend>
               <div className={REIHE}>
@@ -124,10 +129,13 @@ export function Preisrechner() {
   )
 }
 
-/** Schlüsseldienst: statt des Steppers der Hinweis „Preis pro Einsatz“ (Screen 13 oben). */
+/**
+ * Schlüsseldienst: statt des Steppers der Hinweis „Preis pro Einsatz“ (Screen 13 oben).
+ * Ab 1280 px etwas höher (py-s6), damit die kürzere linke Karte neben der Ergebnis-Karte nicht über --fx-s-8 auseinandergezogen wird.
+ */
 function EinsatzHinweis() {
   return (
-    <div className="flex items-start gap-s3 rounded-btn-lg bg-eis px-s4 py-s4">
+    <div className="flex items-start gap-s3 rounded-btn-lg bg-eis px-s4 py-s4 hd:py-s6">
       <IconKreis name="ui-richtpreis" weiss className="size-[44px]" icon="size-[22px]" />
       <div className="flex min-w-0 flex-col gap-s1">
         <p className="font-display text-h5 font-bold">{copy.rechner.einsatz.titel}</p>
@@ -181,7 +189,7 @@ function Ergebniskarte({ ergebnis: e }: { ergebnis: Ergebnis }) {
   return (
     <div
       aria-live="polite"
-      className="@container flex min-w-0 flex-col gap-s4 rounded-card-lg bg-eis px-s4 py-s5 text-tiefsee dialog:gap-s5 dialog:p-s6"
+      className="@container flex min-w-0 flex-col justify-between gap-s4 rounded-card-lg bg-eis px-s4 py-s5 text-tiefsee dialog:p-s6"
     >
       <div className="flex flex-col gap-s1">
         <h3 className="text-h4">{t.titel}</h3>
@@ -213,7 +221,7 @@ function Ergebniskarte({ ergebnis: e }: { ergebnis: Ergebnis }) {
 
       <p className="text-small text-schiefer">{t.hinweis}</p>
 
-      <div className="mt-auto flex flex-col gap-s3">
+      <div className="flex flex-col gap-s3">
         <CallButton variante="block" />
         <Button art="textlink" onClick={(ev) => oeffnePreise(ev.currentTarget)} className="min-h-[48px] text-btn">
           {t.preisuebersicht}
