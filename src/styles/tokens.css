@@ -197,7 +197,12 @@
   --fx-hd-s-vorteil-l: calc(26 * var(--fx-hd-px));
   --fx-hd-s-vorteil-text: calc(10 * var(--fx-hd-px));
   --fx-hd-s-vorteil-p: calc(6 * var(--fx-hd-px));
-  --fx-hd-s-ausblend: 96px;                         /* über 1586 px: Foto läuft rechts aus, Raster links ein (halb so breit), hero.css */
+  /* Über 1586 px reicht das Foto bis zum Fensterrand (hero.css). Es gibt es nur in 1006 × 724 px, darum höchstens 1,25-fach
+     vergrößert; reicht das nicht bis zum Rand (ab ca. 2090 px), läuft es rechts über bis zu 160 px in die Kalk-Fläche aus.
+     Beim Vergrößern fällt unten Vordergrund weg, dort blendet es über bis zu 120 px aus. */
+  --fx-hd-foto-zoom: 1.25;
+  --fx-hd-s-ausblend: 160px;
+  --fx-hd-s-ausblend-unten: 120px;
 }
 
 /* Abschnitte der Seite (Umbruch „nav“): Fließtext in Karten und Tabellen eine Stufe größer */

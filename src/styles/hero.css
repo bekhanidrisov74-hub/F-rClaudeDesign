@@ -111,7 +111,7 @@
 }
 
 /* Hero und Vorteile stehen im Rahmen (--fx-rahmen), die Fläche bleibt auf dem vollbreiten .hd. Bis 1586 px füllt der Rahmen das
-   Fenster, dort ist alles wie im Entwurf; darüber hängt das Foto (right: 0) an der rechten Rahmenkante statt am Fensterrand. */
+   Fenster, dort ist alles wie im Entwurf; darüber reichen Foto und Raster-Muster weiter bis zum Fensterrand (Regel am Ende). */
 .hd-hero {
   position: relative;
   max-width: var(--fx-rahmen);
@@ -133,7 +133,7 @@
 }
 
 /* Weiß-zu-Bild-Verlauf: links 90 px Maske, dazu der Verlauf im Bild selbst (links und unten).
-   Höchstens so breit wie das Bild, damit es auch auf breiten Fenstern unten nicht abgeschnitten wird. */
+   Bis 1586 px höchstens so breit wie das Bild, also unbeschnitten wie im Entwurf. */
 .hd-foto {
   position: absolute;
   top: 0;
@@ -550,15 +550,45 @@
   }
 }
 
-/* Über 1586 px (breiter als der Rahmen) endet das Foto nicht mehr am Fensterrand, sondern 1006 px breit in der Kalk-Fläche:
-   rechts läuft es aus, statt hart abzubrechen. Das Raster links beginnt ebenso weich an der Rahmenkante. Genau 1586 px
-   bleibt wie im Entwurf, dort liegt der Rahmen am Fensterrand. */
+/* Über 1586 px stehen Text, Knöpfe und Vorteile im zentrierten Rahmen, Foto und Raster-Muster reichen aber wie im Entwurf bis
+   an den Fensterrand. --fx-hd-seitenrand ist der Rand neben dem Rahmen (cqi: Breite von .hd). Alle Werte wachsen ab 0 px bei 1586 px,
+   darum gibt es an der Grenze keinen Sprung. */
 @media (width > 99.125rem) {
-  .hd-foto {
-    mask-image: linear-gradient(to right, transparent 0, black calc(90 * var(--fx-hd-px)), black calc(100% - var(--fx-hd-s-ausblend)), transparent 100%);
+  .hd {
+    container-type: inline-size;
   }
 
+  .hd-hero {
+    /* max(0px): Der Media-Query misst mit Scrollbalken, 100cqi ohne; knapp über 1586 px wäre der Rand sonst negativ */
+    --fx-hd-seitenrand: max(0px, (100cqi - var(--fx-rahmen)) / 2);
+    /* Zuwachs des Fotos: bis zum Fensterrand, höchstens bis zur 1,25-fachen Dateibreite */
+    --fx-hd-foto-plus: min(var(--fx-hd-seitenrand), calc(1006 * var(--fx-hd-px) * (var(--fx-hd-foto-zoom) - 1)));
+    /* Was dann bis zum Fensterrand fehlt (erst ab ca. 2090 px größer als 0) */
+    --fx-hd-foto-luecke: calc(var(--fx-hd-seitenrand) - var(--fx-hd-foto-plus));
+  }
+
+  /* Linke Kante bleibt an ihrem Platz im Rahmen (Überlappung mit dem Text wie im Entwurf), rechts wächst das Foto. object-fit:
+     cover vergrößert es von oben links aus: Die Turmspitze bleibt im Bild, unten fällt Vordergrund weg; dort blendet die zweite
+     Maske so weit aus, wie beschnitten wird (724/1006 des Zuwachses). Fehlt bis zum Rand noch Fläche, läuft es rechts aus. */
+  .hd-foto {
+    left: calc(100% - 1006 * var(--fx-hd-px));
+    right: auto;
+    width: calc(1006 * var(--fx-hd-px) + var(--fx-hd-foto-plus));
+    mask-image:
+      linear-gradient(to right, transparent 0, black calc(90 * var(--fx-hd-px)),
+        black calc(100% - min(var(--fx-hd-s-ausblend), var(--fx-hd-foto-luecke) * 4)), transparent 100%),
+      linear-gradient(to bottom, black calc(100% - min(var(--fx-hd-s-ausblend-unten), var(--fx-hd-foto-plus) * 0.72)), transparent 100%);
+    mask-composite: intersect;
+  }
+
+  /* Raster-Muster vom Fensterrand bis hinter den Text, dort wie im Entwurf über 170 Entwurfs-px ausgeblendet; nach unten läuft es
+     aus, damit über dem Rand neben dem Rahmen keine lange Unterkante steht. */
   .hd-raster {
-    mask-image: linear-gradient(to right, transparent 0, black calc(var(--fx-hd-s-ausblend) / 2), transparent 100%);
+    left: calc(-1 * var(--fx-hd-seitenrand));
+    width: calc(var(--fx-hd-seitenrand) + 170 * var(--fx-hd-px));
+    mask-image:
+      linear-gradient(to right, black calc(100% - 170 * var(--fx-hd-px)), transparent 100%),
+      linear-gradient(to bottom, black calc(100% - min(40%, var(--fx-hd-seitenrand))), transparent 100%);
+    mask-composite: intersect;
   }
 }

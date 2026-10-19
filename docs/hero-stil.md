@@ -9,11 +9,15 @@ der feste Umbruch im Hinweiskasten weg, damit „uns“ nicht allein in einer Ze
 `src/styles/tokens.css`, deren Werte jetzt die des Hero sind. Die Namen der Tokens sind geblieben.
 
 Seit 19.10.2026 (Branch `design/raster-rhythmus`) gilt ein gemeinsames Raster für die ganze Seite (Zeile „Raster“ unten),
-design/screens gelten dafür nicht mehr. Über 1586 px stehen Kopfinhalt, Hero und Vorteile im zentrierten Rahmen: Das Foto
-(nur 1006 × 724 px vorhanden, daher nie hochskaliert) hängt an der rechten Rahmenkante, überlappt den Text wie im Entwurf und
-läuft rechts weich in die Kalk-Fläche aus. Die Titel der Vorteile sind h2 (vorher h3 direkt nach der h1), die Optik ist gleich.
-Geplant, aber noch nicht umgesetzt: Flächenplan mit Eis-Bändern und Tiefsee für So funktioniert's und den Fuß, neues Raster
-für „Was ist passiert?“ und die Zusagen, Fenster im Rahmen (Plan in `docs/plans/2026-10-19-optik-raster.md`).
+design/screens gelten dafür nicht mehr. Über 1586 px stehen Kopfinhalt, Text, Knöpfe, Hinweiskasten und Vorteile im
+zentrierten Rahmen; Foto und Raster-Muster reichen weiter bis an den Fensterrand. Das Foto behält seine linke Kante im Rahmen
+(Überlappung mit dem Text wie im Entwurf) und wächst nach rechts, höchstens auf das 1,25-Fache (`--fx-hd-foto-zoom`, es gibt
+es nur in 1006 × 724 px). Es wird von oben links aus vergrößert, die Turmspitze bleibt im Bild; unten blendet es so weit aus,
+wie Vordergrund wegfällt. Reicht die 1,25-fache Breite nicht bis zum Rand (ab ca. 2090 px), läuft es rechts weich in die
+Kalk-Fläche aus. Das Raster-Muster beginnt am Fensterrand und blendet hinter dem Text und nach unten aus. Alle Übergänge
+wachsen stufenlos ab 1586 px. Die Titel der Vorteile sind h2 (vorher h3 direkt nach der h1), die Optik ist gleich.
+Umgesetzt ist außerdem „Was ist passiert?“ als Eis-Band. Geplant, aber noch nicht umgesetzt: übrige Flächen (Eis-Bänder,
+Tiefsee für So funktioniert's und den Fuß), Zusagen-Raster, Fenster im Rahmen (Plan in `docs/plans/2026-10-19-optik-raster.md`).
 
 ## Grundlagen
 

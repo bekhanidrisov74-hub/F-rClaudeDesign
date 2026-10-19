@@ -118,6 +118,31 @@ test('Hero-Foto reicht am Desktop bis zum rechten Rand', async ({ page }, info) 
   expect(Math.round(box!.x + box!.width)).toBe(1440)
 })
 
+test('Hero über 1586 px: Text im Rahmen, Foto bis zum Fensterrand (höchstens 1,25-fach), Raster-Muster ab dem Rand', async ({ page }, info) => {
+  test.skip(info.project.name !== 'd1440', 'setzt die Breite selbst')
+  for (const breite of [1920, 2000, 2560]) {
+    await page.setViewportSize({ width: breite, height: 1200 })
+    await page.goto('/')
+    const m = await page.evaluate(() => {
+      const r = (sel: string) => document.querySelector(sel)!.getBoundingClientRect()
+      const anfrage = getComputedStyle(document.querySelector('.hd-anfrage')!)
+      return {
+        lead: r('.hd-lead').left, textRechts: r('.hd-info').right, foto: r('.hd-foto'), raster: r('.hd-raster').left,
+        anfrageRand: `${anfrage.borderTopStyle} ${anfrage.borderTopColor}`, fenster: document.documentElement.clientWidth,
+      }
+    })
+    const rand = (m.fenster - 1586) / 2
+    expect(Math.round(m.lead), `${breite}: Text auf der Rahmenkante`).toBe(Math.round(rand + 100))
+    expect(m.foto.left, `${breite}: kein Loch zwischen Text und Foto`).toBeLessThan(m.textRechts)
+    expect(m.foto.width, `${breite}: höchstens 1,25-fach`).toBeLessThanOrEqual(1006 * 1.25 + 0.5)
+    // Reicht die 1,25-fache Breite nicht bis zum Rand, läuft das Foto dort per Maske aus (hero.css)
+    expect(Math.round(m.foto.right), `${breite}: Foto bis zum Fensterrand`).toBe(Math.round(Math.min(m.fenster, m.foto.left + 1006 * 1.25)))
+    expect(Math.round(m.raster), `${breite}: Raster-Muster ab dem Fensterrand`).toBe(0)
+    // „Anfrage senden“ behält seinen Rand (die Farbe --fx-hd-rand darf nicht von einer gleichnamigen Länge überschrieben werden)
+    expect(m.anfrageRand, `${breite}: Rand von „Anfrage senden“`).toBe('solid rgb(124, 132, 148)')
+  }
+})
+
 async function bedienelemente(page: Page) {
   return page.locator('a:visible, button:visible, input:visible, select:visible, textarea:visible').evaluateAll((els) =>
     els
