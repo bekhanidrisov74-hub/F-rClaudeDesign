@@ -11,7 +11,6 @@
   --fx-tiefsee: #03101F;        /* Text, Icons, Primärknöpfe, gewählte Chips, Luna-Knopf, Fokus-Rand (18,6:1 auf Kalk) */
   --fx-tiefsee-2: #13263A;      /* Hover der Primärknöpfe, Linien auf Tiefsee */
   --fx-kalk: #FBFCFD;           /* Seitenhintergrund (Fläche des Hero) */
-  --fx-kalk-2: #F4F8FB;         /* zweite Abschnittsfläche, damit sich Abschnitte voneinander abheben */
   --fx-weiss: #FFFFFF;          /* Karten, Felder, Sprechblasen des Nutzers nicht */
   --fx-eis: #E8F4F8;            /* Hinweiskästen wie im Hero, Luna-Sprechblasen, Tipps */
   --fx-lagune: #BEF0F6;         /* Kreise hinter Icons wie bei den Vorteilen */
@@ -107,7 +106,7 @@
   /* Grundlinie auf Tiefsee, gut 2:1: Tiefsee-2 allein (1,3:1) ginge verloren, die türkise Laufline bräuchte aber eine Spur, auf der sie läuft */
   --fx-linie-dunkel: color-mix(in srgb, var(--fx-nebel) 30%, var(--fx-tiefsee));
 
-  /* ── Fuß (19.10.2026): große Wortmarke hell auf hellem Fuß, wie ein Wasserzeichen ── */
+  /* ── Fuß (19.10.2026): große Wortmarke in Lagune auf dem dunklen Fuß ── */
   /* Große Wortmarke so breit wie der Inhalt (in einem Container gemessen): Inhaltsbreite = Container, höchstens der Rahmen,
      abzüglich beider Kanten. 0,288 em je px passt zu „fixit247“ in Inter 800 mit −0,05 em Laufweite, in Chrome gemessen;
      ein e2e-Test prüft es. Ändern sich Wort oder Schrift, neu messen. */

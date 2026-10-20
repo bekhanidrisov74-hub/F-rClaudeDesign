@@ -37,7 +37,6 @@
   --color-tiefsee: var(--fx-tiefsee);
   --color-tiefsee-2: var(--fx-tiefsee-2);
   --color-kalk: var(--fx-kalk);
-  --color-kalk-2: var(--fx-kalk-2);
   --color-weiss: var(--fx-weiss);
   --color-eis: var(--fx-eis);
   --color-lagune: var(--fx-lagune);
@@ -249,9 +248,10 @@
   }
 }
 
-/* Große Wortmarke, schließt den hellen Fuß unten über die volle Breite ab, wie ein Wasserzeichen: Lagune, die nach unten
-   in die Fläche ausläuft. Der Text steht innen in einem wrapper und füllt die Inhaltsbreite (--fx-wortmarke-gross).
-   Unten unter der Grundlinie abgeschnitten; steigt beim Hinscrollen aus dem unteren Rand auf. Reine Dekoration. */
+/* Große Wortmarke, schließt den dunklen Fuß unten über die volle Breite ab: Lagune oben, die nach unten in das Tiefsee des Fußes
+   ausläuft, die Buchstaben sinken also in die Fläche. Der Text steht innen in einem wrapper und füllt die Inhaltsbreite
+   (--fx-wortmarke-gross). Unten knapp über der Grundlinie abgeschnitten; steigt beim Hinscrollen aus dem unteren Rand auf.
+   Reine Dekoration. */
 @utility wortmarke {
   position: relative;
   container-type: inline-size;
@@ -269,7 +269,7 @@
     height: 0.84em; /* knapp über der Grundlinie: die Buchstaben stehen auf der Kante */
     overflow: clip;
     color: transparent;
-    background-image: linear-gradient(to bottom, var(--fx-lagune) 10%, var(--fx-kalk-2) 95%);
+    background-image: linear-gradient(to bottom, var(--fx-lagune) 10%, var(--fx-tiefsee) 120%);
     -webkit-background-clip: text;
     background-clip: text;
     view-timeline: --wortmarke block;
