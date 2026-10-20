@@ -21,7 +21,8 @@
 | `design/tokens.css`, `tokens.json` | Design-Tokens |
 | `design/icons/` | Steuer- und Feldzeichen (X, Pfeile, Plus/Minus, Menü, Häkchen, Warnung) und Luna-Signet als SVG |
 | `design/icons-3d/` | 5 Gewerke-Icons und 11 Symbole (je zwei Farbstellungen) als 3D-Renders (`scripts/render-icons-3d.py`) |
-| `design/bilder-chatgpt/` | Bilder 1–6 als 3D-Szenen, mit ChatGPT erzeugt; `scripts/export-3d.mjs` exportiert alles nach `public/` |
+| `design/bilder-foto/` | Fotos der Leistungskarten (Bild 2–6), mit ChatGPT erzeugt; `scripts/export-bilder.mjs` exportiert sie nach `public/images/` |
+| `design/bilder-chatgpt/` | Frühere Bildserie als 3D-Szenen (bis 20.10.2026), nicht mehr auf der Seite |
 | `design/IMAGE-BRIEFS.md` | Briefe für die 6 Bilder |
 
 ## Hinweise

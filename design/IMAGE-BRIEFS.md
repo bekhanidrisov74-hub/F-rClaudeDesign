@@ -20,7 +20,7 @@ Die Texte unten gehören nicht auf die Website.
 
 ## Ablage und Ablauf
 
-- Quelle `design/bilder-chatgpt/bild-N.png`, 1254 × 1254 px (Erzeugung und Prompts: `design/bilder-chatgpt/README.md`). `scripts/export-3d.mjs` hebt das Schwarz auf Tiefsee an und schreibt `public/images/bild-N.webp` und `.avif` plus 480, 800 und 1200 px. Den Bildausschnitt je Karte steuert `bildY` in `src/content/gewerke.ts`.
+- Seit 20.10.2026 zeigen die Karten Fotos statt der 3D-Szenen: Quelle `design/bilder-foto/bild-N.png` (Bild 2–6, mit ChatGPT erzeugt, 1536 × 1024 px, helle Wohnung, Fachkraft in Navy ohne Gesicht, Hände und Werkzeug an der Schadstelle). `scripts/export-bilder.mjs` schreibt `public/images/bild-N.webp` und `.avif` mit 1536 px plus 480, 800 und 1200 px. Den Bildausschnitt je Karte steuert `bildFokus` in `src/content/gewerke.ts`. Die Briefe unten beschreiben die frühere 3D-Serie (`design/bilder-chatgpt/`).
 
 | Nr. | Wo | Motiv und Tätigkeit | Ausschnitt |
 |---|---|---|---|

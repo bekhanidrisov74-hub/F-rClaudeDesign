@@ -1,5 +1,7 @@
 # Website-Bildserie – korrigierte Fassung vom 2026-10-18
 
+Seit 20.10.2026 nicht mehr auf der Seite: Die Leistungskarten zeigen die Fotos aus `../bilder-foto/` (Export mit `scripts/export-bilder.mjs`). Diese Serie bleibt als Archiv.
+
 Die sechs Dateien `bild-1.png` bis `bild-6.png` sind die aktuellen Website-Quellen, jeweils native 1254 × 1254 px. Die Bearbeitungen wurden mit dem eingebauten Bildgenerator erzeugt. `../BILD-PROMPTS-3D-CHATGPT.md` (Originalprompts) und `PROMPTS-KORREKTUREN.md` dokumentieren die Prompts. Das vom Nutzer freigegebene Hero zeigt den korrigierten Maulschlüssel.
 
 | Bild | Geprüfte und korrigierte Details |

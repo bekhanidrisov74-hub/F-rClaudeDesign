@@ -2,7 +2,7 @@ import { createRequire } from 'node:module'
 
 // Hero-Foto aus dem Entwurf „Hero – Desktop 1586“ (public/images/hero-wien.jpg, 1006 × 724) für Breiten unter 1280 px
 // als AVIF und WebP in 480/800/1006 px (Hero.tsx). Ab 1280 px zeigt die Seite das Original-JPG, damit der Desktop
-// pixelgleich mit dem Entwurf bleibt. Qualität wie die Bilder in scripts/export-3d.mjs.
+// pixelgleich mit dem Entwurf bleibt. Qualität wie die Bilder in scripts/export-bilder.mjs.
 // Aufruf: SHARP_MODULE_PATH=… node scripts/export-hero.mjs (Sharp ist keine Projektabhängigkeit)
 const require = createRequire(import.meta.url)
 const sharp = require(process.env.SHARP_MODULE_PATH || 'sharp')
