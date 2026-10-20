@@ -567,10 +567,21 @@
 }
 
 /* Handy quer (nicht im Entwurf, Entscheidung 20.10.2026): Bei niedriger Höhe lag „Jetzt anrufen“ unter dem ersten Bildschirm.
-   Überschrift zweizeilig („Handwerker-Notdienst.“ in einer Zeile), weniger Luft, beide Knöpfe nebeneinander. Hochformat bleibt 1:1. */
+   Überschrift zweizeilig („Handwerker-Notdienst.“ in einer Zeile) über die volle Breite, darunter links der Lead und rechts die
+   Knöpfe untereinander. So endet „Jetzt anrufen“ unabhängig von der Breite bei etwa 275 px, auch mit Browserleiste (Fenster 320 px
+   hoch) ganz sichtbar; das Label bricht nicht um. Hochformat bleibt 1:1. */
 @media (width < 80rem) and (height < 31.25rem) and (orientation: landscape) {
   .hd-text {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: var(--fx-s-5);
+    align-items: start;
+    max-width: none;
     padding-top: var(--fx-s-4);
+  }
+
+  .hd-titel {
+    grid-column: 1 / -1;
   }
 
   .hd-titel span:not(.hd-akzent) {
@@ -578,19 +589,26 @@
   }
 
   .hd-lead {
+    grid-column: 1;
     margin-top: var(--fx-s-3);
   }
 
   .hd-ctas {
-    flex-direction: row;
-    align-items: center;
-    margin-top: var(--fx-s-4);
+    grid-column: 2;
+    grid-row: 2;
+    margin-top: var(--fx-s-3);
   }
 
-  .hd-cta,
-  .hd-anfrage {
-    flex: 1 1 0;
-    width: auto;
+  .hd-cta {
+    padding-right: var(--fx-s-6);
+  }
+
+  .hd-cta-label {
+    white-space: nowrap;
+  }
+
+  .hd-info {
+    grid-column: 1 / -1;
   }
 }
 

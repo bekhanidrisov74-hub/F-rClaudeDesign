@@ -243,6 +243,11 @@
     scroll-snap-type: x mandatory;
     scroll-padding-inline: var(--fx-kante-l) var(--fx-kante-r);
     scrollbar-width: none;
+    /* Mit Maus (schmales Fenster) zeigt eine dünne Leiste, dass es weitergeht; am Handy genügt die angeschnittene Karte */
+    @media (pointer: fine) {
+      scrollbar-width: thin;
+      scrollbar-color: var(--fx-schiefer) transparent;
+    }
     & > * {
       flex: 0 0 min(84%, 26rem);
       scroll-snap-align: start;

@@ -309,10 +309,16 @@ test('Leistungen am Handy: Wischreihe auf der Textlinie, ab 736 px wieder Raster
 
 test('Handy quer: „Jetzt anrufen“ steht ganz auf dem ersten Bildschirm', async ({ page }, info) => {
   test.skip(info.project.name !== 'm390', 'setzt die Größe selbst')
-  for (const [breite, hoehe] of [[667, 375], [844, 390], [932, 430]]) {
+  for (const [breite, hoehe] of [[568, 320], [640, 360], [667, 375], [740, 360], [844, 390], [932, 430]]) {
     await page.setViewportSize({ width: breite, height: hoehe })
     await page.goto('/')
-    const unten = await page.locator('.hd-cta').evaluate((el) => el.getBoundingClientRect().bottom)
-    expect(unten, `${breite} × ${hoehe}`).toBeLessThanOrEqual(hoehe)
+    const m = await page.locator('.hd-cta').evaluate((el) => {
+      const r = el.getBoundingClientRect()
+      const inhalt = [...el.querySelectorAll('span')].map((s) => s.getBoundingClientRect())
+      return { unten: r.bottom, rechts: r.right, inhaltRechts: Math.max(...inhalt.map((i) => i.right)), labelZeilen: el.querySelector('.hd-cta-label')!.getClientRects().length }
+    })
+    expect(m.unten, `${breite} × ${hoehe}: Unterkante`).toBeLessThanOrEqual(hoehe)
+    expect(m.inhaltRechts, `${breite} × ${hoehe}: Label und Nummer in der Pille`).toBeLessThanOrEqual(m.rechts)
+    expect(m.labelZeilen, `${breite} × ${hoehe}: Label einzeilig`).toBe(1)
   }
 })
