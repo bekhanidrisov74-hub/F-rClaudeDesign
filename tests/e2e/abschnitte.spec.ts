@@ -276,3 +276,43 @@ test('Fuß: Wortmarke füllt die Inhaltsbreite und schließt den Fuß unten übe
   expect(m.fuellt).toBeGreaterThan(0.97)
   expect(m.fuellt).toBeLessThan(1.01)
 })
+
+test('Leistungen am Handy: Wischreihe auf der Textlinie, ab 736 px wieder Raster', async ({ page }, info) => {
+  test.skip(info.project.name !== 'm390', 'setzt die Breite selbst')
+  for (const breite of [320, 390, 735]) {
+    await page.setViewportSize({ width: breite, height: 844 })
+    await page.goto('/')
+    const m = await page.evaluate(() => {
+      const reihe = document.querySelector('#leistungen .wischreihe')!
+      const karten = [...reihe.children].map((k) => k.getBoundingClientRect())
+      return {
+        lead: document.querySelector('.hd-lead')!.getBoundingClientRect().left,
+        erste: karten[0].left,
+        zweite: karten[1].left,
+        quer: reihe.scrollWidth > reihe.clientWidth,
+        seite: document.documentElement.scrollWidth - innerWidth,
+      }
+    })
+    expect(Math.abs(m.erste - m.lead), `${breite} px: erste Karte auf der Textlinie`).toBeLessThanOrEqual(1)
+    expect(m.zweite, `${breite} px: zweite Karte schaut rechts heraus`).toBeLessThan(breite)
+    expect(m.quer, `${breite} px: Reihe lässt sich wischen`).toBe(true)
+    expect(m.seite, `${breite} px: Seite ohne Querscrollen`).toBeLessThanOrEqual(0)
+  }
+  await page.setViewportSize({ width: 736, height: 900 })
+  await page.goto('/')
+  const reihen = await page.evaluate(() => {
+    const karten = [...document.querySelectorAll('#leistungen article')].map((k) => Math.round(k.getBoundingClientRect().top))
+    return new Set(karten).size
+  })
+  expect(reihen, '736 px: zwei Spalten, drei Reihen').toBe(3)
+})
+
+test('Handy quer: „Jetzt anrufen“ steht ganz auf dem ersten Bildschirm', async ({ page }, info) => {
+  test.skip(info.project.name !== 'm390', 'setzt die Größe selbst')
+  for (const [breite, hoehe] of [[667, 375], [844, 390], [932, 430]]) {
+    await page.setViewportSize({ width: breite, height: hoehe })
+    await page.goto('/')
+    const unten = await page.locator('.hd-cta').evaluate((el) => el.getBoundingClientRect().bottom)
+    expect(unten, `${breite} × ${hoehe}`).toBeLessThanOrEqual(hoehe)
+  }
+})

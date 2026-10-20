@@ -31,11 +31,14 @@ export function Leistungen() {
         </div>
         {/* auto-fill ab 340 px, Abstand 24 px: eine Spalte unter 704 px Inhalt, zwei ab 704, drei ab 1068 (Fenster 736 und 1100 px). Der Inhalt wird
             höchstens 1406 px breit, vier Spalten (1432 px) kommen nie. @container: das Glanzlicht der Karten richtet seinen Versatz nach der
-            echten Spaltenzahl (app.css, glanz); Bildflaeche rechnet die Kartenbreite für `sizes` mit denselben Schwellen. */}
+            echten Spaltenzahl (app.css, glanz); Bildflaeche rechnet die Kartenbreite für `sizes` mit denselben Schwellen.
+            Unter 736 px (eine Spalte) stehen die Gewerke in einer Wischreihe (app.css, wischreihe), die Hilfekarte darunter. */}
         <div className="@container grid grid-cols-[repeat(auto-fill,minmax(min(340px,100%),1fr))] gap-s5">
-          {gewerke.map((g) => (
-            <LeistungKarte key={g.id} gewerk={g} />
-          ))}
+          <div className="wischreihe">
+            {gewerke.map((g) => (
+              <LeistungKarte key={g.id} gewerk={g} />
+            ))}
+          </div>
           <Hilfekarte />
         </div>
       </div>

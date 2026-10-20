@@ -82,12 +82,12 @@ Ein e2e-Test (`abschnitte.spec.ts`, „Flächenplan“) prüft die Farben, einer
 | Abschnitt | Fläche | Umsetzung |
 |---|---|---|
 | Kopf | Kalk-Kopf | Leiste voll breit, Inhalt im Rahmen; „Anrufen“ endet ab 1280 px an der rechten Inhaltskante der Abschnitte (±2 px); ab 1280 px Navigation, darunter Menü-Knopf |
-| Hero, Vorteile | Kalk | wie im Entwurf; über 1586 px siehe oben |
+| Hero, Vorteile | Kalk | wie im Entwurf; über 1586 px siehe oben; Handy quer (unter 1280 px, Höhe unter 500 px): Überschrift zweizeilig, weniger Luft, beide Knöpfe nebeneinander, damit „Jetzt anrufen“ auf dem ersten Bildschirm steht; unter 360 px weniger Luft in „Jetzt anrufen“ und im Anrufen-Knopf des Kopfs |
 | Was ist passiert? | Eis | H2 in Abschnittsgröße; weiße Kacheln mit Haarlinie und Schatten, Gewerk-Icon im Lagune-Kreis; 2 Spalten unter 640 px, 3 bis 1279 px, ab 1280 px alle sechs in einer Reihe; Unterzeilen ab 920 px, zwei Zeilen hoch; Luna-Kachel als Umriss-Kachel (Rand, transparent) |
-| Leistungen | Kalk | weiße Karten mit Bild im Raster (eine Spalte, zwei ab 704, drei ab 1068 px Inhaltsbreite), Preis in Inter 800; Hilfekarte als Hinweiskasten (Eis), Inhalt mittig |
+| Leistungen | Kalk | weiße Karten mit Bild im Raster (zwei Spalten ab 704, drei ab 1068 px Inhaltsbreite), Preis in Inter 800; unter 736 px Fenster eine Wischreihe (Karte 84 %, die nächste schaut heraus, rastet auf der Textlinie ein, Bild 4:3); Hilfekarte als Hinweiskasten (Eis) darunter, Inhalt mittig |
 | So funktioniert's | Tiefsee | H2 und Titel weiß, drei Schritte ab 920 px nebeneinander; große Ziffern in Orange (bis 96 px), Text Nebel; Grundlinie `--fx-linie-dunkel` mit türkiser Laufline |
 | Preisrechner | Kalk | Rechner als weiße Karte, Ergebnis als Hinweiskasten (Eis); zweispaltig ab 1120 px (Ergebnis 420 px, ab 1280 px 440 px), darunter untereinander |
-| Zusagen | Eis | Kopf linksbündig; ein Raster mit drei Spalten ab 920 px: [0 breit][1] / [2][3][4] / [5][6 breit]; alle Karten weiß mit Schatten, Icon im Lagune-Kreis; breite Karten mit Icon links und Text als Lead; unter 920 px Icon neben dem Titel |
+| Zusagen | Eis | Kopf linksbündig; ein Raster mit drei Spalten ab 920 px: [0 breit][1] / [2][3][4] / [5][6 breit]; alle Karten weiß mit Schatten, Icon im Lagune-Kreis; breite Karten mit Icon links und Text als Lead; unter 920 px eine gruppierte Liste auf einer weißen Fläche (Haarlinien statt einzelner Karten), Icon neben dem Titel |
 | Anfrage | Kalk | Formular als weiße Karte; Seitenkasten als Hinweiskasten (Eis) mit Headset wie im Hero, ab 920 px rechts daneben (320 px, ab 1280 px 380 px), so hoch wie sein Inhalt |
 | Häufige Fragen | Eis | weiße Karten mit Haarlinie und Schatten, Pfeil im Lagune-Kreis (offen: Tiefsee); ab 920 px links Titel und Lead, solange rechts die Liste läuft (sticky) |
 | Fuß | Tiefsee | Logo „Fixit“ weiß, „247“ Orange, Zeile Nebel; Spaltentitel weiß über türkiser Linie, Links Nebel, beim Überfahren weiß; Kontakt-Icons im Lagune-Kreis; Globus in Nebel-Linien; Trennlinie Tiefsee-2; unten die große Wortmarke, die von Lagune in die Fläche ausläuft und so breit ist wie der Inhalt |

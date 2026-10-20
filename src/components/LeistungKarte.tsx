@@ -8,7 +8,7 @@ import { Icon } from './ui/Icon'
 export function LeistungKarte({ gewerk: g }: { gewerk: Gewerk }) {
   return (
     <article className="flex flex-col overflow-clip rounded-card-lg border border-linie bg-weiss shadow-karte">
-      <Bildflaeche bild={g.bild} fokus={g.bildFokus} className="glanz aspect-[16/9] border-b border-linie nav:aspect-[4/3]" />
+      <Bildflaeche bild={g.bild} fokus={g.bildFokus} className="glanz aspect-[4/3] border-b border-linie reihe:aspect-[16/9] nav:aspect-[4/3]" />
       <div className="flex flex-1 flex-col gap-s3 p-s4 nav:p-s5">
         <h3 className="text-h3-karte">{g.name}</h3>
         <p className="text-text text-schiefer">{g.karte}</p>

@@ -24,6 +24,7 @@
 
   --breakpoint-kopf: 35rem;   /* 560 px */
   --breakpoint-dialog: 40rem; /* 640 px */
+  --breakpoint-reihe: 46rem;  /* 736 px: Leistungen zweispaltig, darunter Wischreihe */
   --breakpoint-nav: 57.5rem;  /* 920 px */
   --breakpoint-spalten: 70rem; /* 1120 px: Preisrechner zweispaltig */
   --breakpoint-hd: 80rem;     /* 1280 px: Navigation im Kopf, Desktop-Fassung des Hero */
@@ -218,6 +219,37 @@
       animation-timeline: view();
       animation-range: cover var(--von) cover var(--bis);
     }
+    /* In der Wischreihe (Handy) ist die Reihe der nächste Scroll-Container: das Licht folgt dem Wischen statt dem Scrollen */
+    @media (width < 46rem) {
+      .wischreihe > * > &::after {
+        animation-timeline: view(inline);
+      }
+    }
+  }
+}
+
+/* Leistungen am Handy (eine Spalte, unter 736 px): die Karten nebeneinander zum Wischen, die nächste schaut rechts heraus.
+   Die Reihe läuft bis an beide Fensterränder, die Karten rasten auf der Textlinie ein (scroll-padding = Kanten). Die Polster
+   oben und unten lassen den Kartenschatten stehen, den der Scroll-Container sonst abschneidet. Ab 736 px löst sich die Reihe
+   auf (contents): die Karten stehen dann direkt im Raster der Leistungen. */
+@utility wischreihe {
+  @media (width < 46rem) {
+    display: flex;
+    gap: var(--fx-s-4);
+    margin: var(--fx-wisch-aussen);
+    padding: var(--fx-s-2) var(--fx-kante-r) var(--fx-s-5) var(--fx-kante-l);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--fx-kante-l) var(--fx-kante-r);
+    scrollbar-width: none;
+    & > * {
+      flex: 0 0 min(84%, 26rem);
+      scroll-snap-align: start;
+    }
+  }
+  @media (width >= 46rem) {
+    display: contents;
   }
 }
 
