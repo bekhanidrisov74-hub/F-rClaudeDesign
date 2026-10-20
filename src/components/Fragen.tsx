@@ -2,14 +2,15 @@ import { copy } from '../content/copy'
 import { Icon } from './ui/Icon'
 
 /**
- * Abschnitt „Häufige Fragen“ (nicht im Design) im Stil des Hero: weiße Karten, der Pfeil im Lagune-Kreis.
+ * Abschnitt „Häufige Fragen“ (nicht im Design) im Stil des Hero: weiße Karten auf dem Eis-Band, der Pfeil im Lagune-Kreis.
  * Natives <details>; gleicher name = immer nur eine Antwort offen.
+ * Ab 920 px bleibt die linke Spalte (Titel + Lead) unter dem Kopf stehen, solange rechts die Liste läuft; sonst bliebe sie leer.
  */
 export function Fragen() {
   return (
-    <section id="fragen" aria-labelledby="fragen-titel" className="bg-kalk">
+    <section id="fragen" aria-labelledby="fragen-titel" className="bg-eis text-tiefsee">
       <div className="wrapper grid gap-s5 pt-section pb-section-end nav:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] nav:gap-s8">
-        <div className="flex flex-col gap-s4 nav:gap-s3">
+        <div className="flex flex-col gap-s4 nav:sticky nav:top-[calc(var(--fx-kopf)+var(--fx-s-6))] nav:gap-s3 nav:self-start">
           <h2 id="fragen-titel" className="text-h2">
             {copy.fragen.titel}
           </h2>
@@ -20,14 +21,14 @@ export function Fragen() {
             <details
               key={f.frage}
               name="fragen"
-              className="frage group rounded-card border border-linie bg-weiss transition-[border-color,box-shadow] duration-[var(--fx-dur-fast)] hover:border-rand open:border-rand open:shadow-karte"
+              className="frage group rounded-card border border-linie bg-weiss transition-[border-color,box-shadow] duration-(--fx-dur-fast) hover:border-rand open:border-rand open:shadow-karte"
             >
               <summary className="flex cursor-pointer list-none items-center justify-between gap-s4 rounded-card px-s5 py-s4 [&::-webkit-details-marker]:hidden">
                 <span className="font-display text-h5 font-semibold">{f.frage}</span>
-                <span className="flex size-s7 shrink-0 items-center justify-center rounded-pill bg-lagune text-tiefsee transition-colors duration-[var(--fx-dur-fast)] group-open:bg-tiefsee group-open:text-weiss">
+                <span className="flex size-s7 shrink-0 items-center justify-center rounded-pill bg-lagune text-tiefsee transition-colors duration-(--fx-dur-fast) group-open:bg-tiefsee group-open:text-weiss">
                   <Icon
                     name="ui-aufklappen"
-                    className="size-[22px] transition-transform duration-[var(--fx-dur-chat)] ease-fx group-open:rotate-180"
+                    className="size-[22px] transition-transform duration-(--fx-dur-chat) ease-fx group-open:rotate-180"
                   />
                 </span>
               </summary>
