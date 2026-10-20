@@ -65,7 +65,7 @@ export const gewerke: Gewerk[] = [
     schnellwahl: 'Therme aus, kein Warmwasser',
     karte: 'Therme fällt aus, kein Warmwasser, Klimaanlage',
     bild: 3,
-    bildFokus: '65% 50%',
+    bildFokus: '65% 25%',
     icon: 'gewerk-heizung-und-klima',
     betrieb: 'Fachbetrieb für Heizung und Klima',
     tipp: GASNOTRUF,
