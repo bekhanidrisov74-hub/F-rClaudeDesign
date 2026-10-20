@@ -75,6 +75,9 @@
   --fx-rahmen: 1586px;
   --fx-kante-l: var(--fx-s-4);
   --fx-kante-r: var(--fx-s-4);
+  /* Schwebende Fenster (Luna-Knopf, Anstupser, Chat; ab 640 px): 28 px vom rechten Rand, über 1586 px an der rechten Rahmenkante.
+     Bei position: fixed meint Prozent die Breite des Ansichtsfensters ohne Scrollbalken, in der auch der Rahmen zentriert wird. */
+  --fx-schwebe-r: max(28px, calc((100% - var(--fx-rahmen)) / 2 + 28px));
 
   /* Bewegung */
   --fx-ease: cubic-bezier(0.2, 0, 0, 1);

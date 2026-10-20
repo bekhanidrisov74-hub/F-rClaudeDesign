@@ -18,7 +18,8 @@ const RECHTSLINK = 'flex min-h-[44px] min-w-[44px] items-center text-small text-
 
 /**
  * Handy-Menü (Screen 05, SPEC 7). Ziel von aria-controls="menue" am Menü-Knopf im Kopf.
- * Offen: Vollfläche direkt unter dem Kopf. Der Seitenrahmen setzt die Seite dahinter `inert`,
+ * Offen: Vollfläche direkt unter dem Kopf, auf den Kanten des Kopfs (wrapper). Unter 640 px einspaltig, ab 640 px links die
+ * Linkliste, rechts Kontaktkarte und Rechtslinks. Der Seitenrahmen setzt die Seite dahinter `inert`,
  * das globale CSS sperrt ihr Scrollen. Tab bleibt deshalb in Kopf und Menü.
  */
 export function MobileMenu({ aufStartseite = true }: { aufStartseite?: boolean }) {
@@ -67,8 +68,8 @@ function OffenesMenue({ aufStartseite }: { aufStartseite: boolean }) {
       aria-label={copy.menue.label}
       className="fixed inset-x-0 top-kopf bottom-0 z-9 overflow-y-auto overscroll-contain bg-kalk"
     >
-      <div className="wrapper">
-        <nav ref={navRef} aria-label={copy.kopf.navLabel} className="pt-s3">
+      <div className="wrapper pt-s3 dialog:grid dialog:grid-cols-2 dialog:items-start dialog:gap-x-s8">
+        <nav ref={navRef} aria-label={copy.kopf.navLabel}>
           <ul className="m-0 list-none p-0">
             {copy.menue.links.map((link) => (
               <li key={link.text} className="border-b border-linie">
@@ -88,24 +89,26 @@ function OffenesMenue({ aufStartseite }: { aufStartseite: boolean }) {
           </ul>
         </nav>
 
-        <div className="mt-s5 flex flex-col gap-s3 rounded-card-lg bg-eis px-s4 py-s5 text-tiefsee">
-          <p className="m-0 font-display text-h5 font-bold">{copy.menue.kontaktTitel}</p>
-          <CallButton variante="karte" nummer className="w-full" />
-          <Button art="hell" href={whatsappHref} className="min-h-[54px] w-full gap-s3 rounded-btn-lg text-btn">
-            <Icon name="ui-chat" className="size-[22px]" />
-            <span>{copy.menue.whatsapp}</span>
-          </Button>
-        </div>
+        <div className="min-w-0">
+          <div className="mt-s5 flex flex-col gap-s3 rounded-card-lg bg-eis px-s4 py-s5 text-tiefsee dialog:mt-0">
+            <p className="m-0 font-display text-h5 font-bold">{copy.menue.kontaktTitel}</p>
+            <CallButton variante="karte" nummer className="w-full" />
+            <Button art="hell" href={whatsappHref} className="min-h-[54px] w-full gap-s3 rounded-btn-lg text-btn">
+              <Icon name="ui-chat" className="size-[22px]" />
+              <span>{copy.menue.whatsapp}</span>
+            </Button>
+          </div>
 
-        <ul className="m-0 flex list-none flex-wrap gap-x-s5 gap-y-s2 p-0 pt-s4 pb-s5">
-          {copy.fuss.links.map((link) => (
-            <li key={link.href}>
-              <a href={link.href} className={RECHTSLINK}>
-                {link.text}
-              </a>
-            </li>
-          ))}
-        </ul>
+          <ul className="m-0 flex list-none flex-wrap gap-x-s5 gap-y-s2 p-0 pt-s4 pb-s5">
+            {copy.fuss.links.map((link) => (
+              <li key={link.href}>
+                <a href={link.href} className={RECHTSLINK}>
+                  {link.text}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </section>
   )

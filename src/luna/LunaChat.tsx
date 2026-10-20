@@ -26,7 +26,7 @@ export type KontaktFehler = Partial<Record<keyof Kontakt, string>>
  */
 const DIALOG = [
   'fixed inset-0 z-8 m-0 h-dvh max-h-none w-dvw max-w-none flex-col overflow-hidden border-0 bg-weiss p-0 text-tiefsee open:flex',
-  'dialog:inset-auto dialog:right-[28px] dialog:bottom-[108px] dialog:h-[min(680px,calc(100dvh_-_136px),calc(100dvh_-_var(--fx-kopf)_-_124px))] dialog:w-[380px] dialog:rounded-card-lg dialog:border dialog:border-linie dialog:shadow-l',
+  'dialog:inset-auto dialog:right-(--fx-schwebe-r) dialog:bottom-[108px] dialog:h-[min(680px,calc(100dvh_-_136px),calc(100dvh_-_var(--fx-kopf)_-_124px))] dialog:w-[380px] dialog:rounded-card-lg dialog:border dialog:border-linie dialog:shadow-l',
   // Ein- und Ausblenden (nur Deckkraft, die Maße bleiben von der ersten Bildzeile an stabil); die Dauer kommt aus tokens.css
   'transition-[opacity,overlay,display] transition-discrete duration-(--fx-dur-chat) ease-fx',
   'starting:opacity-0 not-open:opacity-0',
