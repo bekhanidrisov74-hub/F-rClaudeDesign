@@ -1,4 +1,5 @@
 // npm run shots → tests/screens-actual/<zustand>-<breite>.png (Vergleichstabelle in PLAN.md, Abschnitt 4).
+// Breiten 390, 1024, 1440, 1920 und 2560 px; die Höhen sind übliche Bildschirmhöhen (1920 × 1080, 2560 × 1440).
 import { test, type Page } from '../e2e/test'
 import {
   anfrage,
@@ -18,8 +19,8 @@ import {
 } from '../e2e/hilfen'
 import { expect } from '../e2e/test'
 
-const HOEHE: Record<number, number> = { 390: 844, 1024: 768, 1440: 900 }
-const ALLE = [390, 1024, 1440]
+const HOEHE: Record<number, number> = { 390: 844, 1024: 768, 1440: 900, 1920: 1080, 2560: 1440 }
+const ALLE = [390, 1024, 1440, 1920, 2560]
 
 /** Die Zusagen-Karten blenden beim Hinscrollen ein: einmal hinscrollen, damit sie im Bild stehen. */
 const zusagen = async (p: Page) => {

@@ -1,8 +1,8 @@
 # Bewusste Abweichungen (für den visual-reviewer)
 
-> **Seit 19.10.2026 folgt die ganze Seite dem Stil des Hero** (Abschnitt „Ganze Seite im Stil des Hero“ ganz unten,
-> docs/hero-stil.md). Wo ältere Abschnitte unten Farben, Schriften, Icons oder dunkle Flächen beschreiben, gilt der neue
-> Abschnitt. Aufbau, Inhalte und Verhalten aus den älteren Abschnitten gelten weiter.
+> **Seit 19.10.2026 folgt die ganze Seite dem Stil des Hero** (Abschnitte „Ganze Seite im Stil des Hero“ und „Raster und
+> Rhythmus“ ganz unten, docs/hero-stil.md). Wo ältere Abschnitte unten Farben, Schriften, Icons, dunkle Flächen, Raster, Breiten
+> oder Anordnung beschreiben, gelten die neuen Abschnitte. Inhalte und Verhalten aus den älteren Abschnitten gelten weiter.
 
 Diese Punkte sind entschieden und gelten **nicht** als Abweichung. Quelle: PLAN.md, Abschnitte 7 und 8.
 
@@ -147,21 +147,40 @@ Quelle: Zip „Hero – Desktop 1586-html“ (`Main.dc.html`), verglichen bei 15
 
 Auf Wunsch von Beks: Jeder Abschnitt und jedes Fenster sieht aus wie der Hero. Texte und Fotos sind unverändert. Bewusst:
 - Inter überall (Überschriften 750, eng gesetzt). Bricolage und Atkinson sind entfernt; Zeilenumbrüche weichen deshalb von den Screens ab.
-- Farben aus dem Hero für die ganze Seite: Tiefsee #03101F, Türkis #22B5C0, Kalk #FBFCFD und Kalk-2 #F4F8FB im Wechsel der Abschnitte, Eis #E8F4F8 für Hinweiskästen, Lagune #BEF0F6 für Icon-Kreise. Fokusrahmen überall Tiefsee.
-- Keine dunklen Flächen mehr: So funktioniert's, Zusagen, Hilfekarte, Rechner-Ergebnis, Seitenkasten, Menü-Kontaktkarte und Fuß sind hell. Der Fuß gleicht dem Kopf (Haarlinie, Logo in Farbe); die große Wortmarke steht dort als helles Lagune-Wasserzeichen, ohne Lichtstrahl und ohne Maus-Schein. Die Wirbel in den Zusagen und die Lichtkanten sind entfallen.
-- Alle Icons sind flache SVGs (design/icons) statt 3D-Renders, Gewerke und Symbole im Lagune-Kreis wie die Vorteile unter dem Hero: Schnellwahl 56/64 px, Preisübersicht 44 px (Tabelle) bzw. 40 px (Sheet), Zusagen 56/64 px, Fuß 32 px. Luna und Erfolg im Nacht-Kreis.
+- Farben aus dem Hero für die ganze Seite: Tiefsee #03101F, Türkis #22B5C0, Kalk #FBFCFD und Eis #E8F4F8 als Flächen (Plan unter „Raster und Rhythmus“), Eis auch für Hinweiskästen, Lagune #BEF0F6 für Icon-Kreise, Nebel #B5BFCC als Zweittext auf Tiefsee. Fokusrahmen auf hellen Flächen Tiefsee, auf Tiefsee-Flächen Türkis. Kalk-2 gibt es nicht mehr.
+- Dunkel sind nur So funktioniert's und der Fuß (Tiefsee-Bänder). Zusagen, Hilfekarte, Rechner-Ergebnis, Seitenkasten und Menü-Kontaktkarte sind hell (Eis bzw. weiß). Im Fuß ist „Fixit“ im Logo weiß, „247“ orange; die große Wortmarke läuft von Lagune in die Fläche aus, ohne Lichtstrahl und ohne Maus-Schein. Die Wirbel in den Zusagen und die Lichtkanten sind entfallen.
+- Alle Icons sind flache SVGs (design/icons) statt 3D-Renders, Gewerke und Symbole im Lagune-Kreis wie die Vorteile unter dem Hero: Schnellwahl 56/64 px, Preisübersicht 44 px (Tabelle) bzw. 40 px (Sheet), Zusagen 48 px am Handy und 56 px ab 920 px (breite Karten 64 px), Fuß 28/32 px. Luna und Erfolg im Nacht-Kreis.
 - Anruf-Knöpfe außerhalb von Kopf und Hero sind wie „Jetzt anrufen“ aufgebaut: Türkis, Tiefsee-Schrift, Nacht-Kreis mit hellem Hörer links neben dem Label.
 - Zweitknöpfe wie „Anfrage senden“ im Hero: weiß, Rand, Radius 16, weicher Schatten; „… anfragen“ trägt das Sprechblasen-Icon. Karten und Kacheln haben eine Haarlinie und einen weichen Schatten (früher: Rand ohne Schatten).
-- So funktioniert's: Ziffern in Orange #EC5315 wie „Rund um die Uhr.“ (3,5:1, große Ziffern, dekorativ).
-- Zusagen: große Karten als Hinweiskasten (Eis), kleine weiß; Icon oben, Titel, Text und Zusatz unten.
+- So funktioniert's: Ziffern in Orange #EC5315 wie „Rund um die Uhr.“ (auf Tiefsee 5,3:1, große Ziffern, dekorativ).
+- Zusagen: alle Karten weiß mit Schatten, Icon im Lagune-Kreis; die erste und die letzte Karte sind breit (Icon links, Text als Lead). Kopf linksbündig wie alle anderen Abschnitte (früher zentriert).
 - Luna: Luna-Blasen in Eis ohne Rand, eigene Blasen in Tiefsee, Eingabe und Senden rund.
 - Luna-Knopf mit 2 px weißem Ring, damit der Nacht-Kreis über den dunklen Leistungsfotos sichtbar bleibt.
-- Zusagen: Kopf linksbündig wie alle anderen Abschnitte (früher zentriert).
 - Hero-Hinweiskasten unter 560 px ohne festen Umbruch nach „kontaktieren uns“, sonst stünde „uns“ allein in einer Zeile.
 
 Nach der Sichtprüfung bewusst so gelassen:
-- Breite: Kopf, Hero und Vorteile folgen dem Hero-Entwurf (Textkante bei 1440 px: 94 px), alle Abschnitte darunter dem Raster der Screens (1140 px, Textkante 150 px). Das Raster gehört zum Aufbau, und der richtet sich weiter nach design/screens.
-- Anfrage: Der Seitenkasten bleibt so hoch wie sein Inhalt (Screens 01/02), er wird nicht auf die Höhe des Formulars gezogen.
-- Hilfekarte: Die Knöpfe stehen unten, auf einer Linie mit den Knöpfen der Nachbarkarte; dazwischen bleibt Eis-Fläche frei.
+- Anfrage: Der Seitenkasten bleibt so hoch wie sein Inhalt (Screens 01/02), er wird nicht auf die Höhe des Formulars gezogen. Er hat einen unsichtbaren 1-px-Rand und denselben Innenabstand wie die Formularkarte, damit die Inhaltskanten untereinander stimmen.
+- Hilfekarte: Das Raster streckt sie auf die Höhe der Bildkarten daneben; Text, Anruf-Knopf und Luna-Knopf stehen als ein Block mittig, statt die Knöpfe unten an den Rand zu schieben und dazwischen Fläche freizulassen.
+- Fragen: Geschlossene Karten tragen Haarlinie und weichen Kartenschatten; die Haarlinie allein ist auf Eis (~1,0:1) unsichtbar.
 - „So funktioniert's“ mit geradem Apostroph wie in design/ (Abschnittstitel, Handy-Menü); Kopf-Navigation und Fuß teilen sich die Linkliste aus dem Hero-Entwurf und setzen dort „’“.
 - Zeilenumbrüche der Unterzeilen macht der Browser (etwa „Alle / Preise“); die Texte bleiben unverändert, ohne eingefügte geschützte Leerzeichen.
+
+## Raster und Rhythmus (20.10.2026, docs/hero-stil.md, docs/plans/2026-10-19-optik-raster.md)
+
+Auf Wunsch von Beks: ein gemeinsames Raster und ein Wechsel der Flächen auf allen Breiten bis 2560 px. Freigegeben am 19.10.2026 mit diesen Entscheidungen:
+- Tiefsee für So funktioniert's und für den Fuß (Alternative wäre ein heller Fuß gewesen).
+- Der Rand unter 1280 px ist überall 16 px, wie am Handy-Hero. Der Hero bleibt unverändert.
+- Keine zusätzlichen Anruf-Knöpfe.
+- Der Hero ist bis 1586 px 1:1 nach Entwurf. Darüber steht der Text im zentrierten Rahmen, das Foto reicht bis zum Fensterrand, höchstens 1,25-fach (es gibt es nur in 1006 × 724 px); reicht das nicht bis zum Rand, läuft es rechts weich aus.
+
+Stand, bewusst anders als in den Screens:
+- Kopf, Hero, alle Abschnitte, Fuß, Menü und Rechtsseiten stehen auf denselben Kanten (Rahmen 1586 px, darüber zentriert; Inhaltsbreite bei 1440 px 1271 px, ab 1586 px 1406 px). Das Raster der Screens (1140 px) gilt nicht mehr. „Anrufen“ im Kopf endet ab 1280 px an derselben rechten Kante. Prüfung: e2e-Test „Gemeinsames Raster“.
+- Flächen: Kopf Kalk-Kopf · Hero Kalk · Was ist passiert? Eis · Leistungen Kalk · So funktioniert's Tiefsee · Preisrechner Kalk · Zusagen Eis · Anfrage Kalk · Fragen Eis · Fuß Tiefsee. Prüfung: e2e-Test „Flächenplan“.
+- Schriftgrößen wachsen von 390 bis 1534 px stufenlos (H2 bis 60 px, H3 28, Fließtext 18, Ziffern in So funktioniert's 96 px) und bleiben darüber stehen; sie sind größer als in den Screens.
+- Was ist passiert?: sechs Kacheln in einer Reihe ab 1280 px, 3 Spalten bis 1279 px, 2 unter 640 px; die Luna-Kachel ist eine Umriss-Kachel (Rand, transparent).
+- Vorteile unter dem Hero: Titel sind h2 statt h3, Optik gleich. Offen: Der Text der Vorteile ist bei 1280 px nur 13,3 px groß (Wert des Entwurfs, skaliert mit der Breite).
+- Preisrechner zweispaltig ab 1120 px; Anfrage mit Seitenkasten ab 920 px (320 px, ab 1280 px 380 px); Fragen mit sticky linker Spalte ab 920 px.
+- Menü: ab 640 px zweispaltig (Links | Kontaktkarte), nicht mehr die volle Breite wie in Phase 3.
+- Luna-Knopf, Anstupser und Fenster halten ab 640 px 28 px Abstand zum Rand, ab 1586 px zur Rahmenkante.
+- Rechtsseiten: Titel in der Größe der Hero-H1 (`--fx-h1`), Text höchstens 40 em breit.
+- Sichtprüfung bei 390, 768, 1024, 1440, 1920 und 2560 px. `npm run shots` liefert 390, 1024, 1440, 1920 (1080 hoch) und 2560 px (1440 hoch); 768 px gehört nicht dazu und wird bei Bedarf mit `setViewportSize` einzeln aufgenommen.

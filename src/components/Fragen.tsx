@@ -2,7 +2,8 @@ import { copy } from '../content/copy'
 import { Icon } from './ui/Icon'
 
 /**
- * Abschnitt „Häufige Fragen“ (nicht im Design) im Stil des Hero: weiße Karten auf dem Eis-Band, der Pfeil im Lagune-Kreis.
+ * Abschnitt „Häufige Fragen“ (nicht im Design) im Stil des Hero: weiße Karten mit weichem Schatten auf dem Eis-Band
+ * (die Haarlinie allein ist gegen Eis kaum zu sehen), der Pfeil im Lagune-Kreis.
  * Natives <details>; gleicher name = immer nur eine Antwort offen.
  * Ab 920 px bleibt die linke Spalte (Titel + Lead) unter dem Kopf stehen, solange rechts die Liste läuft; sonst bliebe sie leer.
  */
@@ -21,7 +22,7 @@ export function Fragen() {
             <details
               key={f.frage}
               name="fragen"
-              className="frage group rounded-card border border-linie bg-weiss transition-[border-color,box-shadow] duration-(--fx-dur-fast) hover:border-rand open:border-rand open:shadow-karte"
+              className="frage group rounded-card border border-linie bg-weiss shadow-karte transition-[border-color] duration-(--fx-dur-fast) hover:border-rand open:border-rand"
             >
               <summary className="flex cursor-pointer list-none items-center justify-between gap-s4 rounded-card px-s5 py-s4 [&::-webkit-details-marker]:hidden">
                 <span className="font-display text-h5 font-semibold">{f.frage}</span>
