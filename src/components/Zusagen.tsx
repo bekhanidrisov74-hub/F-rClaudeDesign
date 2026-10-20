@@ -5,9 +5,10 @@ import { IconKreis } from './ui/IconKreis'
 const BREIT = [0, copy.zusagen.karten.length - 1]
 
 /**
- * Weiße Karte mit Haarlinie und weichem Schatten, Icon im Lagune-Kreis wie bei den Vorteilen unter dem Hero.
+ * Ab 920 px eine weiße Karte mit Haarlinie und weichem Schatten, darunter ein Eintrag der gruppierten Liste (Zusagen).
+ * Icon im Lagune-Kreis wie bei den Vorteilen unter dem Hero.
  * Alle Teile sind direkte Kinder eines Grids, damit eine Markierung drei Anordnungen trägt:
- * - unter 920 px: Icon links neben dem Titel, darunter Text und Zusatz über die volle Breite;
+ * - unter 920 px: Icon links neben dem Titel, darunter Text und Zusatz über die volle Breite, ohne eigene Trennlinie;
  * - ab 920 px normal: eine Spalte, Icon oben; die Textzeile wächst (1fr), der Zusatz sitzt unten und steht in einer Reihe bündig
  *   (zwischen 920 und 1119 px bricht er schmal um: zwei Zeilen Mindesthöhe, damit die Trennlinien einer Reihe auf einer Höhe bleiben);
  * - ab 920 px breit: Icon links (64 px) über alle drei Zeilen, rechts Titel, Text als Lead und Zusatz. Die Reihenhöhe bestimmt die
@@ -16,7 +17,7 @@ const BREIT = [0, copy.zusagen.karten.length - 1]
 function ZusageKarte({ karte, breit }: { karte: (typeof copy.zusagen.karten)[number]; breit: boolean }) {
   return (
     <li
-      className={`einblenden grid grid-cols-[auto_1fr] items-center gap-x-s4 gap-y-s3 rounded-card-lg border border-linie bg-weiss p-s5 text-tiefsee shadow-karte nav:items-start nav:gap-y-0 ${
+      className={`einblenden grid grid-cols-[auto_1fr] items-center gap-x-s4 gap-y-s2 px-s5 py-s4 text-tiefsee nav:items-start nav:gap-y-0 nav:rounded-card-lg nav:border nav:border-linie nav:bg-weiss nav:p-s5 nav:shadow-karte ${
         breit
           ? 'nav:col-span-2 nav:grid-rows-[auto_auto_auto] nav:content-center nav:gap-x-s5'
           : 'nav:grid-cols-1 nav:grid-rows-[auto_auto_1fr_auto]'
@@ -40,7 +41,7 @@ function ZusageKarte({ karte, breit }: { karte: (typeof copy.zusagen.karten)[num
         {karte.text}
       </p>
       <p
-        className={`col-span-2 box-content border-t border-linie pt-s3 text-small text-schiefer nav:col-span-1 nav:mt-s3 nav:min-h-[2lh] spalten:min-h-0 ${
+        className={`col-span-2 box-content text-small text-schiefer nav:col-span-1 nav:mt-s3 nav:min-h-[2lh] nav:border-t nav:border-linie nav:pt-s3 spalten:min-h-0 ${
           breit ? 'nav:col-start-2' : ''
         }`}
       >
@@ -50,7 +51,8 @@ function ZusageKarte({ karte, breit }: { karte: (typeof copy.zusagen.karten)[num
   )
 }
 
-/** Abschnitt „Zusagen“ (nicht im Design): sieben weiße Karten auf dem Eis-Band, in einem Raster mit zwei breiten Karten. */
+/** Abschnitt „Zusagen“ (nicht im Design): ab 920 px sieben weiße Karten auf dem Eis-Band, in einem Raster mit zwei breiten Karten.
+ *  Darunter eine gruppierte Liste: eine weiße Fläche, die Einträge durch Haarlinien getrennt, statt sieben gleicher Karten. */
 export function Zusagen() {
   return (
     <section id="zusagen" aria-labelledby="zusagen-titel" className="bg-eis text-tiefsee">
@@ -62,7 +64,10 @@ export function Zusagen() {
           </h2>
           <p className="text-lead text-schiefer">{copy.zusagen.lead}</p>
         </div>
-        <ul role="list" className="grid gap-s4 nav:grid-cols-3 nav:gap-s5">
+        <ul
+          role="list"
+          className="grid divide-y divide-linie rounded-card-lg border border-linie bg-weiss shadow-karte nav:grid-cols-3 nav:gap-s5 nav:divide-y-0 nav:rounded-none nav:border-0 nav:bg-transparent nav:shadow-none"
+        >
           {copy.zusagen.karten.map((karte, index) => (
             <ZusageKarte key={karte.titel} karte={karte} breit={BREIT.includes(index)} />
           ))}

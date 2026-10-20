@@ -208,10 +208,17 @@
   transition: filter var(--fx-dur-fast) var(--fx-ease), box-shadow var(--fx-dur-fast) var(--fx-ease);
 }
 
-.hd-cta:hover,
-.hd-anfrage:hover,
-.hd-anrufen:hover {
-  filter: brightness(1.05);
+/* Nur mit Maus: auf Touch-Geräten bliebe der Hover-Zustand nach dem Tippen stehen */
+@media (hover: hover) {
+  .hd-cta:hover,
+  .hd-anfrage:hover,
+  .hd-anrufen:hover {
+    filter: brightness(1.05);
+  }
+
+  .hd-anfrage:hover {
+    box-shadow: var(--fx-hd-shadow-anfrage-hover);
+  }
 }
 
 .hd-cta {
@@ -281,10 +288,6 @@
   box-shadow: var(--fx-hd-shadow-anfrage);
   color: var(--fx-hd-tiefsee);
   text-decoration: none;
-}
-
-.hd-anfrage:hover {
-  box-shadow: var(--fx-hd-shadow-anfrage-hover);
 }
 
 .hd-anfrage-icon {
@@ -547,6 +550,65 @@
 @media (width < 35rem) {
   .hd-info br {
     display: none;
+  }
+}
+
+/* Sehr schmale Handys (unter 360 px, nicht im Entwurf): „Jetzt anrufen“ stieß an den Rand der Pille, und neben dem
+   Anrufen-Knopf blieb dem Logo im Kopf kaum Platz. Weniger Luft in beiden Knöpfen, Schriftgrößen bleiben. */
+@media (width < 22.5rem) {
+  .hd-cta {
+    gap: var(--fx-s-3);
+  }
+
+  .hd-kopf .hd-anrufen {
+    gap: var(--fx-s-2);
+    padding: 0 var(--fx-s-3);
+  }
+}
+
+/* Handy quer (nicht im Entwurf, Entscheidung 20.10.2026): Bei niedriger Höhe lag „Jetzt anrufen“ unter dem ersten Bildschirm.
+   Überschrift zweizeilig („Handwerker-Notdienst.“ in einer Zeile) über die volle Breite, darunter links der Lead und rechts die
+   Knöpfe untereinander. So endet „Jetzt anrufen“ unabhängig von der Breite bei etwa 275 px, auch mit Browserleiste (Fenster 320 px
+   hoch) ganz sichtbar; das Label bricht nicht um. Hochformat bleibt 1:1. */
+@media (width < 80rem) and (height < 31.25rem) and (orientation: landscape) {
+  .hd-text {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: var(--fx-s-5);
+    align-items: start;
+    max-width: none;
+    padding-top: var(--fx-s-4);
+  }
+
+  .hd-titel {
+    grid-column: 1 / -1;
+  }
+
+  .hd-titel span:not(.hd-akzent) {
+    display: inline;
+  }
+
+  .hd-lead {
+    grid-column: 1;
+    margin-top: var(--fx-s-3);
+  }
+
+  .hd-ctas {
+    grid-column: 2;
+    grid-row: 2;
+    margin-top: var(--fx-s-3);
+  }
+
+  .hd-cta {
+    padding-right: var(--fx-s-6);
+  }
+
+  .hd-cta-label {
+    white-space: nowrap;
+  }
+
+  .hd-info {
+    grid-column: 1 / -1;
   }
 }
 

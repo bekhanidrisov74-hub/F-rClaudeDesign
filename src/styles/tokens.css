@@ -75,6 +75,9 @@
   --fx-rahmen: 1586px;
   --fx-kante-l: var(--fx-s-4);
   --fx-kante-r: var(--fx-s-4);
+  /* Wischreihe der Leistungen am Handy (app.css, wischreihe): reicht über die Kanten bis an die Fensterränder, oben und
+     unten Platz für den Kartenschatten */
+  --fx-wisch-aussen: calc(-1 * var(--fx-s-2)) calc(-1 * var(--fx-kante-r)) calc(-1 * var(--fx-s-5)) calc(-1 * var(--fx-kante-l));
   /* Schwebende Fenster (Luna-Knopf, Anstupser, Chat; ab 640 px): 28 px vom rechten Rand, über 1586 px an der rechten Rahmenkante.
      Bei position: fixed meint Prozent die Breite des Ansichtsfensters ohne Scrollbalken, in der auch der Rahmen zentriert wird. */
   --fx-schwebe-r: max(28px, calc((100% - var(--fx-rahmen)) / 2 + 28px));
