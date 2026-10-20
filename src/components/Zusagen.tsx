@@ -1,59 +1,72 @@
 import { copy } from '../content/copy'
 import { IconKreis } from './ui/IconKreis'
 
-/** Spalten des Bento-Rasters ab 920 px: Handy untereinander. groß = breite Karte als Hinweiskasten (Eis), sonst weiß. */
-const spalten: { karten: [number, boolean][] }[] = [
-  { karten: [[0, true], [1, false]] },
-  { karten: [[2, true], [3, false], [4, true]] },
-  { karten: [[5, false], [6, true]] },
-]
+/** Breite Karten ab 920 px: die erste und die letzte. Reihen: [0 breit][1] / [2][3][4] / [5][6 breit]. */
+const BREIT = [0, copy.zusagen.karten.length - 1]
 
 /**
- * Karte wie ein Vorteil unter dem Hero: Icon im Lagune-Kreis oben, Titel und Text unten, darunter der Zusatz.
- * Große Karten als Hinweiskasten (Eis) mit größerem Text, kleine weiß mit Rand und weichem Schatten.
- * Der Inhalt steht unten: Im Bento-Raster wachsen die Karten mit ihrer Spalte, der Platz bleibt unter dem Icon.
+ * Weiße Karte mit Haarlinie und weichem Schatten, Icon im Lagune-Kreis wie bei den Vorteilen unter dem Hero.
+ * Alle Teile sind direkte Kinder eines Grids, damit eine Markierung drei Anordnungen trägt:
+ * - unter 920 px: Icon links neben dem Titel, darunter Text und Zusatz über die volle Breite;
+ * - ab 920 px normal: eine Spalte, Icon oben; die Textzeile wächst (1fr), der Zusatz sitzt unten und steht in einer Reihe bündig
+ *   (zwischen 920 und 1119 px bricht er schmal um: zwei Zeilen Mindesthöhe, damit die Trennlinien einer Reihe auf einer Höhe bleiben);
+ * - ab 920 px breit: Icon links (64 px) über alle drei Zeilen, rechts Titel, Text als Lead und Zusatz. Die Reihenhöhe bestimmt die
+ *   Nachbarkarte (Icon oben); den Überschuss verteilt content-center oben und unten, statt ihn zwischen Text und Zusatz zu lassen.
  */
-function ZusageKarte({ index, gross }: { index: number; gross: boolean }) {
-  const karte = copy.zusagen.karten[index]
+function ZusageKarte({ karte, breit }: { karte: (typeof copy.zusagen.karten)[number]; breit: boolean }) {
   return (
     <li
-      className={`einblenden flex flex-col justify-between gap-s5 rounded-card-lg p-s5 text-tiefsee ${
-        gross ? 'bg-eis nav:grow-[7]' : 'border border-linie bg-weiss shadow-karte nav:grow-[3]'
+      className={`einblenden grid grid-cols-[auto_1fr] items-center gap-x-s4 gap-y-s3 rounded-card-lg border border-linie bg-weiss p-s5 text-tiefsee shadow-karte nav:items-start nav:gap-y-0 ${
+        breit
+          ? 'nav:col-span-2 nav:grid-rows-[auto_auto_auto] nav:content-center nav:gap-x-s5'
+          : 'nav:grid-cols-1 nav:grid-rows-[auto_auto_1fr_auto]'
       }`}
     >
-      <IconKreis name={karte.icon} weiss={gross} className={gross ? 'size-[64px]' : 'size-[56px]'} icon={gross ? 'size-[32px]' : 'size-[28px]'} />
-      <div className="flex flex-col gap-s3">
-        <div className="flex flex-col gap-s2">
-          <h3 className="font-display text-h4">{karte.titel}</h3>
-          <p className={gross ? 'text-lead' : 'text-body text-schiefer'}>{karte.text}</p>
-        </div>
-        <p className="border-t border-tiefsee/10 pt-s3 text-small text-schiefer">{karte.zusatz}</p>
-      </div>
+      <IconKreis
+        name={karte.icon}
+        className={
+          breit
+            ? 'size-[48px] nav:row-span-3 nav:size-[64px]'
+            : 'size-[48px] nav:mb-s4 nav:size-[56px]'
+        }
+        icon={breit ? 'size-[24px] nav:size-[32px]' : 'size-[24px] nav:size-[28px]'}
+      />
+      <h3 className={`font-display text-h4 ${breit ? 'nav:col-start-2' : ''}`}>{karte.titel}</h3>
+      <p
+        className={`col-span-2 nav:col-span-1 nav:mt-s2 ${
+          breit ? 'text-lead text-schiefer nav:col-start-2' : 'text-body text-schiefer'
+        }`}
+      >
+        {karte.text}
+      </p>
+      <p
+        className={`col-span-2 box-content border-t border-linie pt-s3 text-small text-schiefer nav:col-span-1 nav:mt-s3 nav:min-h-[2lh] spalten:min-h-0 ${
+          breit ? 'nav:col-start-2' : ''
+        }`}
+      >
+        {karte.zusatz}
+      </p>
     </li>
   )
 }
 
-/** Abschnitt „Zusagen“ (nicht im Design): Bento-Raster aus sieben Karten auf heller Fläche, im Stil des Hero. */
+/** Abschnitt „Zusagen“ (nicht im Design): sieben weiße Karten auf dem Eis-Band, in einem Raster mit zwei breiten Karten. */
 export function Zusagen() {
   return (
-    <section id="zusagen" aria-labelledby="zusagen-titel" className="bg-kalk text-tiefsee">
-      <div className="wrapper flex flex-col gap-s6 pt-section pb-section-end nav:gap-s7">
+    <section id="zusagen" aria-labelledby="zusagen-titel" className="bg-eis text-tiefsee">
+      <div className="wrapper pt-section pb-section-end">
         {/* linksbündig wie der Hero und alle anderen Abschnittsköpfe */}
-        <div className="flex max-w-[680px] flex-col gap-s4 nav:gap-s3">
+        <div className="mb-s5 flex max-w-[680px] flex-col gap-s4 nav:mb-s7 nav:gap-s3">
           <h2 id="zusagen-titel" className="text-h2">
             {copy.zusagen.titel}
           </h2>
           <p className="text-lead text-schiefer">{copy.zusagen.lead}</p>
         </div>
-        <div className="grid gap-s4 nav:grid-cols-3 nav:gap-s5">
-          {spalten.map((spalte, i) => (
-            <ul key={i} role="list" className="flex flex-col gap-s4 nav:gap-s5">
-              {spalte.karten.map(([index, gross]) => (
-                <ZusageKarte key={index} index={index} gross={gross} />
-              ))}
-            </ul>
+        <ul role="list" className="grid gap-s4 nav:grid-cols-3 nav:gap-s5">
+          {copy.zusagen.karten.map((karte, index) => (
+            <ZusageKarte key={karte.titel} karte={karte} breit={BREIT.includes(index)} />
           ))}
-        </div>
+        </ul>
       </div>
     </section>
   )

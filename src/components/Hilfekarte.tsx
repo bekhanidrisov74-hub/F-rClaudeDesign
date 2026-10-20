@@ -3,10 +3,14 @@ import { Button } from './ui/Button'
 import { CallButton } from './ui/CallButton'
 import { IconKreis } from './ui/IconKreis'
 
-/** Letzte Zelle im Leistungsraster: „Ihr Problem ist nicht dabei?“ mit Anruf und Luna, als Hinweiskasten wie im Hero. */
+/**
+ * Letzte Zelle im Leistungsraster: „Ihr Problem ist nicht dabei?“ mit Anruf und Luna, als Hinweiskasten wie im Hero.
+ * Das Raster streckt die Karte auf die Höhe der Bildkarten daneben; der Inhalt steht dann als ein Block mittig,
+ * statt Text und Knöpfe an die Ränder zu schieben (das ließ 130 bis 230 px Leere dazwischen).
+ */
 export function Hilfekarte() {
   return (
-    <article className="flex flex-col justify-between gap-s4 rounded-card-lg bg-eis p-s5 text-tiefsee nav:gap-s5 nav:p-s6">
+    <article className="flex flex-col justify-center gap-s4 rounded-card-lg bg-eis p-s5 text-tiefsee nav:gap-s5 nav:p-s6">
       <div className="flex flex-col gap-s4 nav:gap-s3">
         <IconKreis name="luna-signet-glyph" dunkel className="size-[56px] nav:size-[60px]" icon="size-[30px] nav:size-[32px]" />
         <h3 className="text-h3-karte">{copy.leistungen.hilfe.titel}</h3>

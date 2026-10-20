@@ -118,6 +118,79 @@ test('Hero-Foto reicht am Desktop bis zum rechten Rand', async ({ page }, info) 
   expect(Math.round(box!.x + box!.width)).toBe(1440)
 })
 
+test('Hero über 1586 px: Text im Rahmen, Foto bis zum Fensterrand (höchstens 1,25-fach), Raster-Muster ab dem Rand', async ({ page }, info) => {
+  test.skip(info.project.name !== 'd1440', 'setzt die Breite selbst')
+  for (const breite of [1920, 2000, 2560]) {
+    await page.setViewportSize({ width: breite, height: 1200 })
+    await page.goto('/')
+    const m = await page.evaluate(() => {
+      const r = (sel: string) => document.querySelector(sel)!.getBoundingClientRect()
+      const anfrage = getComputedStyle(document.querySelector('.hd-anfrage')!)
+      return {
+        lead: r('.hd-lead').left, textRechts: r('.hd-info').right, foto: r('.hd-foto'), raster: r('.hd-raster').left,
+        anfrageRand: `${anfrage.borderTopStyle} ${anfrage.borderTopColor}`, fenster: document.documentElement.clientWidth,
+      }
+    })
+    const rand = (m.fenster - 1586) / 2
+    expect(Math.round(m.lead), `${breite}: Text auf der Rahmenkante`).toBe(Math.round(rand + 100))
+    expect(m.foto.left, `${breite}: kein Loch zwischen Text und Foto`).toBeLessThan(m.textRechts)
+    expect(m.foto.width, `${breite}: höchstens 1,25-fach`).toBeLessThanOrEqual(1006 * 1.25 + 0.5)
+    // Reicht die 1,25-fache Breite nicht bis zum Rand, läuft das Foto dort per Maske aus (hero.css)
+    expect(Math.round(m.foto.right), `${breite}: Foto bis zum Fensterrand`).toBe(Math.round(Math.min(m.fenster, m.foto.left + 1006 * 1.25)))
+    expect(Math.round(m.raster), `${breite}: Raster-Muster ab dem Fensterrand`).toBe(0)
+    // „Anfrage senden“ behält seinen Rand (die Farbe --fx-hd-rand darf nicht von einer gleichnamigen Länge überschrieben werden)
+    expect(m.anfrageRand, `${breite}: Rand von „Anfrage senden“`).toBe('solid rgb(124, 132, 148)')
+  }
+})
+
+/** Abschnitte der Startseite in Seitenreihenfolge ab „Was ist passiert?“, mit Fläche laut docs/hero-stil.md (Flächenplan). */
+const FLAECHEN: { name: string; sel: string; farbe: string }[] = [
+  { name: 'Was ist passiert?', sel: 'section[aria-labelledby="schnellwahl-titel"]', farbe: 'rgb(232, 244, 248)' }, // Eis
+  { name: 'Leistungen', sel: '#leistungen', farbe: 'rgb(251, 252, 253)' }, // Kalk
+  { name: "So funktioniert's", sel: '#ablauf', farbe: 'rgb(3, 16, 31)' }, // Tiefsee
+  { name: 'Preisrechner', sel: '#preisrechner', farbe: 'rgb(251, 252, 253)' }, // Kalk
+  { name: 'Zusagen', sel: '#zusagen', farbe: 'rgb(232, 244, 248)' }, // Eis
+  { name: 'Anfrage', sel: '#anfrage', farbe: 'rgb(251, 252, 253)' }, // Kalk
+  { name: 'Häufige Fragen', sel: '#fragen', farbe: 'rgb(232, 244, 248)' }, // Eis
+  { name: 'Fuß', sel: 'footer', farbe: 'rgb(3, 16, 31)' }, // Tiefsee
+]
+
+test('Gemeinsames Raster: alle Abschnitte auf der Textlinie des Hero, rechts bündig mit dem Kopf', async ({ page }, info) => {
+  test.skip(info.project.name !== 'd1440', 'setzt die Breite selbst')
+  test.setTimeout(60_000)
+  for (const breite of [390, 768, 1024, 1280, 1440, 1586, 1920, 2560]) {
+    await page.setViewportSize({ width: breite, height: 900 })
+    await page.goto('/')
+    const m = await page.evaluate((selektoren) => {
+      const abschnitte = selektoren.map((sel) => {
+        const wrapper = document.querySelector(`${sel} .wrapper`)!.getBoundingClientRect()
+        const s = getComputedStyle(document.querySelector(`${sel} .wrapper`)!)
+        return { sel, links: wrapper.left + parseFloat(s.paddingLeft), rechts: wrapper.right - parseFloat(s.paddingRight) }
+      })
+      return {
+        lead: document.querySelector('.hd-lead')!.getBoundingClientRect().left,
+        anrufen: document.querySelector('.hd-kopf .hd-anrufen')!.getBoundingClientRect().right,
+        abschnitte,
+      }
+    }, FLAECHEN.map((f) => f.sel))
+    for (const a of m.abschnitte) expect(Math.abs(a.links - m.lead), `${breite} px, ${a.sel}: Inhaltskante links gegen Hero-Text`).toBeLessThanOrEqual(1)
+    const rechts = m.abschnitte[0].rechts
+    for (const a of m.abschnitte) expect(Math.abs(a.rechts - rechts), `${breite} px, ${a.sel}: Inhaltskante rechts gegen „${m.abschnitte[0].sel}“`).toBeLessThanOrEqual(1)
+    // Unter 1280 px folgt auf „Anrufen“ der Menü-Knopf; erst ab 1280 px endet „Anrufen“ im Kopf an der rechten Inhaltskante
+    if (breite >= 1280) expect(Math.abs(m.anrufen - rechts), `${breite} px: „Anrufen“ im Kopf gegen rechte Inhaltskante`).toBeLessThanOrEqual(2)
+  }
+})
+
+test('Flächenplan: Eis, Kalk und Tiefsee wechseln wie in docs/hero-stil.md', async ({ page }, info) => {
+  test.skip(info.project.name !== 'd1440', 'eine Breite genügt')
+  await page.goto('/')
+  const farben = await page.evaluate(
+    (selektoren) => selektoren.map((sel) => getComputedStyle(document.querySelector(sel)!).backgroundColor),
+    FLAECHEN.map((f) => f.sel),
+  )
+  expect(farben.map((farbe, i) => `${FLAECHEN[i].name}: ${farbe}`)).toEqual(FLAECHEN.map((f) => `${f.name}: ${f.farbe}`))
+})
+
 async function bedienelemente(page: Page) {
   return page.locator('a:visible, button:visible, input:visible, select:visible, textarea:visible').evaluateAll((els) =>
     els

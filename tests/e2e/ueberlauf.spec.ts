@@ -1,8 +1,8 @@
 import { expect, test, type Page } from './test'
 import { chat, lunaBisZusammenfassung, oeffneMenue, oeffnePreisuebersicht, preisDialog } from './hilfen'
 
-// SPEC 4: kein horizontales Scrollen zwischen 320 und 1920 px, auch mit offenen Überlagerungen.
-const BREITEN = [320, 360, 390, 559, 560, 639, 640, 768, 919, 920, 1024, 1280, 1440, 1920]
+// SPEC 4: kein horizontales Scrollen zwischen 320 und 2560 px, auch mit offenen Überlagerungen.
+const BREITEN = [320, 360, 390, 559, 560, 639, 640, 768, 919, 920, 1024, 1280, 1440, 1586, 1920, 2560]
 
 const UEBERLAGERUNGEN: { name: string; oeffnen: (p: Page) => Promise<unknown>; element: (p: Page) => ReturnType<Page['locator']>; nurUnter?: number }[] = [
   { name: 'Preisübersicht', oeffnen: oeffnePreisuebersicht, element: preisDialog },

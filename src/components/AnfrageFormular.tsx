@@ -301,7 +301,7 @@ export function AnfrageFormular() {
             {sendend ? t.sendend : t.senden}
           </Button>
         </div>
-        <p className="text-note text-schiefer">{t.pflicht}</p>
+        <p className="text-small text-schiefer">{t.pflicht}</p>
       </div>
     </form>
   )
@@ -325,7 +325,7 @@ function Erfolg({ danke }: { danke: Danke }) {
       <p className="text-body">
         {fuelle(danke.match === 'FOUND' ? t.erfolg.text : t.erfolg.keinerText, { betrieb: danke.betrieb, telefon: danke.telefon })}
       </p>
-      <p className="text-note text-schiefer">{fuelle(t.erfolg.nummer, { nummer: danke.anfragenummer })}</p>
+      <p className="text-small text-schiefer">{fuelle(t.erfolg.nummer, { nummer: danke.anfragenummer })}</p>
       {danke.tipp && danke.match === 'FOUND' && (
         <p className="rounded-chip bg-eis p-s4 text-small">
           <strong>{copy.luna.erfolg.tippTitel}</strong> {danke.tipp}

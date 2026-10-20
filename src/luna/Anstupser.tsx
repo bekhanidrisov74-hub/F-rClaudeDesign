@@ -77,7 +77,7 @@ export function Anstupser({ knopfSichtbar }: { knopfSichtbar: boolean }) {
   if (lunaOffen && sichtbar) setSichtbar(false)
 
   return (
-    <div role="status" data-anstupser className="fixed right-s4 bottom-[90px] z-8 dialog:right-[28px] dialog:bottom-[146px]">
+    <div role="status" data-anstupser className="fixed right-s4 bottom-[90px] z-8 dialog:right-(--fx-schwebe-r) dialog:bottom-[146px]">
       {sichtbar && knopfSichtbar && (
         <div className="flex w-[286px] items-start gap-s2 rounded-card rounded-br-ecke border border-linie bg-weiss py-s2 pr-0 pl-s3 text-tiefsee shadow-s transition-opacity duration-(--fx-dur-dialog) ease-fx starting:opacity-0 dialog:w-[262px] dialog:gap-0 dialog:pl-s4">
           <span

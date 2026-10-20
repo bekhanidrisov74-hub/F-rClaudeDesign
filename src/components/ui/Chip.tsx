@@ -26,7 +26,7 @@ export function Chip({ children, pressed, zusatz, onClick, className = '', ...re
     >
       {pressed && <Icon name="ui-haekchen" className="size-[20px]" />}
       <span>{children}</span>
-      {zusatz && <span className="font-text text-note font-normal text-schiefer group-aria-pressed:text-nebel">{zusatz}</span>}
+      {zusatz && <span className="font-text text-small font-normal text-schiefer group-aria-pressed:text-nebel">{zusatz}</span>}
     </button>
   )
 }

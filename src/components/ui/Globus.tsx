@@ -1,10 +1,10 @@
 import { useEffect, useRef } from 'react'
 
 /**
- * Langsam drehender Drahtgitter-Globus in Tiefsee auf dem hellen Fuß, Österreich in Türkis. Reine Dekoration: aria-hidden, ohne
- * Zeiger-Ereignisse, ein Canvas. Kartendaten und d3-geo werden erst geladen, wenn der Globus ins Bild
- * kommt (kein CDN, alles aus dem eigenen Bundle). Außerhalb des Bildes pausiert er; bei
- * prefers-reduced-motion bleibt er still auf Österreich stehen.
+ * Langsam drehender Drahtgitter-Globus, Österreich in Türkis. Die Linien nehmen die Schriftfarbe des Canvas (im Fuß Nebel auf
+ * Tiefsee, per className gesetzt). Reine Dekoration: aria-hidden, ohne Zeiger-Ereignisse, ein Canvas. Kartendaten und d3-geo
+ * werden erst geladen, wenn der Globus ins Bild kommt (kein CDN, alles aus dem eigenen Bundle). Außerhalb des Bildes pausiert er;
+ * bei prefers-reduced-motion bleibt er still auf Österreich stehen, auch wenn die Einstellung erst später umgeschaltet wird.
  */
 
 /** Mitte Österreichs [Länge, Breite]; ISO-3166-Nummer in world-atlas. */
@@ -12,9 +12,9 @@ const OESTERREICH: [number, number] = [14.5, 47.5]
 const OESTERREICH_ID = '040'
 /** Grad je Sekunde. */
 const TEMPO = 6
-/** Gedämpft, damit der Anruf-Knopf das Auffälligste bleibt (Tiefsee auf hellem Grund). */
-const LINIEN = 0.26
-const RASTER = 0.09
+/** Gedämpft, damit der Anruf-Knopf das Auffälligste bleibt (Nebel auf dunklem Grund; heller Strich wirkt stärker als dunkler). */
+const LINIEN = 0.5
+const RASTER = 0.16
 /** Österreich ist auf 320 px nur ein paar Pixel groß, darf also kräftiger sein. */
 const LAND = 0.9
 
@@ -25,7 +25,8 @@ export function Globus({ className = '' }: { className?: string }) {
     const canvas = papier.current
     const ctx = canvas?.getContext('2d')
     if (!canvas || !ctx) return
-    const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const bewegung = window.matchMedia('(prefers-reduced-motion: reduce)')
+    let still = bewegung.matches
     let aus = false
     let stopp = () => {}
 
@@ -38,7 +39,7 @@ export function Globus({ className = '' }: { className?: string }) {
       if (aus) return
 
       const stil = getComputedStyle(canvas)
-      const tinte = stil.getPropertyValue('--fx-tiefsee').trim()
+      const tinte = stil.color
       const tuerkis = stil.getPropertyValue('--fx-tuerkis').trim()
       const laender = feature(welt as never, welt.objects.countries as never) as unknown as GeoJSON.FeatureCollection
       const heimat = laender.features.find((f) => f.id === OESTERREICH_ID)
@@ -96,12 +97,22 @@ export function Globus({ className = '' }: { className?: string }) {
         if (zuletzt) laenge -= (TEMPO * (now - zuletzt)) / 1000
         zuletzt = now
         zeichnen(laenge)
-        if (sichtbar && !document.hidden) frame = requestAnimationFrame(drehen)
+        if (sichtbar && !document.hidden && !still) frame = requestAnimationFrame(drehen)
       }
       const weiter = () => {
         zuletzt = 0
         if (!frame && !still) frame = requestAnimationFrame(drehen)
       }
+      // Schaltet der Nutzer reduzierte Bewegung während des Laufs um: sofort anhalten (auf Österreich) bzw. wieder drehen
+      const umschalten = () => {
+        still = bewegung.matches
+        if (!still) return weiter()
+        cancelAnimationFrame(frame)
+        frame = 0
+        laenge = OESTERREICH[0]
+        zeichnen(laenge)
+      }
+      bewegung.addEventListener('change', umschalten)
 
       const groesse = new ResizeObserver(() => {
         messen()
@@ -120,6 +131,7 @@ export function Globus({ className = '' }: { className?: string }) {
         sicht.disconnect()
         cancelAnimationFrame(frame)
         document.removeEventListener('visibilitychange', weiter)
+        bewegung.removeEventListener('change', umschalten)
       }
     }
 

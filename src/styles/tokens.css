@@ -11,11 +11,10 @@
   --fx-tiefsee: #03101F;        /* Text, Icons, Primärknöpfe, gewählte Chips, Luna-Knopf, Fokus-Rand (18,6:1 auf Kalk) */
   --fx-tiefsee-2: #13263A;      /* Hover der Primärknöpfe, Linien auf Tiefsee */
   --fx-kalk: #FBFCFD;           /* Seitenhintergrund (Fläche des Hero) */
-  --fx-kalk-2: #F4F8FB;         /* zweite Abschnittsfläche, damit sich Abschnitte voneinander abheben */
   --fx-weiss: #FFFFFF;          /* Karten, Felder, Sprechblasen des Nutzers nicht */
   --fx-eis: #E8F4F8;            /* Hinweiskästen wie im Hero, Luna-Sprechblasen, Tipps */
   --fx-lagune: #BEF0F6;         /* Kreise hinter Icons wie bei den Vorteilen */
-  --fx-orange: #EC5315;         /* Akzent wie „Rund um die Uhr.“: große Ziffern (3,5:1, nur große Schrift) */
+  --fx-orange: #EC5315;         /* Akzent wie „Rund um die Uhr.“: große Ziffern (3,5:1 auf Kalk, 5,3:1 auf Tiefsee, nur große Schrift) */
   --fx-schiefer: #5C606C;       /* Zweittext (6,3:1 auf Weiß, 5,6:1 auf Eis) */
   --fx-rand: #7C8494;           /* Umrandung von Feldern, Chips, Zweitknöpfen (3,8:1 auf Weiß, ≥3:1 auf Eis) */
   --fx-linie: #E8ECF0;          /* Trennlinien, Kartenränder (nur Gliederung) */
@@ -31,15 +30,14 @@
   --fx-font-text: 'Inter Variable', Inter, system-ui, sans-serif;
   /* Überschriften: Gewicht 750, eng gesetzt wie die H1 (−0,052 em); Knöpfe 650–700 */
 
-  /* Schriftgrößen (fließend 390 → 1440 px) */
-  --fx-h1: clamp(44px, calc(1.71vw + 37.3px), 62px);   /* Rechtsseiten; lh 1, letter-spacing -0.045em */
-  --fx-h2: clamp(34px, calc(1.905vw + 26.57px), 54px); /* Abschnitte; lh 1.02, letter-spacing -0.045em */
-  --fx-h3: clamp(23px, calc(0.286vw + 21.89px), 26px); /* lh 1.15, Gewicht 750 */
-  --fx-total: clamp(24px, calc(0.571vw + 21.77px), 30px); /* Gesamtpreis, Gewicht 800, nowrap */
-  --fx-lead: clamp(17px, calc(0.305vw + 15.81px), 20.2px); /* wie die Unterzeile im Hero, lh 1.5 */
-  --fx-body: clamp(16px, calc(0.095vw + 15.63px), 17px);  /* Handy 16–17, lh 1.5 */
-  --fx-small: 15px;       /* lh 1.45 */
-  --fx-note: 14px;        /* 13–14, nie kleiner als 13 */
+  /* Schriftgrößen: fließend von 390 bis 1534 px Fensterbreite, den Ankern des Hero (H1 44 → 62 px); darüber bleiben sie stehen */
+  --fx-h1: clamp(44px, calc(1.573vw + 37.86px), 62px); /* Rechtsseiten; lh 1, letter-spacing -0.045em */
+  --fx-h2: clamp(34px, calc(2.273vw + 25.14px), 60px); /* Abschnitte; lh 1.02, letter-spacing -0.045em */
+  --fx-h3: clamp(23px, calc(0.437vw + 21.3px), 28px);  /* lh 1.15, Gewicht 750 */
+  --fx-total: clamp(24px, calc(0.524vw + 21.95px), 30px); /* Gesamtpreis, Gewicht 800, nowrap */
+  --fx-lead: clamp(17px, calc(0.28vw + 15.91px), 20.2px); /* wie die Unterzeile im Hero, lh 1.5 */
+  --fx-body: clamp(16px, calc(0.175vw + 15.32px), 18px);  /* Handy 16, Desktop 18, lh 1.5 */
+  --fx-small: 15px;       /* lh 1.45; kleinster sichtbarer Text, nichts darunter */
 
   /* Radien (Hero: Pille für Anrufen, 16 für Zweitknöpfe, 20 für den Hinweiskasten) */
   --fx-r-pill: 999px;     /* Anruf-Knöpfe, Kreise, Luna-Knopf */
@@ -67,11 +65,19 @@
   /* Abstände (4-px-Raster) */
   --fx-s-1: 4px;  --fx-s-2: 8px;  --fx-s-3: 12px; --fx-s-4: 16px; --fx-s-5: 24px;
   --fx-s-6: 32px; --fx-s-7: 40px; --fx-s-8: 56px; --fx-s-9: 72px; --fx-s-10: 96px;
-  --fx-gutter: 16px;            /* Seitenrand Handy; Desktop 24px */
   --fx-section-y: clamp(56px, calc(3.81vw + 41.14px), 96px);     /* Handy 56/64, Desktop 96/104: oben */
   --fx-section-y-end: clamp(64px, calc(3.81vw + 49.14px), 104px); /* unten */
-  --fx-container: 1140px;       /* Inhalt; mit 24px Rand max-width 1188px */
-  --fx-hero-max: 1920px;        /* bis hier Bild bis zum Fensterrand; darüber wächst rechts ein Rand bis zur Breite des linken */
+
+  /* Raster: Kopf, Abschnitte, Fuß, Menü und Rechtsseiten stehen auf den Kanten des Hero. Der Rahmen ist die Breite des
+     Entwurfs (das Hero-Foto mit 1006 px ist 63,43 % davon); breitere Fenster zentrieren ihn. Die Kanten sind der Abstand
+     von der Rahmenkante zum Inhalt: unter 1280 px 16 px wie der Hero am Handy, ab 1280 px die Textlinie (100 Entwurfs-px)
+     und die rechte Kante (80 Entwurfs-px) des Hero, siehe unten. */
+  --fx-rahmen: 1586px;
+  --fx-kante-l: var(--fx-s-4);
+  --fx-kante-r: var(--fx-s-4);
+  /* Schwebende Fenster (Luna-Knopf, Anstupser, Chat; ab 640 px): 28 px vom rechten Rand, über 1586 px an der rechten Rahmenkante.
+     Bei position: fixed meint Prozent die Breite des Ansichtsfensters ohne Scrollbalken, in der auch der Rahmen zentriert wird. */
+  --fx-schwebe-r: max(28px, calc((100% - var(--fx-rahmen)) / 2 + 28px));
 
   /* Bewegung */
   --fx-ease: cubic-bezier(0.2, 0, 0, 1);
@@ -80,18 +86,18 @@
   --fx-dur-chat: 200ms;   /* Chat öffnen/schließen, Luna-Fortschritt */
   --fx-dur-sheet: 240ms;  /* Bottom-Sheet */
 
-  /* ── Ergänzt aus den Screens (Entscheidung 1A). Handy → Desktop, fließend 390 → 1440 px ── */
+  /* ── Ergänzt aus den Screens (Entscheidung 1A). Handy → Desktop, fließend 390 → 1534 px (Hero-Anruf: bis 1440 px) ── */
   --fx-hero-call: clamp(23px, calc(0.19vw + 22.26px), 25px);  /* „Jetzt anrufen“ im Hero (Screen 14: 23/25) */
-  --fx-step-nr: clamp(56px, calc(1.524vw + 50.06px), 72px);   /* Schrittnummern So funktioniert's (01: 56, 02: 72) */
+  --fx-step-nr: clamp(56px, calc(3.497vw + 42.36px), 96px);   /* Schrittnummern So funktioniert's */
   --fx-h2-s: 30px;         /* Menü-Links, Seitenkasten „Lieber sofort sprechen?“, Sheet-Titel (05, 02, 04) */
   --fx-h2-dialog: 36px;    /* Titel Preis-Dialog (03) */
-  --fx-h3-karte: clamp(26px, calc(0.19vw + 25.26px), 28px);   /* Leistungskarten: Titel und Preis (02: 28) */
-  --fx-h4: clamp(20px, calc(0.19vw + 19.26px), 22px);         /* Ergebnis-, Anfrage-, Fehlerkarten, „Was ist passiert?“ */
-  --fx-h5: clamp(17px, calc(0.19vw + 16.26px), 19px);         /* Kachel-, Vertrauens-, Fieldset-, Spaltentitel, Luna-Name */
+  --fx-h3-karte: clamp(26px, calc(0.175vw + 25.32px), 28px);  /* Leistungskarten: Titel und Preis */
+  --fx-h4: clamp(20px, calc(0.35vw + 18.64px), 24px);         /* Ergebnis-, Anfrage-, Fehlerkarten, „Was ist passiert?“ */
+  --fx-h5: clamp(17px, calc(0.175vw + 16.32px), 19px);        /* Kachel-, Vertrauens-, Fieldset-, Spaltentitel, Luna-Name */
   --fx-kachel: clamp(15px, calc(2.5vw + 7px), 17px);         /* Kacheltitel der Schnellwahl unter 920 px: „Haushaltsgeräte“ passt bis 320 px in eine Zeile (Inter 700) */
   --fx-btn: 16px;          /* Knöpfe, Chips (Screen 14: 16–18) */
   --fx-btn-l: 18px;        /* Anruf-Pillen in Karten, Senden-Knopf */
-  --fx-text: 16px;         /* Kartentext, Tabellen, Labels, Luna-Verlauf */
+  --fx-text: 16px;         /* Kartentext, Tabellen, Labels, Luna-Verlauf; ab 920 px 17 px (unten) */
   --fx-kopf: 76px;         /* Höhe Seitenkopf: unter 1280 px 76, darüber 100 Entwurfs-px (Entwurf „Hero – Desktop 1586“) */
   --fx-border: 1.5px;      /* Umrandung von Feldern, Chips, Zweitknöpfen (alle Screens) */
 
@@ -99,10 +105,15 @@
   --fx-tuerkis-tief: color-mix(in srgb, var(--fx-tuerkis) 88%, var(--fx-tiefsee)); /* Anruf-Knopf beim Überfahren (Tiefsee-Schrift 6,7:1) */
   --fx-glanz: color-mix(in srgb, var(--fx-weiss) 55%, transparent);     /* Glanzlicht, das beim Scrollen über die Bilder der Leistungen wandert */
 
-  /* ── Fuß (19.10.2026): große Wortmarke hell auf hellem Fuß, wie ein Wasserzeichen ── */
-  /* Große Wortmarke so breit wie der Inhalt (in einem Container gemessen): 0,288 em je px passt zu „fixit247“ in Inter 800
-     mit −0,05 em Laufweite, in Chrome gemessen; ein e2e-Test prüft es. Ändern sich Wort oder Schrift, neu messen. */
-  --fx-wortmarke-gross: calc(min(100cqi - 2 * var(--fx-gutter), var(--fx-container)) * 0.288);
+  /* ── Dunkle Flächen (19.10.2026): So funktioniert's und Fuß ── */
+  /* Grundlinie auf Tiefsee, gut 2:1: Tiefsee-2 allein (1,3:1) ginge verloren, die türkise Laufline bräuchte aber eine Spur, auf der sie läuft */
+  --fx-linie-dunkel: color-mix(in srgb, var(--fx-nebel) 30%, var(--fx-tiefsee));
+
+  /* ── Fuß (19.10.2026): große Wortmarke in Lagune auf dem dunklen Fuß ── */
+  /* Große Wortmarke so breit wie der Inhalt (in einem Container gemessen): Inhaltsbreite = Container, höchstens der Rahmen,
+     abzüglich beider Kanten. 0,288 em je px passt zu „fixit247“ in Inter 800 mit −0,05 em Laufweite, in Chrome gemessen;
+     ein e2e-Test prüft es. Ändern sich Wort oder Schrift, neu messen. */
+  --fx-wortmarke-gross: calc((min(100cqi, var(--fx-rahmen)) - var(--fx-kante-l) - var(--fx-kante-r)) * 0.288);
 
   /* ── Kopf, Hero und Vorteile nach dem Entwurf „Hero – Desktop 1586“ (19.10.2026), Werte 1:1 aus dem Entwurf (styles/hero.css).
      Desktop-Werte stehen in Entwurfs-px × --fx-hd-px: ab 1534 px fest wie im Entwurf, von 1280 bis 1534 px schrumpft alles
@@ -126,7 +137,7 @@
   --fx-hd-tuerkis-hell: #8FE6EC;   /* Hörer im Kreis */
   --fx-hd-eis: #E8F4F8;            /* Hinweiskasten */
   --fx-hd-lagune: #BEF0F6;         /* Kreise der Vorteile */
-  --fx-hd-schaum: #E6F8FA;         /* Häkchen im Schild */
+  --fx-hd-schaum: #E6F8FA;         /* Häkchen im Schild (design/icons/vorteil-schild.svg) */
   --fx-hd-raster: rgba(40, 70, 120, 0.05); /* Raster am linken Rand des Hero */
   --fx-hd-shadow-anruf: 0 4px 10px rgba(3, 16, 31, 0.06);
   --fx-hd-shadow-anfrage: 0 3px 8px rgba(3, 16, 31, 0.05);
@@ -154,7 +165,7 @@
   --fx-hd-r-anfrage: calc(16 * var(--fx-hd-px));
   --fx-hd-r-info: calc(20 * var(--fx-hd-px));
 
-  --fx-hd-s-kopf-l: calc(92 * var(--fx-hd-px));
+  --fx-hd-s-kopf-l: calc(92 * var(--fx-hd-px));     /* ab 1586 px kommt der Rand neben dem Rahmen dazu (hero.css) */
   --fx-hd-s-kopf-r: calc(79 * var(--fx-hd-px));
   --fx-hd-s-nav: calc(40 * var(--fx-hd-px));
   --fx-hd-s-anrufen: calc(41 * var(--fx-hd-px));    /* vor dem Anruf-Knopf */
@@ -192,24 +203,34 @@
   --fx-hd-s-vorteil-l: calc(26 * var(--fx-hd-px));
   --fx-hd-s-vorteil-text: calc(10 * var(--fx-hd-px));
   --fx-hd-s-vorteil-p: calc(6 * var(--fx-hd-px));
+  /* Über 1586 px reicht das Foto bis zum Fensterrand (hero.css). Es gibt es nur in 1006 × 724 px, darum höchstens 1,25-fach
+     vergrößert; reicht das nicht bis zum Rand (ab ca. 2090 px), läuft es rechts über bis zu 160 px in die Kalk-Fläche aus.
+     Beim Vergrößern fällt unten Vordergrund weg, dort blendet es über bis zu 120 px aus. */
+  --fx-hd-foto-zoom: 1.25;
+  --fx-hd-s-ausblend: 160px;
+  --fx-hd-s-ausblend-unten: 120px;
 }
 
-@media (min-width: 40rem) {
+/* Abschnitte der Seite (Umbruch „nav“): Fließtext in Karten und Tabellen eine Stufe größer */
+@media (min-width: 57.5rem) {
   :root {
-    --fx-gutter: 24px;
-    --fx-r-tile: 18px;
+    --fx-text: 17px;
   }
 }
 
-/* Kopf, Hero und Vorteile in der Desktop-Fassung; 100vw / 1534 ist ein Entwurfs-px bei 1534 px Fensterbreite */
+/* Kopf, Hero und Vorteile in der Desktop-Fassung; 100vw / 1534 ist ein Entwurfs-px bei 1534 px Fensterbreite.
+   Die Kanten des Rasters folgen dem Hero: Textlinie links (--fx-hd-s-text-l) und rechter Rand der Vorteile. */
 @media (min-width: 80rem) {
   :root {
     --fx-hd-px: min(1px, 100vw / 1534);
     --fx-kopf: calc(100 * var(--fx-hd-px));
+    --fx-kante-l: calc(100 * var(--fx-hd-px));
+    --fx-kante-r: calc(80 * var(--fx-hd-px));
   }
 }
 
-/* Umbrüche: 1280px (darunter Menü-Knopf statt Navigation, Handy-Fassung von Kopf und Hero), 920px (Abschnitte der Seite),
+/* Umbrüche: 1280px (darunter Menü-Knopf statt Navigation, Handy-Fassung von Kopf und Hero; ab hier Kanten des Rasters wie im
+   Entwurf, bis 1586 px am Fensterrand, darüber im zentrierten Rahmen), 920px (Abschnitte der Seite, --fx-text 17 px),
    640px (darunter Sheet statt Dialog, Luna Vollbild) */
 
 @media (prefers-reduced-motion: reduce) {

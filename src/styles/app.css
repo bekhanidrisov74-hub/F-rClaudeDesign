@@ -25,6 +25,7 @@
   --breakpoint-kopf: 35rem;   /* 560 px */
   --breakpoint-dialog: 40rem; /* 640 px */
   --breakpoint-nav: 57.5rem;  /* 920 px */
+  --breakpoint-spalten: 70rem; /* 1120 px: Preisrechner zweispaltig */
   --breakpoint-hd: 80rem;     /* 1280 px: Navigation im Kopf, Desktop-Fassung des Hero */
 }
 
@@ -36,7 +37,6 @@
   --color-tiefsee: var(--fx-tiefsee);
   --color-tiefsee-2: var(--fx-tiefsee-2);
   --color-kalk: var(--fx-kalk);
-  --color-kalk-2: var(--fx-kalk-2);
   --color-weiss: var(--fx-weiss);
   --color-eis: var(--fx-eis);
   --color-lagune: var(--fx-lagune);
@@ -46,6 +46,7 @@
   --color-schiefer: var(--fx-schiefer);
   --color-rand: var(--fx-rand);
   --color-linie: var(--fx-linie);
+  --color-linie-dunkel: var(--fx-linie-dunkel);
   --color-nebel: var(--fx-nebel);
   --color-icon-technik: var(--fx-icon-technik);
   --color-icon-handwerk: var(--fx-icon-handwerk);
@@ -94,8 +95,6 @@
   --text-text--line-height: 1.5;
   --text-small: var(--fx-small);
   --text-small--line-height: 1.45;
-  --text-note: var(--fx-note);
-  --text-note--line-height: 1.45;
   --text-btn: var(--fx-btn);
   --text-btn--line-height: 1.1;
   --text-btn-l: var(--fx-btn-l);
@@ -139,7 +138,6 @@
   --spacing-s8: var(--fx-s-8);
   --spacing-s9: var(--fx-s-9);
   --spacing-s10: var(--fx-s-10);
-  --spacing-gutter: var(--fx-gutter);
   --spacing-section: var(--fx-section-y);
   --spacing-section-end: var(--fx-section-y-end);
   --spacing-kopf: var(--fx-kopf);
@@ -151,13 +149,30 @@
   --default-transition-timing-function: var(--fx-ease);
 }
 
-/* Inhaltsbreite: 1140 px plus Seitenrand */
+/* Inhaltsbreite: der Rahmen des Entwurfs (1586 px, darüber zentriert) mit den Kanten des Hero als Innenabstand.
+   So stehen Abschnitte, Fuß, Menü und Rechtsseiten auf derselben Textlinie wie der Hero und rechts bündig mit dem Kopf. */
 @utility wrapper {
   box-sizing: border-box;
   width: 100%;
-  max-width: calc(var(--fx-container) + 2 * var(--fx-gutter));
+  max-width: var(--fx-rahmen);
   margin-inline: auto;
-  padding-inline: var(--fx-gutter);
+  padding-inline: var(--fx-kante-l) var(--fx-kante-r);
+}
+
+/* Dunkle Fläche (So funktioniert's, Fuß): Tiefsee mit weißer Schrift, Kinder erben sie. Kontraste auf Tiefsee: Weiß 19:1,
+   Nebel (Zweittext) 10,3:1, Orange (nur große Ziffern) 5,3:1, Türkis 7,7:1. Der Fokusrahmen ist hier Türkis, Tiefsee wäre unsichtbar;
+   die Markierung bleibt Türkis mit Tiefsee-Schrift (7,7:1), nicht das fast weiße Lagune der hellen Flächen. */
+@utility dunkel {
+  background-color: var(--fx-tiefsee);
+  color: var(--fx-weiss);
+  &::selection,
+  & ::selection {
+    background-color: var(--fx-tuerkis);
+    color: var(--fx-tiefsee);
+  }
+  & :focus-visible {
+    outline-color: var(--fx-tuerkis);
+  }
 }
 
 /* Umrandung von Feldern, Chips und Zweitknöpfen: 1,5 px; Farbe per border-rand, border-linie … */
@@ -179,8 +194,9 @@
    wie an einer Vitrine vorbei. Ohne Scroll-Animationen oder mit reduced motion bleibt es unsichtbar. */
 @utility glanz {
   @supports (animation-timeline: view()) {
-    /* Versatz je Spalte: das Licht wandert von links nach rechts über die Reihe.
-       Die Spaltenzahl folgt dem Leistungsraster (@container, auto-fill ab 340 px, Abstand 24 px). */
+    /* Versatz je Spalte: das Licht wandert von links nach rechts über die Reihe. Die Spaltenzahl folgt dem Leistungsraster
+       (@container, auto-fill ab 340 px, Abstand 24 px): zwei Spalten ab 704 px Inhalt, drei ab 1068 px. Der Inhalt wird nie
+       breiter als 1406 px, vier Spalten (1432 px) gibt es nicht; Fensterbreiten dazu: 736 und 1100 px. */
     --von: 20%;
     --bis: 70%;
     @container (min-width: 704px) and (max-width: 1067.98px) {
@@ -205,8 +221,8 @@
   }
 }
 
-/* So funktioniert's (Höhepunkt): eine türkise Linie zieht über die Schritte, die Ziffern leuchten nacheinander auf.
-   Jeder Schritt hat seine eigene Sichtachse; der Versatz über nth-child ergibt die Reihenfolge auch in einer Zeile. */
+/* So funktioniert's (Höhepunkt, auf der dunklen Fläche): eine türkise Linie zieht über die Grundlinie der Schritte, die Ziffern
+   leuchten nacheinander auf. Jeder Schritt hat seine eigene Sichtachse; der Versatz über nth-child ergibt die Reihenfolge auch in einer Zeile. */
 @utility schritt {
   @supports (animation-timeline: view()) {
     --von: 18%;
@@ -232,9 +248,10 @@
   }
 }
 
-/* Große Wortmarke, schließt den hellen Fuß unten über die volle Breite ab, wie ein Wasserzeichen: Lagune, die nach unten
-   in die Fläche ausläuft. Der Text steht innen in einem wrapper und füllt die Inhaltsbreite (--fx-wortmarke-gross).
-   Unten unter der Grundlinie abgeschnitten; steigt beim Hinscrollen aus dem unteren Rand auf. Reine Dekoration. */
+/* Große Wortmarke, schließt den dunklen Fuß unten über die volle Breite ab: Lagune oben, die nach unten in das Tiefsee des Fußes
+   ausläuft, die Buchstaben sinken also in die Fläche. Der Text steht innen in einem wrapper und füllt die Inhaltsbreite
+   (--fx-wortmarke-gross). Unten knapp über der Grundlinie abgeschnitten; steigt beim Hinscrollen aus dem unteren Rand auf.
+   Reine Dekoration. */
 @utility wortmarke {
   position: relative;
   container-type: inline-size;
@@ -248,10 +265,11 @@
   & > * {
     font-size: var(--fx-wortmarke-gross);
     letter-spacing: -0.05em;
+    text-indent: -0.008em; /* linker Seitenabstand des „f“: die Buchstaben stehen auf der Textlinie, nicht 3 px davor */
     height: 0.84em; /* knapp über der Grundlinie: die Buchstaben stehen auf der Kante */
     overflow: clip;
     color: transparent;
-    background-image: linear-gradient(to bottom, var(--fx-lagune) 10%, var(--fx-kalk-2) 95%);
+    background-image: linear-gradient(to bottom, var(--fx-lagune) 10%, var(--fx-tiefsee) 120%);
     -webkit-background-clip: text;
     background-clip: text;
     view-timeline: --wortmarke block;
