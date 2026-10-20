@@ -1,14 +1,12 @@
-/** Dekorative Bildserie laut IMAGE-BRIEFS.md; Maße und Zuschnitt kommen vom Aufrufer. `quer`: 16:9-Quelle (1254 × 703). */
-export function Bildflaeche({ bild, fokus, quer = false, className = '' }: { bild: number; fokus?: string; quer?: boolean; className?: string }) {
+/** Dekorative Fotoserie laut IMAGE-BRIEFS.md (Quelle 1536 × 1024, 3:2); Maße und Zuschnitt kommen vom Aufrufer. */
+export function Bildflaeche({ bild, fokus, className = '' }: { bild: number; fokus?: string; className?: string }) {
   // Kartenbreite wie im Raster der Leistungen (Leistungen.tsx): auto-fill ab 340 px, Abstand 24 px. Inhalt: unter 1280 px
   // Fenster − 32 px, bis 1534 px Fenster − 180 Entwurfs-px (88,27 vw), bis 1586 px Fenster − 180 px, darüber 1406 px.
   // Eine Spalte unter 736 px, zwei bis 1099 px, drei ab 1100 px (Karte 453 px bei 1406 px Inhalt).
-  // `quer`: ab 920 px (4:3-Zuschnitt) folgt die Bildbreite der Rahmenhöhe: Kartenbreite × 4/3.
-  const sizes = quer
-    ? '(min-width: 1586px) 604px, (min-width: 1534px) calc((100vw - 228px) / 3 * 4 / 3), (min-width: 1280px) calc((88.27vw - 48px) / 3 * 4 / 3), (min-width: 1100px) calc((100vw - 80px) / 3 * 4 / 3), (min-width: 920px) calc((100vw - 56px) / 2 * 4 / 3), (min-width: 736px) calc((100vw - 56px) / 2), calc(100vw - 32px)'
-    : '(min-width: 1586px) 453px, (min-width: 1534px) calc((100vw - 228px) / 3), (min-width: 1280px) calc((88.27vw - 48px) / 3), (min-width: 1100px) calc((100vw - 80px) / 3), (min-width: 736px) calc((100vw - 56px) / 2), calc(100vw - 32px)'
-  const srcSet = (format: string) => [480, 800, 1200, 1254]
-    .map(width => `/images/bild-${bild}${width === 1254 ? '' : `-${width}`}.${format} ${width}w`)
+  // Ab 920 px schneidet die Karte 4:3 zu: das 3:2-Foto folgt dann der Rahmenhöhe, Bildbreite = Kartenbreite × 9/8.
+  const sizes = '(min-width: 1586px) 510px, (min-width: 1534px) calc((100vw - 228px) / 3 * 9 / 8), (min-width: 1280px) calc((88.27vw - 48px) / 3 * 9 / 8), (min-width: 1100px) calc((100vw - 80px) / 3 * 9 / 8), (min-width: 920px) calc((100vw - 56px) / 2 * 9 / 8), (min-width: 736px) calc((100vw - 56px) / 2), calc(100vw - 32px)'
+  const srcSet = (format: string) => [480, 800, 1200, 1536]
+    .map(width => `/images/bild-${bild}${width === 1536 ? '' : `-${width}`}.${format} ${width}w`)
     .join(', ')
 
   return (
@@ -19,8 +17,8 @@ export function Bildflaeche({ bild, fokus, quer = false, className = '' }: { bil
           src={`/images/bild-${bild}.webp`}
           srcSet={srcSet('webp')}
           sizes={sizes}
-          width={1254}
-          height={quer ? 703 : 1254}
+          width={1536}
+          height={1024}
           alt=""
           loading="lazy"
           decoding="async"

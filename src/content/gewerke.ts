@@ -22,10 +22,8 @@ export interface Gewerk {
   karte: string
   /** Bildnummer laut IMAGE-BRIEFS.md (public/images/bild-N.webp) */
   bild: number
-  /** Bildausschnitt der Karte (object-position): hält Helm und Hände im Zuschnitt 16:9 (Handy) und 4:3 (ab 920 px) */
+  /** Bildausschnitt der Karte (object-position): hält Hände und Werkzeug im Zuschnitt 16:9 (Handy) und 4:3 (ab 920 px) */
   bildFokus: string
-  /** Quellbild ist ein 16:9-Querformat (bild-3): Bildflaeche rechnet die Breite für den 4:3-Zuschnitt ab 920 px mit */
-  bildQuer?: true
   /** Flaches Icon im Stil des Hero: design/icons/{icon}.svg (im Lagune-Kreis, ui/IconKreis) */
   icon: string
   /** Luna-Erfolg: „Wir geben sie jetzt an einen passenden {betrieb} in Ihrer Nähe weiter.“ (nicht im Design, Frage 2) */
@@ -68,7 +66,6 @@ export const gewerke: Gewerk[] = [
     karte: 'Therme fällt aus, kein Warmwasser, Klimaanlage',
     bild: 3,
     bildFokus: '65% 50%',
-    bildQuer: true,
     icon: 'gewerk-heizung-und-klima',
     betrieb: 'Fachbetrieb für Heizung und Klima',
     tipp: GASNOTRUF,

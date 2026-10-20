@@ -109,7 +109,7 @@ Bewusst und nicht im Entwurf (das Hero-Raster `GridPulse` ist mit dem Hero vom 1
 
 ## Bilder und Icons
 
-- Bildflächen der Leistungskarten zeigen 3D-Szenen aus Blender (`public/images/bild-2` bis `bild-6`, `design/IMAGE-BRIEFS.md`): eine stilisierte Fachkraft arbeitet an der Schadstelle ihres Gewerks, dunkles Tiefsee-Studio, gedämpfter türkiser Kegel hinter der Figur, orange Akzente. Völlig andere Motive als in den Entwürfen, gewollt. Zu prüfen sind nur: Gesicht, Hände und Werkzeug vollständig sichtbar, nichts Wichtiges abgeschnitten.
+- Bildflächen der Leistungskarten zeigen Fotos (`public/images/bild-2` bis `bild-6`, Quelle `design/bilder-foto/`, 3:2): eine Fachkraft in Navy arbeitet in einer hellen Wohnung an der Schadstelle ihres Gewerks, das Gesicht liegt bewusst außerhalb des Bildes, orange Akzente. Völlig andere Motive als in den Entwürfen, gewollt. Zu prüfen sind nur: Hände, Werkzeug und Schadstelle vollständig sichtbar, nichts Wichtiges abgeschnitten.
 - Zuschnitt: Karten unter 920 px 16 : 9, ab 920 px 4 : 3.
 - Alle Icons in `design/icons/*.svg` sind neu gezeichnet. Form und Rundung weichen leicht von den Entwurfs-Icons ab. Farben und Platz müssen stimmen: Steuer- und Feldzeichen in der Textfarbe der Umgebung, Luna-Mond auf Tiefsee. X, Chevrons und Häkchen sind etwas größer als im Entwurf.
 - Die Symbole (Telefon in den Anruf-Knöpfen außer Kopf und Hero, Chat, Senden, Zusagen, Preisrechner, Fuß, Luna, Erfolgs- und Fehlerkarten) sind farbige 3D-Renders statt flacher Icons (SPEC 3): Körper Tiefsee auf hellen und türkisen Flächen, Türkis auf dunklen, Warnung Orange. Form und Farbe weichen deshalb vom Entwurf ab. Zu prüfen sind nur: gleiche Größe und Lage wie vorher, gut erkennbar, und der Anruf-Knopf bleibt das auffälligste Element.
