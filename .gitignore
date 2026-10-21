@@ -14,3 +14,6 @@ fixit247-daten/
 
 # Python-Bytecode der Blender-Skripte
 __pycache__/
+
+# Arbeitsdateien (REA-Analyse, Debug-Chrome-Profil)
+tmp/
