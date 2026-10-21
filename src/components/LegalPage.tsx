@@ -2,10 +2,10 @@ import { copy } from '../content/copy'
 import { Seitenrahmen } from './Seitenrahmen'
 import { Button } from './ui/Button'
 
-type Rechtsseite = 'impressum' | 'datenschutz' | 'agb'
+type Rechtsseite = 'impressum' | 'datenschutz' | 'agb' | 'nichtGefunden'
 
 /**
- * Rechtsseiten: Titel in der Größe von --fx-h1, Kanten im Rahmen (wrapper). Der Text bleibt auf lesbarer Zeilenlänge
+ * Rechtsseiten und die Seite für unbekannte Adressen: Titel in der Größe von --fx-h1, Kanten im Rahmen (wrapper). Der Text bleibt auf lesbarer Zeilenlänge
  * (höchstens 40 em), auch wenn der Rahmen bis 1586 px breit wird.
  */
 export function LegalPage({ seite }: { seite: Rechtsseite }) {

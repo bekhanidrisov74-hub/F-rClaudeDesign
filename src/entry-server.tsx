@@ -21,7 +21,8 @@ export function render(pfad: string) {
     `<meta property="og:description" content="${esc(seite.beschreibung)}" />`,
     '<meta property="og:type" content="website" />',
     '<meta property="og:locale" content="de_AT" />',
-    domainBekannt ? `<meta property="og:url" content="${esc(url)}" />` : '',
+    // Die 404-Seite hat keine eigene Adresse, sie steht unter jedem unbekannten Pfad
+    domainBekannt && schluessel !== '/404' ? `<meta property="og:url" content="${esc(url)}" />` : '',
     domainBekannt && !seite.noindex ? `<link rel="canonical" href="${esc(url)}" />` : '',
   ]
     .filter(Boolean)

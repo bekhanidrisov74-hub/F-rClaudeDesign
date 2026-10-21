@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, useSyncExternalStore, type FormEvent, type ReactNode } from 'react'
 import { DATENSCHUTZ, EINWILLIGUNG, WEISS_NICHT, copy, fuelle } from '../content/copy'
-import { gewerke } from '../content/gewerke'
+import { anfrageAnker, gewerke } from '../content/gewerke'
 import { submitLead, zufallsnummer, type Match } from '../lib/submitLead'
 import { WEISS_NICHT_ID, formularZuLead, pruefeFeld, pruefeFormular, type FormularFeld, type FormularWerte } from '../lib/validate'
 import { Button } from './ui/Button'
@@ -89,17 +89,23 @@ export function AnfrageFormular() {
   // Telefon in die Adresse und verwürfe die Anfrage (Audit, Befund A3). Die Eingaben bleiben stehen.
   const hydriert = useHydriert()
 
-  // Links „… anfragen“ und die Schnellwahl-Kacheln wählen das Gewerk vor. Der Sprung zum Anker bleibt.
+  // Links „… anfragen“ und die Schnellwahl-Kacheln wählen das Gewerk vor. Der Sprung zum Anker (anfrageAnker) bleibt.
   useEffect(() => {
-    const beiKlick = (e: MouseEvent) => {
-      if (!(e.target instanceof Element)) return
-      const gewerk = e.target.closest<HTMLElement>('a[href="#anfrage"][data-gewerk]')?.dataset.gewerk
+    const waehle = (gewerk: string | undefined) => {
       if (!gewerk || !GEWERK_IDS.includes(gewerk)) return
       setDanke(null)
       setVorauswahl(gewerk)
       const auswahl = formular.current?.elements.namedItem('gewerk')
       if (auswahl instanceof HTMLSelectElement) auswahl.value = gewerk
       setFehler((alt) => ({ ...alt, gewerk: undefined }))
+    }
+    // Vor der Hydrierung angetippt: Der Browser ist schon zum Anker gesprungen, das Gewerk steht in der Adresse (Audit-Befund A4).
+    // Eine Auswahl, die jemand vorher selbst getroffen hat, bleibt.
+    const auswahl = formular.current?.elements.namedItem('gewerk')
+    if (auswahl instanceof HTMLSelectElement && !auswahl.value)
+      waehle(GEWERK_IDS.find((id) => location.hash === `#${anfrageAnker(id)}`))
+    const beiKlick = (e: MouseEvent) => {
+      if (e.target instanceof Element) waehle(e.target.closest<HTMLElement>('a[href^="#anfrage-"][data-gewerk]')?.dataset.gewerk)
     }
     document.addEventListener('click', beiKlick)
     return () => document.removeEventListener('click', beiKlick)

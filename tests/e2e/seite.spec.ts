@@ -1,6 +1,7 @@
 import { expect, test } from './test'
 
-const PFADE = ['/', '/impressum/', '/datenschutz/', '/agb/']
+// /404.html: die Seite, die der Webserver für unbekannte Pfade schickt (public/.htaccess)
+const PFADE = ['/', '/impressum/', '/datenschutz/', '/agb/', '/404.html']
 const nurEinmal = (name: string) => test.skip(name !== 'm390', 'unabhängig von der Breite, läuft nur einmal')
 
 for (const pfad of PFADE) {
@@ -45,6 +46,11 @@ test('Platzhalterseiten tragen noindex', async ({ request }, info) => {
 test('unbekannte Seite liefert 404', async ({ request }, info) => {
   nurEinmal(info.project.name)
   expect((await request.get('/gibt-es-nicht')).status()).toBe(404)
+  // Inhalt der 404-Seite (Apache liefert sie per ErrorDocument; vite preview zeigt sie nicht an)
+  const html = await (await request.get('/404.html')).text()
+  expect(html).toContain('Seite nicht gefunden')
+  expect(html).toContain('href="/"')
+  expect(html).not.toContain('og:url')
 })
 
 test('sitemap.xml und robots.txt', async ({ request }, info) => {

@@ -1,0 +1,6 @@
+/index.html perf 0.93 a11y 1 bp 1 seo 1 LCP 2803 TBT 68
+/index.html perf 0.94 a11y 1 bp 1 seo 1 LCP 2793 TBT 64
+/index.html perf 0.95 a11y 1 bp 1 seo 1 LCP 2861 TBT 13
+/impressum/index.html perf 0.99 a11y 1 bp 1 seo 0.63 LCP 2004 TBT 0
+/impressum/index.html perf 0.99 a11y 1 bp 1 seo 0.63 LCP 2011 TBT 0
+/impressum/index.html perf 0.99 a11y 1 bp 1 seo 0.63 LCP 2024 TBT 0

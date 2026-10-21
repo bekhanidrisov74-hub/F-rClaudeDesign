@@ -1,5 +1,5 @@
 import { copy } from '../content/copy'
-import { gewerke } from '../content/gewerke'
+import { anfrageAnker, gewerke } from '../content/gewerke'
 import { IconKreis } from './ui/IconKreis'
 
 // Alle Kacheln tragen denselben 1-px-Rand (Haarlinie wie die übrigen Karten der Seite): So haben Gewerke-Kacheln und Umriss-Kachel
@@ -28,7 +28,7 @@ export function Schnellwahl() {
           {gewerke.map((g) => (
             <a
               key={g.id}
-              href="#anfrage"
+              href={`#${anfrageAnker(g.id)}`}
               data-gewerk={g.id}
               className={`${KACHEL} border-linie bg-weiss shadow-karte hover:border-lagune hover:shadow-karte-hover`}
             >

@@ -1,0 +1,440 @@
+[
+  {
+    "szenario": "s1_aussperrung_anruf",
+    "netz": "ungedrosselt",
+    "ziel": "Anruf",
+    "knopf": {
+      "oben": 432,
+      "unten": 511,
+      "sichtbar": true
+    },
+    "href": "tel:",
+    "beruehrungen": 1,
+    "zeichen": 0,
+    "wischen_geschaetzt": 0,
+    "ziel_erreicht_ms": 750,
+    "schritte": [
+      {
+        "was": "Hero „Jetzt anrufen“",
+        "t": 750
+      }
+    ],
+    "fcp_ms": 728,
+    "lcp_ms": null,
+    "hydriert_ms": 529,
+    "anrufe": [
+      {
+        "href": "tel:",
+        "t": 746
+      }
+    ],
+    "anfragen": [
+      {
+        "url": "/",
+        "methode": "GET",
+        "typ": "document",
+        "status": 200,
+        "bytes": 20498,
+        "ende_ms": 10
+      },
+      {
+        "url": "/images/hero-wien-480.avif",
+        "methode": "GET",
+        "typ": "image",
+        "status": 200,
+        "bytes": 25361,
+        "ende_ms": 14
+      },
+      {
+        "url": "/assets/index-DTGx5aJ9.css",
+        "methode": "GET",
+        "typ": "stylesheet",
+        "status": 200,
+        "bytes": 14577,
+        "ende_ms": 16
+      },
+      {
+        "url": "/assets/start-index-DWdkFPoR.js",
+        "methode": "GET",
+        "typ": "script",
+        "status": 200,
+        "bytes": 402,
+        "ende_ms": 14
+      },
+      {
+        "url": "/assets/inter-latin-wght-normal-Dx4kXJAl.woff2",
+        "methode": "GET",
+        "typ": "font",
+        "status": 200,
+        "bytes": 48576,
+        "ende_ms": 9
+      },
+      {
+        "url": "/favicon.svg",
+        "methode": "GET",
+        "typ": "other",
+        "status": 200,
+        "bytes": 564,
+        "ende_ms": 4
+      },
+      {
+        "url": "/assets/index-DWdkFPoR.js",
+        "methode": "GET",
+        "typ": "script",
+        "status": 200,
+        "bytes": 103858,
+        "ende_ms": 29
+      }
+    ]
+  },
+  {
+    "szenario": "s2_rohrbruch_formular",
+    "netz": "ungedrosselt",
+    "ziel": "Formular",
+    "vorgewaehlt": "installateur",
+    "ergebnis": "POST",
+    "erfolg": true,
+    "url": "/#anfrage",
+    "beruehrungen": 6,
+    "zeichen": 32,
+    "wischen_geschaetzt": 4,
+    "ziel_erreicht_ms": 786,
+    "schritte": [
+      {
+        "was": "Schnellwahl „Installateur“",
+        "t": 275
+      },
+      {
+        "was": "Feld Name",
+        "t": 383
+      },
+      {
+        "was": "Feld Telefon",
+        "t": 571
+      },
+      {
+        "was": "Feld PLZ und Ort",
+        "t": 658
+      },
+      {
+        "was": "Einwilligung",
+        "t": 729
+      },
+      {
+        "was": "Anfrage senden",
+        "t": 786
+      }
+    ],
+    "fcp_ms": 176,
+    "lcp_ms": 176,
+    "hydriert_ms": 236,
+    "anrufe": [],
+    "anfragen": 13
+  },
+  {
+    "szenario": "s3_stromausfall_luna",
+    "netz": "ungedrosselt",
+    "fehler": "TimeoutError: locator.waitFor: Timeout 60000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Chat mit Luna öffnen' }) to be visible\u001b[22m\n",
+    "beruehrungen": 0,
+    "zeichen": 0,
+    "wischen_geschaetzt": 0,
+    "ziel_erreicht_ms": null,
+    "schritte": [],
+    "fcp_ms": 196,
+    "lcp_ms": 196,
+    "hydriert_ms": 253,
+    "anrufe": [],
+    "anfragen": 7
+  },
+  {
+    "szenario": "s4_therme_unten_anruf_kopf",
+    "netz": "ungedrosselt",
+    "ziel": "Anruf",
+    "knopf": {
+      "oben": 13,
+      "unten": 61,
+      "sichtbar": true
+    },
+    "href": "tel:",
+    "beruehrungen": 1,
+    "zeichen": 0,
+    "wischen_geschaetzt": 0,
+    "ziel_erreicht_ms": 327,
+    "schritte": [
+      {
+        "was": "Kopf „Anrufen“",
+        "t": 327
+      }
+    ],
+    "fcp_ms": 196,
+    "lcp_ms": 196,
+    "hydriert_ms": 302,
+    "anrufe": [
+      {
+        "href": "tel:",
+        "t": 321
+      }
+    ],
+    "anfragen": 11
+  },
+  {
+    "szenario": "s5_rohrbruch_ohne_js",
+    "netz": "ungedrosselt",
+    "ziel": "Anruf + Formular ohne JS",
+    "anruf_href": "tel:",
+    "dokument_anfragen_nach_senden": [],
+    "url_danach": "/#anfrage",
+    "beruehrungen": 8,
+    "zeichen": 32,
+    "wischen_geschaetzt": 1,
+    "ziel_erreicht_ms": 724,
+    "schritte": [
+      {
+        "was": "Hero „Anfrage senden“",
+        "t": 280
+      },
+      {
+        "was": "Feld Name",
+        "t": 342
+      },
+      {
+        "was": "Feld Telefon",
+        "t": 443
+      },
+      {
+        "was": "Feld PLZ und Ort",
+        "t": 525
+      },
+      {
+        "was": "Auswahl Gewerk öffnen",
+        "t": 617
+      },
+      {
+        "was": "Einwilligung",
+        "t": 681
+      },
+      {
+        "was": "Anfrage senden",
+        "t": 724
+      }
+    ],
+    "fcp_ms": 204,
+    "lcp_ms": 204,
+    "hydriert_ms": null,
+    "anrufe": [],
+    "anfragen": 7
+  },
+  {
+    "szenario": "s1_aussperrung_anruf",
+    "netz": "Slow 4G + CPU 4×",
+    "ziel": "Anruf",
+    "knopf": {
+      "oben": 432,
+      "unten": 511,
+      "sichtbar": true
+    },
+    "href": "tel:",
+    "beruehrungen": 1,
+    "zeichen": 0,
+    "wischen_geschaetzt": 3,
+    "ziel_erreicht_ms": 2496,
+    "schritte": [
+      {
+        "was": "Hero „Jetzt anrufen“",
+        "t": 2496
+      }
+    ],
+    "fcp_ms": 1920,
+    "lcp_ms": 1920,
+    "hydriert_ms": null,
+    "anrufe": [
+      {
+        "href": "tel:",
+        "t": 2480
+      }
+    ],
+    "anfragen": [
+      {
+        "url": "/",
+        "methode": "GET",
+        "typ": "document",
+        "status": 200,
+        "bytes": 20498,
+        "ende_ms": 690
+      },
+      {
+        "url": "/assets/start-index-DWdkFPoR.js",
+        "methode": "GET",
+        "typ": "script",
+        "status": 200,
+        "bytes": 402,
+        "ende_ms": 586
+      },
+      {
+        "url": "/assets/index-DTGx5aJ9.css",
+        "methode": "GET",
+        "typ": "stylesheet",
+        "status": 200,
+        "bytes": 14577,
+        "ende_ms": 819
+      },
+      {
+        "url": "/images/hero-wien-480.avif",
+        "methode": "GET",
+        "typ": "image",
+        "status": 200,
+        "bytes": 25361,
+        "ende_ms": 928
+      },
+      {
+        "url": "/assets/inter-latin-wght-normal-Dx4kXJAl.woff2",
+        "methode": "GET",
+        "typ": "font",
+        "status": 200,
+        "bytes": 48576,
+        "ende_ms": 1068
+      }
+    ]
+  },
+  {
+    "szenario": "s2_rohrbruch_formular",
+    "netz": "Slow 4G + CPU 4×",
+    "ziel": "Formular",
+    "vorgewaehlt": "(leer)",
+    "ergebnis": "POST",
+    "erfolg": true,
+    "url": "/#anfrage",
+    "beruehrungen": 8,
+    "zeichen": 32,
+    "wischen_geschaetzt": 9,
+    "ziel_erreicht_ms": 4834,
+    "schritte": [
+      {
+        "was": "Schnellwahl „Installateur“",
+        "t": 2484
+      },
+      {
+        "was": "Feld Name",
+        "t": 2778
+      },
+      {
+        "was": "Feld Telefon",
+        "t": 3249
+      },
+      {
+        "was": "Feld PLZ und Ort",
+        "t": 4045
+      },
+      {
+        "was": "Auswahl Gewerk öffnen",
+        "t": 4421
+      },
+      {
+        "was": "Einwilligung",
+        "t": 4652
+      },
+      {
+        "was": "Anfrage senden",
+        "t": 4834
+      }
+    ],
+    "fcp_ms": 1900,
+    "lcp_ms": 1900,
+    "hydriert_ms": 3886,
+    "anrufe": [],
+    "anfragen": 14
+  },
+  {
+    "szenario": "s3_stromausfall_luna",
+    "netz": "Slow 4G + CPU 4×",
+    "fehler": "TimeoutError: locator.waitFor: Timeout 60000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Chat mit Luna öffnen' }) to be visible\u001b[22m\n",
+    "beruehrungen": 0,
+    "zeichen": 0,
+    "wischen_geschaetzt": 0,
+    "ziel_erreicht_ms": null,
+    "schritte": [],
+    "fcp_ms": 1964,
+    "lcp_ms": 1964,
+    "hydriert_ms": 3895,
+    "anrufe": [],
+    "anfragen": 12
+  },
+  {
+    "szenario": "s4_therme_unten_anruf_kopf",
+    "netz": "Slow 4G + CPU 4×",
+    "ziel": "Anruf",
+    "knopf": {
+      "oben": 13,
+      "unten": 61,
+      "sichtbar": true
+    },
+    "href": "tel:",
+    "beruehrungen": 1,
+    "zeichen": 0,
+    "wischen_geschaetzt": 0,
+    "ziel_erreicht_ms": 2541,
+    "schritte": [
+      {
+        "was": "Kopf „Anrufen“",
+        "t": 2541
+      }
+    ],
+    "fcp_ms": 1916,
+    "lcp_ms": 1916,
+    "hydriert_ms": null,
+    "anrufe": [
+      {
+        "href": "tel:",
+        "t": 2533
+      }
+    ],
+    "anfragen": 5
+  },
+  {
+    "szenario": "s5_rohrbruch_ohne_js",
+    "netz": "Slow 4G + CPU 4×",
+    "ziel": "Anruf + Formular ohne JS",
+    "anruf_href": "tel:",
+    "dokument_anfragen_nach_senden": [],
+    "url_danach": "/#anfrage",
+    "beruehrungen": 8,
+    "zeichen": 32,
+    "wischen_geschaetzt": 4,
+    "ziel_erreicht_ms": 3949,
+    "schritte": [
+      {
+        "was": "Hero „Anfrage senden“",
+        "t": 2395
+      },
+      {
+        "was": "Feld Name",
+        "t": 2533
+      },
+      {
+        "was": "Feld Telefon",
+        "t": 2858
+      },
+      {
+        "was": "Feld PLZ und Ort",
+        "t": 3234
+      },
+      {
+        "was": "Auswahl Gewerk öffnen",
+        "t": 3632
+      },
+      {
+        "was": "Einwilligung",
+        "t": 3842
+      },
+      {
+        "was": "Anfrage senden",
+        "t": 3949
+      }
+    ],
+    "fcp_ms": 1912,
+    "lcp_ms": 1912,
+    "hydriert_ms": null,
+    "anrufe": [],
+    "anfragen": 12
+  }
+]

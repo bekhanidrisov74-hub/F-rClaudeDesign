@@ -93,7 +93,9 @@ function passenderPartner(array $req, ?array $partner = null, ?DateTimeInterface
 }
 
 /* ================= MAIL ================= */
-const FARBE = ['navy' => '#17457C', 'orange' => '#F2761B', 'linie' => '#E3EAF3', 'grau' => '#6B7C93', 'tinte' => '#0F1D2E'];
+/* tuerkis und tiefsee wie --fx-tuerkis und --fx-tiefsee (src/styles/tokens.css): Anruf-Knöpfe überall gleich, als Pille wie
+   ui/CallButton (CLAUDE.md, Audit-Befund N7). Ohne Hörer-Icon: Viele Mailprogramme entfernen SVG. */
+const FARBE = ['navy' => '#17457C', 'orange' => '#F2761B', 'tuerkis' => '#22B5C0', 'tiefsee' => '#03101F', 'linie' => '#E3EAF3', 'grau' => '#6B7C93', 'tinte' => '#0F1D2E'];
 
 /* Nutzereingaben nie ungeprüft ins HTML, sonst zerlegt ein "<" das Layout. */
 function esc(?string $s): string { return htmlspecialchars((string) $s, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); }
@@ -231,9 +233,9 @@ function anfrageEingang(array $p): array {
       </td></tr>
 
       <tr><td style="padding:20px 26px 8px;">
-        <a href="tel:{$e['telLink']}" style="display:block;background:{$f['orange']};
-          color:#FFFFFF;text-decoration:none;text-align:center;font-size:16px;font-weight:700;
-          padding:15px 20px;border-radius:12px;">{$e['name']} zurückrufen</a>
+        <a href="tel:{$e['telLink']}" style="display:block;background:{$f['tuerkis']};
+          color:{$f['tiefsee']};text-decoration:none;text-align:center;font-size:16px;font-weight:700;
+          padding:15px 20px;border-radius:999px;">{$e['name']} zurückrufen</a>
       </td></tr>
 
       <tr><td style="padding:18px 26px 24px;">
@@ -383,9 +385,9 @@ function bestaetigungSenden(string $email, array $k, string $antwortAn): void {
       </td></tr>
 
       <tr><td style="padding:20px 26px 8px;">
-        <a href="{$telLink}" style="display:block;background:{$f['orange']};
-          color:#FFFFFF;text-decoration:none;text-align:center;font-size:16px;font-weight:700;
-          padding:15px 20px;border-radius:12px;">Dringend? Jetzt anrufen: {$telefon}</a>
+        <a href="{$telLink}" style="display:block;background:{$f['tuerkis']};
+          color:{$f['tiefsee']};text-decoration:none;text-align:center;font-size:16px;font-weight:700;
+          padding:15px 20px;border-radius:999px;">Dringend? Jetzt anrufen: {$telefon}</a>
       </td></tr>
 
       <tr><td style="padding:16px 26px 24px;">

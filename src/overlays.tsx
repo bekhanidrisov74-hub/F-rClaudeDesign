@@ -75,7 +75,13 @@ export function OverlayProvider({ children }: { children: ReactNode }) {
   const schliessePreise = useCallback(() => {
     setPreise((alt) => {
       // Nach dem Rendern fokussieren: der Auslöser ist erst wieder bedienbar, wenn die Seite nicht mehr gesperrt ist.
-      if (alt.offen) requestAnimationFrame(() => alt.rueckfokus?.focus())
+      // Nur wenn der Fokus nirgends oder unsichtbar steht (noch im geschlossenen Dialog): Das close-Ereignis kann spät kommen,
+      // nachdem der Fokus schon weitergewandert ist, etwa zum Luna-Knopf. Den nimmt der Rückfokus nicht weg (Audit-Befund N5).
+      if (alt.offen)
+        requestAnimationFrame(() => {
+          const aktiv = document.activeElement
+          if (!aktiv || aktiv === document.body || !aktiv.checkVisibility()) alt.rueckfokus?.focus()
+        })
       return { offen: false, rueckfokus: null }
     })
   }, [])

@@ -28,9 +28,14 @@ const preload = schriften
   .join('\n    ')
 
 // Unterseiten als ordner/index.html: /impressum findet so jeder Webserver ohne Umschreibregeln (Audit, Befund H2).
+// Die 404-Seite als dist/404.html: Apache (ErrorDocument in public/.htaccess) und vite preview liefern sie für unbekannte Pfade.
 for (const pfad of pfade) {
   const { html, head } = render(pfad)
   const seite = vorlage.replace('<!--app-head-->', `${head}\n    ${preload}`).replace('<!--app-html-->', html)
+  if (pfad === '/404') {
+    fs.writeFileSync(path.join(dist, '404.html'), seite)
+    continue
+  }
   const ordner = path.join(dist, pfad.slice(1))
   fs.mkdirSync(ordner, { recursive: true })
   fs.writeFileSync(path.join(ordner, 'index.html'), seite)

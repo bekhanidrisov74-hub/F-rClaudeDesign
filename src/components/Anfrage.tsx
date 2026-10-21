@@ -1,4 +1,5 @@
 import { copy } from '../content/copy'
+import { anfrageAnker, gewerke } from '../content/gewerke'
 import { AnfrageFormular } from './AnfrageFormular'
 import { Seitenkasten } from './Seitenkasten'
 
@@ -6,6 +7,10 @@ import { Seitenkasten } from './Seitenkasten'
 export function Anfrage() {
   return (
     <section id="anfrage" aria-labelledby="anfrage-titel" className="bg-kalk">
+      {/* Leere Sprungziele je Gewerk an der Oberkante, wie #anfrage (gewerke.ts, anfrageAnker) */}
+      {gewerke.map((g) => (
+        <span key={g.id} id={anfrageAnker(g.id)} />
+      ))}
       <div className="wrapper pt-section pb-section-end">
         <div className="mb-s5 flex max-w-[680px] flex-col gap-s4 nav:mb-s7 nav:gap-s3">
           <h2 id="anfrage-titel" className="text-h2">
