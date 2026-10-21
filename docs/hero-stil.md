@@ -92,6 +92,17 @@ Ein e2e-Test (`abschnitte.spec.ts`, „Flächenplan“) prüft die Farben, einer
 | Häufige Fragen | Eis | weiße Karten mit Haarlinie und Schatten, Pfeil im Lagune-Kreis (offen: Tiefsee); ab 920 px links Titel und Lead, solange rechts die Liste läuft (sticky) |
 | Fuß | Tiefsee | Logo „Fixit“ weiß, „247“ Orange, Zeile Nebel; Spaltentitel weiß über türkiser Linie, Links Nebel, beim Überfahren weiß; Kontakt-Icons im Lagune-Kreis; Globus in Nebel-Linien; Trennlinie Tiefsee-2; unten die große Wortmarke, die von Lagune in die Fläche ausläuft und so breit ist wie der Inhalt |
 
+### Seite „Partner werden“ (/partner-werden/, 21.10.2026)
+
+Ohne Entwurf in design/, gebaut aus denselben Bausteinen wie die Startseite. Flächen von oben: Einstieg Kalk (H1 in
+`--fx-h1` wie die Rechtsseiten, Lead, Zweitknopf „Zur Bewerbung“, Gewerke im Lagune-Kreis) · Was Sie davon haben Eis (drei
+weiße Karten, Texte ab 920 px auf gleicher Höhe) · So werden Sie Partner Tiefsee (`Ablauf` mit eigenen Schritten) · Was wir
+von Partnern erwarten Eis (Häkchen im weißen Kreis, Prüfsatz als weiße Karte) · Bewerbung Kalk (Formular als weiße Karte wie
+das Anfrageformular, rechts ab 920 px Hinweiskasten in Eis mit Anruf-Knopf) · Fragen von Betrieben Eis (`Fragen`) · Fuß
+Tiefsee. Einziger Primärknopf ist „Bewerbung senden“, Anrufen im Kopf bleibt das auffälligste Element.
+Einstiege: Link im Fuß (Spalte „Seiten“), kleiner Link unter der Kontaktkarte im Handy-Menü, weiße Karte am Ende von
+„Häufige Fragen“ auf der Startseite (der Flächenplan der Startseite bleibt).
+
 ## Fenster
 
 - **Preisübersicht** (Dialog und Sheet): weiß, Gewerke im Lagune-Kreis, Schließen im Lagune-Kreis, Anruf-Knopf wie oben,

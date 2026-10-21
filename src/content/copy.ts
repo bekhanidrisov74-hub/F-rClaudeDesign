@@ -458,7 +458,21 @@ export const copy = {
   rechtliches: {
     // nicht im Design: Platzhalterseiten bis die Rechtstexte da sind
     impressum: { titel: 'Impressum', text: '[Impressum folgt]' },
-    datenschutz: { titel: 'Datenschutz', text: '[Datenschutzerklärung folgt]' },
+    datenschutz: {
+      titel: 'Datenschutz',
+      text: '[Datenschutzerklärung folgt]',
+      // nicht im Design: Entwurf für die Bewerbung über /partner-werden/ (21.10.2026), rechtlich prüfen lassen
+      entwurf: {
+        titel: 'Partner-Bewerbungen (Entwurf, rechtlich zu prüfen)',
+        absaetze: [
+          'Zweck: Mit den Angaben aus dem Formular „Partner werden“ prüfen wir Ihre Bewerbung und nehmen Kontakt mit Ihnen auf. Grundlage ist Ihre Einwilligung.',
+          'Daten: Firmenname, Ansprechperson, Telefon, E-Mail, GISA-Zahl, UID-Nummer, Gewerke, Einsatzgebiet, Erreichbarkeit, Ihre Antworten zu Preisen, Versicherung und Zahlungsarten sowie Ihre Anmerkungen.',
+          'Speicherort: als Datei auf dem Server unseres Anbieters ALL-INKL.COM in Deutschland und im E-Mail-Postfach von fixit247. ALL-INKL.COM verarbeitet die Angaben nur in unserem Auftrag.',
+          'Speicherdauer: Angaben von aufgenommenen Betrieben, solange die Partnerschaft besteht. Abgelehnte Bewerbungen löschen wir nach [Frist folgt].',
+          'Widerruf: Sie können Ihre Einwilligung jederzeit widerrufen, per E-Mail oder Telefon. Dann löschen wir Ihre Angaben.',
+        ],
+      },
+    },
     agb: { titel: 'AGB', text: '[AGB folgen]' },
     zurueck: 'Zur Startseite', // nicht im Design
   },

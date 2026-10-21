@@ -3,6 +3,7 @@ import { Anfrage } from './Anfrage'
 import { Fragen } from './Fragen'
 import { Hero } from './Hero'
 import { Leistungen } from './Leistungen'
+import { PartnerHinweis } from './PartnerHinweis'
 import { Preisrechner } from './Preisrechner'
 import { Schnellwahl } from './Schnellwahl'
 import { Seitenrahmen } from './Seitenrahmen'
@@ -18,7 +19,7 @@ export function Startseite() {
       <Preisrechner />
       <Zusagen />
       <Anfrage />
-      <Fragen />
+      <Fragen zusatz={<PartnerHinweis />} />
     </Seitenrahmen>
   )
 }

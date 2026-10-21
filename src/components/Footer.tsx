@@ -1,5 +1,6 @@
 import { copy, fuelle } from '../content/copy'
 import { EMAIL, FIRMA, TELEFON, WHATSAPP, mailHref, telHref, whatsappHref } from '../content/contact'
+import { PARTNER_PFAD, partner } from '../content/partner'
 import { Globus } from './ui/Globus'
 import { Icon } from './ui/Icon'
 import { IconKreis } from './ui/IconKreis'
@@ -56,6 +57,11 @@ export function Footer() {
                     </a>
                   </li>
                 ))}
+                <li className="flex">
+                  <a href={PARTNER_PFAD} className={LINK}>
+                    {partner.einstieg.fuss}
+                  </a>
+                </li>
               </ul>
             </nav>
 

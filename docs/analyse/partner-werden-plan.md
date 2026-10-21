@@ -1,4 +1,6 @@
-# Plan „Partner werden“ (Phase 3, wartet auf OK)
+# Plan „Partner werden“ (Phase 3)
+
+Status: am 21.10.2026 mit den Standards und den Änderungen von Beks gebaut (Kosten, Pflichtfragen, Erwartungen, Prüfliste, Löschfrist als Vorschlag). Ergebnis und Prüfungen: `REPORT.md`, Abschnitt 12.
 
 Stand: 21.10.2026 · Branch `feature/partner-werden` (eigener Worktree `.claude/worktrees/partner-werden`) · noch nichts gebaut.
 
