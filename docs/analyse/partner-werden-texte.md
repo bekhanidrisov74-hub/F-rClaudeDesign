@@ -1,6 +1,6 @@
 # Texte „Partner werden“
 
-**Von Beks freigegeben am 21.10.2026**, so wie sie hier stehen.
+**Von Beks freigegeben am 21.10.2026**, so wie sie hier stehen. Danach am selben Tag auf Wunsch von Beks ergänzt: Schritt 3 und der Datenschutz-Entwurf (fehlende Daten, Nutzung nach der Aufnahme, offene Bewerbungen), nach dem letzten Copy-Check.
 
 Stand: 21.10.2026 · Quelle: `src/content/partner.ts`, Datenschutz-Entwurf in `src/content/copy.ts`, Mails in `public/anfrage.php`.
 Geprüft vom copy-checker; seine Befunde zu Geschäftsmodell und Zusagen sind eingearbeitet (Liste am Ende).
@@ -33,7 +33,7 @@ Wir vermitteln Anfragen für: Installateur, Heizung & Klima, Schlüsseldienst, E
 **So werden Sie Partner** [neu]
 1. Bewerbung senden: Füllen Sie das Formular unten aus. Dokumente brauchen Sie dafür nicht.
 2. Wir prüfen und rufen an: Wir prüfen Ihre Gewerbeberechtigung im GISA, sprechen persönlich mit Ihnen und lassen uns Ihre Betriebshaftpflicht nachweisen.
-3. Aufnahme in die Vermittlung: Passt alles, nehmen wir Ihren Betrieb auf. Ab dann geben wir passende Anfragen an Sie weiter.
+3. Aufnahme in die Vermittlung: Passt alles, nehmen wir Ihren Betrieb auf. Ab dann können wir Ihnen passende Anfragen weitergeben.
 
 **Was wir von Partnern erwarten** [B, in eigenen Worten]
 Wer uns anruft, ist oft in einer Notlage. Darum gelten diese Punkte für jeden Betrieb, den wir aufnehmen.
@@ -104,9 +104,10 @@ Kasten neben dem Formular: **Fragen zur Bewerbung?** Rufen Sie uns an. Wir beant
 
 **Partner-Bewerbungen (Entwurf, rechtlich zu prüfen)**
 - Zweck: Mit den Angaben aus dem Formular „Partner werden“ prüfen wir Ihre Bewerbung und nehmen Kontakt mit Ihnen auf. Grundlage ist Ihre Einwilligung.
-- Daten: Firmenname, Ansprechperson, Telefon, E-Mail, GISA-Zahl, UID-Nummer, Gewerke, Einsatzgebiet, Erreichbarkeit, Ihre Antworten zu Preisen, Versicherung und Zahlungsarten sowie Ihre Anmerkungen.
+- Daten: Firmenname, Ansprechperson, Telefon, E-Mail, GISA-Zahl, UID-Nummer, Gewerke, Einsatzgebiet, Erreichbarkeit, Ihre Angaben zum Notdienst und zur Zeit bis vor Ort, Ihre Antworten zu Preisen, Versicherung und Zahlungsarten, Ihre Anmerkungen sowie Bewerbungsnummer und Zeitpunkt der Bewerbung.
+- Nach der Aufnahme: Nehmen wir Ihren Betrieb auf, nutzen wir Firmenname, Ansprechperson, Telefon, E-Mail, Gewerke, Einsatzgebiet, Erreichbarkeit und Ihre Angaben zum Notdienst, um passende Anfragen von Kundinnen und Kunden an Sie weiterzugeben.
 - Speicherort: als Datei auf dem Server unseres Anbieters ALL-INKL.COM in Deutschland und im E-Mail-Postfach von fixit247. ALL-INKL.COM verarbeitet die Angaben nur in unserem Auftrag.
-- Speicherdauer: Angaben von aufgenommenen Betrieben, solange die Partnerschaft besteht. Abgelehnte Bewerbungen löschen wir nach [Frist folgt].
+- Speicherdauer: Offene Bewerbungen, bis wir über sie entschieden haben. Angaben von aufgenommenen Betrieben, solange die Partnerschaft besteht. Abgelehnte Bewerbungen löschen wir nach [Frist folgt].
 - Widerruf: Sie können Ihre Einwilligung jederzeit widerrufen, per E-Mail oder Telefon. Dann löschen wir Ihre Angaben.
 
 Es fehlen noch Pflichtangaben einer Datenschutzerklärung (Verantwortlicher mit Anschrift, Rechte auf Auskunft, Berichtigung und Löschung, Beschwerde bei der Datenschutzbehörde). Das gehört in die echte Datenschutzerklärung.

@@ -71,7 +71,7 @@ export const partner = {
       },
       {
         titel: 'Aufnahme in die Vermittlung',
-        text: 'Passt alles, nehmen wir Ihren Betrieb auf. Ab dann geben wir passende Anfragen an Sie weiter.',
+        text: 'Passt alles, nehmen wir Ihren Betrieb auf. Ab dann können wir Ihnen passende Anfragen weitergeben.',
       },
     ],
   },
