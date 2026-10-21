@@ -13,6 +13,8 @@ export const WEISS_NICHT = 'Weiß ich nicht'
 export const DATENSCHUTZ = '/datenschutz/'
 /** Gefahr-Hinweis: Antwort in den häufigen Fragen und eigener Absatz in den Erfolgskarten (Formular und Luna), ein Wortlaut. */
 export const GEFAHR = 'Bei akuter Gefahr wie Rauch, Funken oder Gasgeruch kontaktieren Sie bitte sofort 122 bzw. 112.'
+/** nicht im Design (Bauplan B3, Text wartet auf Freigabe): Abschnitt Anfrage und Luna-Zusammenfassung, ein Wortlaut. */
+export const OHNE_KONTO = 'Ein Konto oder eine Anmeldung brauchen Sie nicht.'
 
 /**
  * Einwilligung zur Weitergabe, gleich in Formular und Luna (Entscheidung vom 14.10.2026: ein Text für dieselbe Weitergabe,
@@ -222,7 +224,8 @@ export const copy = {
 
   anfrage: {
     titel: 'Anfrage senden',
-    lead: 'Wir geben Ihre Anfrage sofort an einen passenden Fachbetrieb in Ihrer Region weiter. Der Betrieb ruft Sie zurück.',
+    // Satz 3 nicht im Design (Bauplan B3, Text wartet auf Freigabe): gleicher Satz in der Luna-Zusammenfassung
+    lead: `Wir geben Ihre Anfrage sofort an einen passenden Fachbetrieb in Ihrer Region weiter. Der Betrieb ruft Sie zurück. ${OHNE_KONTO}`,
     felder: {
       name: { label: 'Name', platzhalter: 'Vor- und Nachname' },
       telefon: { label: 'Telefon', platzhalter: 'Für den Rückruf' },
@@ -449,7 +452,8 @@ export const copy = {
       richtpreis: 'Richtpreis',
       anfahrt: 'Anfahrt',
       einwilligungFehlt: 'Bitte stimmen Sie der Weitergabe zu, sonst können wir keinen Betrieb vermitteln.', // nicht im Design (SPEC 9)
-      hinweis: 'Die Vermittlung ist kostenlos. Der Vertrag kommt direkt mit dem Betrieb zustande.',
+      // Satz 2 nicht im Design (Bauplan B3, Text wartet auf Freigabe)
+      hinweis: `Die Vermittlung ist kostenlos. ${OHNE_KONTO} Der Vertrag kommt direkt mit dem Betrieb zustande.`,
       aendern: 'Angaben ändern',
       sendend: 'Wird gesendet …', // nicht im Design (SPEC 9)
     },
