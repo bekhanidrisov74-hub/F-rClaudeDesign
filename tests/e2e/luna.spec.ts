@@ -291,6 +291,11 @@ test('Auftrag aufgeben: ein POST an den Anfrage-Eingang mit allen Feldern, Erfol
   await expect(c).toContainText(`Anfragenummer: ${p.anfrageId}`)
   await expect(c).toContainText('Wir geben sie jetzt an einen passenden Installateur in Ihrer Nähe weiter. Der Betrieb ruft Sie unter 0664 1234567 zurück.')
   await expect(c.getByRole('link', { name: 'Fragen? Jetzt anrufen' })).toHaveAttribute('href', /^tel:/)
+  // So geht es weiter: Karte h2, darunter h3; ohne E-Mail keine Bestätigungszeile
+  await expect(c.getByRole('heading', { level: 3, name: 'So geht es weiter' })).toBeVisible()
+  for (const titel of ['Passender Fachbetrieb', 'Rückruf', 'Direkt mit dem Fachbetrieb']) await expect(c.getByRole('listitem').filter({ hasText: titel })).toHaveCount(1)
+  await expect(c).toContainText('Bei akuter Gefahr wie Rauch, Funken oder Gasgeruch kontaktieren Sie bitte sofort 122 bzw. 112.')
+  await expect(c).not.toContainText('Eine Bestätigung')
   await expect(c.getByRole('progressbar')).toHaveCount(0)
   // Kontaktdaten nach dem Abschluss nicht in der Sitzung
   expect(await page.evaluate(() => JSON.stringify(sessionStorage))).not.toContain('0664')
@@ -299,6 +304,18 @@ test('Auftrag aufgeben: ein POST an den Anfrage-Eingang mit allen Feldern, Erfol
   await expect(c.getByRole('button', { name: 'Installateur' })).toBeVisible()
   await expect(c).not.toContainText('Maria Huber')
   expect(fehler).toEqual([])
+})
+
+test('Erfolg mit E-Mail: Zeile „Eine Bestätigung schicken wir an …“ in So geht es weiter', async ({ page }) => {
+  await page.goto('/')
+  await lunaBisZusammenfassung(page)
+  const c = chat(page)
+  await fuelleKontakt(page)
+  await c.getByLabel('E-Mail').fill(' maria@beispiel.at ')
+  await c.getByRole('checkbox').check()
+  await c.getByRole('button', { name: 'Auftrag aufgeben' }).click()
+  await expect(c.getByRole('heading', { level: 3, name: 'So geht es weiter' })).toBeVisible()
+  await expect(c.getByText(/^Eine Bestätigung schicken wir an/)).toHaveText('Eine Bestätigung schicken wir an maria@beispiel.at.')
 })
 
 test('kein Betrieb gefunden: Anfrage ist trotzdem aufgenommen', async ({ page }) => {

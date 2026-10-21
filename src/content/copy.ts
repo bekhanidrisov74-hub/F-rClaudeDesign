@@ -11,6 +11,8 @@ export const UST_HINWEIS = '[inkl. 20 % USt.]'
 export const WEISS_NICHT = 'Weiß ich nicht'
 /** Pfad der Datenschutzerklärung (Fuß, Formular, Luna) */
 export const DATENSCHUTZ = '/datenschutz/'
+/** Gefahr-Hinweis: Antwort in den häufigen Fragen und eigener Absatz in den Erfolgskarten (Formular und Luna), ein Wortlaut. */
+export const GEFAHR = 'Bei akuter Gefahr wie Rauch, Funken oder Gasgeruch kontaktieren Sie bitte sofort 122 bzw. 112.'
 
 /**
  * Einwilligung zur Weitergabe, gleich in Formular und Luna (Entscheidung vom 14.10.2026: ein Text für dieselbe Weitergabe,
@@ -346,9 +348,24 @@ export const copy = {
       },
       {
         frage: 'Was tue ich bei akuter Gefahr?',
-        antwort: 'Bei akuter Gefahr wie Rauch, Funken oder Gasgeruch kontaktieren Sie bitte sofort 122 bzw. 112.',
+        antwort: GEFAHR,
       },
     ],
+  },
+
+  // nicht im Design (Bauplan B2, Text wartet auf Freigabe): Schritte wie in der Bestätigungsmail in public/anfrage.php
+  // (dort „Rückruf“ als erster Schritt, mit der Telefonnummer und „für Sie kostenlos“). Nur bei gefundenem Betrieb (FOUND).
+  weiter: {
+    titel: 'So geht es weiter',
+    schritte: [
+      { titel: 'Passender Fachbetrieb', text: 'Wir vermitteln Ihre Anfrage an einen passenden Fachbetrieb in Ihrer Nähe.' },
+      { titel: 'Rückruf', text: 'fixit247 oder der vermittelte Fachbetrieb meldet sich telefonisch bei Ihnen.' },
+      {
+        titel: 'Direkt mit dem Fachbetrieb',
+        text: 'Termin, Preis, Durchführung und Rechnung stimmen Sie direkt mit dem Fachbetrieb ab. Die Vermittlung ist kostenlos.',
+      },
+    ],
+    email: 'Eine Bestätigung schicken wir an {email}.',
   },
 
   menue: {

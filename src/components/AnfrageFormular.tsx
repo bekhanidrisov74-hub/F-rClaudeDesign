@@ -7,6 +7,7 @@ import { Button } from './ui/Button'
 import { CallButton } from './ui/CallButton'
 import { Icon } from './ui/Icon'
 import { IconKreis } from './ui/IconKreis'
+import { GefahrHinweis, SoGehtEsWeiter } from './ui/SoGehtEsWeiter'
 
 const t = copy.anfrage
 const GEWERK_IDS = gewerke.map((g) => g.id)
@@ -346,11 +347,13 @@ function Erfolg({ danke }: { danke: Danke }) {
         {fuelle(danke.match === 'FOUND' ? t.erfolg.text : t.erfolg.keinerText, { betrieb: danke.betrieb, telefon: danke.telefon })}
       </p>
       <p className="text-small text-schiefer">{fuelle(t.erfolg.nummer, { nummer: danke.anfragenummer })}</p>
+      <SoGehtEsWeiter ebene={4} email={danke.email} mitSchritten={danke.match === 'FOUND'} />
       {danke.tipp && danke.match === 'FOUND' && (
         <p className="rounded-chip bg-eis p-s4 text-small">
           <strong>{copy.luna.erfolg.tippTitel}</strong> {danke.tipp}
         </p>
       )}
+      <GefahrHinweis />
       <CallButton variante="block" label={copy.luna.erfolg.anrufen} />
     </div>
   )

@@ -1,5 +1,5 @@
 import { expect, test } from './test'
-import { anfrage, fuelleFormular, sendeFormular } from './hilfen'
+import { anfrage, formularErfolg, fuelleFormular, sendeFormular } from './hilfen'
 
 test.beforeEach(async ({ page }) => {
   await page.goto('/#anfrage')
@@ -135,6 +135,47 @@ test('Senden: „Wird gesendet …“, dann ersetzt der Dank das Formular', asyn
   await expect(anfrage(page)).toContainText('Bis der Betrieb kommt: Drehen Sie, wenn möglich, den Hauptwasserhahn zu')
   await expect(anfrage(page).getByRole('link', { name: 'Fragen? Jetzt anrufen' })).toHaveAttribute('href', /^tel:/)
   await expect(anfrage(page).getByLabel(/^Name/)).toHaveCount(0)
+})
+
+const GEFAHR = 'Bei akuter Gefahr wie Rauch, Funken oder Gasgeruch kontaktieren Sie bitte sofort 122 bzw. 112.'
+
+test('Erfolg zeigt „So geht es weiter“ mit drei Schritten und Gefahr-Hinweis, ohne E-Mail keine Bestätigungszeile', async ({ page }) => {
+  const a = anfrage(page)
+  await formularErfolg(page)
+  // Karte h3, darunter h4 (keine übersprungene Ebene)
+  await expect(a.getByRole('heading', { level: 3, name: 'Danke. Ihre Anfrage ist unterwegs.' })).toBeVisible()
+  await expect(a.getByRole('heading', { level: 4, name: 'So geht es weiter' })).toBeVisible()
+  const schritte = a.getByRole('listitem')
+  await expect(schritte).toHaveCount(3)
+  const titel = ['Passender Fachbetrieb', 'Rückruf', 'Direkt mit dem Fachbetrieb']
+  for (const [i, t] of titel.entries()) await expect(schritte.nth(i)).toContainText(t)
+  await expect(a).toContainText('Wir vermitteln Ihre Anfrage an einen passenden Fachbetrieb in Ihrer Nähe.')
+  await expect(a).toContainText('fixit247 oder der vermittelte Fachbetrieb meldet sich telefonisch bei Ihnen.')
+  await expect(a).toContainText('Termin, Preis, Durchführung und Rechnung stimmen Sie direkt mit dem Fachbetrieb ab. Die Vermittlung ist kostenlos.')
+  await expect(a).toContainText(GEFAHR)
+  await expect(a).not.toContainText('Eine Bestätigung')
+  // Reihenfolge: Schritte, Tipp, Gefahr-Hinweis, Anruf-Knopf
+  const hoehe = async (l: ReturnType<typeof a.locator>) => (await l.first().boundingBox())!.y
+  const ys = [
+    await hoehe(a.getByRole('heading', { name: 'So geht es weiter' })),
+    await hoehe(a.getByText('Bis der Betrieb kommt:')),
+    await hoehe(a.getByText(GEFAHR)),
+    await hoehe(a.getByRole('link', { name: 'Fragen? Jetzt anrufen' })),
+  ]
+  expect([...ys].sort((x, y) => x - y)).toEqual(ys)
+})
+
+test('Erfolg mit E-Mail: Zeile „Eine Bestätigung schicken wir an …“, lange Adresse läuft nicht über', async ({ page }) => {
+  const a = anfrage(page)
+  const adresse = 'maria.huber.mit.sehr.langem.namen@sehr-lange-beispiel-domain-fuer-den-umbruch.at'
+  await fuelleFormular(page)
+  await a.getByLabel(/^E-Mail/).fill(` ${adresse} `)
+  await a.getByRole('button', { name: 'Anfrage senden' }).click()
+  const zeile = a.getByText(/^Eine Bestätigung schicken wir an/)
+  await expect(zeile).toHaveText(`Eine Bestätigung schicken wir an ${adresse}.`)
+  const karte = await a.getByRole('heading', { level: 3, name: 'Danke. Ihre Anfrage ist unterwegs.' }).locator('xpath=ancestor::div[contains(@class,"shadow-karte")]').boundingBox()
+  const box = (await zeile.boundingBox())!
+  expect(box.x + box.width).toBeLessThanOrEqual(karte!.x + karte!.width)
 })
 
 test('Sendefehler mit ?fehler=1: Meldung über dem Knopf, Angaben bleiben', async ({ page }) => {
