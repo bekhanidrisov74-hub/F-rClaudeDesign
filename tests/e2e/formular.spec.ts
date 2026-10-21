@@ -50,6 +50,68 @@ test('Absenden mit Fehlern: alle Meldungen, Fokus auf das erste fehlerhafte Feld
   await expect(a.getByLabel(/^Telefon/)).toBeFocused()
 })
 
+test('E-Mail ist freiwillig: Typ, kein aria-required, Fehler erst beim Verlassen am Feld', async ({ page }) => {
+  const a = anfrage(page)
+  const email = a.getByLabel(/^E-Mail/)
+  await expect(email).toHaveAttribute('type', 'email')
+  await expect(email).toHaveAttribute('inputmode', 'email')
+  await expect(email).toHaveAttribute('autocomplete', 'email')
+  await expect(email).not.toHaveAttribute('aria-required', 'true')
+  await expect(a.getByText('(optional)')).toBeVisible()
+  await email.fill('maria@beispiel')
+  await expect(a.getByText('Bitte prüfen Sie die E-Mail-Adresse.')).toHaveCount(0)
+  await email.blur()
+  const fehler = a.getByText('Bitte prüfen Sie die E-Mail-Adresse.')
+  await expect(fehler).toBeVisible()
+  await expect(email).toHaveAttribute('aria-invalid', 'true')
+  const id = await fehler.getAttribute('id')
+  expect(id).toBeTruthy()
+  expect((await email.getAttribute('aria-describedby'))?.split(' ')).toContain(id)
+  await email.fill('maria@beispiel.at')
+  await expect(a.getByText('Bitte prüfen Sie die E-Mail-Adresse.')).toHaveCount(0)
+  await expect(email).not.toHaveAttribute('aria-invalid', 'true')
+  await email.fill('')
+  await email.blur()
+  await expect(a.getByText('Bitte prüfen Sie die E-Mail-Adresse.')).toHaveCount(0)
+})
+
+test('Absenden mit gültiger E-Mail: der Anfrage-Eingang bekommt email mit der Adresse', async ({ page }) => {
+  const a = anfrage(page)
+  await fuelleFormular(page)
+  await a.getByLabel(/^E-Mail/).fill(' maria@beispiel.at ')
+  const gesendet = page.waitForRequest((r) => r.method() === 'POST' && new URL(r.url()).pathname === '/api/anfrage')
+  await a.getByRole('button', { name: 'Anfrage senden' }).click()
+  const daten = new URLSearchParams((await gesendet).postData() ?? '')
+  expect(daten.get('email')).toBe('maria@beispiel.at')
+  await expect(a.getByText(/Anfragenummer/)).toBeVisible()
+})
+
+test('Absenden ohne E-Mail: email geht leer mit, der Erfolg kommt wie bisher', async ({ page }) => {
+  const a = anfrage(page)
+  await fuelleFormular(page)
+  const gesendet = page.waitForRequest((r) => r.method() === 'POST' && new URL(r.url()).pathname === '/api/anfrage')
+  await a.getByRole('button', { name: 'Anfrage senden' }).click()
+  const daten = new URLSearchParams((await gesendet).postData() ?? '')
+  expect(daten.has('email')).toBe(true)
+  expect(daten.get('email')).toBe('')
+  await expect(a.getByRole('heading', { name: 'Danke. Ihre Anfrage ist unterwegs.' })).toBeVisible()
+  await expect(a).toContainText(/Anfragenummer: F247-[A-Z0-9]{6}/)
+})
+
+test('Ungültige E-Mail beim Absenden: Fehlertext, Fokus aufs Feld, nichts wird gesendet', async ({ page }) => {
+  const a = anfrage(page)
+  let posts = 0
+  page.on('request', (r) => {
+    if (r.method() === 'POST' && new URL(r.url()).pathname === '/api/anfrage') posts++
+  })
+  await fuelleFormular(page)
+  await a.getByLabel(/^E-Mail/).fill('maria@beispiel')
+  await a.getByRole('button', { name: 'Anfrage senden' }).click()
+  await expect(a.getByText('Bitte prüfen Sie die E-Mail-Adresse.')).toBeVisible()
+  await expect(a.getByLabel(/^E-Mail/)).toBeFocused()
+  expect(posts).toBe(0)
+})
+
 test('„… anfragen“ wählt das Gewerk im Formular vor', async ({ page }) => {
   await page.goto('/')
   await page.getByRole('link', { name: 'Elektro anfragen' }).click()

@@ -25,8 +25,8 @@ const ziffern = (text: string) => text.replace(/\D/g, '')
 /** Telefonnummer plausibel: 6 bis 15 Ziffern, nur Ziffern, Leerzeichen, + / ( ) - */
 export const istTelefon = (text: string) => /^[+(\d][\d\s/()-]*$/.test(text.trim()) && ziffern(text).length >= 6 && ziffern(text).length <= 15
 
-/** E-Mail plausibel (optional in Luna) */
-export const istEmail = (text: string) => /^[^@\s]+@[^@\s]+\.[a-zA-Z]{2,}$/.test(text.trim())
+/** E-Mail plausibel (freiwillig in Formular und Luna). Dieselben Zeichen wie EMAIL_RE in public/anfrage.php, sonst käme keine Bestätigung. */
+export const istEmail = (text: string) => /^[^@\s,;<>"()]+@[^@\s,;<>"()]+\.[a-zA-Z]{2,}$/.test(text.trim())
 
 // ── Anfrage-Formular (SPEC 9) ──
 
@@ -39,12 +39,14 @@ export interface FormularWerte {
   plzOrt: string
   /** id aus gewerke.ts, WEISS_NICHT_ID oder '' (noch nicht gewählt) */
   gewerk: string
+  /** freiwillig: leer oder eine gültige Adresse (dann geht eine Bestätigungsmail an die Kundin oder den Kunden) */
+  email: string
   beschreibung: string
   einwilligung: boolean
 }
 
 export type FormularFeld = keyof FormularWerte
-export const LEERES_FORMULAR: FormularWerte = { name: '', telefon: '', plzOrt: '', gewerk: '', beschreibung: '', einwilligung: false }
+export const LEERES_FORMULAR: FormularWerte = { name: '', telefon: '', plzOrt: '', gewerk: '', email: '', beschreibung: '', einwilligung: false }
 
 /** PLZ und Ort; fehlt der Ort, wird er aus der PLZ abgeleitet, wenn das sicher geht (Wien). */
 function plzUndOrt(eingabe: string) {
@@ -66,6 +68,8 @@ export function pruefeFeld(feld: FormularFeld, w: FormularWerte, gewerkIds: read
       return plzUndOrt(w.plzOrt) ? null : f.plzOrt
     case 'gewerk':
       return w.gewerk === WEISS_NICHT_ID || gewerkIds.includes(w.gewerk) ? null : f.gewerk
+    case 'email':
+      return !w.email.trim() || istEmail(w.email) ? null : f.email
     case 'einwilligung':
       return w.einwilligung ? null : f.einwilligung
     case 'beschreibung':
@@ -75,7 +79,7 @@ export function pruefeFeld(feld: FormularFeld, w: FormularWerte, gewerkIds: read
 
 /** Alle Fehler in Formular-Reihenfolge (der erste bekommt beim Absenden den Fokus). */
 export function pruefeFormular(w: FormularWerte, gewerkIds: readonly string[]): Partial<Record<FormularFeld, string>> {
-  const felder: FormularFeld[] = ['name', 'telefon', 'plzOrt', 'gewerk', 'beschreibung', 'einwilligung']
+  const felder: FormularFeld[] = ['name', 'telefon', 'plzOrt', 'gewerk', 'email', 'beschreibung', 'einwilligung']
   return Object.fromEntries(felder.flatMap((feld) => {
     const fehler = pruefeFeld(feld, w, gewerkIds)
     return fehler ? [[feld, fehler]] : []
@@ -91,7 +95,7 @@ export function formularZuLead(w: FormularWerte, anfrageId: string): Lead {
     anfrageId,
     name: w.name.trim(),
     tel: w.telefon.trim(),
-    email: '',
+    email: w.email.trim(),
     plz: ort.plz,
     ort: ort.ort,
     kategorie: gewerk?.id ?? '',

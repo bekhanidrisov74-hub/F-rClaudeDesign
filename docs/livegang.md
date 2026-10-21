@@ -34,6 +34,7 @@ Stand: 18.10.2026. Abhaken, was erledigt ist. Wie die KAS-Schritte im Einzelnen 
 - [ ] Logo-Datei (bis dahin die Wortmarke)
 - [ ] Preise brutto: den Hinweis „[inkl. 20 % USt.]“ bestätigen (SPEC 11)
 - [ ] Impressum, Datenschutzerklärung und AGB. In die Datenschutzerklärung gehören die Speicherung der Anfragen bei ALL-INKL (Auftragsverarbeitung), die Weitergabe an Partnerbetriebe und an OpenAI (Luna).
+- [ ] Datenschutzerklärung: Zweck und Speicherdauer der freiwilligen E-Mail im Anfrageformular (nur für die Bestätigungsmail, Bauplan B1). Offen, rechtlich prüfen.
 - [ ] Partnerbetriebe für das Matching in `fixit247-konfig.php`. Ohne sie gehen alle Anfragen nur an `support@fixit247.at`.
 - [ ] Monatslimit im OpenAI-Konto
 - [ ] Löschfrist für `anfragen-*.jsonl`

@@ -226,6 +226,8 @@ export const copy = {
       telefon: { label: 'Telefon', platzhalter: 'Für den Rückruf' },
       plzOrt: { label: 'PLZ und Ort', platzhalter: 'z. B. 1020 Wien' },
       gewerk: { label: 'Gewerk', bitteWaehlen: 'Bitte wählen' },
+      // nicht im Design (Bauplan B1, Text wartet auf Freigabe)
+      email: { label: 'E-Mail', optional: '(optional)', platzhalter: 'Für die Bestätigung' },
       beschreibung: { label: 'Kurze Beschreibung', platzhalter: 'Was ist passiert? Zum Beispiel: Unter der Spüle tritt Wasser aus.' },
     },
     /** Sternchen hinter Pflichtfeldern */
@@ -238,6 +240,7 @@ export const copy = {
       telefon: 'Bitte geben Sie eine Telefonnummer für den Rückruf ein.',
       plzOrt: 'Bitte geben Sie Postleitzahl und Ort ein, zum Beispiel 1020 Wien.',
       gewerk: 'Bitte wählen Sie ein Gewerk.',
+      email: 'Bitte prüfen Sie die E-Mail-Adresse.', // nicht im Design (Bauplan B1, Text wartet auf Freigabe): wie Luna
       einwilligung: 'Bitte stimmen Sie der Weitergabe zu, sonst können wir keinen Betrieb vermitteln.',
     },
     erfolg: {

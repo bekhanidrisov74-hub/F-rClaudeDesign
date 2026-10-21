@@ -18,6 +18,7 @@ const GUELTIG: FormularWerte = {
   telefon: '0664 1234567',
   plzOrt: '1020 Wien',
   gewerk: 'installateur',
+  email: '',
   beschreibung: 'Unter der Spüle tritt Wasser aus.',
   einwilligung: true,
 }
@@ -48,6 +49,11 @@ describe('Telefon und E-Mail', () => {
     expect(istEmail('maria@beispiel')).toBe(false)
     expect(istEmail('maria beispiel.at')).toBe(false)
   })
+  // wie EMAIL_RE in public/anfrage.php: Zeichen, die in mail() und Reply-To stören
+  test.each(['maria,huber@beispiel.at', 'maria@bei;spiel.at', '"maria"@beispiel.at', '<maria@beispiel.at>', 'maria(x)@beispiel.at'])(
+    '„%s“ lehnt auch der Server ab',
+    (a) => expect(istEmail(a)).toBe(false),
+  )
 })
 
 describe('Formular', () => {
@@ -65,6 +71,19 @@ describe('Formular', () => {
   test('gültiges Formular hat keine Fehler, Beschreibung ist freiwillig', () => {
     expect(pruefeFormular(GUELTIG, IDS)).toEqual({})
     expect(pruefeFormular({ ...GUELTIG, beschreibung: '' }, IDS)).toEqual({})
+  })
+
+  test('E-Mail ist freiwillig: leer ist gültig, unvollständig meldet den Fehlertext', () => {
+    expect(pruefeFeld('email', { ...GUELTIG, email: '' }, IDS)).toBeNull()
+    expect(pruefeFeld('email', { ...GUELTIG, email: '   ' }, IDS)).toBeNull()
+    expect(pruefeFeld('email', { ...GUELTIG, email: ' maria@beispiel.at ' }, IDS)).toBeNull()
+    expect(pruefeFeld('email', { ...GUELTIG, email: 'maria@beispiel' }, IDS)).toBe('Bitte prüfen Sie die E-Mail-Adresse.')
+    expect(pruefeFormular({ ...GUELTIG, email: 'maria@beispiel' }, IDS)).toEqual({ email: 'Bitte prüfen Sie die E-Mail-Adresse.' })
+  })
+
+  test('Fehler-Reihenfolge: E-Mail nach Gewerk, vor Einwilligung', () => {
+    const fehler = pruefeFormular({ ...LEERES_FORMULAR, email: 'maria@beispiel' }, IDS)
+    expect(Object.keys(fehler)).toEqual(['name', 'telefon', 'plzOrt', 'gewerk', 'email', 'einwilligung'])
   })
 
   test('PLZ ohne Ort: Wien wird ergänzt, andere Orte müssen angegeben werden', () => {
@@ -93,6 +112,7 @@ describe('Formular', () => {
       text: 'Unter der Spüle tritt Wasser aus.\n\n(Anfrage über das Formular)',
       antworten: {},
     })
+    expect(formularZuLead({ ...GUELTIG, email: '  maria@beispiel.at ' }, 'F247-ABCDEF').email).toBe('maria@beispiel.at')
     const unbekannt = formularZuLead({ ...GUELTIG, gewerk: WEISS_NICHT_ID }, 'F247-ABCDEF')
     expect([unbekannt.kategorie, unbekannt.bereich]).toEqual(['', 'Weiß ich nicht'])
     expect(() => formularZuLead({ ...GUELTIG, einwilligung: false }, 'F247-ABCDEF')).toThrow()

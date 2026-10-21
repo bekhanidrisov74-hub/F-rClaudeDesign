@@ -27,6 +27,7 @@ function lies(form: HTMLFormElement): FormularWerte {
     telefon: text('telefon'),
     plzOrt: text('plzOrt'),
     gewerk: text('gewerk'),
+    email: text('email'),
     beschreibung: text('beschreibung'),
     einwilligung: daten.has('einwilligung'),
   }
@@ -41,6 +42,8 @@ interface Danke {
   anfragenummer: string
   betrieb: string
   telefon: string
+  /** getrimmte E-Mail-Adresse oder '' (freiwillig) */
+  email: string
   /** Sicherheitstipp des gewählten Gewerks (fehlt bei „Weiß ich nicht“) */
   tipp?: string
 }
@@ -51,7 +54,7 @@ const fehlerId = (feld: FormularFeld) => `${feldId(feld)}-fehler`
 const FELD = 'rahmen w-full rounded-chip border-rand bg-weiss px-s4 text-body text-tiefsee transition-[border-color] hover:border-tiefsee aria-invalid:border-tiefsee'
 const FELDHOEHE = 'min-h-[54px]'
 
-function Beschriftung({ feld, pflicht = false, children }: { feld: FormularFeld; pflicht?: boolean; children: ReactNode }) {
+function Beschriftung({ feld, pflicht = false, optional, children }: { feld: FormularFeld; pflicht?: boolean; optional?: string; children: ReactNode }) {
   return (
     <label htmlFor={feldId(feld)} className="font-display text-text font-semibold">
       {children}
@@ -61,6 +64,7 @@ function Beschriftung({ feld, pflicht = false, children }: { feld: FormularFeld;
           <span aria-hidden="true">{t.pflichtZeichen}</span>
         </>
       )}
+      {optional && <span className="font-text font-normal text-schiefer"> {optional}</span>}
     </label>
   )
 }
@@ -145,6 +149,7 @@ export function AnfrageFormular() {
         betrieb: gewerk?.betrieb ?? copy.luna.erfolg.betriebUnbekannt,
         // Geschützte Leerzeichen: Die Telefonnummer bricht nicht mitten im Text um.
         telefon: werte.telefon.trim().replace(/ /g, ' '),
+        email: werte.email.trim(),
         tipp: gewerk?.tippErfolg,
       })
       setVorauswahl('')
@@ -234,6 +239,21 @@ export function AnfrageFormular() {
           <Icon name="ui-aufklappen" className="pointer-events-none absolute top-1/2 right-s3 size-[22px] -translate-y-1/2 text-tiefsee" />
         </div>
         <Fehlertext feld="gewerk" text={fehler.gewerk} />
+      </div>
+
+      <div className="col-span-full flex flex-col gap-s2">
+        <Beschriftung feld="email" optional={t.felder.email.optional}>
+          {t.felder.email.label}
+        </Beschriftung>
+        <input
+          {...steuerung('email')}
+          type="email"
+          inputMode="email"
+          autoComplete="email"
+          placeholder={t.felder.email.platzhalter}
+          className={`${FELD} ${FELDHOEHE}`}
+        />
+        <Fehlertext feld="email" text={fehler.email} />
       </div>
 
       <div className="col-span-full flex flex-col gap-s2">
