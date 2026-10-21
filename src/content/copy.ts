@@ -332,6 +332,12 @@ export const copy = {
           'Nein. fixit247 repariert nicht selbst, sondern gibt Ihre Anfrage an geprüfte Fachbetriebe aus Ihrer Region weiter. Der Vertrag kommt direkt mit dem Betrieb zustande.',
       },
       {
+        // nicht im Design (Bauplan B5, Inhalt von Beks vom 21.10.2026, nichts darüber hinaus; rechtlich prüfen, docs/livegang.md)
+        frage: 'Was heißt „geprüft“?',
+        antwort:
+          'Vor der Aufnahme eines Betriebs prüfen wir seine Gewerbeberechtigung für jedes Gewerk im GISA (Gewerbeinformationssystem Austria), lassen uns die Betriebshaftpflichtversicherung nachweisen und führen ein persönliches Gespräch. Bei Beschwerden pausieren wir die Vermittlung an diesen Betrieb.',
+      },
+      {
         frage: 'Was kostet die Vermittlung?',
         antwort: 'Die Vermittlung ist kostenlos. Sie zahlen nur den Betrieb.',
       },
