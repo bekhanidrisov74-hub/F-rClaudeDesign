@@ -1,7 +1,9 @@
 import { renderToString } from 'react-dom/server'
 import { describe, expect, test, vi } from 'vitest'
 import { existsSync } from 'node:fs'
+import { copy, GEFAHR } from '../../src/content/copy'
 import { gewerke, type Gewerk } from '../../src/content/gewerke'
+import { GefahrHinweis, SoGehtEsWeiter } from '../../src/components/ui/SoGehtEsWeiter'
 
 describe('Gewerke-Daten', () => {
   test('sind vollständig und stimmig', () => {
@@ -13,6 +15,33 @@ describe('Gewerke-Daten', () => {
       expect(existsSync(`design/icons/${g.icon}.svg`), g.icon).toBe(true)
       for (const feld of ['name', 'schnellwahl', 'karte', 'betrieb', 'tipp', 'tippErfolg'] as const) expect(g[feld], `${g.id}.${feld}`).not.toBe('')
     }
+  })
+})
+
+describe('So geht es weiter (B2)', () => {
+  test('Gefahr-Hinweis: FAQ und Erfolgskarten nutzen dieselbe Konstante', () => {
+    const faq = copy.fragen.liste.find((f) => f.frage === 'Was tue ich bei akuter Gefahr?')
+    expect(faq?.antwort).toBe(GEFAHR)
+    expect(renderToString(<GefahrHinweis />)).toContain(GEFAHR)
+  })
+
+  test('drei Schritte; die E-Mail-Zeile nur mit Adresse, Sonderzeichen werden maskiert', () => {
+    const ohne = renderToString(<SoGehtEsWeiter ebene={4} mitSchritten />)
+    expect(ohne).toContain('<h4')
+    for (const s of copy.weiter.schritte) expect(ohne).toContain(s.titel)
+    expect(ohne).not.toContain('Eine Bestätigung')
+    expect(renderToString(<SoGehtEsWeiter ebene={3} email="" mitSchritten />)).not.toContain('Eine Bestätigung')
+    const mit = renderToString(<SoGehtEsWeiter ebene={3} email="a&b@beispiel.at" mitSchritten />)
+    expect(mit).toContain('<h3')
+    expect(mit).toContain('Eine Bestätigung schicken wir an a&amp;b@beispiel.at.')
+  })
+
+  test('ohne gefundenen Betrieb (NONE) keine Schritte, nur die Zeile zur Bestätigung', () => {
+    expect(renderToString(<SoGehtEsWeiter ebene={4} mitSchritten={false} />)).toBe('')
+    const mit = renderToString(<SoGehtEsWeiter ebene={4} email="maria@beispiel.at" mitSchritten={false} />)
+    expect(mit).toContain('Eine Bestätigung schicken wir an maria@beispiel.at.')
+    expect(mit).not.toContain(copy.weiter.titel)
+    for (const s of copy.weiter.schritte) expect(mit).not.toContain(s.titel)
   })
 })
 

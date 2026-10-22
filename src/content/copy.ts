@@ -11,6 +11,10 @@ export const UST_HINWEIS = '[inkl. 20 % USt.]'
 export const WEISS_NICHT = 'Weiß ich nicht'
 /** Pfad der Datenschutzerklärung (Fuß, Formular, Luna) */
 export const DATENSCHUTZ = '/datenschutz/'
+/** Gefahr-Hinweis: Antwort in den häufigen Fragen und eigener Absatz in den Erfolgskarten (Formular und Luna), ein Wortlaut. */
+export const GEFAHR = 'Bei akuter Gefahr wie Rauch, Funken oder Gasgeruch kontaktieren Sie bitte sofort 122 bzw. 112.'
+/** nicht im Design (Bauplan B3, Text wartet auf Freigabe): Abschnitt Anfrage und Luna-Zusammenfassung, ein Wortlaut. */
+export const OHNE_KONTO = 'Ein Konto oder eine Anmeldung brauchen Sie nicht.'
 
 /**
  * Einwilligung zur Weitergabe, gleich in Formular und Luna (Entscheidung vom 14.10.2026: ein Text für dieselbe Weitergabe,
@@ -220,12 +224,15 @@ export const copy = {
 
   anfrage: {
     titel: 'Anfrage senden',
-    lead: 'Wir geben Ihre Anfrage sofort an einen passenden Fachbetrieb in Ihrer Region weiter. Der Betrieb ruft Sie zurück.',
+    // Satz 3 nicht im Design (Bauplan B3, Text wartet auf Freigabe): gleicher Satz in der Luna-Zusammenfassung
+    lead: `Wir geben Ihre Anfrage sofort an einen passenden Fachbetrieb in Ihrer Region weiter. Der Betrieb ruft Sie zurück. ${OHNE_KONTO}`,
     felder: {
       name: { label: 'Name', platzhalter: 'Vor- und Nachname' },
       telefon: { label: 'Telefon', platzhalter: 'Für den Rückruf' },
       plzOrt: { label: 'PLZ und Ort', platzhalter: 'z. B. 1020 Wien' },
       gewerk: { label: 'Gewerk', bitteWaehlen: 'Bitte wählen' },
+      // nicht im Design (Bauplan B1, Text wartet auf Freigabe)
+      email: { label: 'E-Mail', optional: '(optional)', platzhalter: 'Für die Bestätigung' },
       beschreibung: { label: 'Kurze Beschreibung', platzhalter: 'Was ist passiert? Zum Beispiel: Unter der Spüle tritt Wasser aus.' },
     },
     /** Sternchen hinter Pflichtfeldern */
@@ -238,6 +245,7 @@ export const copy = {
       telefon: 'Bitte geben Sie eine Telefonnummer für den Rückruf ein.',
       plzOrt: 'Bitte geben Sie Postleitzahl und Ort ein, zum Beispiel 1020 Wien.',
       gewerk: 'Bitte wählen Sie ein Gewerk.',
+      email: 'Bitte prüfen Sie die E-Mail-Adresse.', // nicht im Design (Bauplan B1, Text wartet auf Freigabe): wie Luna
       einwilligung: 'Bitte stimmen Sie der Weitergabe zu, sonst können wir keinen Betrieb vermitteln.',
     },
     erfolg: {
@@ -324,6 +332,12 @@ export const copy = {
           'Nein. fixit247 repariert nicht selbst, sondern gibt Ihre Anfrage an geprüfte Fachbetriebe aus Ihrer Region weiter. Der Vertrag kommt direkt mit dem Betrieb zustande.',
       },
       {
+        // nicht im Design (Bauplan B5, Inhalt von Beks vom 21.10.2026, nichts darüber hinaus; rechtlich prüfen, docs/livegang.md)
+        frage: 'Was heißt „geprüft“?',
+        antwort:
+          'Vor der Aufnahme eines Betriebs prüfen wir seine Gewerbeberechtigung für jedes Gewerk im GISA (Gewerbeinformationssystem Austria), lassen uns die Betriebshaftpflichtversicherung nachweisen und führen ein persönliches Gespräch. Bei Beschwerden pausieren wir die Vermittlung an diesen Betrieb.',
+      },
+      {
         frage: 'Was kostet die Vermittlung?',
         antwort: 'Die Vermittlung ist kostenlos. Sie zahlen nur den Betrieb.',
       },
@@ -343,9 +357,24 @@ export const copy = {
       },
       {
         frage: 'Was tue ich bei akuter Gefahr?',
-        antwort: 'Bei akuter Gefahr wie Rauch, Funken oder Gasgeruch kontaktieren Sie bitte sofort 122 bzw. 112.',
+        antwort: GEFAHR,
       },
     ],
+  },
+
+  // nicht im Design (Bauplan B2, Text wartet auf Freigabe): Schritte wie in der Bestätigungsmail in public/anfrage.php
+  // (dort „Rückruf“ als erster Schritt, mit der Telefonnummer und „für Sie kostenlos“). Nur bei gefundenem Betrieb (FOUND).
+  weiter: {
+    titel: 'So geht es weiter',
+    schritte: [
+      { titel: 'Passender Fachbetrieb', text: 'Wir vermitteln Ihre Anfrage an einen passenden Fachbetrieb in Ihrer Nähe.' },
+      { titel: 'Rückruf', text: 'fixit247 oder der vermittelte Fachbetrieb meldet sich telefonisch bei Ihnen.' },
+      {
+        titel: 'Direkt mit dem Fachbetrieb',
+        text: 'Termin, Preis, Durchführung und Rechnung stimmen Sie direkt mit dem Fachbetrieb ab. Die Vermittlung ist kostenlos.',
+      },
+    ],
+    email: 'Eine Bestätigung schicken wir an {email}.',
   },
 
   menue: {
@@ -429,7 +458,8 @@ export const copy = {
       richtpreis: 'Richtpreis',
       anfahrt: 'Anfahrt',
       einwilligungFehlt: 'Bitte stimmen Sie der Weitergabe zu, sonst können wir keinen Betrieb vermitteln.', // nicht im Design (SPEC 9)
-      hinweis: 'Die Vermittlung ist kostenlos. Der Vertrag kommt direkt mit dem Betrieb zustande.',
+      // Satz 2 nicht im Design (Bauplan B3, Text wartet auf Freigabe)
+      hinweis: `Die Vermittlung ist kostenlos. ${OHNE_KONTO} Der Vertrag kommt direkt mit dem Betrieb zustande.`,
       aendern: 'Angaben ändern',
       sendend: 'Wird gesendet …', // nicht im Design (SPEC 9)
     },

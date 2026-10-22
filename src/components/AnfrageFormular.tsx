@@ -7,6 +7,7 @@ import { Button } from './ui/Button'
 import { CallButton } from './ui/CallButton'
 import { Icon } from './ui/Icon'
 import { IconKreis } from './ui/IconKreis'
+import { GefahrHinweis, SoGehtEsWeiter } from './ui/SoGehtEsWeiter'
 
 const t = copy.anfrage
 const GEWERK_IDS = gewerke.map((g) => g.id)
@@ -27,6 +28,7 @@ function lies(form: HTMLFormElement): FormularWerte {
     telefon: text('telefon'),
     plzOrt: text('plzOrt'),
     gewerk: text('gewerk'),
+    email: text('email'),
     beschreibung: text('beschreibung'),
     einwilligung: daten.has('einwilligung'),
   }
@@ -41,6 +43,8 @@ interface Danke {
   anfragenummer: string
   betrieb: string
   telefon: string
+  /** getrimmte E-Mail-Adresse oder '' (freiwillig) */
+  email: string
   /** Sicherheitstipp des gewählten Gewerks (fehlt bei „Weiß ich nicht“) */
   tipp?: string
 }
@@ -51,7 +55,7 @@ const fehlerId = (feld: FormularFeld) => `${feldId(feld)}-fehler`
 const FELD = 'rahmen w-full rounded-chip border-rand bg-weiss px-s4 text-body text-tiefsee transition-[border-color] hover:border-tiefsee aria-invalid:border-tiefsee'
 const FELDHOEHE = 'min-h-[54px]'
 
-function Beschriftung({ feld, pflicht = false, children }: { feld: FormularFeld; pflicht?: boolean; children: ReactNode }) {
+function Beschriftung({ feld, pflicht = false, optional, children }: { feld: FormularFeld; pflicht?: boolean; optional?: string; children: ReactNode }) {
   return (
     <label htmlFor={feldId(feld)} className="font-display text-text font-semibold">
       {children}
@@ -61,6 +65,7 @@ function Beschriftung({ feld, pflicht = false, children }: { feld: FormularFeld;
           <span aria-hidden="true">{t.pflichtZeichen}</span>
         </>
       )}
+      {optional && <span className="font-text font-normal text-schiefer"> {optional}</span>}
     </label>
   )
 }
@@ -145,6 +150,7 @@ export function AnfrageFormular() {
         betrieb: gewerk?.betrieb ?? copy.luna.erfolg.betriebUnbekannt,
         // Geschützte Leerzeichen: Die Telefonnummer bricht nicht mitten im Text um.
         telefon: werte.telefon.trim().replace(/ /g, ' '),
+        email: werte.email.trim(),
         tipp: gewerk?.tippErfolg,
       })
       setVorauswahl('')
@@ -237,6 +243,21 @@ export function AnfrageFormular() {
       </div>
 
       <div className="col-span-full flex flex-col gap-s2">
+        <Beschriftung feld="email" optional={t.felder.email.optional}>
+          {t.felder.email.label}
+        </Beschriftung>
+        <input
+          {...steuerung('email')}
+          type="email"
+          inputMode="email"
+          autoComplete="email"
+          placeholder={t.felder.email.platzhalter}
+          className={`${FELD} ${FELDHOEHE}`}
+        />
+        <Fehlertext feld="email" text={fehler.email} />
+      </div>
+
+      <div className="col-span-full flex flex-col gap-s2">
         <Beschriftung feld="beschreibung">{t.felder.beschreibung.label}</Beschriftung>
         <textarea
           {...steuerung('beschreibung')}
@@ -326,11 +347,13 @@ function Erfolg({ danke }: { danke: Danke }) {
         {fuelle(danke.match === 'FOUND' ? t.erfolg.text : t.erfolg.keinerText, { betrieb: danke.betrieb, telefon: danke.telefon })}
       </p>
       <p className="text-small text-schiefer">{fuelle(t.erfolg.nummer, { nummer: danke.anfragenummer })}</p>
+      <SoGehtEsWeiter ebene={4} email={danke.email} mitSchritten={danke.match === 'FOUND'} />
       {danke.tipp && danke.match === 'FOUND' && (
         <p className="rounded-chip bg-eis p-s4 text-small">
           <strong>{copy.luna.erfolg.tippTitel}</strong> {danke.tipp}
         </p>
       )}
+      <GefahrHinweis />
       <CallButton variante="block" label={copy.luna.erfolg.anrufen} />
     </div>
   )
