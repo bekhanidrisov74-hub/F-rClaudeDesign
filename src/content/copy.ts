@@ -192,10 +192,13 @@ export const copy = {
     lead: 'Richtpreise der Fachbetriebe. Den genauen Preis vereinbaren Sie mit dem Betrieb.',
     gewerk: 'Gewerk',
     arbeitszeit: 'Arbeitszeit',
-    weniger: 'Eine Stunde weniger',
-    mehr: 'Eine Stunde mehr',
-    stundenHinweis: '1 bis 12 Stunden. Beim Schlüsseldienst gilt ein Preis pro Einsatz.',
-    stunde: 'Stunde', // nicht im Design: Einzahl bei 1 Stunde
+    // weniger, mehr, stundenHinweis: nicht im Design (Auftraggeber 22.10.2026: halbe Stunden, rechtlich prüfen: Preisangaben)
+    weniger: 'Eine halbe Stunde weniger',
+    mehr: 'Eine halbe Stunde mehr',
+    // Kurz gehalten: auf den Prüfbreiten (320, 390, 768, 1024, 1440, 1920, 2560 px) gleich viele Zeilen wie „1 bis 12 Stunden. …“ im Design,
+    // dazwischen (z. B. 340–376, 520–704 px) eine Zeile mehr.
+    stundenHinweis: 'Jede angefangene halbe Stunde zählt. Beim Schlüsseldienst gilt ein Preis pro Einsatz.',
+    stunde: 'Stunde', // nicht im Design: Einzahl bei 1 Stunde (sonst „0,5 Stunden“, „1,5 Stunden“)
     stunden: 'Stunden',
     /** vor dem Gesamtpreis: „ca. 219,90 € – 309,90 €“ */
     ca: 'ca.',

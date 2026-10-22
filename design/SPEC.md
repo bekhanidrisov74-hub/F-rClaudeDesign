@@ -85,7 +85,7 @@ Dazu kommen schwebend: der Luna-Knopf und der Anstupser. Als Überlagerungen gib
 
 **Eingaben**
 - Gewerk: Chips mit `aria-pressed`, Einfachauswahl, Start „Installateur“.
-- Arbeitszeit: Stepper 1–12 Stunden, Start 2. Der Wert steht in einem `<output aria-live="polite">`.
+- Arbeitszeit: Stepper in halben Stunden, 0,5–12 Stunden, Start 2. Jede angefangene halbe Stunde zählt (Auftraggeber, 22.10.2026). Der Wert steht in einem `<output aria-live="polite">`, mit Dezimalkomma: „0,5 Stunden“, „1 Stunde“, „1,5 Stunden“.
 - Zuschläge: drei Umschalter, Sonntag, Feiertag und Nacht, jeweils „+100 %“, Mehrfachauswahl möglich.
 
 **Schlüsseldienst** (`abrechnung: 'einsatz'`):
@@ -105,7 +105,7 @@ gesamt_max = arbeit_max + zuschlag_max + anfahrt
 - Ohne oder mit nur einem Zuschlag steht dort der normale Hinweis „Es zählt höchstens ein Zuschlag, auch wenn mehrere zutreffen.“
 
 **Ergebniskarte** (Tiefsee, `aria-live="polite"`)
-- Unterzeile, z. B. „Installateur, 2 Stunden, kein Zuschlag“ oder „Installateur, 2 Stunden, Sonntag und Nacht“.
+- Unterzeile, z. B. „Installateur, 2 Stunden, kein Zuschlag“, „Installateur, 1,5 Stunden, kein Zuschlag“ oder „Installateur, 2 Stunden, Sonntag und Nacht“.
 - Zeilen: Arbeit (bzw. Einsatz), Anfahrt, Zuschlag („keiner“ oder „Zuschlag +100 %“ mit Unterzeile „auf die Arbeit, nur einmal“ und Betrag), Gesamt.
 
 **Format**
