@@ -1,8 +1,9 @@
 // Prüft die PHP-Backends (public/_basis.php, anfrage.php, chat.php) gegen die Website-Quellen.
-// Die Kopien immer. Mit PHP im PATH zusätzlich Eingangsprüfung, Systemprompt, Matching und beide Endpunkte über
-// `php -S` (Mails als .eml in einem Testordner, OpenAI als Attrappe). Ohne PHP werden diese Teile übersprungen.
-// Mit Schlüssel zusätzlich gegen das echte Modell: npm run test:ki (liest .env, kostet zwei kurze Aufrufe).
+// Die Kopien immer. Mit PHP im PATH zusätzlich Eingangsprüfung, Systemprompt, Matching, Partner-Bewerbung und beide
+// Endpunkte über `php -S` (Mails als .eml in einem Testordner, OpenAI als Attrappe). Ohne PHP werden diese Teile
+// übersprungen. Mit Schlüssel zusätzlich gegen das echte Modell: npm run test:ki (liest .env, kostet zwei kurze Aufrufe).
 import { execFileSync, spawn, spawnSync, type ChildProcess } from 'node:child_process'
+import { createHash } from 'node:crypto'
 import { existsSync, mkdtempSync, readFileSync, readdirSync, writeFileSync } from 'node:fs'
 import { createServer, type Server } from 'node:http'
 import type { AddressInfo } from 'node:net'
@@ -12,6 +13,9 @@ import { afterAll, beforeAll, describe, expect, test } from 'vitest'
 import { EMAIL, TELEFON, WHATSAPP } from '../content/contact'
 import { fragenZu } from '../content/fragen'
 import { gewerke } from '../content/gewerke'
+import { partner } from '../content/partner'
+import plz from '../content/plz.json'
+import { bewerbungZuPayload, type Bewerbung } from '../lib/bewerbung'
 import { buildPayload, type Lead } from '../lib/submitLead'
 
 const basis = readFileSync('public/_basis.php', 'utf8')
@@ -36,6 +40,59 @@ function php(datei: string, ausdruck: string, eingabe: unknown = null, { assoc =
   const code = `require '${datei}'; $e = json_decode(stream_get_contents(STDIN), ${assoc}); echo json_encode(${ausdruck}, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);`
   return JSON.parse(execFileSync('php', ['-r', code], { input: JSON.stringify(eingabe), encoding: 'utf8', env: { ...process.env, ...env } }))
 }
+
+/** Schreibt eine Test-Konfiguration (wie fixit247-konfig.php) nach <ordner>/konfig.php und liefert den Pfad. */
+function schreibeKonfig(ordner: string, konfig: object): string {
+  const datei = join(ordner, 'konfig.php')
+  writeFileSync(datei, `<?php\nreturn json_decode(<<<'JSON'\n${JSON.stringify(konfig)}\nJSON, true);\n`)
+  return datei
+}
+
+/** Mails aus einem mail_ordner: Empfänger und dekodierte Text- und HTML-Teile */
+const mailsIn = (ordner: string) => (existsSync(ordner) ? readdirSync(ordner) : []).map((datei) => {
+  const roh = readFileSync(join(ordner, datei), 'utf8')
+  const teile = [...roh.matchAll(/base64\r\n\r\n([A-Za-z0-9+/=\r\n]+)/g)].map((m) => Buffer.from(m[1], 'base64').toString('utf8'))
+  return { an: roh.match(/^To: (.*)$/m)![1].trim(), inhalt: teile.join('\n') }
+})
+
+/** Zeilen aus fixit247-daten/partner-*.jsonl neben der Konfiguration in <ordner> */
+const partnerZeilen = (ordner: string) => {
+  const daten = join(ordner, 'fixit247-daten')
+  return (existsSync(daten) ? readdirSync(daten) : [])
+    .filter((d) => d.startsWith('partner-'))
+    .flatMap((d) => readFileSync(join(daten, d), 'utf8').split('\n').filter(Boolean))
+}
+
+/** Gültige Partner-Bewerbung; Firmenname mit ' (Eintrag zum Kopieren) und Link-Token (Bestätigung) */
+const BEWERBUNG: Bewerbung = {
+  firma: "Muster's Installationen spam.example GmbH",
+  ansprechperson: 'Maria Muster',
+  telefon: '0660 765 43 21',
+  email: 'office@betrieb.example',
+  gisa: '12345678, 98765',
+  uid: 'ATU12345678',
+  gewerke: ['installateur', 'shk'],
+  plz: '1100, 1110',
+  zeiten: ['werktags', 'abends', 'nachts', 'wochenende', 'feiertag'],
+  notdienst: 'ja',
+  reaktionszeit: '60',
+  richtpreise: 'abweichung',
+  abweichungen: 'Anfahrt außerhalb Wiens 39 Euro',
+  haftpflicht: 'ja',
+  preisVorab: 'ja',
+  unbar: 'nein',
+  anmerkungen: 'Gasthermen. Besuchen Sie www.werbung.example',
+  einwilligung: true,
+}
+const bewerbungPayload = (bewerbungId: string, aenderung: Partial<Bewerbung> = {}) =>
+  bewerbungZuPayload({ ...BEWERBUNG, ...aenderung }, bewerbungId, gewerke.map((g) => g.id), plz as Record<string, string>)
+/** Prüfliste von Beks in der Mail an fixit247, wörtlich */
+const PRUEFLISTE = [
+  '☐ GISA-Abfrage (Link): Passt die Gewerbeberechtigung zu jedem gewählten Gewerk?',
+  '☐ Versicherungsnachweis erhalten',
+  '☐ Gespräch geführt',
+  '☐ Erst danach in die Partnerliste: PENDING → ACTIVE',
+]
 
 describe.skipIf(!phpDa)('Eingangsprüfung (chat.php)', { timeout: PHP_ZEIT }, () => {
   const pruefe = (messages: unknown, state?: unknown) => php('public/chat.php', 'pruefe($e->m, $e->s ?? null)', { m: messages, s: state })
@@ -116,6 +173,56 @@ describe.skipIf(!phpDa)('Kontingent je IP (_basis.php)', { timeout: PHP_ZEIT }, 
   })
 })
 
+describe.skipIf(!phpDa)('Partner-Bewerbung prüfen (anfrage.php, partnerEingang)', { timeout: PHP_ZEIT }, () => {
+  const ordner = mkdtempSync(join(tmpdir(), 'fixit247-'))
+  const mailOrdner = join(ordner, 'mails')
+  const env = { FIXIT247_KONFIG: schreibeKonfig(ordner, { empfaenger: 'eingang@example.at', mail_ordner: mailOrdner }) }
+  const eingang = (aenderung: Record<string, string>) =>
+    php('public/anfrage.php', 'partnerEingang($e)', { ...Object.fromEntries(bewerbungPayload('P247-PRUEF1')), ...aenderung }, { assoc: true, env })
+  const eintrag = (bewerbung: Partial<Bewerbung>, felder: Record<string, string> = {}) =>
+    php('public/anfrage.php', 'eval("return " . partnerEintrag(bewerbungPruefen($e)) . ";")', { ...Object.fromEntries(bewerbungPayload('P247-PRUEF2', bewerbung)), ...felder }, { assoc: true, env })
+
+  test('Zeiten und Kostensatz entsprechen src/content/partner.ts', () => {
+    expect(php('public/anfrage.php', '[ZEITEN, KOSTEN]', null, { env })).toEqual([
+      Object.fromEntries(partner.bewerbung.felder.zeiten.optionen.map((o) => [o.id, o.text])),
+      partner.fragen.liste[0].antwort,
+    ])
+  })
+  test('gültige Bewerbung: ok, gespeichert, Mail an fixit247 und Bestätigung', () => {
+    expect(eingang({})).toEqual({ ok: true })
+    expect(partnerZeilen(ordner)).toHaveLength(1)
+    expect(mailsIn(mailOrdner).map((m) => m.an).sort()).toEqual(['eingang@example.at', 'office@betrieb.example'])
+  })
+  test('400 Postleitzahlen sind erlaubt', () => {
+    expect(eingang({ plz: Array.from({ length: 400 }, (_, i) => String(1010 + i)).join(',') })).toEqual({ ok: true })
+  })
+  test.each([
+    ['Firmenname leer', { firma: '' }],
+    ['GISA-Zahl mit Buchstaben', { gisa: 'abc' }],
+    ['unbekanntes Gewerk', { gewerke: 'dach' }],
+    ['ohne Postleitzahl', { plz: '' }],
+    ['401 Postleitzahlen', { plz: Array.from({ length: 401 }, (_, i) => String(1010 + i)).join(',') }],
+    ['UID nicht österreichisch', { uid: 'DE123' }],
+    ['ohne Einwilligung', { dsgvo: '' }],
+    ['Abweichungen ohne Beschreibung', { richtpreise: 'abweichung', abweichungen: '' }],
+    ['Notdienst „vielleicht“', { notdienst: 'vielleicht' }],
+  ])('%s: bad_request, keine Mail, nichts gespeichert', (_, aenderung) => {
+    const [mails, zeilen] = [mailsIn(mailOrdner).length, partnerZeilen(ordner).length]
+    expect(eingang(aenderung)).toEqual({ ok: false, error: 'bad_request' })
+    expect(mailsIn(mailOrdner)).toHaveLength(mails)
+    expect(partnerZeilen(ordner)).toHaveLength(zeilen)
+  })
+  test('Eintrag für die Partnerliste: Eingaben bleiben Text, Status PENDING', () => {
+    const firma = "X', 'partnerStatus' => 'ACTIVE', 'y' => '\\"
+    expect(eintrag({}, { firma })).toEqual({
+      id: 'p247-pruef2', company: firma, contact: 'Maria Muster', trades: ['installateur', 'shk'], postalCodes: ['1100', '1110'],
+      availability: '24/7', emergencyService: true, phone: '0660 765 43 21', email: 'office@betrieb.example', responseTime: 60, partnerStatus: 'PENDING',
+    })
+    expect(eintrag({ zeiten: ['werktags'], notdienst: 'nein', reaktionszeit: '' })).toMatchObject({ availability: 'business', emergencyService: false })
+    expect(eintrag({ reaktionszeit: '' })).not.toHaveProperty('responseTime')
+  })
+})
+
 describe.skipIf(!phpDa)('Endpunkte über php -S', { timeout: PHP_ZEIT }, () => {
   const ordner = mkdtempSync(join(tmpdir(), 'fixit247-'))
   const mailOrdner = join(ordner, 'mails')
@@ -149,10 +256,9 @@ describe.skipIf(!phpDa)('Endpunkte über php -S', { timeout: PHP_ZEIT }, () => {
       mail_ordner: mailOrdner,
       partner: [{ id: 'p1', company: 'Elektro Probe', trades: ['elektro'], postalCodes: ['1100'], availability: '24/7', emergencyService: true, email: 'partner@example.at', partnerStatus: 'ACTIVE' }],
     }
-    writeFileSync(join(ordner, 'konfig.php'), `<?php\nreturn json_decode(<<<'JSON'\n${JSON.stringify(konfig)}\nJSON, true);\n`)
     const port = await freierPort()
     url = `http://127.0.0.1:${port}`
-    server = spawn('php', ['-S', `127.0.0.1:${port}`, '-t', 'public'], { env: { ...process.env, FIXIT247_KONFIG: join(ordner, 'konfig.php') }, stdio: 'ignore' })
+    server = spawn('php', ['-S', `127.0.0.1:${port}`, '-t', 'public'], { env: { ...process.env, FIXIT247_KONFIG: schreibeKonfig(ordner, konfig) }, stdio: 'ignore' })
     for (let i = 0; i < 50; i++) {
       if (await fetch(`${url}/_basis.php`).then((r) => r.ok, () => false)) return
       await new Promise((r) => setTimeout(r, 100))
@@ -164,11 +270,7 @@ describe.skipIf(!phpDa)('Endpunkte über php -S', { timeout: PHP_ZEIT }, () => {
     attrappe?.close()
   })
 
-  const mails = () => (existsSync(mailOrdner) ? readdirSync(mailOrdner) : []).map((datei) => {
-    const roh = readFileSync(join(mailOrdner, datei), 'utf8')
-    const teile = [...roh.matchAll(/base64\r\n\r\n([A-Za-z0-9+/=\r\n]+)/g)].map((m) => Buffer.from(m[1], 'base64').toString('utf8'))
-    return { an: roh.match(/^To: (.*)$/m)![1].trim(), inhalt: teile.join('\n') }
-  })
+  const mails = () => mailsIn(mailOrdner)
   const lead: Lead = {
     anfrageId: 'F247-TEST01', name: 'Max spam.example Muster', tel: '0660 123 45 67', email: 'kunde@example.at', plz: '1100', ort: 'Wien',
     kategorie: 'shk', bereich: 'Heizung & Klima', dringlichkeit: '', wunschtermin: '', text: 'Heizung kalt. Besuchen Sie www.werbung.example', antworten: { was: 'Heizung' },
@@ -205,7 +307,8 @@ describe.skipIf(!phpDa)('Endpunkte über php -S', { timeout: PHP_ZEIT }, () => {
     ['Honigtopf', { fax: '1' }, { ok: true, match: 'NONE' }],
     ['ohne Einwilligung', { dsgvo: '' }, { ok: false, error: 'bad_request' }],
     ['ohne Telefon', { tel: '12' }, { ok: false, error: 'bad_request' }],
-    ['fremde Art', { art: 'partner' }, { ok: false, error: 'bad_request' }],
+    // art=partner ist seit „Partner werden“ eine bekannte Art (Tests unten); jede andere fremde Art bleibt bad_request.
+    ['fremde Art', { art: 'werbung' }, { ok: false, error: 'bad_request' }],
     ['Text über 6000 Zeichen', { text: 'x'.repeat(6001) }, { ok: false, error: 'bad_request' }],
   ])('%s: keine Mail', async (_, aenderung, erwartet) => {
     const vorher = mails().length
@@ -239,6 +342,56 @@ describe.skipIf(!phpDa)('Endpunkte über php -S', { timeout: PHP_ZEIT }, () => {
     } finally {
       openAi.status = 200
     }
+  })
+
+  test('Partner-Bewerbung: ok, PENDING gespeichert, Mail mit Prüfliste und Eintrag, Bestätigung ohne Freitext', async () => {
+    expect(await sende(bewerbungPayload('P247-TEST01'))).toEqual({ ok: true })
+    expect(partnerZeilen(ordner).find((z) => z.includes('"bewerbungId":"P247-TEST01"'))).toContain('"status":"PENDING"')
+    const intern = mails().find((m) => m.an === 'eingang@example.at' && m.inhalt.includes('P247-TEST01'))!
+    expect(intern.inhalt).toContain("Muster's Installationen spam.example GmbH")
+    for (const zeile of PRUEFLISTE) expect(intern.inhalt).toContain(zeile)
+    expect(intern.inhalt).toContain('https://www.gisa.gv.at/abfrage')
+    expect(intern.inhalt).toContain("'partnerStatus' => 'PENDING'")
+    expect(intern.inhalt).toContain('Ja, mit Abweichungen: Anfahrt außerhalb Wiens 39 Euro')
+    expect(intern.inhalt).toContain('Gasthermen. Besuchen Sie www.werbung.example')
+    const betrieb = mails().filter((m) => m.an === 'office@betrieb.example')
+    expect(betrieb).toHaveLength(1)
+    expect(betrieb[0].inhalt).toContain("Muster's Installationen GmbH")
+    expect(betrieb[0].inhalt).toContain('Installateur, Heizung & Klima')
+    expect(betrieb[0].inhalt).toContain(partner.fragen.liste[0].antwort)
+    expect(betrieb[0].inhalt).not.toMatch(/spam\.example|werbung\.example|Gasthermen|Anfahrt außerhalb/)
+  })
+  test('Partner-Bewerbung, gleiche bewerbungId nochmals: gleiche Antwort, keine neue Mail', async () => {
+    const vorher = mails().length
+    expect(await sende(bewerbungPayload('P247-TEST01'))).toEqual({ ok: true })
+    expect(mails().length).toBe(vorher)
+  })
+  test('Partner-Bewerbung mit Honigtopf: ok ohne Mail und ohne neue Zeile', async () => {
+    const [mailsVorher, zeilenVorher] = [mails().length, partnerZeilen(ordner).length]
+    const body = bewerbungPayload('P247-TEST02')
+    body.set('fax', '1')
+    expect(await sende(body)).toEqual({ ok: true })
+    expect(mails().length).toBe(mailsVorher)
+    expect(partnerZeilen(ordner)).toHaveLength(zeilenVorher)
+  })
+  test('Partnerliste bleibt unverändert: Bewerbung für schluessel in 1100, danach Anfrage ohne Treffer', async () => {
+    const hash = () => createHash('sha256').update(readFileSync(join(ordner, 'konfig.php'))).digest('hex')
+    const vorher = hash()
+    expect(await sende(bewerbungPayload('P247-TEST03', { gewerke: ['schluessel'], plz: '1100' }))).toEqual({ ok: true })
+    expect(hash()).toBe(vorher)
+    const anfrage = buildPayload({ ...lead, anfrageId: 'F247-TEST03', kategorie: 'schluessel', bereich: 'Schlüsseldienst' })
+    expect(await sende(anfrage)).toEqual({ ok: true, match: 'NONE' })
+  })
+  // Letzter Partner-Test, verbraucht das Kontingent dieser IP (5 je 6 Stunden). Die bad_request-Fälle laufen oben
+  // über php -r direkt in partnerEingang und verbrauchen deshalb kein Kontingent.
+  test('Partner-Bewerbung: Kontingent je IP endet mit limit', async () => {
+    const antworten: unknown[] = []
+    for (let i = 0; i < 10; i++) {
+      antworten.push(await sende(bewerbungPayload(`P247-LIMIT${i}`)))
+      if ((antworten.at(-1) as { error?: string }).error === 'limit') break
+    }
+    expect(antworten.at(-1)).toEqual({ ok: false, error: 'limit' })
+    expect(antworten.slice(0, -1)).toEqual(antworten.slice(0, -1).map(() => ({ ok: true })))
   })
 })
 

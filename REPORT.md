@@ -166,3 +166,27 @@ Auf Wunsch von Beks folgen alle Abschnitte und Fenster dem Stil des Entwurfs „
 
 Lokal liefen Playwright und die Aufnahmen mit Chromium statt mit dem installierten Google Chrome (eigene, nicht eingecheckte Konfiguration mit `executablePath`).
 
+
+## 12. Seite „Partner werden“ (21.10.2026)
+
+Branch `feature/partner-werden`, Texte von Beks am 21.10.2026 freigegeben und committet, nicht gepusht. Analyse und Plan: `docs/analyse/` (Bestand, Plan, freigegebene Texte); die Profihand-Analyse mit REA liegt nur lokal (`docs/analyse/profihand-partner.md`, in `.gitignore`).
+
+- **Seite** `/partner-werden/`, indexierbar, in der Sitemap (die Sitemap entsteht jetzt aus allen Seiten ohne `noindex`). Einstiege: Fuß („Seiten“), kleiner Link im Handy-Menü, Karte am Ende von „Häufige Fragen“ auf der Startseite. Aufbau und Flächen in `docs/hero-stil.md`.
+- **Formular** (`src/components/PartnerFormular.tsx`, Regeln in `src/lib/bewerbung.ts`, Texte in `src/content/partner.ts`): Firma, Ansprechperson, Telefon, E-Mail, GISA-Zahl, UID (optional), Gewerke, Postleitzahlen (auch Bereiche wie 1010–1230, geprüft gegen `plz.json`), Erreichbarkeit, Notdienst, Zeit bis vor Ort (optional), Richtpreise (mit „Welche?“), Haftpflicht, Preis vor Arbeitsbeginn, Karte oder Überweisung, Anmerkungen, Einwilligung, Honigtopf `fax`. Keine Uploads.
+- **Eingang** `art=partner` in `public/anfrage.php`: gleiche Schutzschichten wie die Anfrage, eigenes Kontingent (5 je IP und 6 Stunden), Speicherung in `fixit247-daten/partner-JJJJ-MM.jsonl` mit `PENDING`, Mail an fixit247 mit allen Antworten, Prüfliste und fertigem Eintrag für die Partnerliste (`var_export`, `PENDING`), Bestätigung an den Betrieb ohne Freitext. Die Partnerliste wird nie automatisch geändert.
+
+| Prüfung | Ergebnis |
+|---|---|
+| `npm run check` | grün: Typen, Lint, Vitest 177 bestanden (2 übersprungen: echtes KI-Modell), Build mit 5 Seiten |
+| `npm run test:e2e` | Letzter Gesamtlauf auf dem Endstand: 349 bestanden, 73 übersprungen (nur in einer Breite), 1 Fehlschlag: „Esc schließt zuerst die Preisübersicht, dann den Chat“ bei 1024 px mit Fokus „inactive“ (Testfenster ohne Fokus, viele Browser parallel); derselbe Test danach 10 von 10 grün. Im Lauf davor fiel einmal der Luna-Anstupser bei 1024 px (Zeitmessung unter Last), danach 15 von 15 grün. Erster Gesamtlauf: 350 bestanden, 0 Fehlschläge. Beide Luna-Tests prüfen die Startseite, deren Luna-Code nicht geändert wurde |
+| axe (WCAG 2.2 AA) | 0 Verstöße auf `/partner-werden/` leer, mit Fehlern, Erfolg und Sendefehler |
+| `npm run shots` + visual-reviewer | Runde 1: zwei mittlere Befunde (Überlauf einer Legende bei 920–1005 px, Titelgröße „Was Sie davon haben“), behoben. Runde 2: Freigabe ja |
+| `npm run lighthouse` | `/partner-werden/`: Performance 98, Barrierefreiheit 100, Best Practices 100, SEO 100. **Gesamtlauf rot** wegen `/impressum/` (Performance 68–77, Blockierzeit über 1 s); auf `main` (cca8c5d) gleich (68–69), also nicht durch diese Änderung. Vermutlich lädt der Globus im Fuß auf kurzen Seiten sofort. |
+| copy-checker | Befunde zu Geschäftsmodell und Zusagen eingearbeitet (Liste in `docs/analyse/partner-werden-texte.md`) |
+| REA-Bildvergleich | `compare-web-screenshots` lokale Seite gegen Profihand: 5 von 5 „different“ (94–100 % der Pixel) |
+
+Änderungen an Bestehendem: Die Id-Prüfung für Doppelsendungen in `anfrage.php` ist strenger (Modifier `D`, eine Id mit Zeilenumbruch am Ende zählt nicht mehr), das gilt auch für Anfragen. `zufallsnummer()` kennt das Präfix `P247`, `submitLead.ts` teilt den Versand über `posteAnEingang()`. `Ablauf` und `Fragen` nehmen Props, ohne Props wie bisher. `tmp/` (REA-Arbeitsdateien) ist in `.gitignore` und in den ESLint-Ausnahmen.
+
+Kleinigkeiten, bewusst offen gelassen (Sichtprüfung Runde 2, niedrig): Pflicht-Sternchen der Haftpflicht-Frage bei 322–334 px allein in der Zeile; „Zur Bewerbung“ bei Handy quer knapp unter dem ersten Bildschirm; lange E-Mail-Adressen brechen in der Erfolgskarte am Bindestrich.
+
+Offen bei Beks: Löschfrist für abgelehnte Bewerbungen (Vorschlag 6 Monate, `docs/livegang.md`), Rechtstext „Partner-Bewerbungen“, Push und Pull Request.

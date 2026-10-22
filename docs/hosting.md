@@ -1,13 +1,13 @@
 # Hosting und Backend
 
-Stand: 18.10.2026
+Stand: 21.10.2026
 
 ## Entscheidung
 
 - **Hosting:** ALL-INKL.COM, Domain `fixit247.at` (ohne www, `DOMAIN` in `src/content/contact.ts`). Webspace, PHP, Postfächer und Domain liegen dort in einem Paket. Hochgeladen wird der Inhalt von `dist/` nach `npm run build`.
 - **Mail:** PHP `mail()` über die Mailserver von ALL-INKL. SPF und DKIM für diese Server legt ALL-INKL automatisch an, SMTP ist nicht nötig. Absender (`-f` und `From`) ist eine Adresse von `fixit247.at`, damit Envelope- und sichtbarer Absender zur selben Domain gehören (Vorgabe von ALL-INKL wegen DMARC).
 - **Backend:** PHP-Dateien auf dem Webspace statt Google Apps Script (gebaut am 16.10.2026). Sie liegen in `public/` und kommen mit `npm run build` nach `dist/`:
-  - `anfrage.php` nimmt Formular und Luna entgegen, speichert die Anfrage als Datei und verschickt die Mails.
+  - `anfrage.php` nimmt Formular und Luna entgegen, speichert die Anfrage als Datei und verschickt die Mails. Mit `art=partner` nimmt sie auch Partner-Bewerbungen von `/partner-werden/` an (eigener Zweig ohne Matching und ohne KI).
   - `chat.php` leitet Lunas KI-Anfragen an OpenAI weiter. Der Schlüssel liegt nur auf dem Server.
   - `_basis.php` enthält das Gemeinsame (Kopien aus `src/content`, Konfiguration, Kontingent). Direkt aufgerufen gibt sie nichts aus.
 - **Endpunkte:** `VITE_FORM_ENDPOINT=/anfrage.php` und `VITE_CHAT_ENDPOINT=/chat.php` stehen in `.env.production` und gelten für jeden `npm run build`. Abweichend nur in `.env.production.local`. Gleiche Herkunft, also keine CORS-Probleme.
@@ -37,6 +37,7 @@ Stand: 18.10.2026
 7. **Prüfen:**
    - `http://www.fixit247.at/` landet mit einer Weiterleitung auf `https://fixit247.at/`.
    - Eine echte Anfrage über das Formular und eine über Luna mit der eigenen E-Mail-Adresse schicken. Die Mail an `support@fixit247.at` und die Bestätigung kommen an (auch im Spam-Ordner nachsehen), die Anfrage steht in `fixit247-daten/anfragen-*.jsonl`.
+   - Eine Test-Bewerbung über `/partner-werden/` mit der eigenen Adresse schicken: Mail mit Prüfliste und Bestätigung kommen an, die Bewerbung steht in `fixit247-daten/partner-*.jsonl`.
    - Zeigt die Seite den Sendefehler, im PHP-Fehlerprotokoll nach `mail() an … abgelehnt` suchen. Lokal geprüft ist `mail()` nur gegen einen SMTP-Empfänger. Ob ALL-INKL den Envelope-Absender `-f support@fixit247.at` annimmt, zeigt erst dieser Test.
 
 ## Speicherung, Doppelsendung, Kontingent
@@ -44,8 +45,9 @@ Stand: 18.10.2026
 Alles als Datei in `fixit247-daten/`, keine Datenbank nötig.
 
 - `anfragen-JJJJ-MM.jsonl`: eine Zeile je Anfrage, geschrieben vor dem Mailversand. Geht die Mail verloren, bleibt die Anfrage hier. Scheitert die Mail an fixit247, sieht der Kunde den Sendefehler und ruft an.
-- `doppelt/<anfrageId>.json`: gleiche `anfrageId` innerhalb von 10 Minuten wird nicht noch einmal verschickt.
-- `kontingent-anfrage.json`, `kontingent-chat.json`: je IP und 6 Stunden höchstens 30 Anfragen bzw. 120 KI-Aufrufe. Die IP wird nur als Hash gespeichert, IPv6 je /64.
+- `partner-JJJJ-MM.jsonl`: eine Zeile je Partner-Bewerbung mit Status `PENDING`, nur die geprüften Felder, geschrieben vor der Mail an fixit247. Die Mail enthält eine Prüfliste und den fertigen Eintrag für `'partner'` in der Konfiguration. Die Partnerliste selbst ändert nur ein Mensch.
+- `doppelt/<Id>.json`: gleiche `anfrageId` bzw. `bewerbungId` innerhalb von 10 Minuten wird nicht noch einmal verschickt.
+- `kontingent-anfrage.json`, `kontingent-chat.json`, `kontingent-partner.json`: je IP und 6 Stunden höchstens 30 Anfragen, 120 KI-Aufrufe bzw. 5 Partner-Bewerbungen. Die IP wird nur als Hash gespeichert, IPv6 je /64.
 - **MySQL (Option, nicht gebaut):** nur sinnvoll, wenn Anfragen ausgewertet werden sollen. Dann in `anfrageEingang()` statt der `.jsonl`-Zeile ein `INSERT` per PDO in eine Tabelle `anfragen` (Zeit, Anfrage-ID, Felder, Match). Zugangsdaten in die Konfiguration.
 
 ## Lokal
@@ -58,7 +60,7 @@ Alles als Datei in `fixit247-daten/`, keine Datenbank nötig.
   ```
 
   Der Router leitet `/api/anfrage` und `/api/chat` an die PHP-Dateien. Mit `'mail_ordner' => '/pfad/mails'` in der lokalen Konfiguration landen Mails als `.eml` dort statt bei `mail()`. Für echte KI `OPENAI_API_KEY` in der Shell setzen.
-- `src/luna/backend.test.ts` prüft die Kopien in `_basis.php` immer gegen `src/content`. Mit PHP im PATH zusätzlich Eingangsprüfung, Systemprompt, Matching, Kontingent und beide Endpunkte über `php -S`.
+- `src/luna/backend.test.ts` prüft die Kopien in `_basis.php` immer gegen `src/content`. Mit PHP im PATH zusätzlich Eingangsprüfung, Systemprompt, Matching, Kontingent, Partner-Bewerbung und beide Endpunkte über `php -S`.
 - PHP unter Windows: `winget install --id PHP.PHP.8.4 -e`, dann im PHP-Ordner `php.ini-development` nach `php.ini` kopieren und `extension_dir = "ext"`, `extension=curl`, `extension=mbstring`, `extension=openssl` aktivieren.
 
 ## Offen
@@ -71,6 +73,6 @@ Was vor dem Livegang noch fehlt, steht als Checkliste in `docs/livegang.md`. Tec
 ## Folgen für den Code
 
 - `tools/apps-script.gs` und `tools/apps-script-chat.gs` sind entfernt. Systemprompt, Werkzeug „erfassen“, Eingangsprüfung, Honigtopf, Matching und Kundenbestätigung stehen jetzt in `public/chat.php` und `public/anfrage.php`.
-- Die Partneranfrage (`art=partner`) des Apps Scripts ist nicht übernommen, die Website hat kein Partnerformular.
+- Partner-Bewerbungen (`art=partner`) kommen vom Formular auf `/partner-werden/` (`src/lib/bewerbung.ts`) und laufen in `anfrage.php` durch `partnerEingang()`: Prüfung, Speicherung mit `PENDING`, Mail an fixit247, Bestätigung an den Betrieb ohne Freitext. Kein Matching, keine KI, die Partnerliste wird nie automatisch geändert.
 - Keine `VITE_`-Variable enthält einen Geheimwert.
 - Unterseiten liegen als `impressum/index.html` usw. in `dist/`. `/impressum` funktioniert damit auf jedem Webserver ohne `.htaccess` (Audit vom 15.10.2026, Befund H2).
