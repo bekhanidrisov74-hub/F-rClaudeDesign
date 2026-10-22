@@ -45,7 +45,7 @@ export const copy = {
     /** nicht im Design: Titel der Unterseiten, „Impressum – fixit247“ */
     unterseite: '{seite} – fixit247',
     beschreibung:
-      'Rohrbruch, ausgesperrt, Strom weg? Wir vermitteln Ihnen sofort einen geprüften Fachbetrieb aus Ihrer Region. Die Vermittlung ist kostenlos.',
+      'Rohrbruch, ausgesperrt, Strom weg? Wir vermitteln Ihnen einen geprüften Fachbetrieb aus Ihrer Region. Die Vermittlung ist kostenlos.',
   },
 
   kopf: {
@@ -77,15 +77,15 @@ export const copy = {
   orte: { wien: 'Wien' },
 
   /**
-   * Hero, Kopf und Vorteile laut Entwurf „Hero – Desktop 1586“ (19.10.2026). Offen (Bericht 19.10.2026): „Wir sind sofort
-   * für Sie da“ und „Unsere eigenen, geprüften Fachkräfte“ widersprechen dem Vermittlungsmodell, bleiben bis zur Entscheidung so.
+   * Hero, Kopf und Vorteile laut Entwurf „Hero – Desktop 1586“ (19.10.2026). Lead und dritter Vorteil nicht im Design
+   * (Bauplan B8, 22.10.2026): Das Design versprach „Wir sind sofort für Sie da“ und „eigene“ Fachkräfte, fixit247 vermittelt nur.
    */
   hero: {
     h1: ['Handwerker-', 'Notdienst.', 'Rund um die Uhr.'],
-    lead: 'Rohrbruch, ausgesperrt, Strom weg? Wir sind sofort für Sie da – ein geprüfter Fachbetrieb aus Ihrer Region. Schnell, zuverlässig und zu fairen Preisen. Direkt hier in Wien.',
+    lead: 'Rohrbruch, ausgesperrt, Strom weg? Wir vermitteln Ihnen einen geprüften Fachbetrieb aus Ihrer Region. Die Vermittlung ist kostenlos. Direkt hier in Wien.',
     anfrage: 'Anfrage senden',
     /** Hinweiskasten, zwei Zeilen; die zweite fett */
-    hinweis: ['Sie rufen an oder kontaktieren uns', 'und wir kümmern uns sofort um Ihr Anliegen.'],
+    hinweis: ['Sie rufen an oder kontaktieren uns', 'und wir vermitteln Ihnen einen Fachbetrieb.'],
     foto: 'Blick über die Dächer Wiens mit dem Stephansdom im Abendlicht',
   },
 
@@ -105,7 +105,7 @@ export const copy = {
     punkte: [
       { icon: 'vorteil-schild', titel: 'Einzigartig in Wien', text: ['Schneller, zuverlässiger', 'und persönlicher als andere.'] },
       { icon: 'vorteil-uhr', titel: '24/7 für Sie da', text: ['Tag und Nacht', 'auch an Feiertagen.'] },
-      { icon: 'vorteil-team', titel: 'Lokale Fachkräfte', text: ['Unsere eigenen, geprüften', 'Fachkräfte in ganz Wien.'] },
+      { icon: 'vorteil-team', titel: 'Lokale Fachbetriebe', text: ['Geprüfte Betriebe', 'aus Ihrer Region.'] },
       { icon: 'vorteil-auszeichnung', titel: 'Faire & transparente Preise', text: ['Keine versteckten Kosten –', 'Ehrlich und verlässlich.'] },
     ],
   },
