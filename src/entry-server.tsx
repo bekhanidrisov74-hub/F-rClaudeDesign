@@ -4,6 +4,7 @@ import { DOMAIN, istPlatzhalter } from './content/contact'
 
 export { DOMAIN } from './content/contact'
 export { VCARD_PFAD, vcardText } from './lib/vcard'
+export { SECURITY_TXT_PFAD, securityTxt } from './lib/securityTxt'
 export const pfade = Object.keys(seiten)
 
 /** Kanonische Adresse einer Seite: Unterseiten liegen als ordner/index.html, mit Schrägstrich am Ende (seo.md, Punkt 3). */

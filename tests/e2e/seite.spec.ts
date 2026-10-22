@@ -1,6 +1,8 @@
 import { expect, test } from './test'
 import { copy } from '../../src/content/copy'
+import { DOMAIN } from '../../src/content/contact'
 import { partner } from '../../src/content/partner'
+import { SECURITY_TXT_PFAD, securityTxt } from '../../src/lib/securityTxt'
 import { VCARD_PFAD, vcardText } from '../../src/lib/vcard'
 
 /** Rechtsseiten: Platzhalter, tragen noindex und fehlen in der Sitemap */
@@ -97,6 +99,23 @@ test('Nummer speichern (M10): Datei und Fuß-Link gibt es nur mit echter Nummer 
     await expect(link).toHaveCount(1)
     await expect(link).toHaveAttribute('download', '')
     expect((await link.boundingBox())!.height).toBeGreaterThanOrEqual(44)
+  }
+})
+
+test('security.txt (M11): Datei gibt es nur mit echter E-Mail-Adresse, dann mit Contact und Expires in der Zukunft', async ({ request }, info) => {
+  nurEinmal(info.project.name)
+  const antwort = await request.get(SECURITY_TXT_PFAD)
+  if (securityTxt() === null) {
+    // Platzhalter: keine Datei
+    expect(antwort.status()).toBe(404)
+  } else {
+    expect(antwort.status()).toBe(200)
+    expect(antwort.headers()['content-type']).toContain('text/plain')
+    const text = await antwort.text()
+    expect(text).toMatch(/^Contact: mailto:\S+@\S+$/m)
+    expect(Date.parse(text.match(/^Expires: (.+)$/m)![1])).toBeGreaterThan(Date.now())
+    expect(text).toContain(`Canonical: ${DOMAIN}${SECURITY_TXT_PFAD}\n`)
+    expect(text).not.toContain('\r')
   }
 })
 

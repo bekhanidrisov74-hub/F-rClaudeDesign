@@ -3,7 +3,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { loadEnv } from 'vite'
-import { DOMAIN, VCARD_PFAD, adresse, indexierbar, pfade, render, vcardText } from '../dist-ssr/entry-server.js'
+import { DOMAIN, SECURITY_TXT_PFAD, VCARD_PFAD, adresse, indexierbar, pfade, render, securityTxt, vcardText } from '../dist-ssr/entry-server.js'
 
 const dist = path.resolve('dist')
 const roh = fs.readFileSync(path.join(dist, 'index.html'), 'utf8')
@@ -49,6 +49,14 @@ fs.writeFileSync(
 
 // „Nummer speichern“ (M10): Die Karte gibt es erst mit echter Nummer und Firma; vorher fehlt Datei und Fuß-Link.
 if (vcardText) fs.writeFileSync(path.join(dist, VCARD_PFAD.slice(1)), vcardText)
+
+// security.txt nach RFC 9116 (M11): erst mit echter E-Mail-Adresse. Die Datei läuft nach einem Jahr ab (Expires, ab dem
+// Build-Datum gerechnet); deshalb mindestens jährlich neu bauen und hochladen.
+const sicherheit = securityTxt({ jetzt: new Date() })
+if (sicherheit) {
+  fs.mkdirSync(path.join(dist, '.well-known'), { recursive: true })
+  fs.writeFileSync(path.join(dist, SECURITY_TXT_PFAD.slice(1)), sicherheit)
+}
 
 const warn = (text) => console.warn(`\x1b[33m⚠ ${text}\x1b[0m`)
 const platzhalter = new Set()
