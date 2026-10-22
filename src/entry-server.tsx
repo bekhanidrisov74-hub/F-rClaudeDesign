@@ -1,5 +1,5 @@
 import { renderToString } from 'react-dom/server'
-import { App, normalisiere, seiten } from './App'
+import { App, normalisiere, seiten, type Seite } from './App'
 import { DOMAIN, istPlatzhalter } from './content/contact'
 
 export { DOMAIN } from './content/contact'
@@ -12,6 +12,14 @@ export const adresse = (pfad: string) => DOMAIN + (pfad === '/' ? '/' : `${pfad}
 
 /** Alle Seiten ohne noindex, für sitemap.xml (seo.md, Punkt 5) */
 export const indexierbar = pfade.filter((pfad) => !seiten[pfad].noindex)
+
+/** BreadcrumbList für Seiten unter der Startseite; die Namen sind die der sichtbaren Brotkrumen (seo.md, „Strukturierte Daten“). */
+const brotkrumenJson = (brotkrumen: NonNullable<Seite['brotkrumen']>) =>
+  JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: brotkrumen.map((krume, i) => ({ '@type': 'ListItem', position: i + 1, name: krume.name, item: adresse(krume.pfad) })),
+  }).replace(/</g, '\\u003c') // „<“ darf im Skript nie vorkommen (</script>)
 
 const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;')
 
@@ -30,6 +38,7 @@ export function render(pfad: string) {
     '<meta property="og:locale" content="de_AT" />',
     domainBekannt ? `<meta property="og:url" content="${esc(url)}" />` : '',
     domainBekannt && !seite.noindex ? `<link rel="canonical" href="${esc(url)}" />` : '',
+    domainBekannt && seite.brotkrumen ? `<script type="application/ld+json">${brotkrumenJson(seite.brotkrumen)}</script>` : '',
   ]
     .filter(Boolean)
     .join('\n    ')

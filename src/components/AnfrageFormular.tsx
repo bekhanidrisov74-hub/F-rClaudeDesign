@@ -120,6 +120,17 @@ export function AnfrageFormular() {
     return () => document.removeEventListener('click', beiKlick)
   }, [])
 
+  // „Anfrage senden“ auf den Notfall-Seiten der Gewerke (Bauplan M7) führt als /?gewerk=…#anfrage hierher: Das Gewerk ist dann vorgewählt.
+  // Erst nach der Hydrierung, sonst stimmte das Formular nicht mit dem vorgerenderten überein.
+  useEffect(() => {
+    const gewerk = new URLSearchParams(location.search).get('gewerk')
+    if (!gewerk || !GEWERK_IDS.includes(gewerk)) return
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- einmalig nach dem Hydrieren aus der Adresse übernehmen
+    setVorauswahl(gewerk)
+    const auswahl = formular.current?.elements.namedItem('gewerk')
+    if (auswahl instanceof HTMLSelectElement) auswahl.value = gewerk
+  }, [])
+
   // Eine vor der Hydrierung gewählte Stufe übernehmen, sonst fehlte der Notruf-Hinweis bei „Akut/Gefahr“.
   useEffect(() => {
     const auswahl = formular.current?.elements.namedItem('dringlichkeit')

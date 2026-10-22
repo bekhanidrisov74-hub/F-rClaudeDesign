@@ -1,5 +1,7 @@
 import { copy, fuelle } from '../content/copy'
 import { EMAIL, FIRMA, TELEFON, WHATSAPP, mailHref, telHref, whatsappHref } from '../content/contact'
+import { gewerke } from '../content/gewerke'
+import { gewerkseiten } from '../content/gewerkseiten'
 import { PARTNER_PFAD, partner } from '../content/partner'
 import { VCARD_PFAD, vcardText } from '../lib/vcard'
 import { Globus } from './ui/Globus'
@@ -42,6 +44,19 @@ export function Footer() {
             <p className="m-0 max-w-[32em] text-small leading-[1.6] text-nebel nav:text-text nav:leading-[1.6]">
               {fuss.text}
             </p>
+            {/* Die Notfall-Seiten der Gewerke (Bauplan M7): jede Seite ist über einen Textlink erreichbar, nicht nur über die Sitemap */}
+            <nav aria-label={gewerkseiten.fuss.titel} className="mt-s2">
+              <h2 className={SPALTENTITEL}>{gewerkseiten.fuss.titel}</h2>
+              <ul className={`${LISTE} flex-row flex-wrap gap-x-s5`}>
+                {gewerke.map((g) => (
+                  <li key={g.id} className="flex">
+                    <a href={`/${g.seite}/`} className={LINK}>
+                      {g.name}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
           </div>
 
           {/* Oberer Teil des Globus (gleiches Seitenverhältnis bei jeder Breite), unten weich ausgeblendet. */}

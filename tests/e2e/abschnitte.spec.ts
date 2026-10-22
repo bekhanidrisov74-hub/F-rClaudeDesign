@@ -193,6 +193,46 @@ test('Flächenplan: Eis, Kalk und Tiefsee wechseln wie in docs/hero-stil.md', as
   expect(farben.map((farbe, i) => `${FLAECHEN[i].name}: ${farbe}`)).toEqual(FLAECHEN.map((f) => `${f.name}: ${f.farbe}`))
 })
 
+/** Notfall-Seiten je Gewerk (Bauplan M7): Flächen von oben nach unten laut docs/hero-stil.md */
+const GEWERK_FLAECHEN = [
+  { sel: '#einstieg', farbe: 'rgb(251, 252, 253)' }, // Kalk
+  { sel: '#notfall', farbe: 'rgb(232, 244, 248)' }, // Eis
+  { sel: '#bis-betrieb', farbe: 'rgb(251, 252, 253)' }, // Kalk
+  { sel: '#betrieb-fragt', farbe: 'rgb(232, 244, 248)' }, // Eis
+  { sel: '#gewerk-ablauf', farbe: 'rgb(3, 16, 31)' }, // Tiefsee
+  { sel: '#richtpreis', farbe: 'rgb(251, 252, 253)' }, // Kalk
+  { sel: 'footer', farbe: 'rgb(3, 16, 31)' }, // Tiefsee
+]
+
+test('Gewerk-Seiten: Flächenplan wie die Startseite, alle Abschnitte auf denselben Kanten wie der Kopf, nichts bricht aus', async ({ page }, info) => {
+  test.skip(info.project.name !== 'd1440', 'setzt die Breite selbst')
+  test.setTimeout(120_000)
+  const pfad = GEWERKSEITEN[0]
+  for (const breite of [390, 768, 1024, 1280, 1440, 1920, 2560]) {
+    await page.setViewportSize({ width: breite, height: 900 })
+    await page.goto(pfad)
+    const m = await page.evaluate((selektoren) => {
+      const kanten = (sel: string) => {
+        const el = document.querySelector(`${sel} .wrapper`)!
+        const r = el.getBoundingClientRect()
+        const s = getComputedStyle(el)
+        return { links: r.left + parseFloat(s.paddingLeft), rechts: r.right - parseFloat(s.paddingRight) }
+      }
+      return {
+        farben: selektoren.map((sel) => getComputedStyle(document.querySelector(sel)!).backgroundColor),
+        kanten: selektoren.map(kanten),
+        ueberlauf: document.documentElement.scrollWidth - innerWidth,
+      }
+    }, GEWERK_FLAECHEN.map((f) => f.sel))
+    expect(m.farben, `${breite} px: Flächen`).toEqual(GEWERK_FLAECHEN.map((f) => f.farbe))
+    for (const k of m.kanten) {
+      expect(Math.abs(k.links - m.kanten[0].links), `${breite} px: Kante links`).toBeLessThanOrEqual(1)
+      expect(Math.abs(k.rechts - m.kanten[0].rechts), `${breite} px: Kante rechts`).toBeLessThanOrEqual(1)
+    }
+    expect(m.ueberlauf, `${breite} px: Überlauf`).toBeLessThanOrEqual(0)
+  }
+})
+
 async function bedienelemente(page: Page) {
   return page.locator('a:visible, button:visible, input:visible, select:visible, textarea:visible').evaluateAll((els) =>
     els
@@ -206,7 +246,9 @@ async function bedienelemente(page: Page) {
   )
 }
 
-for (const pfad of ['/', '/partner-werden/', '/impressum/'])
+const GEWERKSEITEN = gewerke.map((g) => `/${g.seite}/`)
+
+for (const pfad of ['/', '/partner-werden/', ...GEWERKSEITEN, '/impressum/'])
   test(`${pfad}: Touch-Ziele mindestens 44 × 44 px`, async ({ page }) => {
     await page.goto(pfad)
     const zuKlein = (await bedienelemente(page)).filter((e) => e.b < 44 || e.h < 44)

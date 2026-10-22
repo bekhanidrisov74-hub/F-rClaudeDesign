@@ -66,6 +66,9 @@ const ZUSTAENDE: Zustand[] = [
   { name: 'formular-erfolg', pfad: '/#anfrage', vorbereiten: formularErfolg },
   { name: 'formular-sendefehler', pfad: '/?fehler=1#anfrage', vorbereiten: formularSendefehler },
   { name: 'partner', pfad: '/partner-werden/' },
+  // Notfall-Seiten je Gewerk (Bauplan M7): zwei genügen, alle teilen sich Aufbau und Bausteine
+  { name: 'gewerk-installateur', pfad: '/installateur/' },
+  { name: 'gewerk-schluesseldienst', pfad: '/schluesseldienst/' },
   { name: 'partner-fehler', pfad: '/partner-werden/', vorbereiten: sendeBewerbungLeer },
   { name: 'partner-erfolg', pfad: '/partner-werden/', vorbereiten: bewerbungErfolg },
   { name: 'partner-sendefehler', pfad: '/partner-werden/?fehler=1', vorbereiten: bewerbungSendefehler },
