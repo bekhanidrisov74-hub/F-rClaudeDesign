@@ -79,7 +79,10 @@ export function Preisuebersicht({ aufStartseite = true }: { aufStartseite?: bool
           >
             <Icon name="ui-schliessen" className="size-[20px]" />
           </button>
-          <p className="col-span-2 mt-s3 text-small text-schiefer dialog:col-span-1 dialog:mt-s2 dialog:text-text">{t.lead}</p>
+          {/* Stand im Kopf-Satz (Dialog und Sheet gleich): Hier kostet er keine Zeile, unten schob er bei 768 px Fensterhöhe den Anruf-Knopf unter den Rand. */}
+          <p className="col-span-2 mt-s3 text-small text-schiefer dialog:col-span-1 dialog:mt-s2 dialog:text-text">
+            {t.lead} {stand}
+          </p>
         </div>
 
         {/* ab 640 px: Tabelle */}
@@ -138,11 +141,8 @@ export function Preisuebersicht({ aufStartseite = true }: { aufStartseite?: bool
           {t.hinweiseDialog.map((h) => (
             <li key={h}>{h}</li>
           ))}
-          <li>{stand}</li>
         </ul>
-        <p className="text-small text-schiefer dialog:hidden">
-          {t.hinweisSheet} {stand}
-        </p>
+        <p className="text-small text-schiefer dialog:hidden">{t.hinweisSheet}</p>
 
         <div className="flex items-center gap-s3 max-dialog:hidden">
           <Button art="hell" href={ziel} onClick={zumRechner} className="min-h-[56px] rounded-btn-lg px-s5 text-btn">
