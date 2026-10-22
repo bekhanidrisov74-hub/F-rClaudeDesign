@@ -10,7 +10,9 @@ import {
   lunaKnopf,
   oeffneLuna,
   preisDialog,
+  scrolle,
   zeigeLunaKnopf,
+  zweiFrames,
 } from './hilfen'
 
 const handy = (breite: number) => breite < 640
@@ -27,8 +29,14 @@ function anfragen(page: Page) {
 
 test.describe('Anstupser', () => {
   test('erscheint nach 25 s, einmal pro Besuch; Text öffnet den Chat', async ({ page }) => {
+    // Die Uhr steht, bevor die App ihre 25 s startet. Sonst zählt mit, wie lange der Test bis zum Vorspulen braucht
+    // (unter Last mehrere Sekunden), und der Hinweis ist nach 24 s schon da.
     await page.clock.install()
-    await page.goto('/')
+    await page.clock.pauseAt(Date.now() + 10_000)
+    const geladen = page.goto('/')
+    await page.waitForEvent('load')
+    await page.clock.runFor(100) // Starter: requestAnimationFrame, dann setTimeout, dann lädt das App-Bundle
+    await geladen
     await zeigeLunaKnopf(page)
     await page.clock.fastForward(24_000)
     await expect(anstupser(page)).toHaveCount(0)
@@ -43,10 +51,10 @@ test.describe('Anstupser', () => {
   test('erscheint ab 60 % Scrolltiefe, auch vor 25 s', async ({ page }) => {
     await page.clock.install()
     await page.goto('/')
-    await page.evaluate(() => window.scrollTo(0, (document.documentElement.scrollHeight - innerHeight) * 0.4))
+    await scrolle(page, 0.4)
     await page.clock.fastForward(500)
     await expect(anstupser(page)).toHaveCount(0)
-    await page.evaluate(() => window.scrollTo(0, (document.documentElement.scrollHeight - innerHeight) * 0.65))
+    await scrolle(page, 0.65)
     await expect(anstupser(page)).toBeVisible()
   })
 
@@ -85,7 +93,7 @@ test('Luna-Knopf erst, wenn die vier Vorteile aus dem Bild gescrollt sind; ohne 
   await page.goto('/')
   await expect(page.locator('#luna-knopf')).toBeHidden()
   await zeigeLunaKnopf(page)
-  await page.evaluate(() => window.scrollTo(0, 0))
+  await scrolle(page, 0)
   await expect(page.locator('#luna-knopf')).toBeHidden()
   await page.goto('/impressum/')
   await expect(lunaKnopf(page)).toBeVisible()
@@ -205,6 +213,10 @@ test('Esc schließt zuerst die Preisübersicht, dann den Chat', async ({ page })
   await expect(preisDialog(page)).toBeVisible()
   await page.keyboard.press('Escape')
   await expect(preisDialog(page)).toBeHidden()
+  // Die Übersicht gibt den Fokus einen Frame nach dem Schließen an den Auslöser zurück (overlays.tsx). Erst danach in den
+  // Chat wechseln, sonst holt dieser Rückfokus ihn wieder heraus. Zwei Frames: Das close-Ereignis, das ihn anstößt, kann
+  // noch ausstehen, wenn das Fenster schon verborgen ist.
+  await zweiFrames(page)
   await expect(chat(page)).toBeVisible()
   // Der Rückfokus kommt ein Bild später (overlays.tsx); erst danach weiter, sonst überholt ihn der Test (Audit-Befund N5)
   await expect(ausloeser).toBeFocused()
@@ -420,10 +432,13 @@ test('Wechsel über 640 px bei offenem Chat ohne Fehler, Verlauf bleibt', async 
   await page.goto('/')
   await oeffneLuna(page)
   await antworteLuna(page, 'Elektro')
+  // Der Chat wechselt beim change-Ereignis der Media-Query, und das kommt erst mit dem nächsten Frame.
   await page.setViewportSize({ width: 390, height: 844 })
+  await zweiFrames(page)
   await expect(chat(page)).toBeVisible()
   expect(await chat(page).evaluate((d: Element) => d.matches(':modal'))).toBe(true)
   await page.setViewportSize({ width: 1024, height: 768 })
+  await zweiFrames(page)
   await expect(chat(page)).toBeVisible()
   expect(await chat(page).evaluate((d: Element) => d.matches(':modal'))).toBe(false)
   await expect(chat(page)).toContainText('Was funktioniert nicht?')
