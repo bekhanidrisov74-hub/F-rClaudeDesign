@@ -95,7 +95,7 @@ fixit247 vermittelt nur. Das gilt für Suchtreffer genauso wie für die Seite:
 ## Offen: nicht selbst entscheiden, Standard lassen und berichten
 
 - **Echte Firmendaten** für Seite, Impressum und JSON-LD (`docs/livegang.md`, Abschnitt Inhalte).
-- **Seiten je Gewerk oder Region** (Audit G1). Wenn ja, dann nach „Inhalte“ oben.
+- **Seiten je Region** (Audit G1, Teil Region). Seiten je Gewerk hat Beks am 22.10.2026 entschieden und gebaut (`/installateur/` usw., Daten `seite` in `src/content/gewerke.ts`, Texte in `src/content/gewerkseiten.ts`); Bezirks- oder Ortsseiten nein. Neue Regionsseiten nur nach erneuter Entscheidung und nach „Inhalte“ oben.
 - **Google-Unternehmensprofil:** Voraussetzung ist ein Standort mit Kundenverkehr oder Einsätze beim Kunden, die Telefonnummer muss direkt dem Betrieb gehören, keine weiterleitende Nummer oder Adresse. Ein reiner Vermittler erfüllt das vermutlich nicht. Nichts anlegen, mit dem Betreiber klären.
 - **Search Console und Bing Webmaster Tools** nach dem Livegang: Domain-Property per DNS-Eintrag (deckt http, https und www ab), kein Analytics- oder Tag-Manager-Skript, Sitemap dort einreichen. Bing kann Seiten aus der Search Console übernehmen.
 - **KI-Trainings-Bots sperren** (GPTBot, ClaudeBot, Google-Extended)?
