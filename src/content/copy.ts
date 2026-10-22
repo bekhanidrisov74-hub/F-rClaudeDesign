@@ -175,7 +175,7 @@ export const copy = {
     telefon: 'Telefon',
     whatsapp: 'WhatsApp',
     rechtliches: 'Rechtliches',
-    /** nicht im Design (Bauplan M10, Text wartet auf Freigabe): Link im Fuß, legt die Nummer als Kontakt (vCard) im Handy ab */
+    /** nicht im Design (Bauplan M10, Text von Beks freigegeben am 22.10.2026): Link im Fuß, legt die Nummer als Kontakt (vCard) im Handy ab */
     nummerSpeichern: 'Nummer speichern',
     links: [
       { text: 'Impressum', href: '/impressum/' },
@@ -210,9 +210,9 @@ export const copy = {
       { id: 'nacht', name: 'Nacht' },
     ],
     plus100: '+100 %',
-    /** nicht im Design (Bauplan M6, Text wartet auf Freigabe, rechtlich prüfen: Preisangaben); {zuschlag} = Name aus zuschlaege, z. B. „Sonntag“ */
+    /** nicht im Design (Bauplan M6, Text von Beks freigegeben am 22.10.2026, rechtlich prüfen: Preisangaben); {zuschlag} = Name aus zuschlaege, z. B. „Sonntag“ */
     jetztGilt: 'Jetzt gilt in Wien der Zuschlag „{zuschlag}“ (+100 %).',
-    /** nicht im Design (Bauplan M6, Text wartet auf Freigabe, rechtlich prüfen: Preisangaben): Knopf neben jetztGilt */
+    /** nicht im Design (Bauplan M6, Text von Beks freigegeben am 22.10.2026, rechtlich prüfen: Preisangaben): Knopf neben jetztGilt */
     uebernehmen: 'Übernehmen',
     hinweisEiner: `Nacht gilt von ${NACHTZEIT}. Es zählt höchstens ein Zuschlag, auch wenn mehrere zutreffen.`,
     hinweisMehrereFett: 'Es zählt nur ein Zuschlag.',
@@ -265,7 +265,7 @@ export const copy = {
       email: { label: 'E-Mail', optional: '(optional)', platzhalter: 'Für die Bestätigung' },
       beschreibung: { label: 'Kurze Beschreibung', platzhalter: 'Was ist passiert? Zum Beispiel: Unter der Spüle tritt Wasser aus.' },
     },
-    // nicht im Design (Bauplan M9, Text wartet auf Freigabe): Zeile unter „PLZ und Ort“ und Knopf, der PLZ und Ort einsetzt
+    // nicht im Design (Bauplan M9, Text von Beks freigegeben am 22.10.2026): Zeile unter „PLZ und Ort“ und Knopf, der PLZ und Ort einsetzt
     bezirk: '{ort}, {nummer}. Bezirk ({name})',
     uebernehmen: 'Übernehmen',
     /** Sternchen hinter Pflichtfeldern */
@@ -382,7 +382,7 @@ export const copy = {
         antwort: 'Die Vermittlung ist kostenlos. Sie zahlen nur den Betrieb.',
       },
       {
-        // nicht im Design (Bauplan M3, Text wartet auf Freigabe, rechtlich prüfen: Informationspflichten für Vermittler);
+        // nicht im Design (Bauplan M3, Text von Beks freigegeben am 22.10.2026, rechtlich prüfen: Informationspflichten für Vermittler);
         // abgeleitet aus partner.ts KOSTEN („zum Start kostenlos“): bei jeder Änderung der Partner-Kosten mitändern
         frage: 'Wer bezahlt fixit247?',
         antwort:
@@ -403,7 +403,7 @@ export const copy = {
           'Wir geben Ihre Anfrage an einen geprüften Fachbetrieb aus Ihrer Region weiter. Der Betrieb ruft Sie zurück, nennt den Preis und kommt zu Ihnen.',
       },
       {
-        // nicht im Design (Bauplan M8, Text wartet auf Freigabe, rechtlich prüfen: Zusage zu Beschwerden); „pausieren bei Beschwerden“
+        // nicht im Design (Bauplan M8, Text von Beks freigegeben am 22.10.2026, rechtlich prüfen: Zusage zu Beschwerden); „pausieren bei Beschwerden“
         // stammt aus der freigegebenen Frage „Was heißt „geprüft“?“. Der Link ist ein mailto an EMAIL (contact.ts), kein Formular.
         // „falls Sie sie haben“: Die Anfragenummer steht nur auf dem Erfolgsbildschirm, nicht in der Bestätigungsmail.
         frage: 'Ich bin mit einem vermittelten Betrieb unzufrieden. Was tun?',

@@ -29,7 +29,7 @@ export const whatsappHref = `https://wa.me/${nummerWa}?text=${encodeURIComponent
 export const mailHref = istPlatzhalter(EMAIL) ? 'mailto:' : `mailto:${EMAIL}`
 
 /**
- * Betreff der Beschwerde-Mail (nicht im Design, Bauplan M8, Text wartet auf Freigabe). Die Anfragenummer tippt die
+ * Betreff der Beschwerde-Mail (nicht im Design, Bauplan M8, Text von Beks freigegeben am 22.10.2026). Die Anfragenummer tippt die
  * Kundin oder der Kunde selbst dahinter, darum endet der Betreff mit einem Leerzeichen.
  */
 export const BESCHWERDE_BETREFF = 'Beschwerde zu Anfrage '

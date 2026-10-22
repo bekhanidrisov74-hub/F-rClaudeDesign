@@ -1,5 +1,5 @@
 // Zeiten, zu denen der Zuschlag von +100 % gilt (Bauplan M6). Maschinenlesbar, an einer Stelle.
-// nicht im Design (Bauplan M6, Text wartet auf Freigabe, rechtlich prüfen: Preisangaben)
+// nicht im Design (Bauplan M6, Text von Beks freigegeben am 22.10.2026, rechtlich prüfen: Preisangaben)
 // Nur Zahlen und interne Namen, nichts davon steht auf der Seite. Wer die Zuschlagszeiten ändert, ändert sie hier;
 // public/chat.php und public/anfrage.php (ausserhalb) führen die Nachtzeit und die Feiertage getrennt.
 

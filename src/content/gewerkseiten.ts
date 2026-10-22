@@ -1,4 +1,4 @@
-// nicht im Design (Bauplan M7, Text wartet auf Freigabe, rechtlich prüfen: Preisangaben und Sicherheitshinweise)
+// nicht im Design (Bauplan M7, Text von Beks freigegeben am 22.10.2026, rechtlich prüfen: Preisangaben und Sicherheitshinweise)
 // Texte der Notfall-Seiten je Gewerk (/installateur/, /heizung-klima/ …). Für diese Seiten gibt es keinen Entwurf in design/.
 // Wortgleich aus anderen Dateien übernommen: GEFAHR, copy.ablauf, copy.preisStand, copy.preisuebersicht.hinweiseDialog,
 // copy.rechner.lead, copy.hero.anfrage, copy.leistungen.hilfe.luna und copy.preisuebersicht.zumRechner. Aus gewerke.ts: Name,

@@ -1,4 +1,4 @@
-// nicht im Design (Bauplan M9, Text wartet auf Freigabe): die 23 Wiener Gemeindebezirke.
+// nicht im Design (Bauplan M9, Text von Beks freigegeben am 22.10.2026): die 23 Wiener Gemeindebezirke.
 // Der Ort „Wien“ selbst steht im PLZ-Verzeichnis (plz.json); hier nur Nummer und Name je Postleitzahl.
 export interface Bezirk {
   nummer: number
