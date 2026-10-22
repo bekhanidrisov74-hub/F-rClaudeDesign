@@ -8,6 +8,8 @@ export const AUFTRAG_AUFGEBEN = 'Auftrag aufgeben'
 export const AUFTRAG_AUFGEGEBEN = 'Auftrag aufgegeben'
 /** SPEC 11, offen: Brutto/netto */
 export const UST_HINWEIS = '[inkl. 20 % USt.]'
+/** Bauplan B6 (22.10.2026): Nacht-Zuschlag gilt wie in public/chat.php und im Matching (anfrage.php ausserhalb) von 18 bis 8 Uhr. */
+export const NACHTZEIT = '18 bis 8 Uhr'
 export const WEISS_NICHT = 'Weiß ich nicht'
 /** Pfad der Datenschutzerklärung (Fuß, Formular, Luna) */
 export const DATENSCHUTZ = '/datenschutz/'
@@ -45,7 +47,7 @@ export const copy = {
     /** nicht im Design: Titel der Unterseiten, „Impressum – fixit247“ */
     unterseite: '{seite} – fixit247',
     beschreibung:
-      'Rohrbruch, ausgesperrt, Strom weg? Wir vermitteln Ihnen sofort einen geprüften Fachbetrieb aus Ihrer Region. Die Vermittlung ist kostenlos.',
+      'Rohrbruch, ausgesperrt, Strom weg? Wir vermitteln Ihnen einen geprüften Fachbetrieb aus Ihrer Region. Die Vermittlung ist kostenlos.',
   },
 
   kopf: {
@@ -77,15 +79,15 @@ export const copy = {
   orte: { wien: 'Wien' },
 
   /**
-   * Hero, Kopf und Vorteile laut Entwurf „Hero – Desktop 1586“ (19.10.2026). Offen (Bericht 19.10.2026): „Wir sind sofort
-   * für Sie da“ und „Unsere eigenen, geprüften Fachkräfte“ widersprechen dem Vermittlungsmodell, bleiben bis zur Entscheidung so.
+   * Hero, Kopf und Vorteile laut Entwurf „Hero – Desktop 1586“ (19.10.2026). Lead und dritter Vorteil nicht im Design
+   * (Bauplan B8, 22.10.2026): Das Design versprach „Wir sind sofort für Sie da“ und „eigene“ Fachkräfte, fixit247 vermittelt nur.
    */
   hero: {
     h1: ['Handwerker-', 'Notdienst.', 'Rund um die Uhr.'],
-    lead: 'Rohrbruch, ausgesperrt, Strom weg? Wir sind sofort für Sie da – ein geprüfter Fachbetrieb aus Ihrer Region. Schnell, zuverlässig und zu fairen Preisen. Direkt hier in Wien.',
+    lead: 'Rohrbruch, ausgesperrt, Strom weg? Wir vermitteln Ihnen einen geprüften Fachbetrieb aus Ihrer Region. Die Vermittlung ist kostenlos. Direkt hier in Wien.',
     anfrage: 'Anfrage senden',
     /** Hinweiskasten, zwei Zeilen; die zweite fett */
-    hinweis: ['Sie rufen an oder kontaktieren uns', 'und wir kümmern uns sofort um Ihr Anliegen.'],
+    hinweis: ['Sie rufen an oder kontaktieren uns', 'und wir vermitteln Ihnen einen Fachbetrieb.'],
     foto: 'Blick über die Dächer Wiens mit dem Stephansdom im Abendlicht',
   },
 
@@ -105,7 +107,7 @@ export const copy = {
     punkte: [
       { icon: 'vorteil-schild', titel: 'Einzigartig in Wien', text: ['Schneller, zuverlässiger', 'und persönlicher als andere.'] },
       { icon: 'vorteil-uhr', titel: '24/7 für Sie da', text: ['Tag und Nacht', 'auch an Feiertagen.'] },
-      { icon: 'vorteil-team', titel: 'Lokale Fachkräfte', text: ['Unsere eigenen, geprüften', 'Fachkräfte in ganz Wien.'] },
+      { icon: 'vorteil-team', titel: 'Lokale Fachbetriebe', text: ['Geprüfte Betriebe', 'aus Ihrer Region.'] },
       { icon: 'vorteil-auszeichnung', titel: 'Faire & transparente Preise', text: ['Keine versteckten Kosten –', 'Ehrlich und verlässlich.'] },
     ],
   },
@@ -184,7 +186,7 @@ export const copy = {
       { id: 'nacht', name: 'Nacht' },
     ],
     plus100: '+100 %',
-    hinweisEiner: 'Es zählt höchstens ein Zuschlag, auch wenn mehrere zutreffen.',
+    hinweisEiner: `Nacht gilt von ${NACHTZEIT}. Es zählt höchstens ein Zuschlag, auch wenn mehrere zutreffen.`,
     hinweisMehrereFett: 'Es zählt nur ein Zuschlag.',
     /** {namen} = „Sonntag und Nacht“ */
     hinweisMehrere: '{namen} treffen beide zu, berechnet wird trotzdem nur einmal +100 %.',
@@ -214,11 +216,11 @@ export const copy = {
     anfahrt: 'Anfahrt',
     /** Dialog ab 640 px (Screen 03) */
     hinweiseDialog: [
-      'Zuschlag für Sonntag, Feiertag oder Nacht: +100 % auf die Arbeit. Es zählt höchstens ein Zuschlag.',
+      `Zuschlag am Sonntag, an Feiertagen und nachts (${NACHTZEIT}): +100 % auf die Arbeit. Es zählt höchstens ein Zuschlag.`,
       `Die Vermittlung ist kostenlos. Alle Preise ${UST_HINWEIS}, Richtpreise der Betriebe.`,
     ],
     /** Bottom-Sheet unter 640 px (Screen 04) */
-    hinweisSheet: `Zuschlag für Sonntag, Feiertag oder Nacht: +100 % auf die Arbeit, höchstens einer. Alle Preise ${UST_HINWEIS}. Die Vermittlung ist kostenlos.`,
+    hinweisSheet: `Zuschlag am Sonntag, an Feiertagen und nachts (${NACHTZEIT}): +100 % auf die Arbeit, höchstens einer. Alle Preise ${UST_HINWEIS}. Die Vermittlung ist kostenlos.`,
     zumRechner: 'Zum Preisrechner',
   },
 
@@ -338,13 +340,20 @@ export const copy = {
           'Vor der Aufnahme eines Betriebs prüfen wir seine Gewerbeberechtigung für jedes Gewerk im GISA (Gewerbeinformationssystem Austria), lassen uns die Betriebshaftpflichtversicherung nachweisen und führen ein persönliches Gespräch. Bei Beschwerden pausieren wir die Vermittlung an diesen Betrieb.',
       },
       {
+        // nicht im Design (Bauplan B4, 22.10.2026): die Kriterien aus passenderPartner() und GEWICHTE in public/anfrage.php,
+        // in derselben Reihenfolge; rechtlich prüfen, docs/livegang.md
+        frage: 'Wie wählen Sie den Betrieb aus?',
+        antwort:
+          'Wir vermitteln nur an geprüfte Betriebe mit dem passenden Gewerk, die in Ihrer Gegend arbeiten. Am meisten zählen die Nähe zu Ihrer Postleitzahl und, nachts und am Sonntag, ob der Betrieb einen Notdienst anbietet oder rund um die Uhr erreichbar ist. Danach folgen Spezialisierung, Reaktionszeit, Zuverlässigkeit, Preisniveau und Bewertungen.',
+      },
+      {
         frage: 'Was kostet die Vermittlung?',
         antwort: 'Die Vermittlung ist kostenlos. Sie zahlen nur den Betrieb.',
       },
       {
         frage: 'Wie verbindlich sind die Preise auf der Seite?',
         antwort:
-          'Alle Preise sind Richtpreise der Fachbetriebe. Den genauen Preis vereinbaren Sie mit dem Betrieb. Für Sonntag, Feiertag oder Nacht gilt ein Zuschlag von +100 % auf die Arbeit, höchstens einer.',
+          `Alle Preise sind Richtpreise der Fachbetriebe. Den genauen Preis vereinbaren Sie mit dem Betrieb. Am Sonntag, an Feiertagen und nachts (${NACHTZEIT}) gilt ein Zuschlag von +100 % auf die Arbeit, höchstens einer.`,
       },
       {
         frage: 'Wann sind Sie erreichbar?',
@@ -362,8 +371,8 @@ export const copy = {
     ],
   },
 
-  // nicht im Design (Bauplan B2, Text wartet auf Freigabe): Schritte wie in der Bestätigungsmail in public/anfrage.php
-  // (dort „Rückruf“ als erster Schritt, mit der Telefonnummer und „für Sie kostenlos“). Nur bei gefundenem Betrieb (FOUND).
+  // nicht im Design (Bauplan B2, von Beks freigegeben): dieselben Schritte stehen in der Bestätigungsmail (bestaetigungSenden in
+  // public/anfrage.php, dort mit der Telefonnummer). Nur bei gefundenem Betrieb (FOUND), in der Mail ebenso.
   weiter: {
     titel: 'So geht es weiter',
     schritte: [

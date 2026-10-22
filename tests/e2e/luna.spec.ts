@@ -358,20 +358,35 @@ test('Sendefehler mit ?fehler=1: Alarm, Angaben bleiben, Erneut versuchen mit de
   expect(gesendet[1].get('anfrageId')).toBe(gesendet[0].get('anfrageId'))
 })
 
-// Niedrige Fenster (Screen 10, 12): Erfolg und Sendefehler zeigt der Verlauf mit ihrem Ende, ihre Knöpfe bleiben sichtbar.
-// Nur die Zusammenfassung zeigt er mit ihrem Anfang (accepted-deviations).
-for (const hoehe of [768, 600])
-  for (const [karte, pfad, knopf] of [
-    ['Erfolg', '/', 'Neue Anfrage starten'],
-    ['Sendefehler', '/?fehler=1', 'Erneut versuchen'],
-  ] as const)
-    test(`${karte}: „${knopf}“ liegt bei 1024 × ${hoehe} vollständig im sichtbaren Verlauf`, async ({ page }, info) => {
-      test.skip(info.project.name !== 't1024', 'setzt die Größe selbst')
-      await page.setViewportSize({ width: 1024, height: hoehe })
-      await page.goto(pfad)
-      await lunaAbsenden(page)
-      await expect(chat(page).getByRole('button', { name: knopf })).toBeInViewport({ ratio: 1 })
-    })
+// Niedrige Fenster (Screen 12): Den Sendefehler zeigt der Verlauf mit seinem Ende, „Erneut versuchen“ bleibt sichtbar.
+// Zusammenfassung und Erfolg zeigt er mit ihrem Anfang (accepted-deviations): beim Erfolg Überschrift und Anruf-Knopf.
+for (const hoehe of [768, 600]) {
+  test(`Sendefehler: „Erneut versuchen“ liegt bei 1024 × ${hoehe} vollständig im sichtbaren Verlauf`, async ({ page }, info) => {
+    test.skip(info.project.name !== 't1024', 'setzt die Größe selbst')
+    await page.setViewportSize({ width: 1024, height: hoehe })
+    await page.goto('/?fehler=1')
+    await lunaAbsenden(page)
+    await expect(chat(page).getByRole('button', { name: 'Erneut versuchen' })).toBeInViewport({ ratio: 1 })
+  })
+  // Bei 600 px passt der Anruf-Knopf der Karte nicht mehr ganz; der im Seitenkopf neben dem Fenster bleibt sichtbar.
+  test(`Erfolg: Überschrift${hoehe >= 768 ? ' und Anruf-Knopf' : ''} bei 1024 × ${hoehe} vollständig im sichtbaren Verlauf`, async ({ page }, info) => {
+    test.skip(info.project.name !== 't1024', 'setzt die Größe selbst')
+    await page.setViewportSize({ width: 1024, height: hoehe })
+    await page.goto('/')
+    await lunaAbsenden(page)
+    await expect(chat(page).getByRole('heading', { level: 2, name: /Ihre Anfrage ist unterwegs/ })).toBeInViewport({ ratio: 1 })
+    if (hoehe >= 768) await expect(chat(page).getByRole('link', { name: 'Fragen? Jetzt anrufen' })).toBeInViewport({ ratio: 1 })
+    else await expect(page.locator('header').getByRole('link', { name: /anrufen/i }).first()).toBeInViewport({ ratio: 1 })
+  })
+}
+
+test('Erfolg am Handy: Überschrift und Anruf-Knopf ohne Scrollen sichtbar (390 × 844)', async ({ page }, info) => {
+  test.skip(info.project.name !== 'm390', 'Handy')
+  await page.goto('/')
+  await lunaAbsenden(page)
+  await expect(chat(page).getByRole('heading', { level: 2, name: /Ihre Anfrage ist unterwegs/ })).toBeInViewport({ ratio: 1 })
+  await expect(chat(page).getByRole('link', { name: 'Fragen? Jetzt anrufen' })).toBeInViewport({ ratio: 1 })
+})
 
 test('Zusammenfassung: der Verlauf zeigt sie mit ihrem Anfang (1024 × 768)', async ({ page }, info) => {
   test.skip(info.project.name !== 't1024', 'einmal reicht')

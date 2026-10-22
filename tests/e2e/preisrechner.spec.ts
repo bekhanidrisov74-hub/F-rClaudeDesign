@@ -67,16 +67,16 @@ test('Schlüsseldienst: Stepper weg, Hinweis „Preis pro Einsatz“, Zeile „E
 
 test('Zuschläge: Hinweis wechselt bei zwei oder mehr', async ({ page }) => {
   const status = rechner(page).getByRole('group', { name: 'Zuschlag' }).getByRole('status')
-  await expect(status).toHaveText('Es zählt höchstens ein Zuschlag, auch wenn mehrere zutreffen.')
+  await expect(status).toHaveText('Nacht gilt von 18 bis 8 Uhr. Es zählt höchstens ein Zuschlag, auch wenn mehrere zutreffen.')
   await schalteZuschlag(page, 'Sonntag')
-  await expect(status).toHaveText('Es zählt höchstens ein Zuschlag, auch wenn mehrere zutreffen.')
+  await expect(status).toHaveText('Nacht gilt von 18 bis 8 Uhr. Es zählt höchstens ein Zuschlag, auch wenn mehrere zutreffen.')
   await schalteZuschlag(page, 'Nacht')
   await expect(status).toHaveText(
     'Es zählt nur ein Zuschlag. Sonntag und Nacht treffen beide zu, berechnet wird trotzdem nur einmal +100 %.',
   )
   await expect(ergebnis(page)).toContainText('Installateur, 2 Stunden, Sonntag und Nacht')
   await schalteZuschlag(page, 'Sonntag')
-  await expect(status).toHaveText('Es zählt höchstens ein Zuschlag, auch wenn mehrere zutreffen.')
+  await expect(status).toHaveText('Nacht gilt von 18 bis 8 Uhr. Es zählt höchstens ein Zuschlag, auch wenn mehrere zutreffen.')
 })
 
 test('Gesamt bleibt einzeilig, auch bei 320 px und vierstelligen Beträgen', async ({ page }, info) => {

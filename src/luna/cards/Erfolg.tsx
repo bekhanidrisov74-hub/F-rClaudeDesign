@@ -28,7 +28,7 @@ export function Erfolg({ luna, kontakt, onNeu, onSchliessen }: ErfolgProps) {
   const werte = { name: kontakt.name, telefon: kontakt.telefon.replace(/ /g, ' '), betrieb: gewerk?.betrieb ?? t.betriebUnbekannt }
 
   return (
-    <section aria-labelledby={titelId} className="flex flex-col gap-s3 rounded-card border border-linie bg-weiss p-s4">
+    <section data-karte aria-labelledby={titelId} className="flex flex-col gap-s3 rounded-card border border-linie bg-weiss p-s4">
       <div className="flex flex-col gap-s3 dialog:flex-row dialog:items-start">
         <IconKreis name="ui-haekchen" dunkel className="size-[52px] dialog:size-[44px]" icon="size-[28px] dialog:size-[24px]" />
         <h2 id={titelId} className="font-display text-h3-karte dialog:text-h4">
@@ -37,6 +37,9 @@ export function Erfolg({ luna, kontakt, onNeu, onSchliessen }: ErfolgProps) {
       </div>
 
       <p className="text-text">{fuelle(gefunden ? t.text : t.keinerText, werte)}</p>
+      {/* Anruf-Knopf gleich unter dem Text, wie in der Erfolgskarte des Formulars (Funnel, 22.10.2026) */}
+      <CallButton variante="block" label={t.anrufen} />
+
       <p className="text-small text-schiefer">{fuelle(t.nummer, { nummer: luna.anfrageId })}</p>
 
       <SoGehtEsWeiter ebene={3} email={kontakt.email.trim()} mitSchritten={gefunden} />
@@ -49,7 +52,6 @@ export function Erfolg({ luna, kontakt, onNeu, onSchliessen }: ErfolgProps) {
 
       <GefahrHinweis />
 
-      <CallButton variante="block" label={t.anrufen} />
       <Button art="hell" onClick={onNeu} className="min-h-[52px] w-full rounded-btn-lg px-s4 text-btn">
         {t.neu}
       </Button>
