@@ -75,7 +75,12 @@ export function OverlayProvider({ children }: { children: ReactNode }) {
   const schliessePreise = useCallback(() => {
     setPreise((alt) => {
       // Nach dem Rendern fokussieren: der Auslöser ist erst wieder bedienbar, wenn die Seite nicht mehr gesperrt ist.
-      if (alt.offen) requestAnimationFrame(() => alt.rueckfokus?.focus())
+      // Nur wenn der Fokus verloren ist: Das close-Ereignis kann spät kommen, wenn der Fokus schon weiter ist (z. B. Luna).
+      if (alt.offen)
+        requestAnimationFrame(() => {
+          const f = document.activeElement
+          if (!f || f === document.body || f.closest('dialog:not([open])')) alt.rueckfokus?.focus()
+        })
       return { offen: false, rueckfokus: null }
     })
   }, [])
