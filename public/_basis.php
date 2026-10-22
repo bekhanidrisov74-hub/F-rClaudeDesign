@@ -20,7 +20,7 @@ const GEWERKE = '[
   {"id":"elektro","name":"Elektro","min":90,"max":140,"unit":"stunde","anfahrt":29.9},
   {"id":"geraete","name":"Haushaltsgeräte","min":90,"max":130,"unit":"stunde","anfahrt":29.9}
 ]';
-const KONTAKT = '{"telefon":"[Telefonnummer]","whatsapp":"[WhatsApp-Nummer]","email":"[E-Mail-Adresse]"}';
+const KONTAKT = '{"telefon":"0676 4777700","whatsapp":"0676 4777700","email":"office@fixit247.at"}';
 
 function gewerke(): array { return json_decode(GEWERKE, true); }
 function kontakt(): array { return json_decode(KONTAKT, true); }

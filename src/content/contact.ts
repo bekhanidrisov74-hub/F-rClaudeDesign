@@ -1,8 +1,8 @@
-// Kontaktdaten. Platzhalter laut SPEC 9, bis die echten Daten da sind.
+// Kontaktdaten (Telefon, WhatsApp, E-Mail von Beks' alter Website, 22.10.2026; Firmenname noch Platzhalter).
 // Telefonnummern in üblicher Schreibweise eintragen, z. B. '0660 123 45 67' oder '+43 660 1234567'.
-export const TELEFON = '[Telefonnummer]'
-export const WHATSAPP = '[WhatsApp-Nummer]'
-export const EMAIL = '[E-Mail-Adresse]'
+export const TELEFON = '0676 4777700'
+export const WHATSAPP = '0676 4777700'
+export const EMAIL = 'office@fixit247.at'
 export const FIRMA = '[Firmenname]'
 /** Für sitemap.xml, robots.txt, og:url und canonical (ohne Schrägstrich am Ende). www leitet public/.htaccess hierher um. */
 export const DOMAIN = 'https://fixit247.at'

@@ -1,5 +1,5 @@
 import { expect, test, type Page } from './test'
-import { beschwerdeHref } from '../../src/content/contact'
+import { TELEFON, beschwerdeHref } from '../../src/content/contact'
 import { copy } from '../../src/content/copy'
 import { gewerke } from '../../src/content/gewerke'
 
@@ -39,7 +39,7 @@ test('Navigation und Nummer im Kopf ab 1280 px, darunter Menü-Knopf', async ({ 
     await page.goto('/')
     await expect(kopf.getByRole('navigation', { name: 'Hauptnavigation' }), `Navigation bei ${breite}`).toBeVisible({ visible: nav })
     await expect(kopf.getByRole('button', { name: 'Menü öffnen' }), `Menü-Knopf bei ${breite}`).toBeVisible({ visible: !nav })
-    await expect(kopf.getByRole('link', { name: /Anrufen/ }).getByText('[Telefonnummer]'), `Nummer bei ${breite}`).toBeVisible({
+    await expect(kopf.getByRole('link', { name: /Anrufen/ }).getByText(TELEFON), `Nummer bei ${breite}`).toBeVisible({
       visible: nummer,
     })
   }

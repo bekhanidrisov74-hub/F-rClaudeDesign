@@ -74,7 +74,7 @@ if (sicherheit) {
 
 const warn = (text) => console.warn(`\x1b[33m⚠ ${text}\x1b[0m`)
 const platzhalter = new Set()
-for (const datei of fs.readdirSync('src/content')) {
+for (const datei of fs.readdirSync('src/content').filter((d) => !d.endsWith('.test.ts'))) {
   const quelle = fs.readFileSync(path.join('src/content', datei), 'utf8')
   for (const [treffer] of quelle.matchAll(/'\[[^\]'\n]+\]'|\[[A-ZÄÖÜ][^\]'\n]*\]/g)) platzhalter.add(treffer.replace(/'/g, ''))
 }

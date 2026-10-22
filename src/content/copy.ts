@@ -171,7 +171,7 @@ export const copy = {
     text: 'Vermittlung von Handwerker-Notdiensten in Österreich. fixit247 repariert nicht selbst, sondern gibt Ihre Anfrage an geprüfte Fachbetriebe aus Ihrer Region weiter. Die Vermittlung ist kostenlos. Der Vertrag kommt direkt mit dem Betrieb zustande.',
     seiten: 'Seiten', // nicht im Design: Spalte mit den Abschnitten aus copy.kopf.nav
     kontakt: 'Kontakt',
-    /** Desktop (02): „Telefon [Telefonnummer]“, „WhatsApp [WhatsApp-Nummer]“; Handy (01): ohne Präfix bzw. ohne Nummer */
+    /** Desktop (02): „Telefon <Nummer>“, „WhatsApp <Nummer>“; Handy (01): ohne Präfix bzw. ohne Nummer */
     telefon: 'Telefon',
     whatsapp: 'WhatsApp',
     rechtliches: 'Rechtliches',
