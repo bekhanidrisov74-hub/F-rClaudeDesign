@@ -55,7 +55,7 @@ function distanzScore(array $partner, string $plz): float {
   return 0;
 }
 
-/* Nacht (18–08 Uhr) oder Sonntag in Wiener Zeit, entspricht der Zuschlagsregel. */
+/* Nacht (18–08 Uhr) oder Sonntag in Wiener Zeit. Feiertage zählen hier nicht, anders als beim Zuschlag (copy.ts NACHTZEIT). */
 function ausserhalb(DateTimeInterface $jetzt): bool {
   $h = (int) $jetzt->format('G');
   return $h >= 18 || $h < 8 || $jetzt->format('N') === '7';

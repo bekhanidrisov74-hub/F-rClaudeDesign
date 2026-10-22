@@ -8,6 +8,8 @@ export const AUFTRAG_AUFGEBEN = 'Auftrag aufgeben'
 export const AUFTRAG_AUFGEGEBEN = 'Auftrag aufgegeben'
 /** SPEC 11, offen: Brutto/netto */
 export const UST_HINWEIS = '[inkl. 20 % USt.]'
+/** Bauplan B6 (22.10.2026): Nacht-Zuschlag gilt wie in public/chat.php und im Matching (anfrage.php ausserhalb) von 18 bis 8 Uhr. */
+export const NACHTZEIT = '18 bis 8 Uhr'
 export const WEISS_NICHT = 'Weiß ich nicht'
 /** Pfad der Datenschutzerklärung (Fuß, Formular, Luna) */
 export const DATENSCHUTZ = '/datenschutz/'
@@ -184,7 +186,7 @@ export const copy = {
       { id: 'nacht', name: 'Nacht' },
     ],
     plus100: '+100 %',
-    hinweisEiner: 'Es zählt höchstens ein Zuschlag, auch wenn mehrere zutreffen.',
+    hinweisEiner: `Nacht gilt von ${NACHTZEIT}. Es zählt höchstens ein Zuschlag, auch wenn mehrere zutreffen.`,
     hinweisMehrereFett: 'Es zählt nur ein Zuschlag.',
     /** {namen} = „Sonntag und Nacht“ */
     hinweisMehrere: '{namen} treffen beide zu, berechnet wird trotzdem nur einmal +100 %.',
@@ -214,11 +216,11 @@ export const copy = {
     anfahrt: 'Anfahrt',
     /** Dialog ab 640 px (Screen 03) */
     hinweiseDialog: [
-      'Zuschlag für Sonntag, Feiertag oder Nacht: +100 % auf die Arbeit. Es zählt höchstens ein Zuschlag.',
+      `Zuschlag am Sonntag, an Feiertagen und nachts (${NACHTZEIT}): +100 % auf die Arbeit. Es zählt höchstens ein Zuschlag.`,
       `Die Vermittlung ist kostenlos. Alle Preise ${UST_HINWEIS}, Richtpreise der Betriebe.`,
     ],
     /** Bottom-Sheet unter 640 px (Screen 04) */
-    hinweisSheet: `Zuschlag für Sonntag, Feiertag oder Nacht: +100 % auf die Arbeit, höchstens einer. Alle Preise ${UST_HINWEIS}. Die Vermittlung ist kostenlos.`,
+    hinweisSheet: `Zuschlag am Sonntag, an Feiertagen und nachts (${NACHTZEIT}): +100 % auf die Arbeit, höchstens einer. Alle Preise ${UST_HINWEIS}. Die Vermittlung ist kostenlos.`,
     zumRechner: 'Zum Preisrechner',
   },
 
@@ -344,7 +346,7 @@ export const copy = {
       {
         frage: 'Wie verbindlich sind die Preise auf der Seite?',
         antwort:
-          'Alle Preise sind Richtpreise der Fachbetriebe. Den genauen Preis vereinbaren Sie mit dem Betrieb. Für Sonntag, Feiertag oder Nacht gilt ein Zuschlag von +100 % auf die Arbeit, höchstens einer.',
+          `Alle Preise sind Richtpreise der Fachbetriebe. Den genauen Preis vereinbaren Sie mit dem Betrieb. Am Sonntag, an Feiertagen und nachts (${NACHTZEIT}) gilt ein Zuschlag von +100 % auf die Arbeit, höchstens einer.`,
       },
       {
         frage: 'Wann sind Sie erreichbar?',

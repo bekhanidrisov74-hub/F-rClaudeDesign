@@ -123,7 +123,7 @@ describe.skipIf(!phpDa)('Systemprompt und Aufruf (chat.php)', { timeout: PHP_ZEI
     const prompt = php('public/chat.php', 'systemPrompt($e)', { category: 'shk', urgency: 'URGENT', postalCode: '1100', answers: { seit: 'Seit heute' }, pending: { id: 'art', q: 'Welche Heizungsart haben Sie?', opts: ['Gastherme'] }, questions: [{ id: 'art', q: 'Welche Heizungsart haben Sie?' }] })
     expect(prompt).toContain('- Installateur (installateur): 95–140 € pro Stunde, Anfahrt 29,90 €')
     expect(prompt).toContain('- Schlüsseldienst (schluessel): 80–180 € pro Einsatz, Anfahrt 19,90 €')
-    expect(prompt).toContain('Nacht (18–08 Uhr) je +100 %')
+    expect(prompt).toContain('nachts (18–08 Uhr) je +100 %')
     expect(prompt).toContain('Gewerk=shk, Dringlichkeit=URGENT, PLZ=1100, Antworten={"seit":"Seit heute"}')
     expect(prompt).toContain('OFFENE FRAGE (id „art“): „Welche Heizungsart haben Sie?“ – mögliche Antworten: Gastherme')
     expect(prompt).toContain('- art: Welche Heizungsart haben Sie?')
