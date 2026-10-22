@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState, useSyncExternalStore, type ChangeEvent, type FormEvent, type ReactNode } from 'react'
 import { DATENSCHUTZ, EINWILLIGUNG, WEISS_NICHT, WOHIN, copy, dringlichkeit, fuelle, type DringlichkeitId } from '../content/copy'
 import { gewerke } from '../content/gewerke'
+import { ladePlz, ortsHinweis } from '../lib/plz'
 import { submitLead, zufallsnummer, type Match } from '../lib/submitLead'
-import { WEISS_NICHT_ID, formularZuLead, pruefeFeld, pruefeFormular, zuDringlichkeit, type FormularFeld, type FormularWerte } from '../lib/validate'
+import { WEISS_NICHT_ID, formularZuLead, pruefeFeld, pruefeFormular, teilePlzOrt, zuDringlichkeit, type FormularFeld, type FormularWerte } from '../lib/validate'
 import { Auswahl } from './ui/Auswahl'
 import { Button } from './ui/Button'
 import { CallButton } from './ui/CallButton'
@@ -53,6 +54,7 @@ interface Danke {
 
 const feldId = (feld: FormularFeld) => `anfrage-${feld}`
 const fehlerId = (feld: FormularFeld) => `${feldId(feld)}-fehler`
+const PLZ_HINWEIS_ID = `${feldId('plzOrt')}-hinweis`
 
 const FELD = 'rahmen w-full rounded-chip border-rand bg-weiss px-s4 text-body text-tiefsee transition-[border-color] hover:border-tiefsee aria-invalid:border-tiefsee'
 const FELDHOEHE = 'min-h-[54px]'
@@ -93,6 +95,10 @@ export function AnfrageFormular() {
   const [stufe, setStufe] = useState<DringlichkeitId>('URGENT')
   /** Eine Id je Anfrage: bleibt beim erneuten Senden gleich, neu nach dem Erfolg */
   const [anfrageId, setAnfrageId] = useState(zufallsnummer)
+  /** Was im Feld „PLZ und Ort“ steht (nur für den Hinweis darunter; der Wert selbst bleibt im DOM) */
+  const [plzWert, setPlzWert] = useState('')
+  /** PLZ-Verzeichnis, geladen erst, wenn die Eingabe mit einer PLZ beginnt (eigener Chunk) */
+  const [verzeichnis, setVerzeichnis] = useState<Awaited<ReturnType<typeof ladePlz>> | null>(null)
   const formular = useRef<HTMLFormElement>(null)
   // Vor der Hydrierung sendet der Knopf nicht nativ: Das Formular hat kein Ziel, ein GET schriebe Name und
   // Telefon in die Adresse und verwürfe die Anfrage (Audit, Befund A3). Die Eingaben bleiben stehen.
@@ -120,6 +126,17 @@ export function AnfrageFormular() {
     if (auswahl instanceof RadioNodeList) setStufe(zuDringlichkeit(auswahl.value))
   }, [])
 
+  // Eine vor der Hydrierung getippte PLZ übernehmen, sonst erschiene der Hinweis erst nach der nächsten Eingabe.
+  useEffect(() => {
+    const feld = formular.current?.elements.namedItem('plzOrt')
+    if (feld instanceof HTMLInputElement) setPlzWert(feld.value)
+  }, [])
+
+  const hatPlz = teilePlzOrt(plzWert) !== null
+  useEffect(() => {
+    if (hatPlz) ladePlz().then(setVerzeichnis, () => {})
+  }, [hatPlz])
+
   if (danke) return <Erfolg danke={danke} />
 
   const pruefe = (feld: FormularFeld, form: HTMLFormElement | null) => {
@@ -137,6 +154,20 @@ export function AnfrageFormular() {
     'aria-invalid': fehler[feld] ? true : undefined,
     'aria-describedby': fehler[feld] ? fehlerId(feld) : undefined,
   })
+
+  const plz = steuerung('plzOrt')
+  const hinweis = verzeichnis ? ortsHinweis(plzWert, verzeichnis) : null
+
+  /** Setzt „PLZ Ort“ ins Feld, nur auf Knopfdruck. Der Fokus geht ins Feld zurück, weil der Knopf danach verschwindet. */
+  const uebernehmen = () => {
+    const feld = formular.current?.elements.namedItem('plzOrt')
+    if (!hinweis || !(feld instanceof HTMLInputElement)) return
+    feld.value = `${hinweis.plz} ${hinweis.ort}`
+    setPlzWert(feld.value)
+    // Dieselbe Regel wie beim Tippen: Ein Feld mit Fehler wird sofort neu geprüft
+    if (fehler.plzOrt) pruefe('plzOrt', formular.current)
+    feld.focus()
+  }
 
   const waehleStufe = (e: ChangeEvent<HTMLFieldSetElement>) => {
     if (e.target instanceof HTMLInputElement && e.target.type === 'radio') setStufe(zuDringlichkeit(e.target.value))
@@ -168,6 +199,7 @@ export function AnfrageFormular() {
         tipp: gewerk?.tippErfolg,
       })
       setVorauswahl('')
+      setPlzWert('')
       setStufe('URGENT')
       setAnfrageId(zufallsnummer())
       setFehler({})
@@ -222,14 +254,34 @@ export function AnfrageFormular() {
           {t.felder.plzOrt.label}
         </Beschriftung>
         {/* autocomplete="postal-code" wäre falsch: Das Feld enthält auch den Ort. */}
-        <input
-          {...steuerung('plzOrt')}
-          type="text"
-          autoComplete="off"
-          aria-required="true"
-          placeholder={t.felder.plzOrt.platzhalter}
-          className={`${FELD} ${FELDHOEHE}`}
-        />
+        <div>
+          <input
+            {...plz}
+            onChange={(e) => {
+              plz.onChange(e)
+              setPlzWert(e.currentTarget.value)
+            }}
+            aria-describedby={[fehler.plzOrt && fehlerId('plzOrt'), hinweis && PLZ_HINWEIS_ID].filter(Boolean).join(' ') || undefined}
+            type="text"
+            autoComplete="off"
+            aria-required="true"
+            placeholder={t.felder.plzOrt.platzhalter}
+            className={`${FELD} ${FELDHOEHE}`}
+          />
+          {/* Die Meldefläche steht immer da, der Ort erscheint darin. Sie liegt über dem Fehlertext: Ein Fehler beim Verlassen des Feldes verschiebt den Knopf nicht. */}
+          <div className={`flex flex-wrap items-center gap-x-s3 ${hinweis ? 'pt-s2' : ''}`}>
+            <p aria-live="polite" className="text-small text-schiefer">
+              {hinweis && <span id={PLZ_HINWEIS_ID}>{hinweis.text}</span>}
+            </p>
+            {hinweis?.nurPlz && (
+              <div onMouseDown={(e) => e.preventDefault()} className="contents">
+                <Button art="textlink" onClick={uebernehmen} className="min-h-[44px] min-w-[44px] text-small text-tiefsee">
+                  {t.uebernehmen}
+                </Button>
+              </div>
+            )}
+          </div>
+        </div>
         <Fehlertext feld="plzOrt" text={fehler.plzOrt} />
       </div>
 

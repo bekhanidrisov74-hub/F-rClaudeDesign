@@ -255,6 +255,9 @@ export const copy = {
       email: { label: 'E-Mail', optional: '(optional)', platzhalter: 'Für die Bestätigung' },
       beschreibung: { label: 'Kurze Beschreibung', platzhalter: 'Was ist passiert? Zum Beispiel: Unter der Spüle tritt Wasser aus.' },
     },
+    // nicht im Design (Bauplan M9, Text wartet auf Freigabe): Zeile unter „PLZ und Ort“ und Knopf, der PLZ und Ort einsetzt
+    bezirk: '{ort}, {nummer}. Bezirk ({name})',
+    uebernehmen: 'Übernehmen',
     /** Sternchen hinter Pflichtfeldern */
     pflichtZeichen: '*',
     senden: 'Anfrage senden',

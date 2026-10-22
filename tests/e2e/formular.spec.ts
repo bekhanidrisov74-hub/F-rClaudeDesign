@@ -1,4 +1,5 @@
-import { GEFAHR, WOHIN, copy, dringlichkeit } from '../../src/content/copy'
+import { bezirke } from '../../src/content/bezirke'
+import { GEFAHR, WOHIN, copy, dringlichkeit, fuelle } from '../../src/content/copy'
 import { expect, test, type Page } from './test'
 import { anfrage, formularErfolg, fuelleFormular, sendeFormular } from './hilfen'
 
@@ -160,6 +161,97 @@ test('Absenden mit Fehlern: alle Meldungen, Fokus auf das erste fehlerhafte Feld
   ])
     await expect(a.getByText(text)).toBeVisible()
   await expect(a.getByLabel(/^Telefon/)).toBeFocused()
+})
+
+// Bauplan M9: Ort und Wiener Bezirk zur PLZ
+const bezirkZeile = (plz: string) => fuelle(copy.anfrage.bezirk, { ort: 'Wien', ...bezirke[plz] })
+const uebernehmen = (page: Page) => anfrage(page).getByRole('button', { name: copy.anfrage.uebernehmen, exact: true })
+
+test('PLZ „1100“ zeigt Wien mit Bezirk; „Übernehmen“ setzt „1100 Wien“ und verschwindet, das Feld bleibt frei', async ({ page }) => {
+  const a = anfrage(page)
+  const plz = a.getByLabel(/^PLZ und Ort/)
+  await plz.fill('1100')
+  const zeile = a.getByText(bezirkZeile('1100'), { exact: true })
+  await expect(zeile).toBeVisible()
+  // eigene Meldefläche (aria-live), mit dem Feld verbunden, ohne die Meldefläche der Dringlichkeit zu stören
+  await expect(zeile.locator('xpath=..')).toHaveAttribute('aria-live', 'polite')
+  await expect(plz).toHaveAttribute('aria-describedby', (await zeile.getAttribute('id'))!)
+  await expect(meldung(page)).toBeEmpty()
+
+  const knopf = uebernehmen(page)
+  await expect(knopf).toBeVisible()
+  expect((await knopf.boundingBox())!.height).toBeGreaterThanOrEqual(44)
+  // Ohne Klick wird nichts überschrieben
+  await expect(plz).toHaveValue('1100')
+  await knopf.click()
+  await expect(plz).toHaveValue('1100 Wien')
+  await expect(knopf).toHaveCount(0)
+  await expect(zeile).toBeVisible()
+  await expect(plz).toBeFocused()
+
+  // Mit Ort im Feld erscheint kein Knopf; der Hinweis folgt der PLZ, das Feld bleibt unberührt
+  await plz.fill('1230 Wien')
+  await expect(a.getByText(bezirkZeile('1230'), { exact: true })).toBeVisible()
+  await expect(knopf).toHaveCount(0)
+  await expect(plz).toHaveValue('1230 Wien')
+})
+
+test('PLZ außerhalb Wiens: nur der Ort; Flughafen und unbekannte PLZ ohne Bezirk, ohne Zeile bei Unsinn', async ({ page }) => {
+  const a = anfrage(page)
+  const plz = a.getByLabel(/^PLZ und Ort/)
+  await plz.fill('2000')
+  await expect(a.getByText('Stockerau', { exact: true })).toBeVisible()
+  await expect(a.getByText(/Bezirk/)).toHaveCount(0)
+  await uebernehmen(page).click()
+  await expect(plz).toHaveValue('2000 Stockerau')
+
+  await plz.fill('1300')
+  await expect(a.getByText('Wien-Flughafen', { exact: true })).toBeVisible()
+  await expect(a.getByText(/Bezirk/)).toHaveCount(0)
+
+  for (const eingabe of ['1011', '110', 'Wien 1100', '11000']) {
+    await plz.fill(eingabe)
+    await expect(a.locator('#anfrage-plzOrt-hinweis'), eingabe).toHaveCount(0)
+    await expect(uebernehmen(page), eingabe).toHaveCount(0)
+    await expect(plz, eingabe).not.toHaveAttribute('aria-describedby', /./)
+  }
+})
+
+test('PLZ-Hinweis ändert die Prüfung nicht: Fehler bleibt wie bisher, Übernehmen räumt ihn auf, Fehler und Hinweis hängen beide am Feld', async ({ page }) => {
+  const a = anfrage(page)
+  const plz = a.getByLabel(/^PLZ und Ort/)
+  // „2000“ ohne Ort ist für die Prüfung unvollständig (nur Wien ergänzt den Ort selbst)
+  await plz.fill('2000')
+  await plz.blur()
+  const fehler = a.getByText(copy.anfrage.fehler.plzOrt)
+  await expect(fehler).toBeVisible()
+  await expect(plz).toHaveAttribute('aria-invalid', 'true')
+  await expect(a.getByText('Stockerau', { exact: true })).toBeVisible()
+  const ids = ((await plz.getAttribute('aria-describedby')) ?? '').split(' ')
+  expect(ids).toContain((await fehler.getAttribute('id'))!)
+  expect(ids).toContain('anfrage-plzOrt-hinweis')
+  await uebernehmen(page).click()
+  await expect(plz).toHaveValue('2000 Stockerau')
+  await expect(fehler).toHaveCount(0)
+  await expect(plz).not.toHaveAttribute('aria-invalid', 'true')
+  // Unsinn löst weiter den bisherigen Fehler aus
+  await plz.fill('abc')
+  await plz.blur()
+  await expect(fehler).toBeVisible()
+  await expect(a.locator('#anfrage-plzOrt-hinweis')).toHaveCount(0)
+})
+
+test('Mit übernommener PLZ geht die Anfrage wie bisher hinaus', async ({ page }) => {
+  const a = anfrage(page)
+  await fuelleFormular(page)
+  await a.getByLabel(/^PLZ und Ort/).fill('1100')
+  await uebernehmen(page).click()
+  const gesendet = page.waitForRequest((r) => r.method() === 'POST' && new URL(r.url()).pathname === '/api/anfrage')
+  await a.getByRole('button', { name: 'Anfrage senden' }).click()
+  const daten = new URLSearchParams((await gesendet).postData() ?? '')
+  expect(daten.get('plz')).toBe('1100')
+  expect(daten.get('ort')).toBe('Wien')
+  await expect(a.getByText(/Anfragenummer/)).toBeVisible()
 })
 
 test('E-Mail ist freiwillig: Typ, kein aria-required, Fehler erst beim Verlassen am Feld', async ({ page }) => {
