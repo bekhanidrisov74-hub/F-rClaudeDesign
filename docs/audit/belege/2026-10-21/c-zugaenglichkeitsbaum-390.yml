@@ -1,0 +1,263 @@
+- banner:
+  - link "fixit247, zur Startseite":
+    - /url: "#start"
+  - link "Anrufen":
+    - /url: "tel:"
+  - button "Menü öffnen"
+- main:
+  - region "Handwerker- Notdienst. Rund um die Uhr.":
+    - img "Blick über die Dächer Wiens mit dem Stephansdom im Abendlicht"
+    - heading "Handwerker- Notdienst. Rund um die Uhr." [level=1]
+    - paragraph: Rohrbruch, ausgesperrt, Strom weg? Wir sind sofort für Sie da – ein geprüfter Fachbetrieb aus Ihrer Region. Schnell, zuverlässig und zu fairen Preisen. Direkt hier in Wien.
+    - link "Jetzt anrufen [Telefonnummer]":
+      - /url: "tel:"
+    - link "Anfrage senden":
+      - /url: "#anfrage"
+    - paragraph:
+      - text: Sie rufen an oder kontaktieren uns
+      - strong: und wir kümmern uns sofort um Ihr Anliegen.
+  - region "Ihre Vorteile":
+    - list:
+      - listitem:
+        - heading "Einzigartig in Wien" [level=2]
+        - paragraph: Schneller, zuverlässiger und persönlicher als andere.
+      - listitem:
+        - heading "24/7 für Sie da" [level=2]
+        - paragraph: Tag und Nacht auch an Feiertagen.
+      - listitem:
+        - heading "Lokale Fachkräfte" [level=2]
+        - paragraph: Unsere eigenen, geprüften Fachkräfte in ganz Wien.
+      - listitem:
+        - heading "Faire & transparente Preise" [level=2]
+        - paragraph: Keine versteckten Kosten – Ehrlich und verlässlich.
+  - region "Was ist passiert?":
+    - heading "Was ist passiert?" [level=2]
+    - link "Installateur":
+      - /url: "#anfrage"
+    - link "Heizung & Klima":
+      - /url: "#anfrage"
+    - link "Schlüsseldienst":
+      - /url: "#anfrage"
+    - link "Elektro":
+      - /url: "#anfrage"
+    - link "Haushaltsgeräte":
+      - /url: "#anfrage"
+    - link "Nicht sicher? Luna fragen":
+      - /url: "#luna"
+  - region "Leistungen":
+    - heading "Leistungen" [level=2]
+    - paragraph: Wir vermitteln geprüfte Fachbetriebe für diese fünf Bereiche. Alle Preise sind Richtpreise der Betriebe.
+    - button "Alle Richtpreise im Überblick"
+    - article:
+      - heading "Installateur" [level=3]
+      - paragraph: Rohrbruch, WC oder Abfluss verstopft, tropfende Armatur
+      - paragraph: 95–140 € pro Stunde
+      - paragraph: Anfahrt 29,90 €
+      - link "Installateur anfragen":
+        - /url: "#anfrage"
+    - article:
+      - heading "Heizung & Klima" [level=3]
+      - paragraph: Therme fällt aus, kein Warmwasser, Klimaanlage
+      - paragraph: 95–140 € pro Stunde
+      - paragraph: Anfahrt 29,90 €
+      - link "Heizung & Klima anfragen":
+        - /url: "#anfrage"
+    - article:
+      - heading "Schlüsseldienst" [level=3]
+      - paragraph: Ausgesperrt, Schlüssel abgebrochen, Schloss tauschen
+      - paragraph: 80–180 € pro Einsatz
+      - paragraph: Anfahrt 19,90 €
+      - link "Schlüsseldienst anfragen":
+        - /url: "#anfrage"
+    - article:
+      - heading "Elektro" [level=3]
+      - paragraph: Stromausfall, FI-Schalter fliegt, Steckdose defekt
+      - paragraph: 90–140 € pro Stunde
+      - paragraph: Anfahrt 29,90 €
+      - link "Elektro anfragen":
+        - /url: "#anfrage"
+    - article:
+      - heading "Haushaltsgeräte" [level=3]
+      - paragraph: Waschmaschine, Geschirrspüler, Herd, Kühlschrank
+      - paragraph: 90–130 € pro Stunde
+      - paragraph: Anfahrt 29,90 €
+      - link "Haushaltsgeräte anfragen":
+        - /url: "#anfrage"
+    - article:
+      - heading "Ihr Problem ist nicht dabei?" [level=3]
+      - paragraph: Luna, unsere digitale Assistentin, fragt kurz nach und sagt Ihnen, welcher Betrieb passt. Oder Sie rufen uns direkt an.
+      - link "Jetzt anrufen":
+        - /url: "tel:"
+      - link "Luna fragen":
+        - /url: "#luna"
+  - region "So funktioniert's":
+    - heading "So funktioniert's" [level=2]
+    - list:
+      - listitem:
+        - heading "Anfrage senden" [level=3]
+        - paragraph: Rufen Sie an, schreiben Sie per WhatsApp oder füllen Sie das Formular aus. Ein Foto vom Schaden hilft.
+      - listitem:
+        - heading "Wir vermitteln einen Betrieb in der Nähe" [level=3]
+        - paragraph: Wir geben Ihre Anfrage an einen geprüften Fachbetrieb aus Ihrer Region weiter. Die Vermittlung ist kostenlos.
+      - listitem:
+        - heading "Der Betrieb meldet sich und kommt" [level=3]
+        - paragraph: Der Betrieb ruft Sie zurück, nennt den Preis und kommt zu Ihnen. Der Vertrag kommt direkt mit dem Betrieb zustande.
+  - region "Was kostet der Einsatz ungefähr?":
+    - heading "Was kostet der Einsatz ungefähr?" [level=2]
+    - paragraph: Richtpreise der Fachbetriebe. Den genauen Preis vereinbaren Sie mit dem Betrieb.
+    - group "Gewerk":
+      - text: Gewerk
+      - button "Installateur" [pressed]
+      - button "Heizung & Klima"
+      - button "Schlüsseldienst"
+      - button "Elektro"
+      - button "Haushaltsgeräte"
+    - group "Arbeitszeit":
+      - text: Arbeitszeit
+      - button "Eine Stunde weniger"
+      - status: 2 Stunden
+      - button "Eine Stunde mehr"
+      - paragraph: 1 bis 12 Stunden. Beim Schlüsseldienst gilt ein Preis pro Einsatz.
+    - group "Zuschlag":
+      - text: Zuschlag
+      - button "Sonntag +100 %"
+      - button "Feiertag +100 %"
+      - button "Nacht +100 %"
+      - status:
+        - paragraph: Es zählt höchstens ein Zuschlag, auch wenn mehrere zutreffen.
+    - heading "Ihre Richtpreis-Spanne" [level=3]
+    - paragraph: Installateur, 2 Stunden, kein Zuschlag
+    - term: Arbeit
+    - definition: 190,00–280,00 €
+    - term: Anfahrt
+    - definition: 29,90 €
+    - term: Zuschlag
+    - definition: keiner
+    - term: Gesamt
+    - definition: ca. 219,90 € – 309,90 €
+    - paragraph: Richtpreis. Den genauen Preis vereinbaren Sie mit dem Betrieb.
+    - link "Jetzt anrufen":
+      - /url: "tel:"
+    - button "Preisübersicht öffnen"
+  - region "Darauf können Sie sich verlassen":
+    - heading "Darauf können Sie sich verlassen" [level=2]
+    - paragraph: "So arbeiten wir: ruhig, klar und ohne Überraschungen."
+    - list:
+      - listitem:
+        - heading "Vermittlung statt Reparatur" [level=3]
+        - paragraph: Wir reparieren nicht selbst. Wir geben Ihre Anfrage an einen geprüften Fachbetrieb aus Ihrer Region weiter.
+        - paragraph: Der Vertrag kommt direkt mit dem Betrieb zustande
+      - listitem:
+        - heading "Kostenlos für Sie" [level=3]
+        - paragraph: Die Vermittlung ist kostenlos. Sie zahlen nur den Betrieb.
+        - paragraph: Keine Gebühr für die Vermittlung
+      - listitem:
+        - heading "Rund um die Uhr" [level=3]
+        - paragraph: Auch nachts, an Sonn- und Feiertagen sind wir erreichbar.
+        - paragraph: Anruf, WhatsApp oder Formular
+      - listitem:
+        - heading "Aus Ihrer Region" [level=3]
+        - paragraph: Geprüfte Fachbetriebe in Ihrer Nähe.
+        - paragraph: Passend zu Ihrer Postleitzahl
+      - listitem:
+        - heading "Richtpreise vorab" [level=3]
+        - paragraph: Sie kennen die Preisspanne, bevor jemand kommt.
+        - paragraph: Im Preisrechner und in den Leistungen
+      - listitem:
+        - heading "Direkt zum Betrieb" [level=3]
+        - paragraph: Der Betrieb ruft Sie zurück, nennt den Preis und kommt zu Ihnen.
+        - paragraph: Rückruf nach Ihrer Anfrage
+      - listitem:
+        - heading "Richtpreise, keine Festpreise" [level=3]
+        - paragraph: Alle Preise sind Richtpreise der Betriebe. Den genauen Preis vereinbaren Sie mit dem Betrieb.
+        - paragraph: Der Betrieb nennt Ihnen den Preis
+  - region "Anfrage senden":
+    - heading "Anfrage senden" [level=2]
+    - paragraph: Wir geben Ihre Anfrage sofort an einen passenden Fachbetrieb in Ihrer Region weiter. Der Betrieb ruft Sie zurück.
+    - text: Name
+    - textbox "Name":
+      - /placeholder: Vor- und Nachname
+    - text: Telefon
+    - textbox "Telefon":
+      - /placeholder: Für den Rückruf
+    - text: PLZ und Ort
+    - textbox "PLZ und Ort":
+      - /placeholder: z. B. 1020 Wien
+    - text: Gewerk
+    - combobox "Gewerk":
+      - option "Bitte wählen" [selected]
+      - option "Installateur"
+      - option "Heizung & Klima"
+      - option "Schlüsseldienst"
+      - option "Elektro"
+      - option "Haushaltsgeräte"
+      - option "Weiß ich nicht"
+    - text: Kurze Beschreibung
+    - textbox "Kurze Beschreibung":
+      - /placeholder: "Was ist passiert? Zum Beispiel: Unter der Spüle tritt Wasser aus."
+    - checkbox "Ich stimme zu, dass fixit247 meine Angaben zur Bearbeitung meiner Anfrage verwendet und dafür an einen passenden Fachbetrieb weitergibt. Ich kann diese Einwilligung jederzeit widerrufen. Mehr dazu in der Datenschutzerklärung."
+    - text: Ich stimme zu, dass fixit247 meine Angaben zur Bearbeitung meiner Anfrage verwendet und dafür an einen passenden Fachbetrieb weitergibt. Ich kann diese Einwilligung jederzeit widerrufen. Mehr dazu in der
+    - link "Datenschutzerklärung":
+      - /url: /datenschutz/
+    - text: .
+    - button "Anfrage senden"
+    - paragraph: "* Pflichtfeld. Die Vermittlung ist kostenlos."
+    - complementary "Lieber sofort sprechen?":
+      - heading "Lieber sofort sprechen?" [level=3]
+      - paragraph: Wir sind rund um die Uhr erreichbar, auch an Sonn- und Feiertagen.
+      - link "Jetzt anrufen":
+        - /url: "tel:"
+      - link "Per WhatsApp schreiben":
+        - /url: https://wa.me/?text=Hallo%20fixit247%2C%20ich%20brauche%20Hilfe%3A%20
+      - paragraph: Per WhatsApp können Sie gleich ein Foto vom Schaden mitschicken.
+  - region "Häufige Fragen":
+    - heading "Häufige Fragen" [level=2]
+    - paragraph: Kurz beantwortet. Ihre Frage ist nicht dabei? Rufen Sie uns an, wir sind rund um die Uhr erreichbar.
+    - group: Repariert fixit247 selbst?
+    - group: Was kostet die Vermittlung?
+    - group: Wie verbindlich sind die Preise auf der Seite?
+    - group: Wann sind Sie erreichbar?
+    - group: Wie geht es nach meiner Anfrage weiter?
+    - group: Was tue ich bei akuter Gefahr?
+- contentinfo:
+  - img "fixit247 – Ihr Partner im Notfall"
+  - paragraph: Vermittlung von Handwerker-Notdiensten in Österreich. fixit247 repariert nicht selbst, sondern gibt Ihre Anfrage an geprüfte Fachbetriebe aus Ihrer Region weiter. Die Vermittlung ist kostenlos. Der Vertrag kommt direkt mit dem Betrieb zustande.
+  - navigation "Seiten":
+    - heading "Seiten" [level=2]
+    - list:
+      - listitem:
+        - link "Leistungen":
+          - /url: /#leistungen
+      - listitem:
+        - link "So funktioniert’s":
+          - /url: /#ablauf
+      - listitem:
+        - link "Preisrechner":
+          - /url: /#preisrechner
+      - listitem:
+        - link "Anfrage":
+          - /url: /#anfrage
+  - heading "Kontakt" [level=2]
+  - list:
+    - listitem:
+      - link "[Telefonnummer]":
+        - /url: "tel:"
+    - listitem:
+      - link "WhatsApp":
+        - /url: https://wa.me/?text=Hallo%20fixit247%2C%20ich%20brauche%20Hilfe%3A%20
+    - listitem:
+      - link "[E-Mail-Adresse]":
+        - /url: "mailto:"
+  - heading "Rechtliches" [level=2]
+  - list:
+    - listitem:
+      - link "Impressum":
+        - /url: /impressum/
+    - listitem:
+      - link "Datenschutz":
+        - /url: /datenschutz/
+    - listitem:
+      - link "AGB":
+        - /url: /agb/
+  - text: © 2026 [Firmenname] Alle Preise sind Richtpreise der Fachbetriebe.
+- status

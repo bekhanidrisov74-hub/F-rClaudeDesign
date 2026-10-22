@@ -209,10 +209,11 @@ function Ergebniskarte({ ergebnis: e }: { ergebnis: Ergebnis }) {
         <div className="flex flex-col gap-s1 border-t border-tiefsee/10 pt-s4">
           <dt className="text-schiefer">{t.gesamt}</dt>
           {/* Einzeilig: Die Schrift schrumpft mit der Kartenbreite (cqi) und der Zeichenzahl, höchstens --fx-total.
-              Faktor 1,8: Die breiteste Summe misst gut 0,52 em je Zeichen (Inter 800, Ziffern gleich breit), dazu etwas Reserve. */}
+              Faktor 1,8: Die breiteste Summe misst gut 0,52 em je Zeichen (Inter 800, Ziffern gleich breit), dazu etwas Reserve.
+              Kein nowrap: Mit größerem Textabstand (WCAG 1.4.12) bricht die Spanne um, statt über den Rand zu laufen. */}
           <dd
             style={{ '--zeichen': gesamt.length } as CSSProperties}
-            className="betrag leading-[1.1] font-extrabold tracking-[-0.03em] whitespace-nowrap [font-size:min(var(--fx-total),calc(100cqi/var(--zeichen)*1.8))]"
+            className="betrag leading-[1.1] font-extrabold tracking-[-0.03em] [font-size:min(var(--fx-total),calc(100cqi/var(--zeichen)*1.8))]"
           >
             {gesamt}
           </dd>

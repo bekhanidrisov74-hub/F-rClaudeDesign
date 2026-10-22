@@ -36,12 +36,22 @@ export const seiten: Record<string, Seite> = {
     noindex: true,
     inhalt: () => <LegalPage seite="agb" />,
   },
+  // Unbekannte Adressen: prerender.mjs schreibt sie als dist/404.html, public/.htaccess liefert sie mit Status 404 aus
+  '/404': {
+    titel: fuelle(copy.meta.unterseite, { seite: rechtliches.nichtGefunden.titel }),
+    beschreibung: copy.meta.beschreibung,
+    noindex: true,
+    inhalt: () => <LegalPage seite="nichtGefunden" />,
+  },
 }
 
-/** „/impressum/“ (so liefert der Webserver die Unterseiten aus), „/impressum.html“ und „/index.html“ auf die Schlüssel von `seiten` abbilden. */
+/**
+ * „/impressum/“ (so liefert der Webserver die Unterseiten aus), „/impressum.html“ und „/index.html“ auf die Schlüssel von `seiten`
+ * abbilden. Unbekannte Pfade sind die 404-Seite: So hydriert der Browser dasselbe, was der Server als 404.html geschickt hat.
+ */
 export function normalisiere(pfad: string): string {
   const p = pfad.replace(/\.html$/, '').replace(/\/index$/, '/').replace(/(.)\/$/, '$1')
-  return p in seiten ? p : '/'
+  return p in seiten ? p : '/404'
 }
 
 export function App({ pfad }: { pfad: string }) {

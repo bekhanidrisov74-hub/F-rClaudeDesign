@@ -3,7 +3,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { loadEnv } from 'vite'
-import { DOMAIN, pfade, render } from '../dist-ssr/entry-server.js'
+import { DOMAIN, adresse, indexierbar, pfade, render } from '../dist-ssr/entry-server.js'
 
 const dist = path.resolve('dist')
 const roh = fs.readFileSync(path.join(dist, 'index.html'), 'utf8')
@@ -23,32 +23,38 @@ fs.writeFileSync(
   if (!liste.getEntriesByName('first-contentful-paint').length) return
   beobachter.disconnect()
   import('${bundle}')
-}).observe({ type: 'paint', buffered: true })\n`,
+}).observe({ type: 'paint', buffered: true })
+`,
 )
 const vorlage = roh.replace(skriptTag, `<script type="module" src="${starter}"></script>`)
 
-// Die lateinischen Schriftdateien vorladen (Namen enthalten einen Hash); Inter trägt Kopf und Hero.
+// Die lateinische Schriftdatei vorladen (Name enthält einen Hash); Inter trägt seit 19.10.2026 die ganze Seite.
 const schriften = fs
   .readdirSync(path.join(dist, 'assets'))
-  .filter((f) => /^(bricolage-grotesque-latin-standard|atkinson-hyperlegible-next-latin-wght|inter-latin-wght)-normal.*\.woff2$/.test(f))
+  .filter((f) => /^inter-latin-wght-normal.*\.woff2$/.test(f))
 const preload = schriften
   .map((f) => `<link rel="preload" href="/assets/${f}" as="font" type="font/woff2" crossorigin />`)
   .join('\n    ')
 
 // Unterseiten als ordner/index.html: /impressum findet so jeder Webserver ohne Umschreibregeln (Audit, Befund H2).
+// Die 404-Seite als dist/404.html: Apache (ErrorDocument in public/.htaccess) und vite preview liefern sie für unbekannte Pfade.
 for (const pfad of pfade) {
   const { html, head } = render(pfad)
   const seite = vorlage.replace('<!--app-head-->', `${head}\n    ${preload}`).replace('<!--app-html-->', html)
+  if (pfad === '/404') {
+    fs.writeFileSync(path.join(dist, '404.html'), seite)
+    continue
+  }
   const ordner = path.join(dist, pfad.slice(1))
   fs.mkdirSync(ordner, { recursive: true })
   fs.writeFileSync(path.join(ordner, 'index.html'), seite)
 }
 
 const domainPlatzhalter = /^\[.*\]$/.test(DOMAIN)
-// Nur die Startseite: Die Rechtsseiten tragen noindex.
+// Alle Seiten ohne noindex (die Rechtsseiten tragen noindex), ohne lastmod, priority und changefreq (seo.md, Punkt 5).
 fs.writeFileSync(
   path.join(dist, 'sitemap.xml'),
-  `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n  <url><loc>${DOMAIN}/</loc></url>\n</urlset>\n`,
+  `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${indexierbar.map((p) => `  <url><loc>${adresse(p)}</loc></url>\n`).join('')}</urlset>\n`,
 )
 fs.writeFileSync(
   path.join(dist, 'robots.txt'),
