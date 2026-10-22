@@ -1,4 +1,5 @@
 import { expect, test, type Page } from './test'
+import { beschwerdeHref } from '../../src/content/contact'
 import { copy } from '../../src/content/copy'
 import { gewerke } from '../../src/content/gewerke'
 
@@ -252,6 +253,26 @@ test('Häufige Fragen: „Wer bezahlt fixit247?“ steht nach „Was kostet die 
   await fragen.nth(i).locator('summary').click()
   await expect(fragen.nth(i)).toHaveAttribute('open')
   await expect(fragen.nth(i).getByText(liste[i].antwort)).toBeVisible()
+})
+
+test('Häufige Fragen: Beschwerde steht nach „Wie geht es nach meiner Anfrage weiter?“, die Antwort trägt einen mailto-Link (M8)', async ({ page }) => {
+  await page.goto('/')
+  const liste = copy.fragen.liste
+  const i = liste.findIndex((f) => f.frage === 'Ich bin mit einem vermittelten Betrieb unzufrieden. Was tun?')
+  expect(i).toBeGreaterThan(0)
+  const fragen = page.locator('#fragen details')
+  await expect(fragen.nth(i - 1).locator('summary')).toContainText('Wie geht es nach meiner Anfrage weiter?')
+  await fragen.nth(i).locator('summary').click()
+  await expect(fragen.nth(i)).toHaveAttribute('open')
+  await expect(fragen.nth(i).getByText(liste[i].antwort)).toBeVisible()
+  const link = fragen.nth(i).getByRole('link', { name: 'Beschwerde per E-Mail senden' })
+  await expect(link).toBeVisible()
+  await expect(link).toHaveAttribute('href', /^mailto:/)
+  await expect(link).toHaveAttribute('href', beschwerdeHref)
+  // Touch-Ziel ab 44 px, per Tastatur erreichbar
+  expect((await link.boundingBox())!.height).toBeGreaterThanOrEqual(44)
+  await link.focus()
+  await expect(link).toBeFocused()
 })
 
 test('Einstiege für Fachbetriebe: „Partner werden“ am Ende von „Häufige Fragen“ und im Fuß', async ({ page }) => {

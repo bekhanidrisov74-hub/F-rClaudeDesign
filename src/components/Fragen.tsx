@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { copy } from '../content/copy'
+import { Button } from './ui/Button'
 import { Icon } from './ui/Icon'
 
 /**
@@ -8,6 +9,7 @@ import { Icon } from './ui/Icon'
  * Natives <details>; gleicher name = immer nur eine Antwort offen.
  * Ab 920 px bleibt die linke Spalte (Titel + Lead) unter dem Kopf stehen, solange rechts die Liste läuft; sonst bliebe sie leer.
  * Ohne Props die Fragen der Startseite; „Partner werden“ gibt eigene mit. `zusatz` steht unter der Liste.
+ * Ein Eintrag kann unter der Antwort einen Link tragen (`link`, z. B. mailto bei „Beschwerde“).
  */
 export function Fragen({
   id = 'fragen',
@@ -19,7 +21,7 @@ export function Fragen({
   id?: string
   titel?: string
   lead?: string
-  liste?: readonly { frage: string; antwort: string }[]
+  liste?: readonly { frage: string; antwort: string; link?: { text: string; href: string } }[]
   zusatz?: ReactNode
 }) {
   return (
@@ -47,7 +49,14 @@ export function Fragen({
                   />
                 </span>
               </summary>
-              <p className="px-s5 pb-s5 text-body text-schiefer">{f.antwort}</p>
+              <p className={`px-s5 text-body text-schiefer ${f.link ? '' : 'pb-s5'}`}>{f.antwort}</p>
+              {f.link && (
+                <div className="px-s5 pb-s4">
+                  <Button art="textlink" href={f.link.href} className="min-h-[44px] min-w-[44px] text-body text-tiefsee">
+                    {f.link.text}
+                  </Button>
+                </div>
+              )}
             </details>
           ))}
           {zusatz}

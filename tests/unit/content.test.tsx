@@ -1,9 +1,11 @@
 import { renderToString } from 'react-dom/server'
 import { describe, expect, test, vi } from 'vitest'
 import { existsSync, readFileSync } from 'node:fs'
+import { beschwerdeHref } from '../../src/content/contact'
 import { copy, fuelle, GEFAHR, WOHIN } from '../../src/content/copy'
 import { gewerke, PREISE_STAND, type Gewerk } from '../../src/content/gewerke'
 import { partner } from '../../src/content/partner'
+import { Fragen } from '../../src/components/Fragen'
 import { GefahrHinweis, SoGehtEsWeiter } from '../../src/components/ui/SoGehtEsWeiter'
 
 describe('Gewerke-Daten', () => {
@@ -57,6 +59,36 @@ describe('Wer bezahlt fixit247? (M3)', () => {
     expect(antwort).toContain('zum Start')
     // die Frage davor sagt dasselbe für die Kundschaft
     expect(fragen[index - 1].antwort).toContain('kostenlos')
+  })
+})
+
+describe('Beschwerde über einen vermittelten Betrieb (M8)', () => {
+  const fragen = copy.fragen.liste
+  const index = fragen.findIndex((f) => f.frage === 'Ich bin mit einem vermittelten Betrieb unzufrieden. Was tun?')
+
+  test('die Frage steht direkt nach „Wie geht es nach meiner Anfrage weiter?“, einmal, mit Link', () => {
+    expect(fragen.filter((f) => f.frage.startsWith('Ich bin mit einem vermittelten Betrieb unzufrieden'))).toHaveLength(1)
+    expect(index).toBeGreaterThan(0)
+    expect(fragen[index - 1].frage).toBe('Wie geht es nach meiner Anfrage weiter?')
+    const frage = fragen[index] as { antwort: string; link: { text: string; href: string } }
+    expect(frage.link).toEqual({ text: 'Beschwerde per E-Mail senden', href: beschwerdeHref })
+    expect(frage.antwort).toContain('Anfragenummer')
+  })
+
+  test('die Zusage „pausieren“ stammt aus der freigegebenen Frage „Was heißt „geprüft“?“ und nennt keine Fristen', () => {
+    // gleiche Zusage, anderer Satzbau: „pausieren bei Beschwerden die Vermittlung“ / „Bei Beschwerden pausieren wir die Vermittlung“
+    expect(fragen[index].antwort).toContain('pausieren bei Beschwerden die Vermittlung an diesen Betrieb')
+    expect(fragen.find((f) => f.frage === 'Was heißt „geprüft“?')?.antwort).toContain('Bei Beschwerden pausieren wir die Vermittlung an diesen Betrieb')
+    expect(fragen[index].antwort).not.toMatch(/\d|garant|innerhalb|Stunde|Tag/i)
+  })
+
+  test('nur diese Antwort trägt einen Link, die Fragen-Komponente zeigt ihn unter dem Text', () => {
+    expect(fragen.filter((f) => 'link' in f)).toHaveLength(1)
+    const html = renderToString(<Fragen />)
+    expect(html.match(/<a /g)).toHaveLength(1)
+    expect(html).toContain(`href="${beschwerdeHref}"`)
+    expect(html).toContain('Beschwerde per E-Mail senden</a>')
+    expect(html.indexOf(fragen[index].antwort)).toBeLessThan(html.indexOf('Beschwerde per E-Mail senden'))
   })
 })
 

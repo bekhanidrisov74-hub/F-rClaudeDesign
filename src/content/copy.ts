@@ -2,6 +2,8 @@
 // Texte, die nicht im Design stehen, sind mit „nicht im Design“ markiert und stehen im Bericht.
 // Gewerke-Texte (Namen, Kacheln, Karten, Preise, Tipps) stehen in gewerke.ts.
 
+import { beschwerdeHref } from './contact'
+
 /** SPEC 11, offen: widerspricht dem Vermittlungsmodell, bleibt bis zur Entscheidung so. */
 export const AUFTRAG_AUFGEBEN = 'Auftrag aufgeben'
 /** Echo-Blase in Luna nach dem Absenden, ändert sich mit AUFTRAG_AUFGEBEN. */
@@ -386,6 +388,16 @@ export const copy = {
         frage: 'Wie geht es nach meiner Anfrage weiter?',
         antwort:
           'Wir geben Ihre Anfrage an einen geprüften Fachbetrieb aus Ihrer Region weiter. Der Betrieb ruft Sie zurück, nennt den Preis und kommt zu Ihnen.',
+      },
+      {
+        // nicht im Design (Bauplan M8, Text wartet auf Freigabe, rechtlich prüfen: Zusage zu Beschwerden); „pausieren bei Beschwerden“
+        // stammt aus der freigegebenen Frage „Was heißt „geprüft“?“. Der Link ist ein mailto an EMAIL (contact.ts), kein Formular.
+        // Zur Freigabe: Die Anfragenummer steht nur auf dem Erfolgsbildschirm, nicht in der Bestätigungsmail; wer sie nicht hat,
+        // könnte „… mit Ihrer Anfragenummer, falls Sie sie haben, und kurz, was passiert ist.“ lesen (oder die Mail nennt sie).
+        frage: 'Ich bin mit einem vermittelten Betrieb unzufrieden. Was tun?',
+        antwort:
+          'Schreiben Sie uns eine E-Mail mit Ihrer Anfragenummer und kurz, was passiert ist. Wir sehen uns jede Beschwerde an und pausieren bei Beschwerden die Vermittlung an diesen Betrieb.',
+        link: { text: 'Beschwerde per E-Mail senden', href: beschwerdeHref },
       },
       {
         frage: 'Was tue ich bei akuter Gefahr?',
