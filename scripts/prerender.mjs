@@ -3,20 +3,29 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { loadEnv } from 'vite'
-import { DOMAIN, adresse, indexierbar, pfade, render } from '../dist-ssr/entry-server.js'
+import { DOMAIN, SECURITY_TXT_PFAD, VCARD_PFAD, adresse, indexierbar, pfade, render, securityTxt, vcardText } from '../dist-ssr/entry-server.js'
 
 const dist = path.resolve('dist')
 const roh = fs.readFileSync(path.join(dist, 'index.html'), 'utf8')
 if (!roh.includes('<!--app-html-->')) throw new Error('dist/index.html ist schon vorgerendert. Bitte `npm run build` ausführen.')
 
-// Das App-Bundle erst nach dem ersten gezeichneten Frame laden: Der vorgerenderte Text steht sofort (LCP),
-// React übernimmt danach. Eigene Datei statt Inline-Skript (eine spätere CSP braucht kein 'unsafe-inline');
-// der Name trägt den Hash des Bundles, damit nach einem Deploy kein alter Starter aus dem Cache auf ein
-// gelöschtes Bundle zeigt.
+// Das App-Bundle erst laden, wenn der erste Inhalt auf dem Schirm ist (first-contentful-paint): Der vorgerenderte
+// Text steht sofort (LCP), React übernimmt danach. Nach dem ersten Frame (requestAnimationFrame) reicht nicht: Bis er
+// zu sehen ist, kann das Bundle schon geladen sein, und Lighthouse rechnet es dann dem ersten Inhalt und dem LCP zu.
+// Eigene Datei statt Inline-Skript (eine spätere CSP braucht kein 'unsafe-inline'); der Name trägt den Hash des
+// Bundles, damit nach einem Deploy kein alter Starter aus dem Cache auf ein gelöschtes Bundle zeigt.
 const [skriptTag, bundle] = roh.match(/<script type="module" crossorigin src="(\/assets\/[^"]+\.js)"><\/script>/) ?? []
 if (!skriptTag) throw new Error('App-Skript in dist/index.html nicht gefunden.')
 const starter = bundle.replace(/\/([^/]+)\.js$/, '/start-$1.js')
-fs.writeFileSync(path.join(dist, starter), `requestAnimationFrame(() => setTimeout(() => import('${bundle}')))\n`)
+fs.writeFileSync(
+  path.join(dist, starter),
+  `new PerformanceObserver((liste, beobachter) => {
+  if (!liste.getEntriesByName('first-contentful-paint').length) return
+  beobachter.disconnect()
+  import('${bundle}')
+}).observe({ type: 'paint', buffered: true })
+`,
+)
 const vorlage = roh.replace(skriptTag, `<script type="module" src="${starter}"></script>`)
 
 // Die lateinische Schriftdatei vorladen (Name enthält einen Hash); Inter trägt seit 19.10.2026 die ganze Seite.
@@ -28,9 +37,14 @@ const preload = schriften
   .join('\n    ')
 
 // Unterseiten als ordner/index.html: /impressum findet so jeder Webserver ohne Umschreibregeln (Audit, Befund H2).
+// Die 404-Seite als dist/404.html: Apache (ErrorDocument in public/.htaccess) und vite preview liefern sie für unbekannte Pfade.
 for (const pfad of pfade) {
   const { html, head } = render(pfad)
   const seite = vorlage.replace('<!--app-head-->', `${head}\n    ${preload}`).replace('<!--app-html-->', html)
+  if (pfad === '/404') {
+    fs.writeFileSync(path.join(dist, '404.html'), seite)
+    continue
+  }
   const ordner = path.join(dist, pfad.slice(1))
   fs.mkdirSync(ordner, { recursive: true })
   fs.writeFileSync(path.join(ordner, 'index.html'), seite)
@@ -46,6 +60,17 @@ fs.writeFileSync(
   path.join(dist, 'robots.txt'),
   `User-agent: *\nAllow: /\n${domainPlatzhalter ? '' : `Sitemap: ${DOMAIN}/sitemap.xml\n`}`,
 )
+
+// „Nummer speichern“ (M10): Die Karte gibt es erst mit echter Nummer und Firma; vorher fehlt Datei und Fuß-Link.
+if (vcardText) fs.writeFileSync(path.join(dist, VCARD_PFAD.slice(1)), vcardText)
+
+// security.txt nach RFC 9116 (M11): erst mit echter E-Mail-Adresse. Die Datei läuft nach einem Jahr ab (Expires, ab dem
+// Build-Datum gerechnet); deshalb mindestens jährlich neu bauen und hochladen.
+const sicherheit = securityTxt({ jetzt: new Date() })
+if (sicherheit) {
+  fs.mkdirSync(path.join(dist, '.well-known'), { recursive: true })
+  fs.writeFileSync(path.join(dist, SECURITY_TXT_PFAD.slice(1)), sicherheit)
+}
 
 const warn = (text) => console.warn(`\x1b[33m⚠ ${text}\x1b[0m`)
 const platzhalter = new Set()

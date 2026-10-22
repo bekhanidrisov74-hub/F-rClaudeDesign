@@ -8,6 +8,8 @@
    Ordner fixit247-daten neben der Konfiguration. */
 
 date_default_timezone_set('Europe/Vienna');
+/* Keine PHP-Version in den Antworten (expose_php ist beim Hoster nicht unsere Einstellung). Audit-Befund N4. */
+header_remove('X-Powered-By');
 
 /* Kopien aus src/content/gewerke.ts und src/content/contact.ts, als JSON. src/luna/backend.test.ts schlägt an,
    wenn sie von der Website-Quelle abweichen. */

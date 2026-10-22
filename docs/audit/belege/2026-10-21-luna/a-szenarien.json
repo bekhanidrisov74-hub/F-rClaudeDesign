@@ -1,0 +1,138 @@
+[
+  {
+    "szenario": "s3_stromausfall_luna",
+    "netz": "ungedrosselt",
+    "ziel": "Luna",
+    "tote_beruehrungen": 0,
+    "erfolg": true,
+    "beruehrungen": 12,
+    "zeichen": 27,
+    "wischen_geschaetzt": 4,
+    "ziel_erreicht_ms": 3806,
+    "schritte": [
+      {
+        "was": "Luna-Knopf",
+        "t": 597
+      },
+      {
+        "was": "Chip „Elektro“",
+        "t": 777
+      },
+      {
+        "was": "Chip „Kein Strom“",
+        "t": 1162
+      },
+      {
+        "was": "Chip „Ganze Wohnung“",
+        "t": 1536
+      },
+      {
+        "was": "Chip „Ja“",
+        "t": 1903
+      },
+      {
+        "was": "Chip „Nein“",
+        "t": 2279
+      },
+      {
+        "was": "Chip „So schnell wie möglich“",
+        "t": 2644
+      },
+      {
+        "was": "Senden",
+        "t": 3074
+      },
+      {
+        "was": "Feld Name",
+        "t": 3468
+      },
+      {
+        "was": "Feld Telefon",
+        "t": 3609
+      },
+      {
+        "was": "Einwilligung",
+        "t": 3729
+      },
+      {
+        "was": "Auftrag aufgeben",
+        "t": 3806
+      }
+    ],
+    "fcp_ms": 532,
+    "lcp_ms": 532,
+    "hydriert_ms": 317,
+    "anrufe": [],
+    "anfragen": 13
+  },
+  {
+    "szenario": "s3_stromausfall_luna",
+    "netz": "Slow 4G + CPU 4×",
+    "ziel": "Luna",
+    "tote_beruehrungen": 1,
+    "erfolg": true,
+    "beruehrungen": 13,
+    "zeichen": 27,
+    "wischen_geschaetzt": 13,
+    "ziel_erreicht_ms": 10766,
+    "schritte": [
+      {
+        "was": "Luna-Knopf",
+        "t": 2688
+      },
+      {
+        "was": "Luna-Knopf",
+        "t": 4732
+      },
+      {
+        "was": "Chip „Elektro“",
+        "t": 5120
+      },
+      {
+        "was": "Chip „Kein Strom“",
+        "t": 5654
+      },
+      {
+        "was": "Chip „Ganze Wohnung“",
+        "t": 6229
+      },
+      {
+        "was": "Chip „Ja“",
+        "t": 6828
+      },
+      {
+        "was": "Chip „Nein“",
+        "t": 7388
+      },
+      {
+        "was": "Chip „So schnell wie möglich“",
+        "t": 8055
+      },
+      {
+        "was": "Senden",
+        "t": 8880
+      },
+      {
+        "was": "Feld Name",
+        "t": 9451
+      },
+      {
+        "was": "Feld Telefon",
+        "t": 10022
+      },
+      {
+        "was": "Einwilligung",
+        "t": 10566
+      },
+      {
+        "was": "Auftrag aufgeben",
+        "t": 10766
+      }
+    ],
+    "fcp_ms": 2040,
+    "lcp_ms": 2040,
+    "hydriert_ms": 4089,
+    "anrufe": [],
+    "anfragen": 15
+  }
+]

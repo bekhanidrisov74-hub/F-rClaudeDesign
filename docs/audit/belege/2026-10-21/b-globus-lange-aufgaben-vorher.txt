@@ -1,0 +1,4 @@
+mit Globus      /impressum/  lange Aufgaben 88 Summe>50ms 1619 ms countries-110m-BOmN2_Bq.js
+mit Globus      /            lange Aufgaben 4 Summe>50ms 523 ms 
+Globus gesperrt /impressum/  lange Aufgaben 4 Summe>50ms 136 ms countries-110m-BOmN2_Bq.js
+Globus gesperrt /            lange Aufgaben 4 Summe>50ms 550 ms 

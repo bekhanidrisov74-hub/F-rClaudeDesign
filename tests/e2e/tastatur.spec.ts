@@ -1,9 +1,10 @@
 import { expect, test } from './test'
+import { gewerke } from '../../src/content/gewerke'
 
 // Jedes Bedienelement ist per Tab erreichbar (vorwärts und rückwärts) und nie ganz verdeckt (WCAG 2.4.11).
 // Eine Gruppe von Optionsfeldern ist ein Tab-Halt (die Pfeiltasten wählen darin), sie zählt deshalb einmal.
 // Felder mit tabindex="-1" (Honigtopf der Bewerbung) stehen absichtlich nicht in der Tab-Reihenfolge.
-for (const pfad of ['/', '/partner-werden/', '/impressum/'])
+for (const pfad of ['/', '/partner-werden/', ...gewerke.map((g) => `/${g.seite}/`), '/impressum/'])
   test(`${pfad}: Tab erreicht alles, Fokus nie verdeckt`, async ({ page }) => {
     await page.goto(pfad)
     const einzeln = await page
@@ -36,4 +37,22 @@ for (const pfad of ['/', '/partner-werden/', '/impressum/'])
       expect(verdeckt, `${taste}: verdeckter Fokus`).toEqual([])
       expect(erreicht.size, `${taste}: erreichte Elemente`).toBeGreaterThanOrEqual(erwartet)
     }
+  })
+
+// Notfall-Seiten je Gewerk (Bauplan M7): Der Anruf-Knopf ist das erste Handlungselement im Hauptinhalt und das größte.
+// Die Brotkrumen (nav) stehen als Wegweiser davor und zählen nicht als Handlungselement.
+for (const g of gewerke)
+  test(`/${g.seite}/: Anruf-Knopf ist das erste Handlungselement im Hauptinhalt und das auffälligste`, async ({ page }) => {
+    await page.goto(`/${g.seite}/`)
+    const m = await page.evaluate(() => {
+      const elemente = [...document.querySelectorAll<HTMLElement>('main a[href], main button')].filter((el) => !el.closest('nav'))
+      const flaeche = (el: HTMLElement) => {
+        const r = el.getBoundingClientRect()
+        return r.width * r.height
+      }
+      const [erstes, ...rest] = elemente
+      return { href: erstes.getAttribute('href'), flaeche: flaeche(erstes), andere: Math.max(...rest.filter((el) => el.offsetParent !== null).map(flaeche)) }
+    })
+    expect(m.href).toMatch(/^tel:/)
+    expect(m.flaeche).toBeGreaterThan(m.andere)
   })

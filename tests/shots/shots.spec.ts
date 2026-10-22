@@ -24,6 +24,7 @@ import { expect } from '../e2e/test'
 
 const HOEHE: Record<number, number> = { 390: 844, 1024: 768, 1440: 900, 1920: 1080, 2560: 1440 }
 const ALLE = [390, 1024, 1440, 1920, 2560]
+const MITTAG = new Date('2026-10-20T12:00:00+02:00')
 
 /** Die Zusagen-Karten blenden beim Hinscrollen ein: einmal hinscrollen, damit sie im Bild stehen. */
 const zusagen = async (p: Page) => {
@@ -115,7 +116,9 @@ for (const z of ZUSTAENDE)
       // Ganze Seite: Scroll-Animationen (Einblenden, Linien, Wortmarke) hängen an der Scroll-Position, die Aufnahme
       // scrollt nicht. Mit reduced motion zeigt sie die Endzustände, wie sie beim Lesen erscheinen.
       if (z.ganzeSeite) await page.emulateMedia({ reducedMotion: 'reduce' })
-      if (z.uhr) await page.clock.install()
+      // Feste Wiener Zeit (Dienstag 12 Uhr, kein Zuschlag): Sonst zeigt der Rechner je nach Tageszeit „Jetzt gilt …“ (M6).
+      if (z.uhr) await page.clock.install({ time: MITTAG })
+      else await page.clock.setFixedTime(MITTAG)
       await page.goto(z.pfad)
       await page.evaluate(() => document.fonts.ready)
       // Kartenbilder laden verzögert; ohne das zeigt der Vollseiten-Screenshot leeres Türkis.

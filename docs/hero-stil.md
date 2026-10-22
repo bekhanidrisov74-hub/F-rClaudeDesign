@@ -103,6 +103,16 @@ Tiefsee. Einziger Primärknopf ist „Bewerbung senden“, Anrufen im Kopf bleib
 Einstiege: Link im Fuß (Spalte „Seiten“), kleiner Link unter der Kontaktkarte im Handy-Menü, weiße Karte am Ende von
 „Häufige Fragen“ auf der Startseite (der Flächenplan der Startseite bleibt).
 
+### Notfall-Seiten je Gewerk (/installateur/, /heizung-klima/, /schluesseldienst/, /elektriker/, /haushaltsgeraete/, 22.10.2026, Bauplan M7)
+
+Ohne Entwurf in design/, gebaut aus denselben Bausteinen (`GewerkSeite`, Texte in `src/content/gewerkseiten.ts`, Zahlen aus `gewerke.ts` und `fragen.ts`).
+Flächen von oben: Einstieg Kalk (Brotkrumen, H1 mit dem Suchbegriff, Lead, dann Anruf-Knopf wie im Hero, „Anfrage senden“ wie im Hero,
+„Luna fragen“ als ruhigerer Zweitknopf) · Ist das ein Notfall? Eis (typische Fälle, weiße Karte mit dem Notruf-Hinweis) · Bis der Betrieb
+kommt Kalk (Tipps in weißen Karten) · Diese Angaben helfen dem Betrieb Eis (Fragen in einer weißen Karte) · So läuft die Vermittlung Tiefsee (`Ablauf`) ·
+Richtpreis und Zuschläge Kalk (weiße Karte) · Fuß Tiefsee. Die Tiefsee-Fläche steht in der Mitte, damit sie nicht an den Fuß grenzt.
+Einstiege: Textlink „… im Notfall“ auf jeder Leistungskarte (leiser als „… anfragen“) und die Liste „Gewerke“ im Fuß. „Anfrage senden“ führt als
+`/?gewerk=…#anfrage` zur Startseite, die das Gewerk im Formular vorwählt.
+
 ## Fenster
 
 - **Preisübersicht** (Dialog und Sheet): weiß, Gewerke im Lagune-Kreis, Schließen im Lagune-Kreis, Anruf-Knopf wie oben,

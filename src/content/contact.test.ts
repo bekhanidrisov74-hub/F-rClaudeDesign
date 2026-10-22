@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest'
-import { e164, mailHref, telHref, whatsappHref } from './contact'
+import { BESCHWERDE_BETREFF, beschwerdeHref, beschwerdeLink, e164, mailHref, telHref, whatsappHref } from './contact'
 
 test('österreichische Nummern werden zu E.164', () => {
   expect(e164('0660 123 45 67')).toBe('436601234567')
@@ -13,4 +13,13 @@ test('Links mit Platzhaltern bleiben gültig, ohne erfundene Nummer', () => {
   expect(telHref).toBe('tel:')
   expect(whatsappHref).toBe('https://wa.me/?text=Hallo%20fixit247%2C%20ich%20brauche%20Hilfe%3A%20')
   expect(mailHref).toBe('mailto:')
+})
+
+test('Beschwerde-Link (M8): echte Adresse mit kodiertem Betreff, Platzhalter nur „mailto:“', () => {
+  const link = beschwerdeLink('maria@beispiel.at')
+  expect(link).toBe('mailto:maria@beispiel.at?subject=Beschwerde%20zu%20Anfrage%20')
+  expect(new URL(link).searchParams.get('subject')).toBe(BESCHWERDE_BETREFF)
+  expect(beschwerdeLink('[E-Mail-Adresse]')).toBe('mailto:')
+  // solange EMAIL ein Platzhalter ist, gilt dieselbe Regel wie bei mailHref
+  expect(beschwerdeHref).toBe(mailHref)
 })

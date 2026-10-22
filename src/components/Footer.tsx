@@ -1,13 +1,19 @@
 import { copy, fuelle } from '../content/copy'
 import { EMAIL, FIRMA, TELEFON, WHATSAPP, mailHref, telHref, whatsappHref } from '../content/contact'
+import { gewerke } from '../content/gewerke'
+import { gewerkseiten } from '../content/gewerkseiten'
 import { PARTNER_PFAD, partner } from '../content/partner'
+import { VCARD_PFAD, vcardText } from '../lib/vcard'
 import { Globus } from './ui/Globus'
 import { Icon } from './ui/Icon'
 import { IconKreis } from './ui/IconKreis'
 
 // Links: sichtbar so dicht wie im Entwurf, die Trefferfläche ist 44 px hoch
 // (die Kästen überlappen dafür je 4 px, deshalb -my-s1).
-const LINK = 'flex min-h-[44px] min-w-[44px] -my-s1 items-center gap-s2 wrap-anywhere text-small text-nebel no-underline transition-colors hover:text-weiss motion-reduce:transition-none nav:gap-s3 nav:text-text'
+const LINK_BASIS = 'flex min-h-[44px] min-w-[44px] -my-s1 items-center gap-s2 wrap-anywhere text-small text-nebel transition-colors hover:text-weiss motion-reduce:transition-none nav:gap-s3 nav:text-text'
+const LINK = `${LINK_BASIS} no-underline`
+/* „Nummer speichern“ hat keinen Icon-Kreis (schwächer als jede Kontaktzeile und jeder Anruf-Knopf), die Unterstreichung zeigt den Link. */
+const LINK_TEXT = `${LINK_BASIS} underline underline-offset-4`
 const LISTE = '-mb-s2 flex list-none flex-col p-0'
 const SPALTENTITEL = 'titellinie mb-s3 font-display text-h5 font-bold text-weiss'
 const KONTAKT_KREIS = 'size-[28px] nav:size-[32px]'
@@ -38,6 +44,19 @@ export function Footer() {
             <p className="m-0 max-w-[32em] text-small leading-[1.6] text-nebel nav:text-text nav:leading-[1.6]">
               {fuss.text}
             </p>
+            {/* Die Notfall-Seiten der Gewerke (Bauplan M7): jede Seite ist über einen Textlink erreichbar, nicht nur über die Sitemap */}
+            <nav aria-label={gewerkseiten.fuss.titel} className="mt-s2">
+              <h2 className={SPALTENTITEL}>{gewerkseiten.fuss.titel}</h2>
+              <ul className={`${LISTE} flex-row flex-wrap gap-x-s5`}>
+                {gewerke.map((g) => (
+                  <li key={g.id} className="flex">
+                    <a href={`/${g.seite}/`} className={LINK}>
+                      {g.name}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
           </div>
 
           {/* Oberer Teil des Globus (gleiches Seitenverhältnis bei jeder Breite), unten weich ausgeblendet. */}
@@ -92,6 +111,14 @@ export function Footer() {
                     {EMAIL}
                   </a>
                 </li>
+                {/* Nur mit echter Nummer und Firma (lib/vcard): sonst gäbe es keine Datei und der Link wäre tot. */}
+                {vcardText && (
+                  <li className="flex">
+                    <a href={VCARD_PFAD} download className={LINK_TEXT}>
+                      {fuss.nummerSpeichern}
+                    </a>
+                  </li>
+                )}
               </ul>
             </div>
 

@@ -68,6 +68,7 @@ Alles als Datei in `fixit247-daten/`, keine Datenbank nötig.
 Was vor dem Livegang noch fehlt, steht als Checkliste in `docs/livegang.md`. Technisch offen:
 
 - MySQL ja oder nein: Standard ist die Datei (siehe oben).
+- `/.well-known/security.txt` (Bauplan M11) entsteht beim Build, sobald die echte E-Mail-Adresse in `src/content/contact.ts` steht. Sie läuft knapp ein Jahr nach dem Build ab (`Expires`): mindestens einmal im Jahr neu bauen und hochladen. Nach dem ersten Upload mit `curl -I https://fixit247.at/.well-known/security.txt` prüfen, ob Status 200 und `text/plain` kommen.
 - Steht beim Hoster ein Proxy vor PHP, ist `REMOTE_ADDR` für alle gleich und das Kontingent gilt dann für alle Kunden gemeinsam. Nach der Einrichtung prüfen.
 
 ## Folgen für den Code

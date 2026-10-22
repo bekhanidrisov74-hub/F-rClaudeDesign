@@ -1,5 +1,6 @@
 import { copy, fuelle } from '../content/copy'
-import { anfahrtText, einheit, spanne, type Gewerk } from '../content/gewerke'
+import { anfahrtText, anfrageAnker, einheit, spanne, type Gewerk } from '../content/gewerke'
+import { gewerkseiten } from '../content/gewerkseiten'
 import { Bildflaeche } from './ui/Bildflaeche'
 import { Button } from './ui/Button'
 import { Icon } from './ui/Icon'
@@ -21,12 +22,16 @@ export function LeistungKarte({ gewerk: g }: { gewerk: Gewerk }) {
         </div>
         <Button
           art="hell"
-          href="#anfrage"
+          href={`#${anfrageAnker(g.id)}`}
           data-gewerk={g.id}
           className="min-h-[54px] w-full gap-s2 rounded-btn-lg px-s2 text-btn dialog:gap-s3 dialog:px-s4"
         >
           <Icon name="anfrage" className="size-[20px]" />
           <span>{fuelle(copy.leistungen.anfragen, { name: g.name })}</span>
+        </Button>
+        {/* Link auf die Notfall-Seite des Gewerks (Bauplan M7): leiser als „… anfragen“, das der stärkere Knopf bleibt */}
+        <Button art="textlink" href={`/${g.seite}/`} className="min-h-[44px] min-w-[44px] self-center text-btn">
+          {fuelle(gewerkseiten.karte.mehr, { name: g.name })}
         </Button>
       </div>
     </article>

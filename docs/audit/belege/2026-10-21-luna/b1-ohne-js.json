@@ -1,0 +1,38 @@
+{
+  "links": [
+    "tel:",
+    "https://wa.me/?text=Hallo%20fixit247%2C%20ich%20brauche%20Hilfe%3A%20",
+    "mailto:"
+  ],
+  "formular": {
+    "action": null,
+    "method": null
+  },
+  "knoepfe_ohne_wirkung_ohne_js": [
+    "Menü öffnen",
+    "Alle Richtpreise im Überblick",
+    "Installateur",
+    "Heizung & Klima",
+    "Schlüsseldienst",
+    "Elektro",
+    "Haushaltsgeräte",
+    "Eine Stunde weniger",
+    "Eine Stunde mehr",
+    "Sonntag+100 %",
+    "Feiertag+100 %",
+    "Nacht+100 %",
+    "Preisübersicht öffnen",
+    "Anfrage senden",
+    "Chat schließen",
+    "Chat minimieren",
+    "Installateur",
+    "Heizung & Klima",
+    "Schlüsseldienst",
+    "Elektro",
+    "Haushaltsgeräte",
+    "Weiß ich nicht",
+    "Nachricht senden",
+    "Chat mit Luna öffnen",
+    "Preisübersicht schließen"
+  ]
+}

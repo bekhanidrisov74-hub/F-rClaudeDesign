@@ -10,6 +10,11 @@ export type Abrechnung = 'stunde' | 'einsatz'
 export interface Gewerk {
   id: string
   name: string
+  /**
+   * Pfad der Notfall-Seite ohne Schrägstriche (Bauplan M7): /{seite}/. Klein, mit Bindestrich, ohne Umlaute (.claude/rules/seo.md, Punkt 3).
+   * Zu jeder Seite gehören Texte in gewerkseiten.ts (Schlüssel = id).
+   */
+  seite: string
   /** Hauptfarbe des 3D-Icons: technik = Petrol, handwerk = Orange (SPEC 3) */
   kategorie: Kategorie
   abrechnung: Abrechnung
@@ -46,6 +51,7 @@ export const gewerke: Gewerk[] = [
   {
     id: 'installateur',
     name: 'Installateur',
+    seite: 'installateur',
     kategorie: 'handwerk',
     abrechnung: 'stunde',
     min: 95,
@@ -63,6 +69,7 @@ export const gewerke: Gewerk[] = [
   {
     id: 'shk',
     name: 'Heizung & Klima',
+    seite: 'heizung-klima',
     kategorie: 'technik',
     abrechnung: 'stunde',
     min: 95,
@@ -80,6 +87,7 @@ export const gewerke: Gewerk[] = [
   {
     id: 'schluessel',
     name: 'Schlüsseldienst',
+    seite: 'schluesseldienst',
     kategorie: 'handwerk',
     abrechnung: 'einsatz',
     min: 80,
@@ -97,6 +105,7 @@ export const gewerke: Gewerk[] = [
   {
     id: 'elektro',
     name: 'Elektro',
+    seite: 'elektriker',
     kategorie: 'technik',
     abrechnung: 'stunde',
     min: 90,
@@ -114,6 +123,7 @@ export const gewerke: Gewerk[] = [
   {
     id: 'geraete',
     name: 'Haushaltsgeräte',
+    seite: 'haushaltsgeraete',
     kategorie: 'technik',
     abrechnung: 'stunde',
     min: 90,
@@ -131,6 +141,12 @@ export const gewerke: Gewerk[] = [
 ]
 
 /** Anzeige der Richtpreis-Spanne in ganzen Euro, z. B. „95–140 €“ (Leistungen, Preisübersicht, Luna). */
+/**
+ * Sprungziel im Abschnitt Anfrage je Gewerk (Schnellwahl, „… anfragen“). Das Gewerk steht so in der Adresse: Wer tippt, bevor
+ * JavaScript geladen ist, landet trotzdem am Formular, und es wählt das Gewerk beim Hydrieren vor (Audit-Befund A4).
+ */
+export const anfrageAnker = (id: string) => `anfrage-${id}`
+
 export const spanne = (g: Gewerk) => `${g.min}–${g.max} €`
 /** „pro Stunde“ bzw. „pro Einsatz“ */
 export const einheit = (g: Gewerk) => copy.einheit[g.abrechnung]

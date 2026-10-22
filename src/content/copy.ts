@@ -2,14 +2,20 @@
 // Texte, die nicht im Design stehen, sind mit „nicht im Design“ markiert und stehen im Bericht.
 // Gewerke-Texte (Namen, Kacheln, Karten, Preise, Tipps) stehen in gewerke.ts.
 
+import { beschwerdeHref } from './contact'
+import { NACHT } from './feiertage'
+
 /** SPEC 11, offen: widerspricht dem Vermittlungsmodell, bleibt bis zur Entscheidung so. */
 export const AUFTRAG_AUFGEBEN = 'Auftrag aufgeben'
 /** Echo-Blase in Luna nach dem Absenden, ändert sich mit AUFTRAG_AUFGEBEN. */
 export const AUFTRAG_AUFGEGEBEN = 'Auftrag aufgegeben'
 /** SPEC 11, offen: Brutto/netto */
 export const UST_HINWEIS = '[inkl. 20 % USt.]'
-/** Bauplan B6 (22.10.2026): Nacht-Zuschlag gilt wie in public/chat.php und im Matching (anfrage.php ausserhalb) von 18 bis 8 Uhr. */
-export const NACHTZEIT = '18 bis 8 Uhr'
+/**
+ * Bauplan B6 (22.10.2026): Nacht-Zuschlag gilt wie in public/chat.php und im Matching (anfrage.php ausserhalb) von 18 bis 8 Uhr.
+ * Bauplan M6: Die Zahlen stehen in feiertage.ts (NACHT), der Rechner prüft damit die aktuelle Zeit. Der Text bleibt „18 bis 8 Uhr“.
+ */
+export const NACHTZEIT = `${NACHT.beginn} bis ${NACHT.ende} Uhr`
 export const WEISS_NICHT = 'Weiß ich nicht'
 /** Pfad der Datenschutzerklärung (Fuß, Formular, Luna) */
 export const DATENSCHUTZ = '/datenschutz/'
@@ -169,6 +175,8 @@ export const copy = {
     telefon: 'Telefon',
     whatsapp: 'WhatsApp',
     rechtliches: 'Rechtliches',
+    /** nicht im Design (Bauplan M10, Text von Beks freigegeben am 22.10.2026): Link im Fuß, legt die Nummer als Kontakt (vCard) im Handy ab */
+    nummerSpeichern: 'Nummer speichern',
     links: [
       { text: 'Impressum', href: '/impressum/' },
       { text: 'Datenschutz', href: DATENSCHUTZ },
@@ -202,6 +210,10 @@ export const copy = {
       { id: 'nacht', name: 'Nacht' },
     ],
     plus100: '+100 %',
+    /** nicht im Design (Bauplan M6, Text von Beks freigegeben am 22.10.2026, rechtlich prüfen: Preisangaben); {zuschlag} = Name aus zuschlaege, z. B. „Sonntag“ */
+    jetztGilt: 'Jetzt gilt in Wien der Zuschlag „{zuschlag}“ (+100 %).',
+    /** nicht im Design (Bauplan M6, Text von Beks freigegeben am 22.10.2026, rechtlich prüfen: Preisangaben): Knopf neben jetztGilt */
+    uebernehmen: 'Übernehmen',
     hinweisEiner: `Nacht gilt von ${NACHTZEIT}. Es zählt höchstens ein Zuschlag, auch wenn mehrere zutreffen.`,
     hinweisMehrereFett: 'Es zählt nur ein Zuschlag.',
     /** {namen} = „Sonntag und Nacht“ */
@@ -253,6 +265,9 @@ export const copy = {
       email: { label: 'E-Mail', optional: '(optional)', platzhalter: 'Für die Bestätigung' },
       beschreibung: { label: 'Kurze Beschreibung', platzhalter: 'Was ist passiert? Zum Beispiel: Unter der Spüle tritt Wasser aus.' },
     },
+    // nicht im Design (Bauplan M9, Text von Beks freigegeben am 22.10.2026): Zeile unter „PLZ und Ort“ und Knopf, der PLZ und Ort einsetzt
+    bezirk: '{ort}, {nummer}. Bezirk ({name})',
+    uebernehmen: 'Übernehmen',
     /** Sternchen hinter Pflichtfeldern */
     pflichtZeichen: '*',
     senden: 'Anfrage senden',
@@ -367,6 +382,13 @@ export const copy = {
         antwort: 'Die Vermittlung ist kostenlos. Sie zahlen nur den Betrieb.',
       },
       {
+        // nicht im Design (Bauplan M3, Text von Beks freigegeben am 22.10.2026, rechtlich prüfen: Informationspflichten für Vermittler);
+        // abgeleitet aus partner.ts KOSTEN („zum Start kostenlos“): bei jeder Änderung der Partner-Kosten mitändern
+        frage: 'Wer bezahlt fixit247?',
+        antwort:
+          'Derzeit zahlt niemand. Für Sie ist die Vermittlung kostenlos, und auch die Fachbetriebe zahlen zum Start nichts für die Partnerschaft.',
+      },
+      {
         frage: 'Wie verbindlich sind die Preise auf der Seite?',
         antwort:
           `Alle Preise sind Richtpreise der Fachbetriebe. Den genauen Preis vereinbaren Sie mit dem Betrieb. Am Sonntag, an Feiertagen und nachts (${NACHTZEIT}) gilt ein Zuschlag von +100 % auf die Arbeit, höchstens einer.`,
@@ -379,6 +401,15 @@ export const copy = {
         frage: 'Wie geht es nach meiner Anfrage weiter?',
         antwort:
           'Wir geben Ihre Anfrage an einen geprüften Fachbetrieb aus Ihrer Region weiter. Der Betrieb ruft Sie zurück, nennt den Preis und kommt zu Ihnen.',
+      },
+      {
+        // nicht im Design (Bauplan M8, Text von Beks freigegeben am 22.10.2026, rechtlich prüfen: Zusage zu Beschwerden); „pausieren bei Beschwerden“
+        // stammt aus der freigegebenen Frage „Was heißt „geprüft“?“. Der Link ist ein mailto an EMAIL (contact.ts), kein Formular.
+        // „falls Sie sie haben“: Die Anfragenummer steht nur auf dem Erfolgsbildschirm, nicht in der Bestätigungsmail.
+        frage: 'Ich bin mit einem vermittelten Betrieb unzufrieden. Was tun?',
+        antwort:
+          'Schreiben Sie uns eine E-Mail mit Ihrer Anfragenummer, falls Sie sie haben, und kurz, was passiert ist. Wir sehen uns die Beschwerde an. Bei Beschwerden pausieren wir die Vermittlung an diesen Betrieb.',
+        link: { text: 'Beschwerde per E-Mail senden', href: beschwerdeHref },
       },
       {
         frage: 'Was tue ich bei akuter Gefahr?',
@@ -531,6 +562,8 @@ export const copy = {
       },
     },
     agb: { titel: 'AGB', text: '[AGB folgen]' },
+    // nicht im Design: Seite für unbekannte Adressen (404, Audit-Befund H5), liegt als dist/404.html
+    nichtGefunden: { titel: 'Seite nicht gefunden', text: 'Diese Adresse gibt es auf unserer Website nicht. Auf der Startseite finden Sie alle Wege zur Hilfe.' },
     zurueck: 'Zur Startseite', // nicht im Design
   },
 } as const
