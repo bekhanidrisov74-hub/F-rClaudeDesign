@@ -11,8 +11,13 @@ export const UST_HINWEIS = '[inkl. 20 % USt.]'
 export const WEISS_NICHT = 'Weiß ich nicht'
 /** Pfad der Datenschutzerklärung (Fuß, Formular, Luna) */
 export const DATENSCHUTZ = '/datenschutz/'
-/** Gefahr-Hinweis: Antwort in den häufigen Fragen und eigener Absatz in den Erfolgskarten (Formular und Luna), ein Wortlaut. */
-export const GEFAHR = 'Bei akuter Gefahr wie Rauch, Funken oder Gasgeruch kontaktieren Sie bitte sofort 122 bzw. 112.'
+/**
+ * Gefahr-Hinweis: Antwort in den häufigen Fragen und eigener Absatz in den Erfolgskarten (Formular und Luna), ein Wortlaut;
+ * auch Kern von luna.notruf und Satz im Prompt der KI-Luna (public/chat.php).
+ * nicht im Design (Bauplan M1, Text wartet auf Freigabe), rechtlich prüfen (Haftung für Ratschläge).
+ */
+export const GEFAHR =
+  'Bei akuter Gefahr rufen Sie bitte sofort den Notruf: bei Gasgeruch den Gasnotruf 128, bei Rauch, Brandgeruch, Funken oder Feuer die Feuerwehr 122, bei Verletzten die Rettung 144. Der Euro-Notruf 112 gilt immer.'
 /** nicht im Design (Bauplan B3, Text wartet auf Freigabe): Abschnitt Anfrage und Luna-Zusammenfassung, ein Wortlaut. */
 export const OHNE_KONTO = 'Ein Konto oder eine Anmeldung brauchen Sie nicht.'
 
@@ -416,7 +421,8 @@ export const copy = {
     gewerkNochmal:
       'Das kann ich noch keinem Gewerk zuordnen. Bitte wählen Sie das passende Gewerk oder beschreiben Sie genauer, was nicht funktioniert.',
     kurz: 'Können Sie das Problem in ein paar Worten beschreiben? Zum Beispiel: Unter der Spüle tritt Wasser aus.',
-    notruf: 'Bei akuter Gefahr bitte sofort 122 bzw. 112 kontaktieren. Ich nehme Ihre Anfrage parallel weiter auf.',
+    // Bauplan M1: Kern-Satz GEFAHR, hier mit dem Zusatz, dass Luna die Anfrage weiter aufnimmt
+    notruf: `${GEFAHR} Ich nehme Ihre Anfrage parallel weiter auf.`,
     zusammenfassungIntro: 'Danke. Bitte prüfen Sie Ihre Anfrage und ergänzen Sie, wie der Betrieb Sie erreicht.',
     notiert: 'Notiert. Das nehme ich in die Anfrage auf.',
     ueberspringen: 'Überspringen',

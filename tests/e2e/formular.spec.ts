@@ -1,3 +1,4 @@
+import { GEFAHR } from '../../src/content/copy'
 import { expect, test } from './test'
 import { anfrage, formularErfolg, fuelleFormular, sendeFormular } from './hilfen'
 
@@ -136,8 +137,6 @@ test('Senden: „Wird gesendet …“, dann ersetzt der Dank das Formular', asyn
   await expect(anfrage(page).getByRole('link', { name: 'Fragen? Jetzt anrufen' })).toHaveAttribute('href', /^tel:/)
   await expect(anfrage(page).getByLabel(/^Name/)).toHaveCount(0)
 })
-
-const GEFAHR = 'Bei akuter Gefahr wie Rauch, Funken oder Gasgeruch kontaktieren Sie bitte sofort 122 bzw. 112.'
 
 test('Erfolg zeigt „So geht es weiter“ mit drei Schritten und Gefahr-Hinweis, ohne E-Mail keine Bestätigungszeile', async ({ page }) => {
   const a = anfrage(page)
