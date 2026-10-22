@@ -82,6 +82,11 @@ export const copy = {
 
   /** Abrechnungseinheiten (Leistungen, Preisübersicht, Rechner, Luna) */
   einheit: { stunde: 'pro Stunde', einsatz: 'pro Einsatz' },
+  /**
+   * {stand}: PREISE_STAND aus gewerke.ts, gefüllt mit fuelle() dort, wo der Satz gezeigt wird (Ergebniskarte, Preisübersicht).
+   * nicht im Design (Bauplan M5, Text wartet auf Freigabe), rechtlich prüfen (Preisangaben).
+   */
+  preisStand: 'Stand der Richtpreise: {stand}.',
   /** Bindewort für Aufzählungen: „Sonntag und Nacht“ */
   und: 'und',
   /** Ort, den Luna aus der PLZ ableitet (Entscheidung 2: nur Wien) */

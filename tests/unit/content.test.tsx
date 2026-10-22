@@ -1,8 +1,8 @@
 import { renderToString } from 'react-dom/server'
 import { describe, expect, test, vi } from 'vitest'
 import { existsSync, readFileSync } from 'node:fs'
-import { copy, GEFAHR, WOHIN } from '../../src/content/copy'
-import { gewerke, type Gewerk } from '../../src/content/gewerke'
+import { copy, fuelle, GEFAHR, WOHIN } from '../../src/content/copy'
+import { gewerke, PREISE_STAND, type Gewerk } from '../../src/content/gewerke'
 import { GefahrHinweis, SoGehtEsWeiter } from '../../src/components/ui/SoGehtEsWeiter'
 
 describe('Gewerke-Daten', () => {
@@ -15,6 +15,16 @@ describe('Gewerke-Daten', () => {
       expect(existsSync(`design/icons/${g.icon}.svg`), g.icon).toBe(true)
       for (const feld of ['name', 'schnellwahl', 'karte', 'betrieb', 'tipp', 'tippErfolg'] as const) expect(g[feld], `${g.id}.${feld}`).not.toBe('')
     }
+  })
+})
+
+describe('Stand der Richtpreise (M5)', () => {
+  test('der Satz nennt den Stand, ohne offenen Platzhalter und ohne Garantie-Wort', () => {
+    const satz = fuelle(copy.preisStand, { stand: PREISE_STAND })
+    expect(PREISE_STAND).not.toBe('')
+    expect(satz).toBe(`Stand der Richtpreise: ${PREISE_STAND}.`)
+    expect(satz).not.toMatch(/[{}]/)
+    expect(satz).not.toMatch(/garant|fest|verbindlich/i)
   })
 })
 

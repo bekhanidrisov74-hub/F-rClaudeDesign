@@ -1,6 +1,6 @@
 import { useState, type CSSProperties, type ReactNode } from 'react'
 import { copy, fuelle } from '../content/copy'
-import { gewerke } from '../content/gewerke'
+import { gewerke, PREISE_STAND } from '../content/gewerke'
 import { useOverlays } from '../overlays'
 import {
   STUNDEN,
@@ -219,7 +219,10 @@ function Ergebniskarte({ ergebnis: e }: { ergebnis: Ergebnis }) {
         </div>
       </dl>
 
-      <p className="text-small text-schiefer">{t.hinweis}</p>
+      <div className="flex flex-col gap-s1">
+        <p className="text-small text-schiefer">{t.hinweis}</p>
+        <p className="text-small text-schiefer">{fuelle(copy.preisStand, { stand: PREISE_STAND })}</p>
+      </div>
 
       <div className="flex flex-col gap-s3">
         <CallButton variante="block" />

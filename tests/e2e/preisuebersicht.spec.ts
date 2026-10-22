@@ -1,6 +1,7 @@
 import { expect, test } from './test'
-import { oeffnePreisuebersicht, preisDialog } from './hilfen'
-import { gewerke } from '../../src/content/gewerke'
+import { ergebnis, oeffnePreisuebersicht, preisDialog } from './hilfen'
+import { copy, fuelle } from '../../src/content/copy'
+import { gewerke, PREISE_STAND } from '../../src/content/gewerke'
 
 const schliessen = 'Preisübersicht schließen'
 
@@ -111,4 +112,26 @@ test('Gewerke-Icons: flache SVGs im Lagune-Kreis wie bei den Vorteilen, bündig 
   // ab 640 px Tabelle mit 44-px-Kreisen, darunter die Liste im Sheet mit 40 px
   const breite = info.project.name === 'm390' ? 40 : 44
   for (const k of kreise) expect(k).toEqual({ breite, links: 0, flaeche: 'rgb(190, 240, 246)' })
+})
+
+test('Stand der Richtpreise: Dialog als Listenpunkt, Sheet als Satz, derselbe Wortlaut wie in der Ergebniskarte', async ({ page }, info) => {
+  const stand = fuelle(copy.preisStand, { stand: PREISE_STAND })
+  await page.goto('/#preisrechner')
+  const karte = ergebnis(page)
+  await expect(karte.getByText(stand, { exact: true })).toBeVisible()
+  await oeffnePreisuebersicht(page)
+  const dialog = preisDialog(page)
+  const sichtbar = dialog.getByText(stand).locator('visible=true')
+  await expect(sichtbar).toHaveCount(1)
+  if (info.project.name === 'm390') {
+    // Sheet (unter 640 px): eigener Satz nach hinweisSheet, im selben Absatz
+    await expect(sichtbar).toHaveText(`${copy.preisuebersicht.hinweisSheet} ${stand}`)
+    await expect(sichtbar).toHaveJSProperty('tagName', 'P')
+  } else {
+    // Dialog (ab 640 px): zusätzlicher Listenpunkt nach den bestehenden Hinweisen
+    await expect(sichtbar).toHaveText(stand)
+    await expect(sichtbar).toHaveJSProperty('tagName', 'LI')
+    const punkte = await dialog.locator('ul:visible').last().locator('li').allTextContents()
+    expect(punkte).toEqual([...copy.preisuebersicht.hinweiseDialog, stand])
+  }
 })

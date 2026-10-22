@@ -1,6 +1,6 @@
 import { useEffect, useRef, type MouseEvent } from 'react'
-import { copy } from '../content/copy'
-import { anfahrtText, einheit, gewerke, spanne } from '../content/gewerke'
+import { copy, fuelle } from '../content/copy'
+import { anfahrtText, einheit, gewerke, PREISE_STAND, spanne } from '../content/gewerke'
 import { useOverlays } from '../overlays'
 import { Button } from './ui/Button'
 import { CallButton } from './ui/CallButton'
@@ -8,6 +8,7 @@ import { Icon } from './ui/Icon'
 import { IconKreis } from './ui/IconKreis'
 
 const t = copy.preisuebersicht
+const stand = fuelle(copy.preisStand, { stand: PREISE_STAND })
 
 /**
  * Das <dialog> ist selbst die Karte (Anzeige bleibt dem Browser überlassen, sonst wäre das geschlossene Fenster sichtbar).
@@ -137,8 +138,11 @@ export function Preisuebersicht({ aufStartseite = true }: { aufStartseite?: bool
           {t.hinweiseDialog.map((h) => (
             <li key={h}>{h}</li>
           ))}
+          <li>{stand}</li>
         </ul>
-        <p className="text-small text-schiefer dialog:hidden">{t.hinweisSheet}</p>
+        <p className="text-small text-schiefer dialog:hidden">
+          {t.hinweisSheet} {stand}
+        </p>
 
         <div className="flex items-center gap-s3 max-dialog:hidden">
           <Button art="hell" href={ziel} onClick={zumRechner} className="min-h-[56px] rounded-btn-lg px-s5 text-btn">

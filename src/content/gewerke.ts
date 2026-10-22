@@ -36,6 +36,12 @@ export interface Gewerk {
 
 const GASNOTRUF = 'Riecht es nach Gas, öffnen Sie die Fenster, betätigen Sie keine Schalter und rufen Sie den Gasnotruf 128.'
 
+/**
+ * Stand der Richtpreise (Werte aus dem Briefing, zuletzt geändert am 13.10.2026). Bei jeder Preisänderung anpassen.
+ * Bauplan M5, wartet auf Bestätigung durch Beks.
+ */
+export const PREISE_STAND = 'Oktober 2026'
+
 export const gewerke: Gewerk[] = [
   {
     id: 'installateur',

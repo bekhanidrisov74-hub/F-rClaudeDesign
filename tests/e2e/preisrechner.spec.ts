@@ -1,5 +1,7 @@
 import { expect, test } from './test'
 import { ergebnis, rechner, schalteZuschlag, setzeStunden, waehleGewerk } from './hilfen'
+import { copy, fuelle } from '../../src/content/copy'
+import { PREISE_STAND } from '../../src/content/gewerke'
 
 test.beforeEach(async ({ page }) => {
   await page.goto('/#preisrechner')
@@ -103,4 +105,18 @@ test('Knöpfe der Ergebniskarte', async ({ page }) => {
   await expect(karte.getByRole('link', { name: /Jetzt anrufen/ })).toHaveAttribute('href', /^tel:/)
   await karte.getByRole('button', { name: 'Preisübersicht öffnen' }).click()
   await expect(page.getByRole('dialog', { name: 'Richtpreise im Überblick' })).toBeVisible()
+})
+
+test('Ergebniskarte nennt den Stand der Richtpreise, direkt nach dem Hinweis', async ({ page }) => {
+  const karte = ergebnis(page)
+  const stand = fuelle(copy.preisStand, { stand: PREISE_STAND })
+  await expect(karte.getByText(stand, { exact: true })).toBeVisible()
+  await expect(karte.getByText(copy.rechner.ergebnis.hinweis, { exact: true })).toBeVisible()
+  // eigener Absatz nach dem Absatz mit dem Hinweis
+  const folgt = await karte.getByText(copy.rechner.ergebnis.hinweis, { exact: true }).evaluate((p) => p.nextElementSibling?.textContent)
+  expect(folgt).toBe(stand)
+  // bleibt beim Wechsel von Gewerk und Zuschlag stehen
+  await waehleGewerk(page, 'Schlüsseldienst')
+  await schalteZuschlag(page, 'Nacht')
+  await expect(karte.getByText(stand, { exact: true })).toBeVisible()
 })
