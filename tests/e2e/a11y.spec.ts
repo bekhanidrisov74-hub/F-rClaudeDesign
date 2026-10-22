@@ -1,5 +1,5 @@
 import AxeBuilder from '@axe-core/playwright'
-import { expect, test, type Page } from './test'
+import { DIENSTAG_MITTAG, expect, test, type Page } from './test'
 import {
   bewerbungErfolg,
   bewerbungSendefehler,
@@ -77,7 +77,7 @@ const ZUSTAENDE: Zustand[] = [
 for (const z of ZUSTAENDE)
   test(`axe: ${z.name}`, async ({ page }) => {
     test.skip(!!z.nurMitMenue && page.viewportSize()!.width >= 1280, 'nur unter 1280 px')
-    if (z.uhr) await page.clock.install()
+    if (z.uhr) await page.clock.install({ time: DIENSTAG_MITTAG })
     await page.goto(z.pfad)
     await z.vorbereiten?.(page)
     const ergebnis = await new AxeBuilder({ page })

@@ -1,4 +1,4 @@
-import { useRef, useState, useSyncExternalStore, type CSSProperties, type ReactNode } from 'react'
+import { useState, useSyncExternalStore, type CSSProperties, type ReactNode } from 'react'
 import { copy, fuelle } from '../content/copy'
 import { gewerke, PREISE_STAND } from '../content/gewerke'
 import { useOverlays } from '../overlays'
@@ -48,14 +48,15 @@ export function Preisrechner() {
   const umschalten = (id: ZuschlagId) =>
     setZuschlaege((alt) => (alt.includes(id) ? alt.filter((x) => x !== id) : [...alt, id]))
 
-  // Gilt jetzt in Wien ein Zuschlag, nennt ihn der Rechner und schaltet ihn auf Knopfdruck ein (Bauplan M6). Gelten mehrere, zählt der erste.
+  // Gilt jetzt in Wien ein Zuschlag, nennt der Rechner ihn und schaltet ihn selbst ein (Bauplan M6, automatisch seit 22.10.2026
+  // auf Wunsch des Auftraggebers). Gelten mehrere, zählt der erste. Ändert sich die Lage (Hydrieren, 18 Uhr, Mitternacht), gilt
+  // wieder genau dieser Zuschlag; dazwischen bleiben die Umschalter frei. Zustand beim Rendern angleichen statt per Effekt.
   const minute = useMinute()
   const gilt = minute === null ? undefined : zuschlaegeJetzt(new Date(minute * MINUTE))[0]
-  const reihe = useRef<HTMLDivElement>(null)
-  const uebernehmen = (id: ZuschlagId) => {
-    setZuschlaege((alt) => (alt.includes(id) ? alt : [...alt, id]))
-    // Der Knopf verschwindet: Der Fokus geht auf den Umschalter, der jetzt an ist.
-    reihe.current?.querySelectorAll('button')[copy.rechner.zuschlaege.findIndex((z) => z.id === id)]?.focus()
+  const [bisher, setBisher] = useState(gilt)
+  if (gilt !== bisher) {
+    setBisher(gilt)
+    setZuschlaege(gilt ? [gilt] : [])
   }
 
   return (
@@ -124,7 +125,7 @@ export function Preisrechner() {
 
             <fieldset className={FELDGRUPPE}>
               <legend className={LEGENDE}>{copy.rechner.zuschlag}</legend>
-              <div ref={reihe} className={REIHE}>
+              <div className={REIHE}>
                 {copy.rechner.zuschlaege.map((z) => (
                   <Chip
                     key={z.id}
@@ -139,7 +140,7 @@ export function Preisrechner() {
               <div>
                 {/* Immer im Dokument, leer ohne Zuschlag (ohne Höhe, ohne Abstand), damit der Hinweis angesagt wird. */}
                 <div aria-live="polite">
-                  {gilt && <JetztGilt id={gilt} an={zuschlaege.includes(gilt)} onUebernehmen={() => uebernehmen(gilt)} />}
+                  {gilt && <JetztGilt id={gilt} />}
                 </div>
                 <div role="status">
                   <ZuschlagHinweis gewaehlt={ergebnis.gewaehlt} />
@@ -171,17 +172,12 @@ function EinsatzHinweis() {
   )
 }
 
-/** „Jetzt gilt in Wien: Sonntag (+100 %).“ Der Knopf entfällt, sobald dieser Zuschlag eingeschaltet ist. */
-function JetztGilt({ id, an, onUebernehmen }: { id: ZuschlagId; an: boolean; onUebernehmen: () => void }) {
+/** „Jetzt gilt in Wien der Zuschlag „Sonntag“ (+100 %).“ Erklärt, warum der Umschalter von selbst an ist. */
+function JetztGilt({ id }: { id: ZuschlagId }) {
   const name = copy.rechner.zuschlaege.find((z) => z.id === id)?.name ?? ''
   return (
-    <div className="mb-s3 flex flex-wrap items-center gap-x-s4 rounded-btn-lg bg-eis px-s4 py-s1">
+    <div className="mb-s3 rounded-btn-lg bg-eis px-s4 py-s1">
       <p className="min-w-0 py-s2 text-text">{fuelle(copy.rechner.jetztGilt, { zuschlag: name })}</p>
-      {!an && (
-        <Button art="textlink" onClick={onUebernehmen} className="min-h-[48px] min-w-[44px] text-btn">
-          {copy.rechner.uebernehmen}
-        </Button>
-      )}
     </div>
   )
 }

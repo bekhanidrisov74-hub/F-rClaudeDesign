@@ -215,8 +215,6 @@ export const copy = {
     plus100: '+100 %',
     /** nicht im Design (Bauplan M6, Text von Beks freigegeben am 22.10.2026, rechtlich prüfen: Preisangaben); {zuschlag} = Name aus zuschlaege, z. B. „Sonntag“ */
     jetztGilt: 'Jetzt gilt in Wien der Zuschlag „{zuschlag}“ (+100 %).',
-    /** nicht im Design (Bauplan M6, Text von Beks freigegeben am 22.10.2026, rechtlich prüfen: Preisangaben): Knopf neben jetztGilt */
-    uebernehmen: 'Übernehmen',
     hinweisEiner: `Nacht gilt von ${NACHTZEIT}. Es zählt höchstens ein Zuschlag, auch wenn mehrere zutreffen.`,
     hinweisMehrereFett: 'Es zählt nur ein Zuschlag.',
     /** {namen} = „Sonntag und Nacht“ */

@@ -124,7 +124,7 @@ test('Ergebniskarte nennt den Stand der Richtpreise, direkt nach dem Hinweis', a
   await expect(karte.getByText(stand, { exact: true })).toBeVisible()
 })
 
-// ── „Jetzt gilt in Wien“ (Bauplan M6) ──
+// ── „Jetzt gilt in Wien“ (Bauplan M6, automatisch seit 22.10.2026) ──
 // Feste Uhr in Wiener Zeit (Versatz im Zeitpunkt), danach neu laden: Die Zeit wird beim Laden bestimmt.
 // Jede Runde bekommt eine eigene Adresse, damit die Seite wirklich neu lädt (sonst bleibt der Zustand der letzten Runde).
 const NAME = Object.fromEntries(copy.rechner.zuschlaege.map((z) => [z.id, z.name]))
@@ -132,87 +132,71 @@ const jetztGilt = (zuschlag: string) => fuelle(copy.rechner.jetztGilt, { zuschla
 
 const zuschlagGruppe = (page: Page) => rechner(page).getByRole('group', { name: copy.rechner.zuschlag })
 const jetztHinweis = (page: Page) => zuschlagGruppe(page).locator('[aria-live="polite"]')
-const uebernehmenKnopf = (page: Page) => zuschlagGruppe(page).getByRole('button', { name: copy.rechner.uebernehmen, exact: true })
 const umschalter = (page: Page, name: string) => zuschlagGruppe(page).getByRole('button', { name: new RegExp(`^${name}`) })
+const eingeschaltet = (page: Page) => zuschlagGruppe(page).getByRole('button', { pressed: true })
 
 async function mitUhr(page: Page, wiener: string, runde: string) {
   await page.clock.setFixedTime(new Date(wiener))
   await page.goto(`/?uhr=${runde}#preisrechner`)
 }
 
-test.describe('Jetzt gilt in Wien', () => {
-  test('Sonntag 12:00: Hinweis, Übernehmen schaltet Sonntag ein und der Knopf verschwindet', async ({ page }) => {
+test.describe('Jetzt gilt in Wien: Zuschlag schaltet sich selbst ein', () => {
+  test('Sonntag 12:00: Sonntag an, Hinweis, Preis mit Zuschlag; von Hand ausschaltbar', async ({ page }) => {
     await mitUhr(page, '2026-10-25T12:00:00+01:00', 'sonntag')
     await expect(jetztHinweis(page)).toHaveAttribute('aria-live', 'polite')
     await expect(jetztHinweis(page)).toContainText(jetztGilt(NAME.sonntag))
-    await expect(zuschlagGruppe(page).getByRole('button', { pressed: true })).toHaveCount(0) // Start bleibt: keiner an
-    await expect(ergebnis(page)).toContainText('Installateur, 2 Stunden, kein Zuschlag')
-
-    await uebernehmenKnopf(page).click()
     await expect(umschalter(page, NAME.sonntag)).toHaveAttribute('aria-pressed', 'true')
-    await expect(zuschlagGruppe(page).getByRole('button', { pressed: true })).toHaveCount(1)
-    await expect(umschalter(page, NAME.sonntag)).toBeFocused()
+    await expect(eingeschaltet(page)).toHaveCount(1)
     await expect(ergebnis(page)).toContainText('Installateur, 2 Stunden, Sonntag')
     await expect(ergebnis(page)).toContainText('Zuschlag +100 %')
     await expect(ergebnis(page)).toContainText('ca. 409,90 € – 589,90 €')
-    await expect(uebernehmenKnopf(page)).toHaveCount(0)
+    await expect(zuschlagGruppe(page).getByRole('button', { name: 'Übernehmen' })).toHaveCount(0)
+
+    await schalteZuschlag(page, 'Sonntag')
+    await expect(eingeschaltet(page)).toHaveCount(0)
+    await expect(ergebnis(page)).toContainText('Installateur, 2 Stunden, kein Zuschlag')
     await expect(jetztHinweis(page)).toContainText(jetztGilt(NAME.sonntag)) // der Satz bleibt
   })
 
-  test('Dienstag 12:00: kein Hinweis', async ({ page }) => {
+  test('Dienstag 12:00: kein Zuschlag, kein Hinweis', async ({ page }) => {
     await mitUhr(page, '2026-10-27T12:00:00+01:00', 'dienstag-mittag')
-    await schalteZuschlag(page, 'Nacht') // erst nach der Hydration prüfen, sonst wäre „nichts da“ nichts wert
-    await expect(umschalter(page, NAME.nacht)).toHaveAttribute('aria-pressed', 'true')
+    await expect(eingeschaltet(page)).toHaveCount(0)
     await expect(jetztHinweis(page)).toBeEmpty()
-    await expect(rechner(page).getByText('Jetzt gilt in Wien')).toHaveCount(0)
-    await expect(uebernehmenKnopf(page)).toHaveCount(0)
+    await expect(ergebnis(page)).toContainText('Installateur, 2 Stunden, kein Zuschlag')
   })
 
   test('Dienstag 22:00: Nacht', async ({ page }) => {
     await mitUhr(page, '2026-10-27T22:00:00+01:00', 'dienstag-nacht')
     await expect(jetztHinweis(page)).toContainText(jetztGilt(NAME.nacht))
-    await uebernehmenKnopf(page).click()
     await expect(umschalter(page, NAME.nacht)).toHaveAttribute('aria-pressed', 'true')
     await expect(ergebnis(page)).toContainText('Installateur, 2 Stunden, Nacht')
-    await expect(uebernehmenKnopf(page)).toHaveCount(0)
   })
 
   test('26. Oktober 12:00: Feiertag', async ({ page }) => {
     await mitUhr(page, '2026-10-26T12:00:00+01:00', 'nationalfeiertag')
     await expect(jetztHinweis(page)).toContainText(jetztGilt(NAME.feiertag))
-    await uebernehmenKnopf(page).click()
     await expect(umschalter(page, NAME.feiertag)).toHaveAttribute('aria-pressed', 'true')
     await expect(ergebnis(page)).toContainText('Installateur, 2 Stunden, Feiertag')
   })
 
-  test('Feiertag auf einem Sonntag: Feiertag zuerst, nur ein Umschalter; schon an: kein Knopf', async ({ page }) => {
+  test('Feiertag auf einem Sonntag: nur Feiertag an', async ({ page }) => {
     await mitUhr(page, '2026-11-01T12:00:00+01:00', 'allerheiligen')
     await expect(jetztHinweis(page)).toContainText(jetztGilt(NAME.feiertag))
-    await uebernehmenKnopf(page).click()
     await expect(umschalter(page, NAME.feiertag)).toHaveAttribute('aria-pressed', 'true')
     await expect(umschalter(page, NAME.sonntag)).toHaveAttribute('aria-pressed', 'false')
-    await expect(zuschlagGruppe(page).getByRole('button', { pressed: true })).toHaveCount(1)
-    // von Hand ausschalten: der Knopf kommt zurück, wieder einschalten: weg
-    await schalteZuschlag(page, 'Feiertag')
-    await expect(uebernehmenKnopf(page)).toBeVisible()
-    await schalteZuschlag(page, 'Feiertag')
-    await expect(uebernehmenKnopf(page)).toHaveCount(0)
+    await expect(eingeschaltet(page)).toHaveCount(1)
   })
 
-  test('Der Knopf ist mindestens 44 px hoch', async ({ page }) => {
-    await mitUhr(page, '2026-10-25T12:00:00+01:00', 'sonntag-knopf')
-    const box = await uebernehmenKnopf(page).boundingBox()
-    expect(box?.height ?? 0).toBeGreaterThanOrEqual(44)
-    expect(box?.width ?? 0).toBeGreaterThanOrEqual(44)
-  })
-
-  test('Einmal pro Minute neu: Dienstag 17:59 kein Hinweis, eine Minute später Nacht', async ({ page }) => {
+  test('Einmal pro Minute neu: Dienstag 17:59 nichts, eine Minute später Nacht an; um 8 Uhr wieder aus', async ({ page }) => {
     await page.clock.install({ time: new Date('2026-10-27T17:59:00+01:00') })
     await page.goto('/?uhr=minute#preisrechner')
-    await schalteZuschlag(page, 'Sonntag') // Hydration abwarten
-    await expect(umschalter(page, NAME.sonntag)).toHaveAttribute('aria-pressed', 'true')
+    await expect(eingeschaltet(page)).toHaveCount(0)
     await expect(jetztHinweis(page)).toBeEmpty()
     await page.clock.fastForward(90_000)
     await expect(jetztHinweis(page)).toContainText(jetztGilt(NAME.nacht))
+    await expect(umschalter(page, NAME.nacht)).toHaveAttribute('aria-pressed', 'true')
+    await page.clock.fastForward('14:00:00') // Mittwoch 8:00
+    await expect(jetztHinweis(page)).toBeEmpty()
+    await expect(eingeschaltet(page)).toHaveCount(0)
   })
 })
