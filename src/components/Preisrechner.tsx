@@ -1,4 +1,4 @@
-import { useState, type CSSProperties, type ReactNode } from 'react'
+import { useRef, useState, useSyncExternalStore, type CSSProperties, type ReactNode } from 'react'
 import { copy, fuelle } from '../content/copy'
 import { gewerke, PREISE_STAND } from '../content/gewerke'
 import { useOverlays } from '../overlays'
@@ -13,6 +13,7 @@ import {
   type Ergebnis,
   type ZuschlagId,
 } from '../lib/preis'
+import { zuschlaegeJetzt } from '../lib/zuschlagJetzt'
 import { Button } from './ui/Button'
 import { CallButton } from './ui/CallButton'
 import { Chip } from './ui/Chip'
@@ -28,6 +29,14 @@ const REIHE = 'flex flex-wrap gap-s2 dialog:gap-s3'
 const STEPPER_KNOPF =
   'size-[52px] shrink-0 rounded-chip aria-disabled:cursor-default aria-disabled:border-linie aria-disabled:text-rand'
 
+const MINUTE = 60_000
+const jedeMinute = (aenderung: () => void) => {
+  const timer = setInterval(aenderung, MINUTE)
+  return () => clearInterval(timer)
+}
+/** Aktuelle Minute (Unix-Zeit / 60 000), einmal pro Minute neu; null beim Vorrendern und Hydrieren, damit das HTML gleich bleibt. */
+const useMinute = () => useSyncExternalStore<number | null>(jedeMinute, () => Math.floor(Date.now() / MINUTE), () => null)
+
 export function Preisrechner() {
   const [gewerkId, setGewerkId] = useState(START_GEWERK)
   const [stunden, setStunden] = useState<number>(STUNDEN.start)
@@ -38,6 +47,16 @@ export function Preisrechner() {
 
   const umschalten = (id: ZuschlagId) =>
     setZuschlaege((alt) => (alt.includes(id) ? alt.filter((x) => x !== id) : [...alt, id]))
+
+  // Gilt jetzt in Wien ein Zuschlag, nennt ihn der Rechner und schaltet ihn auf Knopfdruck ein (Bauplan M6). Gelten mehrere, zählt der erste.
+  const minute = useMinute()
+  const gilt = minute === null ? undefined : zuschlaegeJetzt(new Date(minute * MINUTE))[0]
+  const reihe = useRef<HTMLDivElement>(null)
+  const uebernehmen = (id: ZuschlagId) => {
+    setZuschlaege((alt) => (alt.includes(id) ? alt : [...alt, id]))
+    // Der Knopf verschwindet: Der Fokus geht auf den Umschalter, der jetzt an ist.
+    reihe.current?.querySelectorAll('button')[copy.rechner.zuschlaege.findIndex((z) => z.id === id)]?.focus()
+  }
 
   return (
     <section id="preisrechner" aria-labelledby="rechner-titel" className="bg-kalk">
@@ -104,7 +123,7 @@ export function Preisrechner() {
 
             <fieldset className={FELDGRUPPE}>
               <legend className={LEGENDE}>{copy.rechner.zuschlag}</legend>
-              <div className={REIHE}>
+              <div ref={reihe} className={REIHE}>
                 {copy.rechner.zuschlaege.map((z) => (
                   <Chip
                     key={z.id}
@@ -116,8 +135,14 @@ export function Preisrechner() {
                   </Chip>
                 ))}
               </div>
-              <div role="status">
-                <ZuschlagHinweis gewaehlt={ergebnis.gewaehlt} />
+              <div>
+                {/* Immer im Dokument, leer ohne Zuschlag (ohne Höhe, ohne Abstand), damit der Hinweis angesagt wird. */}
+                <div aria-live="polite">
+                  {gilt && <JetztGilt id={gilt} an={zuschlaege.includes(gilt)} onUebernehmen={() => uebernehmen(gilt)} />}
+                </div>
+                <div role="status">
+                  <ZuschlagHinweis gewaehlt={ergebnis.gewaehlt} />
+                </div>
               </div>
             </fieldset>
           </div>
@@ -141,6 +166,21 @@ function EinsatzHinweis() {
         <p className="font-display text-h5 font-bold">{copy.rechner.einsatz.titel}</p>
         <p className="text-small text-schiefer">{copy.rechner.einsatz.text}</p>
       </div>
+    </div>
+  )
+}
+
+/** „Jetzt gilt in Wien: Sonntag (+100 %).“ Der Knopf entfällt, sobald dieser Zuschlag eingeschaltet ist. */
+function JetztGilt({ id, an, onUebernehmen }: { id: ZuschlagId; an: boolean; onUebernehmen: () => void }) {
+  const name = copy.rechner.zuschlaege.find((z) => z.id === id)?.name ?? ''
+  return (
+    <div className="mb-s3 flex flex-wrap items-center gap-x-s4 rounded-btn-lg bg-eis px-s4 py-s1">
+      <p className="min-w-0 py-s2 text-text">{fuelle(copy.rechner.jetztGilt, { zuschlag: name })}</p>
+      {!an && (
+        <Button art="textlink" onClick={onUebernehmen} className="min-h-[48px] min-w-[44px] text-btn">
+          {copy.rechner.uebernehmen}
+        </Button>
+      )}
     </div>
   )
 }

@@ -3,6 +3,7 @@
 // Gewerke-Texte (Namen, Kacheln, Karten, Preise, Tipps) stehen in gewerke.ts.
 
 import { beschwerdeHref } from './contact'
+import { NACHT } from './feiertage'
 
 /** SPEC 11, offen: widerspricht dem Vermittlungsmodell, bleibt bis zur Entscheidung so. */
 export const AUFTRAG_AUFGEBEN = 'Auftrag aufgeben'
@@ -10,8 +11,11 @@ export const AUFTRAG_AUFGEBEN = 'Auftrag aufgeben'
 export const AUFTRAG_AUFGEGEBEN = 'Auftrag aufgegeben'
 /** SPEC 11, offen: Brutto/netto */
 export const UST_HINWEIS = '[inkl. 20 % USt.]'
-/** Bauplan B6 (22.10.2026): Nacht-Zuschlag gilt wie in public/chat.php und im Matching (anfrage.php ausserhalb) von 18 bis 8 Uhr. */
-export const NACHTZEIT = '18 bis 8 Uhr'
+/**
+ * Bauplan B6 (22.10.2026): Nacht-Zuschlag gilt wie in public/chat.php und im Matching (anfrage.php ausserhalb) von 18 bis 8 Uhr.
+ * Bauplan M6: Die Zahlen stehen in feiertage.ts (NACHT), der Rechner prüft damit die aktuelle Zeit. Der Text bleibt „18 bis 8 Uhr“.
+ */
+export const NACHTZEIT = `${NACHT.beginn} bis ${NACHT.ende} Uhr`
 export const WEISS_NICHT = 'Weiß ich nicht'
 /** Pfad der Datenschutzerklärung (Fuß, Formular, Luna) */
 export const DATENSCHUTZ = '/datenschutz/'
@@ -204,6 +208,10 @@ export const copy = {
       { id: 'nacht', name: 'Nacht' },
     ],
     plus100: '+100 %',
+    /** nicht im Design (Bauplan M6, Text wartet auf Freigabe, rechtlich prüfen: Preisangaben); {zuschlag} = Name aus zuschlaege, z. B. „Sonntag“ */
+    jetztGilt: 'Jetzt gilt in Wien: {zuschlag} (+100 %).',
+    /** nicht im Design (Bauplan M6, Text wartet auf Freigabe, rechtlich prüfen: Preisangaben): Knopf neben jetztGilt */
+    uebernehmen: 'Übernehmen',
     hinweisEiner: `Nacht gilt von ${NACHTZEIT}. Es zählt höchstens ein Zuschlag, auch wenn mehrere zutreffen.`,
     hinweisMehrereFett: 'Es zählt nur ein Zuschlag.',
     /** {namen} = „Sonntag und Nacht“ */
