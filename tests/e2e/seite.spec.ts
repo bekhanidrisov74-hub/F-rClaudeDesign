@@ -1,6 +1,7 @@
 import { expect, test } from './test'
 import { copy } from '../../src/content/copy'
 import { partner } from '../../src/content/partner'
+import { VCARD_PFAD, vcardText } from '../../src/lib/vcard'
 
 /** Rechtsseiten: Platzhalter, tragen noindex und fehlen in der Sitemap */
 const RECHTSSEITEN = ['/impressum/', '/datenschutz/', '/agb/']
@@ -79,6 +80,24 @@ test('sitemap.xml und robots.txt', async ({ request }, info) => {
   for (const rechtsseite of ['impressum', 'datenschutz', 'agb']) expect(xml).not.toContain(rechtsseite)
   const robots = await request.get('/robots.txt')
   expect(await robots.text()).toContain('User-agent: *')
+})
+
+test('Nummer speichern (M10): Datei und Fuß-Link gibt es nur mit echter Nummer und Firma', async ({ page, request }, info) => {
+  nurEinmal(info.project.name)
+  const link = page.locator('footer a[href="/fixit247.vcf"]')
+  const antwort = await request.get(VCARD_PFAD)
+  await page.goto('/')
+  if (vcardText === null) {
+    // Platzhalter: weder Datei noch toter Link
+    expect(antwort.status()).toBe(404)
+    await expect(link).toHaveCount(0)
+  } else {
+    expect(antwort.status()).toBe(200)
+    expect(await antwort.text()).toBe(vcardText)
+    await expect(link).toHaveCount(1)
+    await expect(link).toHaveAttribute('download', '')
+    expect((await link.boundingBox())!.height).toBeGreaterThanOrEqual(44)
+  }
 })
 
 test('kein horizontales Scrollen von 320 bis 1920 px', async ({ page }, info) => {

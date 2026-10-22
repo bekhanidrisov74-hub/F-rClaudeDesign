@@ -175,6 +175,8 @@ export const copy = {
     telefon: 'Telefon',
     whatsapp: 'WhatsApp',
     rechtliches: 'Rechtliches',
+    /** nicht im Design (Bauplan M10, Text wartet auf Freigabe): Link im Fuß, legt die Nummer als Kontakt (vCard) im Handy ab */
+    nummerSpeichern: 'Nummer speichern',
     links: [
       { text: 'Impressum', href: '/impressum/' },
       { text: 'Datenschutz', href: DATENSCHUTZ },

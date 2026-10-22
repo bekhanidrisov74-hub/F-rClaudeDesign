@@ -8,3 +8,4 @@
   RewriteCond %{HTTP_HOST} ^www\. [NC]
   RewriteRule ^ https://fixit247.at%{REQUEST_URI} [R=301,L]
 </IfModule>
+AddType text/vcard .vcf

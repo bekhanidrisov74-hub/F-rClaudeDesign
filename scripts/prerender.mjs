@@ -3,7 +3,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { loadEnv } from 'vite'
-import { DOMAIN, adresse, indexierbar, pfade, render } from '../dist-ssr/entry-server.js'
+import { DOMAIN, VCARD_PFAD, adresse, indexierbar, pfade, render, vcardText } from '../dist-ssr/entry-server.js'
 
 const dist = path.resolve('dist')
 const roh = fs.readFileSync(path.join(dist, 'index.html'), 'utf8')
@@ -46,6 +46,9 @@ fs.writeFileSync(
   path.join(dist, 'robots.txt'),
   `User-agent: *\nAllow: /\n${domainPlatzhalter ? '' : `Sitemap: ${DOMAIN}/sitemap.xml\n`}`,
 )
+
+// „Nummer speichern“ (M10): Die Karte gibt es erst mit echter Nummer und Firma; vorher fehlt Datei und Fuß-Link.
+if (vcardText) fs.writeFileSync(path.join(dist, VCARD_PFAD.slice(1)), vcardText)
 
 const warn = (text) => console.warn(`\x1b[33m⚠ ${text}\x1b[0m`)
 const platzhalter = new Set()
