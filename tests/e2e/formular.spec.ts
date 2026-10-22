@@ -1,10 +1,17 @@
-import { GEFAHR } from '../../src/content/copy'
-import { expect, test } from './test'
+import { GEFAHR, copy, dringlichkeit } from '../../src/content/copy'
+import { expect, test, type Page } from './test'
 import { anfrage, formularErfolg, fuelleFormular, sendeFormular } from './hilfen'
 
 test.beforeEach(async ({ page }) => {
   await page.goto('/#anfrage')
 })
+
+const FRAGE = copy.luna.fragen.dringlichkeit
+const stufen = (page: Page) => anfrage(page).getByRole('group', { name: FRAGE })
+const stufe = (page: Page, chip: string) => stufen(page).getByRole('radio', { name: chip, exact: true })
+const chipVon = (id: string) => dringlichkeit.find((d) => d.id === id)!.chip
+/** Die Meldefläche im Formular (Preisrechner und Anstupser haben eigene, liegen aber außerhalb von #anfrage) */
+const meldung = (page: Page) => anfrage(page).getByRole('status')
 
 test('Felder mit Labels, Pflichtangaben und passenden Typen', async ({ page }) => {
   const a = anfrage(page)
@@ -18,6 +25,110 @@ test('Felder mit Labels, Pflichtangaben und passenden Typen', async ({ page }) =
   expect(optionen).toEqual(['Bitte wählen', 'Installateur', 'Heizung & Klima', 'Schlüsseldienst', 'Elektro', 'Haushaltsgeräte', 'Weiß ich nicht'])
   await expect(a.getByRole('link', { name: 'Datenschutzerklärung' })).toHaveAttribute('href', '/datenschutz/')
   await expect(a).toContainText('* Pflichtfeld. Die Vermittlung ist kostenlos.')
+})
+
+test('Dringlichkeit: Gruppe mit Legende zwischen Gewerk und E-Mail, drei Stufen, Start „So schnell wie möglich“, kein Hinweis', async ({ page }) => {
+  const a = anfrage(page)
+  await expect(stufen(page)).toBeVisible()
+  await expect(stufen(page).locator('legend')).toHaveText(FRAGE)
+  const radios = stufen(page).getByRole('radio')
+  await expect(radios).toHaveCount(3)
+  for (const [i, d] of dringlichkeit.entries()) {
+    const radio = radios.nth(i)
+    await expect(radio).toHaveAccessibleName(d.chip)
+    await expect(radio).toHaveAttribute('name', 'dringlichkeit')
+    await expect(radio).toHaveAttribute('value', d.id)
+    expect((await radio.boundingBox())!.height, d.chip).toBeGreaterThanOrEqual(44)
+  }
+  await expect(radios.nth(1)).toBeChecked()
+  await expect(radios.nth(0)).not.toBeChecked()
+  await expect(radios.nth(2)).not.toBeChecked()
+  await expect(stufe(page, chipVon('URGENT'))).toBeChecked()
+  // Pflichtangabe ist sie nicht: es steht immer eine Stufe da
+  await expect(stufen(page)).not.toHaveAttribute('aria-required', 'true')
+  await expect(meldung(page)).toBeEmpty()
+  await expect(a.getByText(GEFAHR)).toHaveCount(0)
+  const oben = async (l: ReturnType<typeof a.locator>) => (await l.first().boundingBox())!.y
+  const ys = [await oben(a.getByLabel(/^Gewerk/)), await oben(stufen(page)), await oben(a.getByLabel(/^E-Mail/))]
+  expect([...ys].sort((x, y) => x - y)).toEqual(ys)
+})
+
+test('Akut/Gefahr zeigt den Notruf-Hinweis in der Meldefläche unter der Gruppe, jede andere Wahl blendet ihn aus', async ({ page }) => {
+  const a = anfrage(page)
+  await stufe(page, chipVon('ACUTE')).check()
+  await expect(meldung(page)).toContainText(GEFAHR)
+  await expect(a.getByText(GEFAHR)).toHaveCount(1)
+  const gruppe = (await stufen(page).boundingBox())!
+  expect((await a.getByText(GEFAHR).boundingBox())!.y).toBeGreaterThanOrEqual(gruppe.y + gruppe.height)
+  await stufe(page, chipVon('NORMAL')).check()
+  await expect(a.getByText(GEFAHR)).toHaveCount(0)
+  await expect(meldung(page)).toBeEmpty()
+  await stufe(page, chipVon('ACUTE')).check()
+  await expect(a.getByText(GEFAHR)).toHaveCount(1)
+  await stufe(page, chipVon('URGENT')).check()
+  await expect(a.getByText(GEFAHR)).toHaveCount(0)
+})
+
+test('Dringlichkeit per Tastatur: Pfeiltasten wechseln die Stufe, der Hinweis folgt', async ({ page }) => {
+  await stufe(page, chipVon('URGENT')).focus()
+  await page.keyboard.press('ArrowDown')
+  await expect(stufe(page, chipVon('NORMAL'))).toBeChecked()
+  await expect(stufe(page, chipVon('NORMAL'))).toBeFocused()
+  await page.keyboard.press('ArrowUp')
+  await page.keyboard.press('ArrowUp')
+  await expect(stufe(page, chipVon('ACUTE'))).toBeChecked()
+  await expect(meldung(page)).toContainText(GEFAHR)
+  await page.keyboard.press('ArrowDown')
+  await expect(stufe(page, chipVon('URGENT'))).toBeChecked()
+  await expect(meldung(page)).toBeEmpty()
+})
+
+for (const d of dringlichkeit) {
+  test(`Absenden mit „${d.chip}“: der Anfrage-Eingang bekommt dringlichkeit=${d.id}`, async ({ page }) => {
+    const a = anfrage(page)
+    await fuelleFormular(page)
+    await stufe(page, d.chip).check()
+    const gesendet = page.waitForRequest((r) => r.method() === 'POST' && new URL(r.url()).pathname === '/api/anfrage')
+    await a.getByRole('button', { name: 'Anfrage senden' }).click()
+    expect(new URLSearchParams((await gesendet).postData() ?? '').get('dringlichkeit')).toBe(d.id)
+    await expect(a.getByText(/Anfragenummer/)).toBeVisible()
+  })
+}
+
+test('Ohne Wahl geht URGENT mit, nach dem Erfolg erscheint das Formular wieder mit URGENT und ohne Hinweis', async ({ page }) => {
+  const a = anfrage(page)
+  await fuelleFormular(page)
+  const gesendet = page.waitForRequest((r) => r.method() === 'POST' && new URL(r.url()).pathname === '/api/anfrage')
+  await a.getByRole('button', { name: 'Anfrage senden' }).click()
+  expect(new URLSearchParams((await gesendet).postData() ?? '').get('dringlichkeit')).toBe('URGENT')
+  await expect(a.getByText(/Anfragenummer/)).toBeVisible()
+
+  // Zweite Anfrage mit „Akut/Gefahr“; danach kommt das Formular über „… anfragen“ zurück
+  await page.getByRole('link', { name: 'Elektro anfragen' }).click()
+  await fuelleFormular(page)
+  await stufe(page, chipVon('ACUTE')).check()
+  await expect(meldung(page)).toContainText(GEFAHR)
+  await a.getByRole('button', { name: 'Anfrage senden' }).click()
+  await expect(a.getByText(/Anfragenummer/)).toBeVisible()
+  await page.getByRole('link', { name: 'Elektro anfragen' }).click()
+  await expect(stufe(page, chipVon('URGENT'))).toBeChecked()
+  await expect(a.getByText(GEFAHR)).toHaveCount(0)
+})
+
+test('Vor der Hydrierung gewählte Stufe „Akut/Gefahr“ zeigt nach der Hydrierung den Hinweis', async ({ page }) => {
+  // Die Skripte der Seite werden zurückgehalten: Die Wahl fällt in das vorgerenderte Formular, ohne React.
+  let frei!: () => void
+  const gehalten = new Promise<void>((fertig) => (frei = fertig))
+  await page.route('**/*.js', async (r) => {
+    await gehalten
+    await r.fallback()
+  })
+  await page.reload({ waitUntil: 'commit' })
+  await stufe(page, chipVon('ACUTE')).check()
+  await expect(page.locator('html[data-hydriert]')).toHaveCount(0)
+  frei()
+  await expect(stufe(page, chipVon('ACUTE'))).toBeChecked()
+  await expect(meldung(page)).toContainText(GEFAHR)
 })
 
 test('Prüfung erst beim Verlassen eines Feldes, Fehler verbunden über aria-describedby', async ({ page }) => {

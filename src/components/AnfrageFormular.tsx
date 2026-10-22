@@ -1,8 +1,9 @@
-import { useEffect, useRef, useState, useSyncExternalStore, type FormEvent, type ReactNode } from 'react'
-import { DATENSCHUTZ, EINWILLIGUNG, WEISS_NICHT, copy, fuelle } from '../content/copy'
+import { useEffect, useRef, useState, useSyncExternalStore, type ChangeEvent, type FormEvent, type ReactNode } from 'react'
+import { DATENSCHUTZ, EINWILLIGUNG, WEISS_NICHT, copy, dringlichkeit, fuelle, type DringlichkeitId } from '../content/copy'
 import { gewerke } from '../content/gewerke'
 import { submitLead, zufallsnummer, type Match } from '../lib/submitLead'
-import { WEISS_NICHT_ID, formularZuLead, pruefeFeld, pruefeFormular, type FormularFeld, type FormularWerte } from '../lib/validate'
+import { WEISS_NICHT_ID, formularZuLead, pruefeFeld, pruefeFormular, zuDringlichkeit, type FormularFeld, type FormularWerte } from '../lib/validate'
+import { Auswahl } from './ui/Auswahl'
 import { Button } from './ui/Button'
 import { CallButton } from './ui/CallButton'
 import { Icon } from './ui/Icon'
@@ -30,6 +31,7 @@ function lies(form: HTMLFormElement): FormularWerte {
     gewerk: text('gewerk'),
     email: text('email'),
     beschreibung: text('beschreibung'),
+    dringlichkeit: zuDringlichkeit(text('dringlichkeit')),
     einwilligung: daten.has('einwilligung'),
   }
 }
@@ -87,6 +89,8 @@ export function AnfrageFormular() {
   const [fehler, setFehler] = useState<Fehler>({})
   const [status, setStatus] = useState<Status>('bereit')
   const [danke, setDanke] = useState<Danke | null>(null)
+  /** Hängt davon ab, ob der Notruf-Hinweis erscheint; der Wert der Auswahl steht sonst nur im DOM. Start URGENT wie der Vorrender. */
+  const [stufe, setStufe] = useState<DringlichkeitId>('URGENT')
   /** Eine Id je Anfrage: bleibt beim erneuten Senden gleich, neu nach dem Erfolg */
   const [anfrageId, setAnfrageId] = useState(zufallsnummer)
   const formular = useRef<HTMLFormElement>(null)
@@ -110,6 +114,12 @@ export function AnfrageFormular() {
     return () => document.removeEventListener('click', beiKlick)
   }, [])
 
+  // Eine vor der Hydrierung gewählte Stufe übernehmen, sonst fehlte der Notruf-Hinweis bei „Akut/Gefahr“.
+  useEffect(() => {
+    const auswahl = formular.current?.elements.namedItem('dringlichkeit')
+    if (auswahl instanceof RadioNodeList) setStufe(zuDringlichkeit(auswahl.value))
+  }, [])
+
   if (danke) return <Erfolg danke={danke} />
 
   const pruefe = (feld: FormularFeld, form: HTMLFormElement | null) => {
@@ -127,6 +137,10 @@ export function AnfrageFormular() {
     'aria-invalid': fehler[feld] ? true : undefined,
     'aria-describedby': fehler[feld] ? fehlerId(feld) : undefined,
   })
+
+  const waehleStufe = (e: ChangeEvent<HTMLFieldSetElement>) => {
+    if (e.target instanceof HTMLInputElement && e.target.type === 'radio') setStufe(zuDringlichkeit(e.target.value))
+  }
 
   const absenden = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -154,6 +168,7 @@ export function AnfrageFormular() {
         tipp: gewerk?.tippErfolg,
       })
       setVorauswahl('')
+      setStufe('URGENT')
       setAnfrageId(zufallsnummer())
       setFehler({})
       setStatus('bereit')
@@ -240,6 +255,27 @@ export function AnfrageFormular() {
           <Icon name="ui-aufklappen" className="pointer-events-none absolute top-1/2 right-s3 size-[22px] -translate-y-1/2 text-tiefsee" />
         </div>
         <Fehlertext feld="gewerk" text={fehler.gewerk} />
+      </div>
+
+      <div className="col-span-full flex flex-col">
+        <fieldset onChange={waehleStufe} className="m-0 flex min-w-0 flex-col gap-s2 border-0 p-0">
+          <legend className="mb-s1 p-0 font-display text-text font-semibold">{copy.luna.fragen.dringlichkeit}</legend>
+          <div className="flex flex-wrap gap-x-s6">
+            {dringlichkeit.map((d) => (
+              <Auswahl key={d.id} art="radio" name="dringlichkeit" id={`${feldId('dringlichkeit')}-${d.id}`} value={d.id} defaultChecked={d.id === 'URGENT'}>
+                {d.chip}
+              </Auswahl>
+            ))}
+          </div>
+        </fieldset>
+        {/* Die Meldefläche steht immer da, der Hinweis erscheint darin: So sagen Screenreader ihn an. Ohne Hinweis hat sie keine Höhe. */}
+        <div role="status">
+          {stufe === 'ACUTE' && (
+            <div className="pt-s2">
+              <GefahrHinweis />
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="col-span-full flex flex-col gap-s2">

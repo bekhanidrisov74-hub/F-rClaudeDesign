@@ -9,6 +9,7 @@ import {
   pruefeFormular,
   teilePlzOrt,
   WEISS_NICHT_ID,
+  zuDringlichkeit,
   type FormularWerte,
 } from './validate'
 
@@ -20,6 +21,7 @@ const GUELTIG: FormularWerte = {
   gewerk: 'installateur',
   email: '',
   beschreibung: 'Unter der Spüle tritt Wasser aus.',
+  dringlichkeit: 'URGENT',
   einwilligung: true,
 }
 
@@ -107,7 +109,7 @@ describe('Formular', () => {
       ort: 'Wien',
       kategorie: 'installateur',
       bereich: 'Installateur',
-      dringlichkeit: '',
+      dringlichkeit: 'URGENT',
       wunschtermin: '',
       text: 'Unter der Spüle tritt Wasser aus.\n\n(Anfrage über das Formular)',
       antworten: {},
@@ -116,5 +118,26 @@ describe('Formular', () => {
     const unbekannt = formularZuLead({ ...GUELTIG, gewerk: WEISS_NICHT_ID }, 'F247-ABCDEF')
     expect([unbekannt.kategorie, unbekannt.bereich]).toEqual(['', 'Weiß ich nicht'])
     expect(() => formularZuLead({ ...GUELTIG, einwilligung: false }, 'F247-ABCDEF')).toThrow()
+  })
+
+  describe('Dringlichkeit', () => {
+    test('Standard ist URGENT, wie der Server-Standard', () => {
+      expect(LEERES_FORMULAR.dringlichkeit).toBe('URGENT')
+      expect(zuDringlichkeit('')).toBe('URGENT')
+      expect(pruefeFormular(LEERES_FORMULAR, IDS)).not.toHaveProperty('dringlichkeit')
+    })
+
+    test.each(['ACUTE', 'URGENT', 'NORMAL'] as const)('gewählte Stufe %s geht in den Lead', (stufe) => {
+      expect(zuDringlichkeit(stufe)).toBe(stufe)
+      expect(formularZuLead({ ...GUELTIG, dringlichkeit: stufe }, 'F247-ABCDEF').dringlichkeit).toBe(stufe)
+    })
+
+    test.each(['', 'acute', 'URGENT ', 'DRINGEND', '<script>'])('ungültiger Wert „%s“ wird zu URGENT', (wert) => {
+      expect(zuDringlichkeit(wert)).toBe('URGENT')
+    })
+
+    test('jede Stufe ist gültig, ein Fehlertext kommt nie', () => {
+      for (const stufe of ['ACUTE', 'URGENT', 'NORMAL'] as const) expect(pruefeFeld('dringlichkeit', { ...GUELTIG, dringlichkeit: stufe }, IDS)).toBeNull()
+    })
   })
 })
