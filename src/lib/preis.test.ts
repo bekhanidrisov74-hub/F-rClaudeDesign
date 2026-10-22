@@ -34,9 +34,19 @@ describe('Rechnung', () => {
   test('drei Zuschläge zählen wie einer', () => {
     expect(rechne(g('installateur'), 2, ['sonntag', 'feiertag', 'nacht']).gesamt).toEqual(rechne(g('installateur'), 2, ['nacht']).gesamt)
   })
-  test('Stunden bleiben zwischen 1 und 12', () => {
-    expect(rechne(g('installateur'), 0, []).arbeit.min).toBe(cent(95))
+  test('Stunden bleiben zwischen 0,5 und 12', () => {
+    expect(rechne(g('installateur'), 0, []).arbeit.min).toBe(cent(95) / 2)
     expect(rechne(g('installateur'), 99, []).arbeit.min).toBe(cent(95) * 12)
+  })
+  test('jede angefangene halbe Stunde zählt', () => {
+    expect(rechne(g('installateur'), 1.2, []).arbeit).toEqual(rechne(g('installateur'), 1.5, []).arbeit)
+    expect(rechne(g('installateur'), 0.1, []).arbeit).toEqual(rechne(g('installateur'), 0.5, []).arbeit)
+    expect(zeilen('installateur', 1.5, [])).toEqual({
+      arbeit: '142,50–210,00 €',
+      zuschlag: 'keiner',
+      anfahrt: '29,90 €',
+      gesamt: 'ca. 172,40 € – 239,90 €',
+    })
   })
 })
 
@@ -44,13 +54,16 @@ describe('Texte', () => {
   test('Unterzeile', () => {
     expect(rechne(g('installateur'), 2, []).unterzeile).toBe('Installateur, 2 Stunden, kein Zuschlag')
     expect(rechne(g('installateur'), 1, []).unterzeile).toBe('Installateur, 1 Stunde, kein Zuschlag')
+    expect(rechne(g('installateur'), 1.5, []).unterzeile).toBe('Installateur, 1,5 Stunden, kein Zuschlag')
     expect(rechne(g('installateur'), 2, ['nacht', 'sonntag']).unterzeile).toBe('Installateur, 2 Stunden, Sonntag und Nacht')
     expect(rechne(g('schluessel'), 2, []).unterzeile).toBe('Schlüsseldienst, pro Einsatz, kein Zuschlag')
   })
   test('Aufzählung und Stunden', () => {
     expect(aufzaehlung(['Sonntag', 'Feiertag', 'Nacht'])).toBe('Sonntag, Feiertag und Nacht')
     expect(aufzaehlung(['Nacht'])).toBe('Nacht')
+    expect(stundenText(0.5)).toBe('0,5 Stunden')
     expect(stundenText(1)).toBe('1 Stunde')
+    expect(stundenText(1.5)).toBe('1,5 Stunden')
     expect(stundenText(12)).toBe('12 Stunden')
   })
   test('Euro-Format', () => {

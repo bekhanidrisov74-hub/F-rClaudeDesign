@@ -43,15 +43,18 @@ for (const f of FAELLE)
     }
   })
 
-test('Stepper bleibt zwischen 1 und 12', async ({ page }) => {
+test('Stepper geht in halben Stunden und bleibt zwischen 0,5 und 12', async ({ page }) => {
   const ausgabe = rechner(page).locator('output')
-  const weniger = rechner(page).getByRole('button', { name: 'Eine Stunde weniger' })
-  const mehr = rechner(page).getByRole('button', { name: 'Eine Stunde mehr' })
+  const weniger = rechner(page).getByRole('button', { name: 'Eine halbe Stunde weniger' })
+  const mehr = rechner(page).getByRole('button', { name: 'Eine halbe Stunde mehr' })
   await weniger.click()
-  await expect(ausgabe).toHaveText('1 Stunde')
+  await expect(ausgabe).toHaveText('1,5 Stunden')
+  await expect(ergebnis(page)).toContainText('Installateur, 1,5 Stunden, kein Zuschlag')
+  await expect(ergebnis(page)).toContainText('ca. 172,40 € – 239,90 €')
+  await setzeStunden(page, 0.5)
   await expect(weniger).toHaveAttribute('aria-disabled', 'true')
   await weniger.click({ force: true }) // an der Grenze: aria-disabled, Fokus bleibt
-  await expect(ausgabe).toHaveText('1 Stunde')
+  await expect(ausgabe).toHaveText('0,5 Stunden')
   await setzeStunden(page, 12)
   await mehr.click({ force: true })
   await expect(ausgabe).toHaveText('12 Stunden')

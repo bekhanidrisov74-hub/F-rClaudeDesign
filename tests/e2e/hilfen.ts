@@ -15,10 +15,11 @@ export async function schalteZuschlag(page: Page, name: 'Sonntag' | 'Feiertag' |
 
 export async function setzeStunden(page: Page, ziel: number) {
   const ausgabe = rechner(page).locator('output')
-  for (let i = 0; i < 12; i++) {
-    const jetzt = Number((await ausgabe.textContent())?.match(/\d+/)?.[0])
+  // Halbe Stunden: von 0,5 bis 12 sind es 23 Schritte.
+  for (let i = 0; i < 30; i++) {
+    const jetzt = Number((await ausgabe.textContent())?.match(/[\d,]+/)?.[0].replace(',', '.'))
     if (jetzt === ziel) return
-    await rechner(page).getByRole('button', { name: jetzt < ziel ? 'Eine Stunde mehr' : 'Eine Stunde weniger' }).click()
+    await rechner(page).getByRole('button', { name: jetzt < ziel ? 'Eine halbe Stunde mehr' : 'Eine halbe Stunde weniger' }).click()
   }
   throw new Error(`Stunden ${ziel} nicht erreicht`)
 }

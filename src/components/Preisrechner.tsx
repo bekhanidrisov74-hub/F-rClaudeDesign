@@ -96,14 +96,15 @@ export function Preisrechner() {
                     art="hell"
                     aria-label={copy.rechner.weniger}
                     aria-disabled={stunden <= STUNDEN.min}
-                    onClick={() => setStunden((n) => Math.max(STUNDEN.min, n - 1))}
+                    onClick={() => setStunden((n) => Math.max(STUNDEN.min, n - STUNDEN.schritt))}
                     className={STEPPER_KNOPF}
                   >
                     <Icon name="ui-minus" className="size-[22px]" />
                   </Button>
+                  {/* Ab 640 px so breit wie die längste Anzeige „10,5 Stunden“ (gemessen 6,19 em), damit der Plus-Knopf nicht wandert. */}
                   <output
                     aria-live="polite"
-                    className="min-w-0 flex-1 text-center font-display text-h3 font-extrabold dialog:min-w-[128px] dialog:flex-none"
+                    className="min-w-0 flex-1 text-center font-display text-h3 font-extrabold dialog:min-w-[6.3em] dialog:flex-none"
                   >
                     {stundenText(stunden)}
                   </output>
@@ -111,7 +112,7 @@ export function Preisrechner() {
                     art="hell"
                     aria-label={copy.rechner.mehr}
                     aria-disabled={stunden >= STUNDEN.max}
-                    onClick={() => setStunden((n) => Math.min(STUNDEN.max, n + 1))}
+                    onClick={() => setStunden((n) => Math.min(STUNDEN.max, n + STUNDEN.schritt))}
                     className={STEPPER_KNOPF}
                   >
                     <Icon name="ui-plus" className="size-[22px]" />

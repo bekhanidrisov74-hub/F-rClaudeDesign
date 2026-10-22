@@ -25,8 +25,11 @@ export const spanneGesamt = (min: number, max: number) => `${copy.rechner.ca} ${
 export const aufzaehlung = (teile: readonly string[]) =>
   teile.length < 2 ? (teile[0] ?? '') : `${teile.slice(0, -1).join(', ')} ${copy.und} ${teile[teile.length - 1]}`
 
-export const STUNDEN = { min: 1, max: 12, start: 2 } as const
-export const stundenText = (n: number) => `${n} ${n === 1 ? copy.rechner.stunde : copy.rechner.stunden}`
+/** Arbeitszeit in halben Stunden: Jede angefangene halbe Stunde zählt (Auftraggeber, 22.10.2026). */
+export const STUNDEN = { min: 0.5, max: 12, start: 2, schritt: 0.5 } as const
+/** „0,5 Stunden“, „1 Stunde“, „1,5 Stunden“ */
+export const stundenText = (n: number) =>
+  `${String(n).replace('.', ',')} ${n === 1 ? copy.rechner.stunde : copy.rechner.stunden}`
 
 export type ZuschlagId = (typeof copy.rechner.zuschlaege)[number]['id']
 
@@ -44,8 +47,9 @@ export interface Ergebnis {
 
 export function rechne(g: Gewerk, stunden: number, zuschlaege: readonly ZuschlagId[]): Ergebnis {
   const einsatz = g.abrechnung === 'einsatz'
-  const faktor = einsatz ? 1 : Math.min(Math.max(stunden, STUNDEN.min), STUNDEN.max)
-  const arbeit = { min: cent(g.min) * faktor, max: cent(g.max) * faktor }
+  // Angefangene halbe Stunden runden auf; cent() rundet halbe Sätze mit ungeraden Cent auf ganze Cent.
+  const faktor = einsatz ? 1 : Math.min(Math.max(Math.ceil(stunden * 2) / 2, STUNDEN.min), STUNDEN.max)
+  const arbeit = { min: cent(g.min * faktor), max: cent(g.max * faktor) }
   const anfahrt = cent(g.anfahrt)
   // Höchstens ein Zuschlag zählt: +100 % auf die Arbeit, nicht auf die Anfahrt (SPEC 5, Annahme SPEC 11).
   const zuschlag = zuschlaege.length > 0 ? { ...arbeit } : null
