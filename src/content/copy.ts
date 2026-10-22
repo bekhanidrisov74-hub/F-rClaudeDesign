@@ -20,6 +20,12 @@ export const GEFAHR =
   'Bei akuter Gefahr rufen Sie bitte sofort den Notruf: bei Gasgeruch den Gasnotruf 128, bei Rauch, Brandgeruch, Funken oder Feuer die Feuerwehr 122, bei Verletzten die Rettung 144. Der Euro-Notruf 112 gilt immer.'
 /** nicht im Design (Bauplan B3, Text wartet auf Freigabe): Abschnitt Anfrage und Luna-Zusammenfassung, ein Wortlaut. */
 export const OHNE_KONTO = 'Ein Konto oder eine Anmeldung brauchen Sie nicht.'
+/**
+ * nicht im Design (Bauplan M4, Text wartet auf Freigabe), rechtlich prüfen (Datenschutz): Satz direkt über dem Senden-Knopf in
+ * Formular und Luna-Zusammenfassung. Stimmt mit aktivem Partner (public/anfrage.php schickt an genau einen Partner und an fixit247)
+ * und ohne (fixit247 vermittelt von Hand an einen). Keine Löschfrist, bis die Datenschutzerklärung sie nennt.
+ */
+export const WOHIN = 'Ihre Anfrage geht an fixit247 und von dort an einen passenden Fachbetrieb, nicht an mehrere.'
 
 /**
  * Einwilligung zur Weitergabe, gleich in Formular und Luna (Entscheidung vom 14.10.2026: ein Text für dieselbe Weitergabe,

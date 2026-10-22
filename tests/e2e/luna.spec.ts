@@ -1,4 +1,4 @@
-import { copy, GEFAHR } from '../../src/content/copy'
+import { copy, GEFAHR, WOHIN } from '../../src/content/copy'
 import { expect, test, type Page } from './test'
 import {
   antworteLuna,
@@ -255,6 +255,20 @@ test('Zusammenfassung: Kontaktdaten und Einwilligung sind Pflicht, der erste Feh
   await c.getByLabel('E-Mail').fill('')
   await c.getByRole('button', { name: 'Auftrag aufgeben' }).click()
   await expect(c.getByRole('checkbox')).toBeFocused()
+})
+
+test('Zusammenfassung: WOHIN steht nach dem Hinweis und über den Knöpfen', async ({ page }) => {
+  await page.goto('/')
+  await lunaBisZusammenfassung(page)
+  const c = chat(page)
+  const satz = c.getByText(WOHIN, { exact: true })
+  await expect(satz).toHaveCount(1)
+  await satz.scrollIntoViewIfNeeded()
+  const s = (await satz.boundingBox())!
+  const hinweis = (await c.getByText(copy.luna.zusammenfassung.hinweis, { exact: true }).boundingBox())!
+  const auftrag = (await c.getByRole('button', { name: 'Auftrag aufgeben' }).boundingBox())!
+  expect(s.y).toBeGreaterThanOrEqual(hinweis.y + hinweis.height)
+  expect(s.y + s.height).toBeLessThanOrEqual(auftrag.y)
 })
 
 test('Auftrag aufgeben: ein POST an den Anfrage-Eingang mit allen Feldern, Erfolg, Neue Anfrage', async ({ page }) => {

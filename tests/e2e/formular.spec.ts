@@ -1,4 +1,4 @@
-import { GEFAHR, copy, dringlichkeit } from '../../src/content/copy'
+import { GEFAHR, WOHIN, copy, dringlichkeit } from '../../src/content/copy'
 import { expect, test, type Page } from './test'
 import { anfrage, formularErfolg, fuelleFormular, sendeFormular } from './hilfen'
 
@@ -298,6 +298,28 @@ test('Sendefehler mit ?fehler=1: Meldung über dem Knopf, Angaben bleiben', asyn
   expect((await meldung.boundingBox())!.y).toBeLessThan((await knopf.boundingBox())!.y)
   await expect(anfrage(page).getByLabel(/^Name/)).toHaveValue('Maria Huber')
   await expect(anfrage(page).getByRole('checkbox')).toBeChecked()
+})
+
+test('Vor dem Absenden steht, wohin die Anfrage geht: WOHIN direkt über dem Senden-Knopf, auch nach einem Sendefehler', async ({ page }) => {
+  const a = anfrage(page)
+  const satz = a.getByText(WOHIN, { exact: true })
+  const knopf = a.getByRole('button', { name: 'Anfrage senden' })
+  const stehtDarueber = async () => {
+    await expect(satz).toHaveCount(1)
+    await expect(satz).toBeVisible()
+    const s = (await satz.boundingBox())!
+    const k = (await knopf.boundingBox())!
+    expect(s.y + s.height).toBeLessThanOrEqual(k.y)
+    // nach der Einwilligung, nicht davor
+    expect(s.y).toBeGreaterThan((await a.getByRole('checkbox').boundingBox())!.y)
+  }
+  await stehtDarueber()
+  await page.goto('/?fehler=1#anfrage')
+  await sendeFormular(page)
+  const meldung = a.getByRole('alert')
+  await expect(meldung).toBeVisible()
+  await stehtDarueber()
+  expect((await meldung.boundingBox())!.y).toBeLessThan((await satz.boundingBox())!.y)
 })
 
 test('Seitenkasten „Lieber sofort sprechen?“', async ({ page }) => {

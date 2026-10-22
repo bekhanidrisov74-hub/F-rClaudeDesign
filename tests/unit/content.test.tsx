@@ -1,7 +1,7 @@
 import { renderToString } from 'react-dom/server'
 import { describe, expect, test, vi } from 'vitest'
 import { existsSync, readFileSync } from 'node:fs'
-import { copy, GEFAHR } from '../../src/content/copy'
+import { copy, GEFAHR, WOHIN } from '../../src/content/copy'
 import { gewerke, type Gewerk } from '../../src/content/gewerke'
 import { GefahrHinweis, SoGehtEsWeiter } from '../../src/components/ui/SoGehtEsWeiter'
 
@@ -15,6 +15,14 @@ describe('Gewerke-Daten', () => {
       expect(existsSync(`design/icons/${g.icon}.svg`), g.icon).toBe(true)
       for (const feld of ['name', 'schnellwahl', 'karte', 'betrieb', 'tipp', 'tippErfolg'] as const) expect(g[feld], `${g.id}.${feld}`).not.toBe('')
     }
+  })
+})
+
+describe('Wohin die Anfrage geht (M4)', () => {
+  test('WOHIN nennt einen passenden Fachbetrieb, keine Garantie, keine Löschfrist', () => {
+    expect(WOHIN).toContain('einen passenden Fachbetrieb')
+    expect(WOHIN).not.toMatch(/garantiert/i)
+    expect(WOHIN).not.toMatch(/lösch|\d+\s*(Tage|Monate|Jahre)/i)
   })
 })
 

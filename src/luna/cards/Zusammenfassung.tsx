@@ -1,7 +1,7 @@
 import { Fragment, useId, type RefObject } from 'react'
 import { Button } from '../../components/ui/Button'
 import { Icon } from '../../components/ui/Icon'
-import { AUFTRAG_AUFGEBEN, copy, DATENSCHUTZ, EINWILLIGUNG } from '../../content/copy'
+import { AUFTRAG_AUFGEBEN, copy, DATENSCHUTZ, EINWILLIGUNG, WOHIN } from '../../content/copy'
 import { anfahrtText, einheit, gewerke, spanne } from '../../content/gewerke'
 import { zeilen, type Anfrage, type Kontakt } from '../flow'
 
@@ -152,6 +152,8 @@ export function Zusammenfassung({
       </div>
 
       <p className="text-small text-schiefer">{t.hinweis}</p>
+
+      <p className="text-small text-schiefer">{WOHIN}</p>
 
       {/* Die Reihenfolge im Quelltext folgt der sichtbaren: Handy Auftrag, dann Textlink; Fenster Ändern, dann Auftrag. */}
       <div className="flex flex-col gap-s3 dialog:flex-row dialog:gap-s2">
