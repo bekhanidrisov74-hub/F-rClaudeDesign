@@ -384,6 +384,8 @@ function Erfolg({ danke }: { danke: Danke }) {
       <p className="text-body">
         {fuelle(danke.match === 'FOUND' ? t.erfolg.text : t.erfolg.keinerText, { betrieb: danke.betrieb, telefon: danke.telefon })}
       </p>
+      {/* Anruf-Knopf gleich unter dem Text, damit er am Handy ohne Scrollen sichtbar ist (Funnel, 22.10.2026) */}
+      <CallButton variante="block" label={copy.luna.erfolg.anrufen} />
       <p className="text-small text-schiefer">{fuelle(t.erfolg.nummer, { nummer: danke.anfragenummer })}</p>
       <SoGehtEsWeiter ebene={4} email={danke.email} mitSchritten={danke.match === 'FOUND'} />
       {danke.tipp && danke.match === 'FOUND' && (
@@ -392,7 +394,6 @@ function Erfolg({ danke }: { danke: Danke }) {
         </p>
       )}
       <GefahrHinweis />
-      <CallButton variante="block" label={copy.luna.erfolg.anrufen} />
     </div>
   )
 }

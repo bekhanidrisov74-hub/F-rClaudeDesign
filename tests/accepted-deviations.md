@@ -98,7 +98,8 @@ Die Aufgabe ersetzt den Ablauf aus SPEC 8. Optik wie Screens 06–12, Verhalten 
 - Fortschrittsbalken in vier Schritten (Problem, Details, Ort, Prüfen) statt fünf.
 - Zusammenfassung mit mehr Zeilen (Antworten aus dem Katalog), darunter durch eine Linie getrennt die Felder Name, Telefon und E-Mail (optional) statt der Textzeilen Name/Telefon, und der Einwilligungstext der Aufgabe. Der Verlauf zeigt die Karte mit ihrem Anfang.
 - Erfolg mit zusätzlichem Knopf „Neue Anfrage starten“ (hell, volle Breite). Bei „kein Betrieb gefunden“ ein anderer Titel und Text, ohne Tipp „Bis der Betrieb kommt“. Der Sendefehler-Knopf heißt „Erneut versuchen“.
-- Erfolg und Sendefehler zeigt der Verlauf mit ihrem Ende, damit ihre Knöpfe auch in niedrigen Fenstern sichtbar sind (Screens 10 und 12: Karte unten ausgerichtet). Ist die Karte höher als der Verlauf (im Fenster bei Viewport-Höhen unter etwa 800 px beim Erfolg, unter etwa 660 px beim Sendefehler), ist ihr oberer Teil weggescrollt. Er lässt sich hochscrollen.
+- Den Sendefehler zeigt der Verlauf mit seinem Ende, damit „Erneut versuchen“ auch in niedrigen Fenstern sichtbar ist (Screen 12: Karte unten ausgerichtet). Ist die Karte höher als der Verlauf (im Fenster bei Viewport-Höhen unter etwa 660 px), ist ihr oberer Teil weggescrollt. Er lässt sich hochscrollen.
+- Den Erfolg zeigt der Verlauf mit seinem Anfang, anders als Screen 10 (Funnel, 22.10.2026): Mit „So geht es weiter“ ist die Karte höher als der Verlauf, ihre Überschrift war sonst weggescrollt. Der Anruf-Knopf steht deshalb in beiden Erfolgskarten (Luna und Formular) gleich unter dem Text; „Neue Anfrage starten“ liegt in niedrigen Fenstern erst nach dem Scrollen im Bild.
 - Während Luna antwortet, steht eine Blase „…“ im Verlauf und die Eingabe ist gesperrt.
 - Anstupser nach 25 s oder ab 60 % Scrolltiefe, nicht über einem per Tastatur fokussierten Element.
 

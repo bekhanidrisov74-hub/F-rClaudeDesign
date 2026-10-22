@@ -264,13 +264,13 @@ test('Erfolg zeigt „So geht es weiter“ mit drei Schritten und Gefahr-Hinweis
   await expect(a).toContainText('Termin, Preis, Durchführung und Rechnung stimmen Sie direkt mit dem Fachbetrieb ab. Die Vermittlung ist kostenlos.')
   await expect(a).toContainText(GEFAHR)
   await expect(a).not.toContainText('Eine Bestätigung')
-  // Reihenfolge: Schritte, Tipp, Gefahr-Hinweis, Anruf-Knopf
+  // Reihenfolge: Anruf-Knopf gleich unter dem Text, dann Schritte, Tipp, Gefahr-Hinweis
   const hoehe = async (l: ReturnType<typeof a.locator>) => (await l.first().boundingBox())!.y
   const ys = [
+    await hoehe(a.getByRole('link', { name: 'Fragen? Jetzt anrufen' })),
     await hoehe(a.getByRole('heading', { name: 'So geht es weiter' })),
     await hoehe(a.getByText('Bis der Betrieb kommt:')),
     await hoehe(a.getByText(GEFAHR)),
-    await hoehe(a.getByRole('link', { name: 'Fragen? Jetzt anrufen' })),
   ]
   expect([...ys].sort((x, y) => x - y)).toEqual(ys)
 })
