@@ -3,6 +3,7 @@ import { describe, expect, test, vi } from 'vitest'
 import { existsSync, readFileSync } from 'node:fs'
 import { copy, fuelle, GEFAHR, WOHIN } from '../../src/content/copy'
 import { gewerke, PREISE_STAND, type Gewerk } from '../../src/content/gewerke'
+import { partner } from '../../src/content/partner'
 import { GefahrHinweis, SoGehtEsWeiter } from '../../src/components/ui/SoGehtEsWeiter'
 
 describe('Gewerke-Daten', () => {
@@ -33,6 +34,29 @@ describe('Wohin die Anfrage geht (M4)', () => {
     expect(WOHIN).toContain('einen passenden Fachbetrieb')
     expect(WOHIN).not.toMatch(/garantiert/i)
     expect(WOHIN).not.toMatch(/lösch|\d+\s*(Tage|Monate|Jahre)/i)
+  })
+})
+
+describe('Wer bezahlt fixit247? (M3)', () => {
+  const fragen = copy.fragen.liste
+  const index = fragen.findIndex((f) => f.frage === 'Wer bezahlt fixit247?')
+
+  test('die Frage steht direkt nach „Was kostet die Vermittlung?“, einmal', () => {
+    expect(fragen.filter((f) => f.frage === 'Wer bezahlt fixit247?')).toHaveLength(1)
+    expect(index).toBeGreaterThan(0)
+    expect(fragen[index - 1].frage).toBe('Was kostet die Vermittlung?')
+  })
+
+  test('die Antwort widerspricht weder „kostenlos“ noch den Partner-Kosten', () => {
+    const antwort = fragen[index].antwort
+    expect(antwort).toContain('kostenlos')
+    expect(antwort).not.toMatch(/\d\s*(€|Euro|%)|Gebühr|Provision|Beitrag|garant/i)
+    // partner.ts (KOSTEN): „zum Start kostenlos“; die Antwort darf nichts anderes behaupten
+    const kosten = partner.fragen.liste.find((f) => f.frage === 'Was kostet die Partnerschaft?')?.antwort
+    expect(kosten).toContain('zum Start kostenlos')
+    expect(antwort).toContain('zum Start')
+    // die Frage davor sagt dasselbe für die Kundschaft
+    expect(fragen[index - 1].antwort).toContain('kostenlos')
   })
 })
 

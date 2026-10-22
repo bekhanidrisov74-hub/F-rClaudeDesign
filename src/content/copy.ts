@@ -367,6 +367,13 @@ export const copy = {
         antwort: 'Die Vermittlung ist kostenlos. Sie zahlen nur den Betrieb.',
       },
       {
+        // nicht im Design (Bauplan M3, Text wartet auf Freigabe, rechtlich prüfen: Informationspflichten für Vermittler);
+        // abgeleitet aus partner.ts KOSTEN („zum Start kostenlos“): bei jeder Änderung der Partner-Kosten mitändern
+        frage: 'Wer bezahlt fixit247?',
+        antwort:
+          'Derzeit niemand. Für Sie ist die Vermittlung kostenlos, und auch die Fachbetriebe zahlen zum Start nichts für die Partnerschaft.',
+      },
+      {
         frage: 'Wie verbindlich sind die Preise auf der Seite?',
         antwort:
           `Alle Preise sind Richtpreise der Fachbetriebe. Den genauen Preis vereinbaren Sie mit dem Betrieb. Am Sonntag, an Feiertagen und nachts (${NACHTZEIT}) gilt ein Zuschlag von +100 % auf die Arbeit, höchstens einer.`,

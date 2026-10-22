@@ -1,4 +1,5 @@
 import { expect, test, type Page } from './test'
+import { copy } from '../../src/content/copy'
 import { gewerke } from '../../src/content/gewerke'
 
 const nurEinmal = (name: string) => test.skip(name !== 'm390', 'läuft nur einmal, setzt die Breite selbst')
@@ -237,6 +238,20 @@ test('Häufige Fragen: Tastatur öffnet, immer nur eine Antwort offen', async ({
   await fragen.nth(1).locator('summary').click()
   await expect(fragen.nth(1)).toHaveAttribute('open')
   await expect(fragen.nth(0)).not.toHaveAttribute('open')
+})
+
+test('Häufige Fragen: „Wer bezahlt fixit247?“ steht nach „Was kostet die Vermittlung?“ und öffnet die Antwort (M3)', async ({ page }) => {
+  await page.goto('/')
+  const liste = copy.fragen.liste
+  const i = liste.findIndex((f) => f.frage === 'Wer bezahlt fixit247?')
+  expect(i).toBeGreaterThan(0)
+  const fragen = page.locator('#fragen details')
+  await expect(fragen).toHaveCount(liste.length)
+  await expect(fragen.nth(i - 1).locator('summary')).toContainText('Was kostet die Vermittlung?')
+  await expect(fragen.nth(i).locator('summary')).toContainText(liste[i].frage)
+  await fragen.nth(i).locator('summary').click()
+  await expect(fragen.nth(i)).toHaveAttribute('open')
+  await expect(fragen.nth(i).getByText(liste[i].antwort)).toBeVisible()
 })
 
 test('Einstiege für Fachbetriebe: „Partner werden“ am Ende von „Häufige Fragen“ und im Fuß', async ({ page }) => {
