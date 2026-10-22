@@ -195,6 +195,8 @@ async function bedienelemente(page: Page) {
   return page.locator('a:visible, button:visible, input:visible, select:visible, textarea:visible').evaluateAll((els) =>
     els
       .filter((el) => getComputedStyle(el).display !== 'inline') // Links im Fließtext sind ausgenommen (WCAG 2.5.8)
+      // kein Ziel: verborgen und nicht per Tab erreichbar (Honigtopf der Bewerbung)
+      .filter((el) => !(el.closest('[aria-hidden="true"]') && (el as HTMLElement).tabIndex < 0))
       .map((el) => {
         const r = el.getBoundingClientRect()
         return { name: (el.getAttribute('aria-label') ?? el.textContent ?? '').trim().slice(0, 40), b: r.width, h: r.height }
@@ -202,7 +204,7 @@ async function bedienelemente(page: Page) {
   )
 }
 
-for (const pfad of ['/', '/impressum/'])
+for (const pfad of ['/', '/partner-werden/', '/impressum/'])
   test(`${pfad}: Touch-Ziele mindestens 44 × 44 px`, async ({ page }) => {
     await page.goto(pfad)
     const zuKlein = (await bedienelemente(page)).filter((e) => e.b < 44 || e.h < 44)
@@ -235,6 +237,12 @@ test('Häufige Fragen: Tastatur öffnet, immer nur eine Antwort offen', async ({
   await fragen.nth(1).locator('summary').click()
   await expect(fragen.nth(1)).toHaveAttribute('open')
   await expect(fragen.nth(0)).not.toHaveAttribute('open')
+})
+
+test('Einstiege für Fachbetriebe: „Partner werden“ am Ende von „Häufige Fragen“ und im Fuß', async ({ page }) => {
+  await page.goto('/')
+  for (const wo of ['#fragen', 'footer'])
+    await expect(page.locator(wo).getByRole('link', { name: 'Partner werden', exact: true }), wo).toHaveAttribute('href', '/partner-werden/')
 })
 
 test('Symbole: flache SVGs aus design/icons wie im Hero, keine Bilddateien als Icons', async ({ page }) => {

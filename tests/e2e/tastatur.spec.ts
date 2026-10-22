@@ -1,12 +1,16 @@
 import { expect, test } from './test'
 
 // Jedes Bedienelement ist per Tab erreichbar (vorwärts und rückwärts) und nie ganz verdeckt (WCAG 2.4.11).
-for (const pfad of ['/', '/impressum/'])
+// Eine Gruppe von Optionsfeldern ist ein Tab-Halt (die Pfeiltasten wählen darin), sie zählt deshalb einmal.
+// Felder mit tabindex="-1" (Honigtopf der Bewerbung) stehen absichtlich nicht in der Tab-Reihenfolge.
+for (const pfad of ['/', '/partner-werden/', '/impressum/'])
   test(`${pfad}: Tab erreicht alles, Fokus nie verdeckt`, async ({ page }) => {
     await page.goto(pfad)
-    const erwartet = await page
-      .locator('a[href]:visible, button:not([disabled]):visible, input:visible, select:visible, textarea:visible')
+    const einzeln = await page
+      .locator('a[href]:visible, button:not([disabled]):visible, input:not([type="radio"]):not([tabindex="-1"]):visible, select:visible, textarea:visible')
       .count()
+    const gruppen = new Set(await page.locator('input[type="radio"]:visible').evaluateAll((els) => els.map((el) => (el as HTMLInputElement).name)))
+    const erwartet = einzeln + gruppen.size
 
     for (const taste of ['Tab', 'Shift+Tab']) {
       await page.goto(pfad)

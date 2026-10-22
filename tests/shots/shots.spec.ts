@@ -3,6 +3,8 @@
 import { test, type Page } from '../e2e/test'
 import {
   anfrage,
+  bewerbung,
+  bewerbungErfolg,
   chat,
   formularErfolg,
   formularSendefehler,
@@ -14,6 +16,7 @@ import {
   oeffnePreisuebersicht,
   rechner,
   schalteZuschlag,
+  sendeBewerbungLeer,
   waehleGewerk,
   zeigeAnstupser,
 } from '../e2e/hilfen'
@@ -25,6 +28,18 @@ const ALLE = [390, 1024, 1440, 1920, 2560]
 /** Die Zusagen-Karten blenden beim Hinscrollen ein: einmal hinscrollen, damit sie im Bild stehen. */
 const zusagen = async (p: Page) => {
   await p.locator('#zusagen').scrollIntoViewIfNeeded()
+}
+
+/** Ganze Seite: Der Fuß-Globus lädt erst beim Hinscrollen; Ganzseiten-Shots scrollen nie. */
+const ganzeSeite = async (p: Page) => {
+  const globus = p.locator('footer canvas')
+  if (await globus.isVisible()) {
+    await globus.scrollIntoViewIfNeeded()
+    await expect(globus).toHaveAttribute('data-gezeichnet')
+  }
+  await p.evaluate(() => window.scrollTo(0, 0))
+  // Das Scrollen weckt den Anstupser (ab 60 % Scrolltiefe); er gehört nicht zum Grundzustand der Seite.
+  await p.addStyleTag({ content: '[data-anstupser] { display: none !important; }' })
 }
 
 interface Zustand {
@@ -45,17 +60,9 @@ const ZUSTAENDE: Zustand[] = [
     name: 'startseite',
     pfad: '/',
     ganzeSeite: true,
-    // Der Fuß-Globus lädt erst beim Hinscrollen; Ganzseiten-Shots scrollen nie.
     vorbereiten: async (p) => {
       await zusagen(p)
-      const globus = p.locator('footer canvas')
-      if (await globus.isVisible()) {
-        await globus.scrollIntoViewIfNeeded()
-        await expect(globus).toHaveAttribute('data-gezeichnet')
-      }
-      await p.evaluate(() => window.scrollTo(0, 0))
-      // Das Scrollen weckt den Anstupser (ab 60 % Scrolltiefe); er gehört nicht zum Grundzustand der Startseite.
-      await p.addStyleTag({ content: '[data-anstupser] { display: none !important; }' })
+      await ganzeSeite(p)
     },
   },
   { name: 'zusagen', pfad: '/', element: (p) => p.locator('#zusagen'), vorbereiten: zusagen },
@@ -95,6 +102,10 @@ const ZUSTAENDE: Zustand[] = [
   { name: 'formular-fehler', pfad: '/#anfrage', element: anfrage, vorbereiten: sendeLeer },
   { name: 'formular-erfolg', pfad: '/#anfrage', element: anfrage, vorbereiten: formularErfolg },
   { name: 'formular-sendefehler', pfad: '/?fehler=1#anfrage', element: anfrage, vorbereiten: formularSendefehler },
+  { name: 'partner', pfad: '/partner-werden/', ganzeSeite: true, vorbereiten: ganzeSeite },
+  // Fehler: das Formular; Erfolg: der Abschnitt mit Dank und Seitenkasten
+  { name: 'partner-fehler', pfad: '/partner-werden/', breiten: [390, 1440], element: (p) => bewerbung(p).locator('form'), vorbereiten: sendeBewerbungLeer },
+  { name: 'partner-erfolg', pfad: '/partner-werden/', breiten: [390, 1440], element: bewerbung, vorbereiten: bewerbungErfolg },
 ]
 
 for (const z of ZUSTAENDE)

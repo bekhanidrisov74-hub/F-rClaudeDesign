@@ -14,3 +14,9 @@ fixit247-daten/
 
 # Python-Bytecode der Blender-Skripte
 __pycache__/
+
+# Arbeitsdateien (REA-Analyse, Debug-Chrome-Profil)
+tmp/
+
+# Wettbewerbsanalyse Profihand (REA): nur lokal, nicht im Repo (F-rClaudeDesign ist öffentlich)
+docs/analyse/profihand-partner.md

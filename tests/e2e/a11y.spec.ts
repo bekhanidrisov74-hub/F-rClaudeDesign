@@ -1,6 +1,8 @@
 import AxeBuilder from '@axe-core/playwright'
 import { expect, test, type Page } from './test'
 import {
+  bewerbungErfolg,
+  bewerbungSendefehler,
   chat,
   formularErfolg,
   formularSendefehler,
@@ -11,6 +13,7 @@ import {
   sendeLeer,
   oeffnePreisuebersicht,
   schalteZuschlag,
+  sendeBewerbungLeer,
   waehleGewerk,
   zeigeAnstupser,
 } from './hilfen'
@@ -62,6 +65,10 @@ const ZUSTAENDE: Zustand[] = [
   { name: 'formular-fehler', pfad: '/#anfrage', vorbereiten: sendeLeer },
   { name: 'formular-erfolg', pfad: '/#anfrage', vorbereiten: formularErfolg },
   { name: 'formular-sendefehler', pfad: '/?fehler=1#anfrage', vorbereiten: formularSendefehler },
+  { name: 'partner', pfad: '/partner-werden/' },
+  { name: 'partner-fehler', pfad: '/partner-werden/', vorbereiten: sendeBewerbungLeer },
+  { name: 'partner-erfolg', pfad: '/partner-werden/', vorbereiten: bewerbungErfolg },
+  { name: 'partner-sendefehler', pfad: '/partner-werden/?fehler=1', vorbereiten: bewerbungSendefehler },
 ]
 
 for (const z of ZUSTAENDE)

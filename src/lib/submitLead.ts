@@ -1,4 +1,5 @@
 // Versand für Formular und Luna an den Anfrage-Eingang (public/anfrage.php, Aufgabe Abschnitt 6).
+// Die Partner-Bewerbung (src/lib/bewerbung.ts) nutzt denselben Eingang über posteAnEingang.
 // POST als URLSearchParams (einfache Anfrage ohne Preflight).
 // Erfolg ist nur JSON { ok: true, match: 'FOUND' | 'NONE' }; alles andere und ein Timeout nach 20 s sind Fehler.
 import type { DringlichkeitId } from '../content/copy'
@@ -27,21 +28,26 @@ export interface Lead {
 }
 
 const ZEICHEN = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'
-/** Anfrage-Id im Format F247-XXXXXX, wird auch als Anfragenummer angezeigt */
-export function zufallsnummer(): string {
+/** Id im Format F247-XXXXXX (Anfrage) bzw. P247-XXXXXX (Partner-Bewerbung), wird auch als Nummer angezeigt */
+export function zufallsnummer(praefix: 'F247' | 'P247' = 'F247'): string {
   const zahlen = crypto.getRandomValues(new Uint32Array(6))
-  return `F247-${[...zahlen].map((z) => ZEICHEN[z % ZEICHEN.length]).join('')}`
+  return `${praefix}-${[...zahlen].map((z) => ZEICHEN[z % ZEICHEN.length]).join('')}`
 }
 
 export const buildPayload = (lead: Lead) =>
   new URLSearchParams({ art: 'anfrage', ...lead, antworten: JSON.stringify(lead.antworten), dsgvo: 'on' })
 
-export async function submitLead(lead: Lead): Promise<Match> {
+/** POST an den Eingang (Anfrage und Partner-Bewerbung). HTTP-Fehler und Timeout nach 20 s werfen; zurück kommt das JSON. */
+export async function posteAnEingang(body: URLSearchParams): Promise<{ ok?: unknown; match?: unknown } | null> {
   const endpunkt = formEndpunkt()
   if (!endpunkt) throw new Error('Kein Anfrage-Eingang konfiguriert (VITE_FORM_ENDPOINT)')
-  const antwort = await fetch(endpunkt, { method: 'POST', body: buildPayload(lead), signal: AbortSignal.timeout(20_000) })
-  if (!antwort.ok) throw new Error(`Anfrage nicht angenommen (HTTP ${antwort.status})`)
-  const inhalt = (await antwort.json()) as { ok?: unknown; match?: unknown } | null
+  const antwort = await fetch(endpunkt, { method: 'POST', body, signal: AbortSignal.timeout(20_000) })
+  if (!antwort.ok) throw new Error(`Nicht angenommen (HTTP ${antwort.status})`)
+  return (await antwort.json()) as { ok?: unknown; match?: unknown } | null
+}
+
+export async function submitLead(lead: Lead): Promise<Match> {
+  const inhalt = await posteAnEingang(buildPayload(lead))
   if (inhalt?.ok !== true || (inhalt.match !== 'FOUND' && inhalt.match !== 'NONE')) throw new Error('Antwort nicht im erwarteten Format')
   return inhalt.match
 }

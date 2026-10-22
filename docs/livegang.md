@@ -1,6 +1,6 @@
 # Livegang fixit247.at
 
-Stand: 18.10.2026. Abhaken, was erledigt ist. Wie die KAS-Schritte im Einzelnen gehen, steht in `docs/hosting.md`.
+Stand: 21.10.2026. Abhaken, was erledigt ist. Wie die KAS-Schritte im Einzelnen gehen, steht in `docs/hosting.md`.
 
 ## Erledigt
 
@@ -37,5 +37,8 @@ Stand: 18.10.2026. Abhaken, was erledigt ist. Wie die KAS-Schritte im Einzelnen 
 - [ ] Partnerbetriebe für das Matching in `fixit247-konfig.php`. Ohne sie gehen alle Anfragen nur an `support@fixit247.at`.
 - [ ] Monatslimit im OpenAI-Konto
 - [ ] Löschfrist für `anfragen-*.jsonl`
+- [ ] Löschfrist für abgelehnte Partner-Bewerbungen (`fixit247-daten/partner-*.jsonl`). Vorschlag: abgelehnte Bewerbungen nach 6 Monaten löschen. Beks entscheidet. Die Frist kommt danach auch in den Datenschutz-Entwurf (`[Frist folgt]` in `src/content/copy.ts`, `rechtliches.datenschutz.entwurf`).
+- [ ] Rechtstext „Partner-Bewerbungen“ in der Datenschutzerklärung: Der Entwurf steht auf `/datenschutz/` und muss rechtlich geprüft werden.
+- [ ] Ablauf für neue Partner: Jede Bewerbung über `/partner-werden/` kommt als Mail an `support@fixit247.at`, mit Prüfliste (GISA-Abfrage je Gewerk, Versicherungsnachweis, Gespräch) und einem fertigen Eintrag für die Partnerliste mit `partnerStatus` `PENDING`. Den Eintrag in `fixit247-konfig.php` kopieren und erst dann auf `ACTIVE` setzen, wenn die Prüfliste abgehakt ist. Vermittelt wird nur an `ACTIVE`.
 
 Weitere offene Entscheidungen, die den Livegang nicht blockieren, stehen in `design/SPEC.md`, Abschnitt 11.

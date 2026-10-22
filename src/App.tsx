@@ -1,8 +1,10 @@
 import { useEffect, type ReactNode } from 'react'
 import { copy, fuelle } from './content/copy'
+import { partner } from './content/partner'
 import { OverlayProvider } from './overlays'
 import { Startseite } from './components/Startseite'
 import { LegalPage } from './components/LegalPage'
+import { PartnerSeite } from './components/PartnerSeite'
 
 export interface Seite {
   titel: string
@@ -15,6 +17,7 @@ const { rechtliches } = copy
 
 export const seiten: Record<string, Seite> = {
   '/': { titel: copy.meta.titel, beschreibung: copy.meta.beschreibung, inhalt: () => <Startseite /> },
+  '/partner-werden': { titel: partner.meta.titel, beschreibung: partner.meta.beschreibung, inhalt: () => <PartnerSeite /> },
   '/impressum': {
     titel: fuelle(copy.meta.unterseite, { seite: rechtliches.impressum.titel }),
     beschreibung: copy.meta.beschreibung,

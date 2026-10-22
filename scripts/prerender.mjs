@@ -3,7 +3,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { loadEnv } from 'vite'
-import { DOMAIN, pfade, render } from '../dist-ssr/entry-server.js'
+import { DOMAIN, adresse, indexierbar, pfade, render } from '../dist-ssr/entry-server.js'
 
 const dist = path.resolve('dist')
 const roh = fs.readFileSync(path.join(dist, 'index.html'), 'utf8')
@@ -37,10 +37,10 @@ for (const pfad of pfade) {
 }
 
 const domainPlatzhalter = /^\[.*\]$/.test(DOMAIN)
-// Nur die Startseite: Die Rechtsseiten tragen noindex.
+// Alle Seiten ohne noindex (die Rechtsseiten tragen noindex), ohne lastmod, priority und changefreq (seo.md, Punkt 5).
 fs.writeFileSync(
   path.join(dist, 'sitemap.xml'),
-  `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n  <url><loc>${DOMAIN}/</loc></url>\n</urlset>\n`,
+  `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${indexierbar.map((p) => `  <url><loc>${adresse(p)}</loc></url>\n`).join('')}</urlset>\n`,
 )
 fs.writeFileSync(
   path.join(dist, 'robots.txt'),

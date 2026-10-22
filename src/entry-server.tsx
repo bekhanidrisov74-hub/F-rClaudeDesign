@@ -5,14 +5,19 @@ import { DOMAIN, istPlatzhalter } from './content/contact'
 export { DOMAIN } from './content/contact'
 export const pfade = Object.keys(seiten)
 
+/** Kanonische Adresse einer Seite: Unterseiten liegen als ordner/index.html, mit Schrägstrich am Ende (seo.md, Punkt 3). */
+export const adresse = (pfad: string) => DOMAIN + (pfad === '/' ? '/' : `${pfad}/`)
+
+/** Alle Seiten ohne noindex, für sitemap.xml (seo.md, Punkt 5) */
+export const indexierbar = pfade.filter((pfad) => !seiten[pfad].noindex)
+
 const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;')
 
 export function render(pfad: string) {
   const schluessel = normalisiere(pfad)
   const seite = seiten[schluessel]
   const domainBekannt = !istPlatzhalter(DOMAIN)
-  // Unterseiten liegen als ordner/index.html und haben ihre Adresse mit Schrägstrich am Ende.
-  const url = DOMAIN + (schluessel === '/' ? '/' : `${schluessel}/`)
+  const url = adresse(schluessel)
   const head = [
     `<title>${esc(seite.titel)}</title>`,
     `<meta name="description" content="${esc(seite.beschreibung)}" />`,

@@ -49,4 +49,15 @@ describe('ein sechstes Gewerk', () => {
     expect(html).toContain('70–110 €')
     expect(html).toContain('für diese sechs Bereiche')
   })
+
+  test('erscheint auf „Partner werden“ in der Gewerke-Liste und als Auswahl in der Bewerbung', async () => {
+    const { App } = await import('../../src/App')
+    const html = renderToString(<App pfad="/partner-werden" />)
+    const auswahl = html.match(/<input[^>]*value="dach"[^>]*>/)?.[0]
+    expect(auswahl).toContain('type="checkbox"')
+    expect(auswahl).toContain('name="gewerke"')
+    const liste = html.match(/<ul[^>]*aria-labelledby="partner-gewerke"[^>]*>([\s\S]*?)<\/ul>/)?.[1]
+    expect(liste).toContain('Dachdecker')
+    expect(liste?.match(/<li/g)).toHaveLength(6)
+  })
 })

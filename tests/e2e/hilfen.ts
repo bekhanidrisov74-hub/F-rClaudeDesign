@@ -134,3 +134,52 @@ export async function formularSendefehler(page: Page) {
   await sendeFormular(page)
   await expect(anfrage(page).getByRole('alert')).toBeVisible()
 }
+
+// ── Partner-Bewerbung (/partner-werden/) ──
+/** Abschnitt mit Formular bzw. Dank und Seitenkasten */
+export const bewerbung = (page: Page) => page.locator('#bewerbung')
+/** Optionsfeld in der Gruppe eines Feldes (alle Ja/Nein-Gruppen haben ein „Ja“) */
+export const antwort = (page: Page, feld: string, name: string) =>
+  bewerbung(page).locator(`#bewerbung-${feld}`).getByRole('radio', { name, exact: true })
+
+/** Gültige Bewerbung, alle Felder über ihre Beschriftung */
+export async function fuelleBewerbung(page: Page) {
+  const b = bewerbung(page)
+  await b.getByLabel('Firmenname').fill('Huber Installationen GmbH')
+  await b.getByLabel('Ansprechperson').fill('Maria Huber')
+  await b.getByLabel('Telefon').fill('0664 1234567')
+  await b.getByLabel('E-Mail').fill('office@huber-installationen.at')
+  await b.getByLabel('GISA-Zahl').fill('12345678')
+  await b.getByLabel('UID-Nummer').fill('ATU12345678')
+  const gewerke = b.getByRole('group', { name: 'Gewerke' })
+  for (const name of ['Installateur', 'Heizung & Klima']) await gewerke.getByRole('checkbox', { name, exact: true }).check()
+  await b.getByLabel('Einsatzgebiet (Postleitzahlen)').fill('1100, 1110, 1120')
+  const zeiten = b.getByRole('group', { name: 'Wann sind Sie für Anfragen erreichbar?' })
+  for (const name of ['Werktags tagsüber', 'Nachts']) await zeiten.getByRole('checkbox', { name, exact: true }).check()
+  await antwort(page, 'notdienst', 'Ja').check()
+  await b.getByLabel('Bei Notfällen vor Ort in').selectOption({ label: 'etwa 1 Stunde' })
+  await antwort(page, 'richtpreise', 'Ja').check()
+  for (const feld of ['haftpflicht', 'preisVorab', 'unbar']) await antwort(page, feld, 'Ja').check()
+  await b.getByLabel('Schwerpunkte und Anmerkungen').fill('Gasthermen, Rohrreinigung')
+  await b.getByRole('checkbox', { name: /^Ich stimme zu/ }).check()
+}
+
+export async function sendeBewerbungLeer(page: Page) {
+  await bewerbung(page).getByRole('button', { name: 'Bewerbung senden' }).click()
+  await expect(bewerbung(page).getByText('Bitte geben Sie den Namen Ihres Betriebs ein.')).toBeVisible()
+}
+
+export async function sendeBewerbung(page: Page) {
+  await fuelleBewerbung(page)
+  await bewerbung(page).getByRole('button', { name: 'Bewerbung senden' }).click()
+}
+
+export async function bewerbungErfolg(page: Page) {
+  await sendeBewerbung(page)
+  await expect(bewerbung(page).getByText(/Bewerbungsnummer/)).toBeVisible()
+}
+
+export async function bewerbungSendefehler(page: Page) {
+  await sendeBewerbung(page)
+  await expect(bewerbung(page).getByRole('alert')).toBeVisible()
+}
