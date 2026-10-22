@@ -303,7 +303,7 @@ function anfrageEingang(array $p): array {
         'tel' => nurZeichen($tel, '/[^\d+()\/ .-]/u', 25),
         'ort' => nurZeichen(preg_replace('/\S+\.\S+/u', ' ', $plzOrt), '/[^A-Za-zÀ-ÖØ-öø-ÿ0-9 .,\/-]/u', 60) ?: '—',
         'bereich' => gewerkName($p['bereich'] ?? '', $kategorie) ?: '—',
-      ], $empfaenger);
+      ], $empfaenger, $treffer !== null);
     } catch (Throwable $fehler) {
       error_log('fixit247 Bestätigung fehlgeschlagen: ' . $fehler->getMessage());
     }
@@ -334,7 +334,9 @@ function schritt(int $nummer, string $titel, string $beschreibung): string {
   HTML;
 }
 
-function bestaetigungSenden(string $email, array $k, string $antwortAn): void {
+/* $gefunden = Matching FOUND. Schritte und Texte wie in den Erfolgskarten der Website (copy.weiter, erfolg.keinerText):
+   die drei Schritte nur mit gefundenem Betrieb, sonst „Wir suchen weiter“. */
+function bestaetigungSenden(string $email, array $k, string $antwortAn, bool $gefunden): void {
   $f = FARBE;
   $kontakt = kontakt();
   $telLink = 'tel:' . preg_replace('/[^\d+]/', '', $kontakt['telefon']);
@@ -342,10 +344,26 @@ function bestaetigungSenden(string $email, array $k, string $antwortAn): void {
   $mail = esc($kontakt['email']);
   $e = array_map('esc', $k);
   $gruss = $e['name'] === '' ? '' : ' ' . $e['name'];
-  $schritte = schritt(1, 'Rückruf', "fixit247 oder der vermittelte Fachbetrieb meldet sich telefonisch unter {$e['tel']}.")
-    . schritt(2, 'Passender Fachbetrieb', 'Wir vermitteln Ihre Anfrage an einen passenden Fachbetrieb in Ihrer Nähe.')
-    . schritt(3, 'Direkt mit dem Fachbetrieb',
-      'Termin, Preis, Durchführung und Rechnung stimmen Sie direkt mit dem Fachbetrieb ab. Die Vermittlung ist für Sie kostenlos.');
+  $einleitung = $gefunden
+    ? 'Wir vermitteln Ihre Anfrage an einen passenden Fachbetrieb.'
+    : "Wir haben gerade keinen passenden Fachbetrieb in Ihrer Nähe gefunden. Ihre Anfrage ist trotzdem aufgenommen: Wir suchen weiter und melden uns unter {$k['tel']}. Ist es dringend, rufen Sie uns bitte gleich an.";
+  $liste = $gefunden ? [
+    ['Passender Fachbetrieb', 'Wir vermitteln Ihre Anfrage an einen passenden Fachbetrieb in Ihrer Nähe.'],
+    ['Rückruf', "fixit247 oder der vermittelte Fachbetrieb meldet sich telefonisch unter {$k['tel']}."],
+    ['Direkt mit dem Fachbetrieb', 'Termin, Preis, Durchführung und Rechnung stimmen Sie direkt mit dem Fachbetrieb ab. Die Vermittlung ist kostenlos.'],
+  ] : [];
+  $schritte = '';
+  foreach ($liste as $i => [$titel, $text]) $schritte .= schritt($i + 1, esc($titel), esc($text));
+  $weiter = $schritte === '' ? '' : <<<HTML
+      <tr><td style="padding:26px 26px 6px;">
+        <div style="font-size:12px;font-weight:700;letter-spacing:.08em;
+          text-transform:uppercase;color:{$f['grau']};margin-bottom:14px;">So geht es weiter</div>
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+          {$schritte}
+        </table>
+      </td></tr>
+  HTML;
+  $einleitungHtml = esc($einleitung);
 
   $html = <<<HTML
   <div style="margin:0;padding:24px 12px;background:#F4F7FB;
@@ -368,16 +386,10 @@ function bestaetigungSenden(string $email, array $k, string $antwortAn): void {
           letter-spacing:-.02em;margin-bottom:8px;">Ihre Anfrage ist angekommen</div>
         <div style="font-size:15px;line-height:1.6;color:{$f['grau']};">
           Guten Tag{$gruss},<br>vielen Dank für Ihr Vertrauen.
-          Wir vermitteln Ihre Anfrage an einen passenden Fachbetrieb.</div>
+          {$einleitungHtml}</div>
       </td></tr>
 
-      <tr><td style="padding:26px 26px 6px;">
-        <div style="font-size:12px;font-weight:700;letter-spacing:.08em;
-          text-transform:uppercase;color:{$f['grau']};margin-bottom:14px;">Wie es weitergeht</div>
-        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
-          {$schritte}
-        </table>
-      </td></tr>
+      {$weiter}
 
       <tr><td style="padding:8px 26px 6px;">
         <div style="background:#F4F7FB;border-radius:12px;padding:18px 20px;">
@@ -419,11 +431,8 @@ function bestaetigungSenden(string $email, array $k, string $antwortAn): void {
   $plain = implode("\n", [
     'Ihre Anfrage ist angekommen', '',
     'Guten Tag ' . $k['name'] . ',',
-    'vielen Dank für Ihr Vertrauen. Wir vermitteln Ihre Anfrage an einen passenden Fachbetrieb.', '',
-    'Wie es weitergeht:',
-    '1. fixit247 oder der vermittelte Fachbetrieb meldet sich telefonisch unter ' . $k['tel'] . '.',
-    '2. Wir vermitteln Ihre Anfrage an einen passenden Fachbetrieb in Ihrer Nähe.',
-    '3. Termin, Preis, Durchführung und Rechnung stimmen Sie direkt mit dem Fachbetrieb ab. Die Vermittlung ist für Sie kostenlos.', '',
+    'vielen Dank für Ihr Vertrauen. ' . $einleitung, '',
+    ...($liste ? ['So geht es weiter:', ...array_map(fn($i, $s) => ($i + 1) . '. ' . $s[1], array_keys($liste), $liste), ''] : []),
     'Ihre Angaben:',
     'Gewerk:           ' . $k['bereich'],
     'PLZ und Ort:      ' . $k['ort'], '',

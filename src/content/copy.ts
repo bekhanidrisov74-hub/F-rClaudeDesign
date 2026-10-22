@@ -371,8 +371,8 @@ export const copy = {
     ],
   },
 
-  // nicht im Design (Bauplan B2, Text wartet auf Freigabe): Schritte wie in der Bestätigungsmail in public/anfrage.php
-  // (dort „Rückruf“ als erster Schritt, mit der Telefonnummer und „für Sie kostenlos“). Nur bei gefundenem Betrieb (FOUND).
+  // nicht im Design (Bauplan B2, von Beks freigegeben): dieselben Schritte stehen in der Bestätigungsmail (bestaetigungSenden in
+  // public/anfrage.php, dort mit der Telefonnummer). Nur bei gefundenem Betrieb (FOUND), in der Mail ebenso.
   weiter: {
     titel: 'So geht es weiter',
     schritte: [

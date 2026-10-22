@@ -289,7 +289,9 @@ describe.skipIf(!phpDa)('Endpunkte über php -S', { timeout: PHP_ZEIT }, () => {
     expect(intern.inhalt).toContain('PLZ und Ort:      1100 Wien')
     expect(kunde.inhalt).toContain('PLZ und Ort:      1100 Wien')
     expect(kunde.inhalt).toContain('Guten Tag Max Muster,')
-    expect(kunde.inhalt).toContain('meldet sich telefonisch unter 0660 123 45 67')
+    // NONE: keine Schritte, sondern wie keinerText auf der Website
+    expect(kunde.inhalt).toContain('Wir suchen weiter und melden uns unter 0660 123 45 67.')
+    expect(kunde.inhalt).not.toContain('So geht es weiter')
     expect(kunde.inhalt).not.toMatch(/werbung|spam\.example|Heizung kalt/)
     const gespeichert = readdirSync(join(ordner, 'fixit247-daten')).find((d) => d.startsWith('anfragen-'))!
     expect(readFileSync(join(ordner, 'fixit247-daten', gespeichert), 'utf8')).toContain('"anfrageId":"F247-TEST01"')
@@ -300,8 +302,14 @@ describe.skipIf(!phpDa)('Endpunkte über php -S', { timeout: PHP_ZEIT }, () => {
     expect(mails().length).toBe(vorher)
   })
   test('Partner passt: FOUND und Mail an den Partnerbetrieb', async () => {
-    expect(await sende(buildPayload({ ...lead, anfrageId: 'F247-TEST02', kategorie: 'elektro', bereich: 'Elektro', email: '' }))).toEqual({ ok: true, match: 'FOUND' })
+    expect(await sende(buildPayload({ ...lead, anfrageId: 'F247-TEST02', kategorie: 'elektro', bereich: 'Elektro', email: 'kunde2@example.at' }))).toEqual({ ok: true, match: 'FOUND' })
     expect(mails().filter((m) => m.an === 'partner@example.at')).toHaveLength(1)
+    // FOUND: die drei Schritte in der Reihenfolge der Erfolgskarten (copy.weiter)
+    const kunde = mails().find((m) => m.an === 'kunde2@example.at')!.inhalt
+    const schritte = ['1. Wir vermitteln Ihre Anfrage', '2. fixit247 oder der vermittelte Fachbetrieb meldet sich telefonisch unter 0660 123 45 67.', '3. Termin, Preis']
+    expect(schritte.map((s) => kunde.indexOf(s))).toEqual([...schritte.map((s) => kunde.indexOf(s))].sort((x, y) => x - y))
+    for (const s of schritte) expect(kunde).toContain(s)
+    expect(kunde).not.toContain('suchen weiter')
   })
   test.each([
     ['Honigtopf', { fax: '1' }, { ok: true, match: 'NONE' }],
