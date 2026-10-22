@@ -125,10 +125,10 @@ for (const { g, pfad } of GEWERKSEITEN) {
 
   test(`${pfad}: von der Startseite aus verlinkt (Leistungskarte und Fuß), „Anfrage senden“ wählt das Gewerk vor`, async ({ page }) => {
     await page.goto('/')
-    await expect(page.locator('#leistungen').getByRole('link', { name: `Mehr zu ${g.name}`, exact: true })).toHaveAttribute('href', pfad)
+    await expect(page.locator('#leistungen').getByRole('link', { name: `${g.name} im Notfall`, exact: true })).toHaveAttribute('href', pfad)
     await expect(page.locator('footer').getByRole('navigation', { name: gewerkseiten.fuss.titel }).getByRole('link', { name: g.name, exact: true })).toHaveAttribute('href', pfad)
     // „… anfragen“ bleibt der stärkere Knopf: Textlink ist kleiner und steht nach ihm
-    await page.locator('#leistungen').getByRole('link', { name: `Mehr zu ${g.name}`, exact: true }).click()
+    await page.locator('#leistungen').getByRole('link', { name: `${g.name} im Notfall`, exact: true }).click()
     await expect(page).toHaveURL(pfad)
     await expect(page.getByRole('heading', { level: 1 })).toHaveText(gewerkText(g.id).h1)
     // Vorauswahl kommt nach dem Seitenwechsel auf der Startseite an

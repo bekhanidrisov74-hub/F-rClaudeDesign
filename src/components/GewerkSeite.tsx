@@ -153,6 +153,8 @@ export function GewerkSeite({ gewerk: g }: { gewerk: Gewerk }) {
           <p className="text-body">{`${copy.leistungen.anfahrt} ${anfahrtText(g)}`}</p>
           <p className="text-body">{copy.preisuebersicht.hinweiseDialog[0]}</p>
           <p className="text-small text-schiefer">{fuelle(copy.preisStand, { stand: PREISE_STAND })}</p>
+          {/* Zweiter Anruf am Seitenende: Wer bis zum Preis liest, muss nicht zurück nach oben. */}
+          <CallButton variante="karte" nummer className="self-start" />
         </div>
         <div className="flex items-start">
           <Button art="textlink" href="/#preisrechner" className="min-h-[44px] min-w-[44px] text-body">

@@ -77,8 +77,8 @@ describe('Beschwerde über einen vermittelten Betrieb (M8)', () => {
   })
 
   test('die Zusage „pausieren“ stammt aus der freigegebenen Frage „Was heißt „geprüft“?“ und nennt keine Fristen', () => {
-    // gleiche Zusage, anderer Satzbau: „pausieren bei Beschwerden die Vermittlung“ / „Bei Beschwerden pausieren wir die Vermittlung“
-    expect(fragen[index].antwort).toContain('pausieren bei Beschwerden die Vermittlung an diesen Betrieb')
+    // gleicher Satz wie in der freigegebenen Frage „Was heißt „geprüft“?“
+    expect(fragen[index].antwort).toContain('Bei Beschwerden pausieren wir die Vermittlung an diesen Betrieb')
     expect(fragen.find((f) => f.frage === 'Was heißt „geprüft“?')?.antwort).toContain('Bei Beschwerden pausieren wir die Vermittlung an diesen Betrieb')
     expect(fragen[index].antwort).not.toMatch(/\d|garant|innerhalb|Stunde|Tag/i)
   })
@@ -185,7 +185,7 @@ describe('ein sechstes Gewerk', () => {
     expect(html.match(/data-gewerk="dach"/g)?.length ?? 0).toBeGreaterThanOrEqual(2)
     expect(html).toContain('Dachdecker anfragen')
     // Link auf die Notfall-Seite (Bauplan M7)
-    expect(html).toMatch(/<a [^>]*href="\/dachdecker\/"[^>]*>Mehr zu Dachdecker<\/a>/)
+    expect(html).toMatch(/<a [^>]*href="\/dachdecker\/"[^>]*>Dachdecker im Notfall<\/a>/)
     expect(html).toContain('70–110 €')
     expect(html).toContain('für diese sechs Bereiche')
   })

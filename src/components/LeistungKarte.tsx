@@ -30,7 +30,7 @@ export function LeistungKarte({ gewerk: g }: { gewerk: Gewerk }) {
           <span>{fuelle(copy.leistungen.anfragen, { name: g.name })}</span>
         </Button>
         {/* Link auf die Notfall-Seite des Gewerks (Bauplan M7): leiser als „… anfragen“, das der stärkere Knopf bleibt */}
-        <Button art="textlink" href={`/${g.seite}/`} className="min-h-[44px] min-w-[44px] self-center text-text">
+        <Button art="textlink" href={`/${g.seite}/`} className="min-h-[44px] min-w-[44px] self-center text-btn">
           {fuelle(gewerkseiten.karte.mehr, { name: g.name })}
         </Button>
       </div>

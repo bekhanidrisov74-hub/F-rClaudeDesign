@@ -211,7 +211,7 @@ export const copy = {
     ],
     plus100: '+100 %',
     /** nicht im Design (Bauplan M6, Text wartet auf Freigabe, rechtlich prüfen: Preisangaben); {zuschlag} = Name aus zuschlaege, z. B. „Sonntag“ */
-    jetztGilt: 'Jetzt gilt in Wien: {zuschlag} (+100 %).',
+    jetztGilt: 'Jetzt gilt in Wien der Zuschlag „{zuschlag}“ (+100 %).',
     /** nicht im Design (Bauplan M6, Text wartet auf Freigabe, rechtlich prüfen: Preisangaben): Knopf neben jetztGilt */
     uebernehmen: 'Übernehmen',
     hinweisEiner: `Nacht gilt von ${NACHTZEIT}. Es zählt höchstens ein Zuschlag, auch wenn mehrere zutreffen.`,
@@ -386,7 +386,7 @@ export const copy = {
         // abgeleitet aus partner.ts KOSTEN („zum Start kostenlos“): bei jeder Änderung der Partner-Kosten mitändern
         frage: 'Wer bezahlt fixit247?',
         antwort:
-          'Derzeit niemand. Für Sie ist die Vermittlung kostenlos, und auch die Fachbetriebe zahlen zum Start nichts für die Partnerschaft.',
+          'Derzeit zahlt niemand. Für Sie ist die Vermittlung kostenlos, und auch die Fachbetriebe zahlen zum Start nichts für die Partnerschaft.',
       },
       {
         frage: 'Wie verbindlich sind die Preise auf der Seite?',
@@ -405,11 +405,10 @@ export const copy = {
       {
         // nicht im Design (Bauplan M8, Text wartet auf Freigabe, rechtlich prüfen: Zusage zu Beschwerden); „pausieren bei Beschwerden“
         // stammt aus der freigegebenen Frage „Was heißt „geprüft“?“. Der Link ist ein mailto an EMAIL (contact.ts), kein Formular.
-        // Zur Freigabe: Die Anfragenummer steht nur auf dem Erfolgsbildschirm, nicht in der Bestätigungsmail; wer sie nicht hat,
-        // könnte „… mit Ihrer Anfragenummer, falls Sie sie haben, und kurz, was passiert ist.“ lesen (oder die Mail nennt sie).
+        // „falls Sie sie haben“: Die Anfragenummer steht nur auf dem Erfolgsbildschirm, nicht in der Bestätigungsmail.
         frage: 'Ich bin mit einem vermittelten Betrieb unzufrieden. Was tun?',
         antwort:
-          'Schreiben Sie uns eine E-Mail mit Ihrer Anfragenummer und kurz, was passiert ist. Wir sehen uns jede Beschwerde an und pausieren bei Beschwerden die Vermittlung an diesen Betrieb.',
+          'Schreiben Sie uns eine E-Mail mit Ihrer Anfragenummer, falls Sie sie haben, und kurz, was passiert ist. Wir sehen uns die Beschwerde an. Bei Beschwerden pausieren wir die Vermittlung an diesen Betrieb.',
         link: { text: 'Beschwerde per E-Mail senden', href: beschwerdeHref },
       },
       {

@@ -26,7 +26,7 @@ export interface GewerkSeitenText {
 export const gewerkseiten = {
   brotkrumen: {
     /** Name der Brotkrumen-Navigation (aria-label) */
-    label: 'Brotkrumen',
+    label: 'Seitenpfad',
     start: 'Startseite',
   },
 
@@ -42,8 +42,8 @@ export const gewerkseiten = {
   },
 
   fragen: {
-    titel: 'Das fragt der Betrieb',
-    lead: 'Mit diesen Angaben kann sich der Betrieb auf Ihren Einsatz vorbereiten. Sie müssen nicht alles wissen.',
+    titel: 'Diese Angaben helfen dem Betrieb',
+    lead: 'Damit kann sich der Betrieb auf den Einsatz vorbereiten, ob Sie anrufen, schreiben oder Luna fragen. Sie müssen nicht alles wissen.',
   },
 
   preis: {
@@ -55,7 +55,7 @@ export const gewerkseiten = {
   },
 
   /** Link auf der Leistungskarte; {name} = Name des Gewerks */
-  karte: { mehr: 'Mehr zu {name}' },
+  karte: { mehr: '{name} im Notfall' },
 
   /** Titel der Liste im Fuß */
   fuss: { titel: 'Gewerke' },
@@ -71,7 +71,7 @@ const texte: Record<string, GewerkSeitenText> = {
     lead: 'Rohrbruch, verstopfter Abfluss, tropfende Armatur: fixit247 vermittelt Ihnen einen geprüften Installateur aus Wien. Die Vermittlung ist kostenlos, der Betrieb ruft Sie zurück.',
     notfall: {
       lead: 'Ein Fall für den Installateur ist es, wenn Wasser austritt oder etwas verstopft ist. Dringend wird es, wenn das Wasser stark ausläuft.',
-      faelle: ['Rohrbruch, Wasser tritt aus', 'WC oder Abfluss verstopft', 'Wasserhahn oder WC-Spülung defekt', 'Kein Wasser'],
+      faelle: ['Rohrbruch, Wasser tritt aus', 'WC oder Abfluss verstopft', 'Wasserhahn oder WC-Spülung defekt', 'Kein Wasser in der Wohnung'],
     },
   },
   shk: {
@@ -81,13 +81,13 @@ const texte: Record<string, GewerkSeitenText> = {
       'Therme aus, kein Warmwasser, Klimaanlage defekt? fixit247 vermittelt kostenlos einen geprüften Fachbetrieb für Heizung und Klima aus Wien. Mit Richtpreis.',
     lead: 'Therme ausgefallen, kein Warmwasser oder die Klimaanlage defekt: fixit247 vermittelt Ihnen einen geprüften Fachbetrieb für Heizung und Klima aus Wien. Die Vermittlung ist kostenlos, der Betrieb ruft Sie zurück.',
     notfall: {
-      lead: 'Ein Fall für Heizung und Klima ist es, wenn Heizung, Warmwasser oder Klimaanlage nicht mehr funktionieren. Bei Gasgeruch gilt zuerst der Notruf.',
+      lead: 'Ein Fall für Heizung und Klima ist es, wenn Heizung, Warmwasser oder Klimaanlage nicht mehr funktionieren. Kühlt nur die Klimaanlage nicht, ist es meist kein Notfall. Bei Gasgeruch rufen Sie zuerst den Gasnotruf 128.',
       faelle: ['Therme fällt aus', 'Kein Warmwasser', 'Heizung bleibt kalt', 'Klimaanlage kühlt nicht'],
     },
   },
   schluessel: {
-    h1: 'Schlüsseldienst und Aufsperrdienst',
-    titel: 'Schlüsseldienst und Aufsperrdienst in Wien: Fachbetrieb vermitteln – fixit247',
+    h1: 'Schlüsseldienst im Notfall',
+    titel: 'Schlüsseldienst im Notfall in Wien: Fachbetrieb vermitteln – fixit247',
     beschreibung:
       'Ausgesperrt, Schlüssel abgebrochen, Schloss defekt? fixit247 vermittelt kostenlos einen geprüften Schlüsseldienst aus Wien. Mit Richtpreis pro Einsatz.',
     lead: 'Ausgesperrt, Schlüssel abgebrochen oder Schloss defekt: fixit247 vermittelt Ihnen einen geprüften Schlüsseldienst oder Aufsperrdienst aus Wien. Die Vermittlung ist kostenlos, der Betrieb ruft Sie zurück.',
@@ -103,8 +103,8 @@ const texte: Record<string, GewerkSeitenText> = {
       'Stromausfall, FI-Schalter fliegt, Steckdose defekt? fixit247 vermittelt kostenlos einen geprüften Elektriker aus Wien. Mit Richtpreis und Zuschlägen.',
     lead: 'Stromausfall, FI-Schalter fliegt, Steckdose defekt: fixit247 vermittelt Ihnen einen geprüften Elektriker aus Wien. Die Vermittlung ist kostenlos, der Betrieb ruft Sie zurück.',
     notfall: {
-      lead: 'Ein Fall für den Elektriker ist es, wenn Strom ausfällt oder eine Sicherung immer wieder auslöst. Bei Funken, Rauch oder Brandgeruch gilt zuerst der Notruf.',
-      faelle: ['Kein Strom', 'Licht ausgefallen', 'FI-Schalter oder Sicherung fällt', 'Steckdose defekt'],
+      lead: 'Ein Fall für den Elektriker ist es, wenn Strom ausfällt oder eine Sicherung immer wieder auslöst. Bei Funken, Rauch oder Brandgeruch rufen Sie zuerst die Feuerwehr 122.',
+      faelle: ['Kein Strom in der Wohnung', 'Licht ausgefallen', 'FI-Schalter oder Sicherung fällt', 'Steckdose defekt'],
     },
   },
   geraete: {
@@ -114,7 +114,7 @@ const texte: Record<string, GewerkSeitenText> = {
       'Waschmaschine, Herd oder Kühlschrank defekt? fixit247 vermittelt kostenlos einen geprüften Fachbetrieb für Haushaltsgeräte aus Wien. Mit Richtpreis.',
     lead: 'Waschmaschine, Geschirrspüler, Herd oder Kühlschrank defekt: fixit247 vermittelt Ihnen einen geprüften Fachbetrieb für Haushaltsgeräte aus Wien. Die Vermittlung ist kostenlos, der Betrieb ruft Sie zurück.',
     notfall: {
-      lead: 'Ein defektes Gerät ist meist ärgerlich, aber kein Notfall. Dringend wird es, wenn Wasser ausläuft oder Lebensmittel zu verderben drohen. Bei Rauch, Brandgeruch oder Funken gilt zuerst der Notruf.',
+      lead: 'Ein defektes Gerät ist meist ärgerlich, aber kein Notfall. Dringend wird es, wenn Wasser ausläuft oder Lebensmittel zu verderben drohen. Bei Rauch, Brandgeruch oder Funken rufen Sie zuerst die Feuerwehr 122.',
       faelle: ['Gerät startet nicht', 'Kühlschrank kühlt nicht, Herd heizt nicht', 'Wasser läuft aus dem Gerät', 'Laute Geräusche oder ein Fehlercode'],
     },
   },
