@@ -51,7 +51,7 @@ const ZUSTAENDE: Zustand[] = [
       const globus = p.locator('footer canvas')
       if (await globus.isVisible()) {
         await globus.scrollIntoViewIfNeeded()
-        await expect.poll(() => globus.evaluate((c: HTMLCanvasElement) => c.width)).not.toBe(300)
+        await expect(globus).toHaveAttribute('data-gezeichnet')
       }
       await p.evaluate(() => window.scrollTo(0, 0))
       // Das Scrollen weckt den Anstupser (ab 60 % Scrolltiefe); er gehört nicht zum Grundzustand der Startseite.
@@ -117,7 +117,7 @@ for (const z of ZUSTAENDE)
       // Steht der Fuß-Globus schon im Bild, lädt er gerade; auf ihn warten statt auf das Timing zu hoffen.
       const globus = page.locator('footer canvas')
       if (!z.element && !z.ganzeSeite && (await globus.isVisible()) && (await globus.evaluate((c) => c.getBoundingClientRect().top < innerHeight)))
-        await expect.poll(() => globus.evaluate((c: HTMLCanvasElement) => c.width)).not.toBe(300)
+        await expect(globus).toHaveAttribute('data-gezeichnet')
       const pfad = `tests/screens-actual/${z.name}-${breite}.png`
       if (z.element) {
         // Der sticky Kopf, der schwebende Luna-Knopf und sein Anstupser würden Teile des Elements verdecken.
