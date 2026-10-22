@@ -4,7 +4,7 @@ Status: am 21.10.2026 mit den Standards und den Änderungen von Beks gebaut (Kos
 
 Stand: 21.10.2026 · Branch `feature/partner-werden` (eigener Worktree `.claude/worktrees/partner-werden`) · noch nichts gebaut.
 
-Grundlage: [Bestand](partner-werden-bestand.md) und [Profihand-Analyse](profihand-partner.md). Ohne Antwort baue ich die Vorschläge als **Standard** und liste sie im Bericht, wie bei SPEC 11.
+Grundlage: [Bestand](partner-werden-bestand.md) und die Profihand-Analyse (`docs/analyse/profihand-partner.md`, nur lokal, nicht im Repo). Ohne Antwort baue ich die Vorschläge als **Standard** und liste sie im Bericht, wie bei SPEC 11.
 
 ## Entscheidungen
 

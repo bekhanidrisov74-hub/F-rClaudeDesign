@@ -169,7 +169,7 @@ Lokal liefen Playwright und die Aufnahmen mit Chromium statt mit dem installiert
 
 ## 12. Seite „Partner werden“ (21.10.2026)
 
-Branch `feature/partner-werden`, Texte von Beks am 21.10.2026 freigegeben und committet, nicht gepusht. Analyse und Plan: `docs/analyse/` (Bestand, Profihand-Analyse mit REA, Plan, freigegebene Texte).
+Branch `feature/partner-werden`, Texte von Beks am 21.10.2026 freigegeben und committet, nicht gepusht. Analyse und Plan: `docs/analyse/` (Bestand, Plan, freigegebene Texte); die Profihand-Analyse mit REA liegt nur lokal (`docs/analyse/profihand-partner.md`, in `.gitignore`).
 
 - **Seite** `/partner-werden/`, indexierbar, in der Sitemap (die Sitemap entsteht jetzt aus allen Seiten ohne `noindex`). Einstiege: Fuß („Seiten“), kleiner Link im Handy-Menü, Karte am Ende von „Häufige Fragen“ auf der Startseite. Aufbau und Flächen in `docs/hero-stil.md`.
 - **Formular** (`src/components/PartnerFormular.tsx`, Regeln in `src/lib/bewerbung.ts`, Texte in `src/content/partner.ts`): Firma, Ansprechperson, Telefon, E-Mail, GISA-Zahl, UID (optional), Gewerke, Postleitzahlen (auch Bereiche wie 1010–1230, geprüft gegen `plz.json`), Erreichbarkeit, Notdienst, Zeit bis vor Ort (optional), Richtpreise (mit „Welche?“), Haftpflicht, Preis vor Arbeitsbeginn, Karte oder Überweisung, Anmerkungen, Einwilligung, Honigtopf `fax`. Keine Uploads.
