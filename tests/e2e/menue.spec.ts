@@ -67,6 +67,13 @@ test('schließt, wenn das Fenster 1280 px oder breiter wird', async ({ page }) =
   expect(await page.evaluate(() => getComputedStyle(document.documentElement).overflow)).not.toBe('hidden')
 })
 
+test('„Partner werden“ steht klein unter der Kontaktkarte, die großen Links bleiben fünf (SPEC 7)', async ({ page }) => {
+  await oeffneMenue(page)
+  const menue = page.locator('#menue')
+  await expect(menue.getByRole('link', { name: 'Für Fachbetriebe: Partner werden', exact: true })).toHaveAttribute('href', '/partner-werden/')
+  await expect(menue.getByRole('navigation').getByRole('listitem')).toHaveCount(5)
+})
+
 test('auf Rechtsseiten zeigen die Links auf die Startseite', async ({ page }) => {
   await page.goto('/impressum/')
   await oeffneMenue(page)

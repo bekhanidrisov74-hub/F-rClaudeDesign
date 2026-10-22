@@ -1,9 +1,13 @@
 import { expect, test } from './test'
+import { copy } from '../../src/content/copy'
+import { partner } from '../../src/content/partner'
 
-const PFADE = ['/', '/impressum/', '/datenschutz/', '/agb/']
+/** Rechtsseiten: Platzhalter, tragen noindex und fehlen in der Sitemap */
+const RECHTSSEITEN = ['/impressum/', '/datenschutz/', '/agb/']
+const ALLE = ['/', '/partner-werden/', ...RECHTSSEITEN]
 const nurEinmal = (name: string) => test.skip(name !== 'm390', 'unabhängig von der Breite, läuft nur einmal')
 
-for (const pfad of PFADE) {
+for (const pfad of ALLE) {
   test(`${pfad}: keine Fehler, keine fremden Anfragen, keine Cookies`, async ({ page, context }) => {
     const fehler: string[] = []
     const fremd: string[] = []
@@ -33,9 +37,26 @@ test('HTML ist vorgerendert und hat Meta-Angaben', async ({ request }, info) => 
   expect(html).not.toContain('noindex')
 })
 
+test('/partner-werden/: eigener Titel und eigene Beschreibung, kanonisch, indexierbar, H1 im vorgerenderten HTML', async ({ request }, info) => {
+  nurEinmal(info.project.name)
+  const antwort = await request.get('/partner-werden/')
+  expect(antwort.status()).toBe(200)
+  const html = await antwort.text()
+  expect(html).toContain('<title>Partner werden: Anfragen für Fachbetriebe – fixit247</title>')
+  const beschreibung = html.match(/<meta name="description" content="([^"]*)" \/>/)?.[1]
+  expect(beschreibung).toBe(partner.meta.beschreibung)
+  expect(beschreibung).not.toBe(copy.meta.beschreibung)
+  expect(html).toContain('<link rel="canonical" href="https://fixit247.at/partner-werden/" />')
+  expect(html).toContain('<meta property="og:url" content="https://fixit247.at/partner-werden/" />')
+  expect(html).not.toContain('noindex')
+  // Text der H1 ohne Tags und React-Kommentare
+  const h1 = html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/)?.[1].replace(/<[^>]+>/g, '').trim()
+  expect(h1).toBe('Partner werden')
+})
+
 test('Platzhalterseiten tragen noindex', async ({ request }, info) => {
   nurEinmal(info.project.name)
-  for (const pfad of PFADE.slice(1)) {
+  for (const pfad of RECHTSSEITEN) {
     const antwort = await request.get(pfad)
     expect(antwort.status()).toBe(200)
     expect(await antwort.text()).toContain('<meta name="robots" content="noindex" />')
@@ -53,16 +74,19 @@ test('sitemap.xml und robots.txt', async ({ request }, info) => {
   expect(sitemap.status()).toBe(200)
   const xml = await sitemap.text()
   expect(xml).toContain('<urlset')
-  expect(xml).not.toContain('impressum')
+  expect(xml).toContain('<loc>https://fixit247.at/</loc>')
+  expect(xml).toContain('<loc>https://fixit247.at/partner-werden/</loc>')
+  for (const rechtsseite of ['impressum', 'datenschutz', 'agb']) expect(xml).not.toContain(rechtsseite)
   const robots = await request.get('/robots.txt')
   expect(await robots.text()).toContain('User-agent: *')
 })
 
 test('kein horizontales Scrollen von 320 bis 1920 px', async ({ page }, info) => {
   nurEinmal(info.project.name)
+  test.setTimeout(90_000)
   for (const breite of [320, 360, 390, 559, 560, 639, 640, 768, 919, 920, 1024, 1280, 1440, 1920]) {
     await page.setViewportSize({ width: breite, height: 900 })
-    for (const pfad of PFADE) {
+    for (const pfad of ALLE) {
       await page.goto(pfad)
       const ueberlauf = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth)
       expect(ueberlauf, `${pfad} bei ${breite} px`).toBeLessThanOrEqual(0)

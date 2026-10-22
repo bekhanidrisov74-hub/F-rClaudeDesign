@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { whatsappHref } from '../content/contact'
 import { copy } from '../content/copy'
+import { PARTNER_PFAD, partner } from '../content/partner'
 import { useOverlays } from '../overlays'
 import { Button } from './ui/Button'
 import { CallButton } from './ui/CallButton'
@@ -99,7 +100,12 @@ function OffenesMenue({ aufStartseite }: { aufStartseite: boolean }) {
             </Button>
           </div>
 
-          <ul className="m-0 flex list-none flex-wrap gap-x-s5 gap-y-s2 p-0 pt-s4 pb-s5">
+          {/* Klein unter der Kontaktkarte, nicht als sechster großer Link (SPEC 7 nennt fünf) */}
+          <a href={PARTNER_PFAD} className={`${RECHTSLINK} mt-s4 w-fit font-semibold`}>
+            {partner.einstieg.menue}
+          </a>
+
+          <ul className="m-0 flex list-none flex-wrap gap-x-s5 gap-y-s2 p-0 pt-s2 pb-s5">
             {copy.fuss.links.map((link) => (
               <li key={link.href}>
                 <a href={link.href} className={RECHTSLINK}>
