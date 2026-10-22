@@ -2,7 +2,7 @@
 // Der Browser führt das Gespräch: je Schritt genau eine Frage, nie eine, die schon beantwortet ist.
 // Gewerk, PLZ und Dringlichkeit erkennen lokale Regeln. Eine optionale KI (`Erfasser`) ergänzt nur Felder;
 // ihre Antwort ist fremde Eingabe und wird hier geprüft. Kontaktdaten kommen im Zustand nie vor.
-import { copy, dringlichkeit, fuelle, WEISS_NICHT, type DringlichkeitId } from '../content/copy'
+import { copy, dringlichkeit, fuelle, GEFAHR, WEISS_NICHT, type DringlichkeitId } from '../content/copy'
 import { fragenZu, katalog, type Frage } from '../content/fragen'
 import { gewerke } from '../content/gewerke'
 import { ladePlz } from '../lib/plz'
@@ -366,6 +366,16 @@ function kiZustand(z: Zustand, offen: Frage | null): KiZustand {
 }
 
 /**
+ * Wiederholt die KI-Antwort nur den Notruf? Sie beginnt mit dem Kern-Satz GEFAHR (so steht er im Prompt in public/chat.php, die
+ * KI setzt ihn evtl. in Anführungszeichen) und hat höchstens so viel Rest wie der lokale Hinweis (GEFAHR plus Zusatz).
+ * Eine längere Antwort hat weiteren Inhalt und bleibt.
+ */
+const wiederholtNotruf = (reply: string) => {
+  const glatt = reply.replace(/\s+/g, ' ').replace(/^["'„“”‚‘’»«]+/, '')
+  return glatt.startsWith(GEFAHR) && glatt.length <= t.notruf.length
+}
+
+/**
  * Felder der KI nur additiv übernehmen: nichts Bekanntes überschreiben, nur gültige ids und Werte.
  * Gewerk nur aus der Liste, PLZ nur aus dem Verzeichnis. reply wird als Text angezeigt (React escapt), höchstens 600 Zeichen.
  */
@@ -393,7 +403,7 @@ export function uebernimm(z: Zustand, felder: unknown, plzListe: Readonly<Record
   // Ohne Platzhalter-Prüfung: „Das ist mir unbekannt …“ ist eine echte Antwort
   const reply = typeof f.reply === 'string' ? f.reply.trim().slice(0, 600) : ''
   // Den Notruf-Satz zeigt schon der lokale Hinweis – eine Antwort, die nur ihn wiederholt, entfällt.
-  if (reply && !(z.notruf && /122 bzw\. 112/.test(reply) && reply.length < 90)) {
+  if (reply && !(z.notruf && wiederholtNotruf(reply))) {
     sage(z, reply)
     z.ki = kuerze([...z.ki, { role: 'assistant', content: reply }])
   }

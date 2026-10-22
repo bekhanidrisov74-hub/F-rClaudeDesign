@@ -1,8 +1,8 @@
 import { renderToString } from 'react-dom/server'
 import { describe, expect, test, vi } from 'vitest'
-import { existsSync } from 'node:fs'
-import { copy, GEFAHR } from '../../src/content/copy'
-import { gewerke, type Gewerk } from '../../src/content/gewerke'
+import { existsSync, readFileSync } from 'node:fs'
+import { copy, fuelle, GEFAHR, WOHIN } from '../../src/content/copy'
+import { gewerke, PREISE_STAND, type Gewerk } from '../../src/content/gewerke'
 import { GefahrHinweis, SoGehtEsWeiter } from '../../src/components/ui/SoGehtEsWeiter'
 
 describe('Gewerke-Daten', () => {
@@ -15,6 +15,44 @@ describe('Gewerke-Daten', () => {
       expect(existsSync(`design/icons/${g.icon}.svg`), g.icon).toBe(true)
       for (const feld of ['name', 'schnellwahl', 'karte', 'betrieb', 'tipp', 'tippErfolg'] as const) expect(g[feld], `${g.id}.${feld}`).not.toBe('')
     }
+  })
+})
+
+describe('Stand der Richtpreise (M5)', () => {
+  test('der Satz nennt den Stand, ohne offenen Platzhalter und ohne Garantie-Wort', () => {
+    const satz = fuelle(copy.preisStand, { stand: PREISE_STAND })
+    expect(PREISE_STAND).not.toBe('')
+    expect(satz).toBe(`Stand der Richtpreise: ${PREISE_STAND}.`)
+    expect(satz).not.toMatch(/[{}]/)
+    expect(satz).not.toMatch(/garant|fest|verbindlich/i)
+  })
+})
+
+describe('Wohin die Anfrage geht (M4)', () => {
+  test('WOHIN nennt einen passenden Fachbetrieb, keine Garantie, keine Löschfrist', () => {
+    expect(WOHIN).toContain('einen passenden Fachbetrieb')
+    expect(WOHIN).not.toMatch(/garantiert/i)
+    expect(WOHIN).not.toMatch(/lösch|\d+\s*(Tage|Monate|Jahre)/i)
+  })
+})
+
+describe('Notruf überall gleich (M1)', () => {
+  const shk = gewerke.find((g) => g.id === 'shk')
+
+  test('GEFAHR nennt bei Gasgeruch 128, dazu 122, 144 und 112', () => {
+    expect(GEFAHR).toMatch(/Gasgeruch[^.]*128/)
+    for (const nummer of ['122', '144', '112']) expect(GEFAHR, nummer).toContain(nummer)
+  })
+
+  test('Luna-Hinweis, Heizung-&-Klima-Tipp und Prompt der KI-Luna nennen bei Gas 128', () => {
+    expect(copy.luna.notruf.startsWith(GEFAHR)).toBe(true)
+    expect(copy.luna.notruf).toMatch(/Gasgeruch[^.]*128/)
+    expect(shk?.tipp).toMatch(/Gas[^.]*128/)
+    expect(shk?.tippErfolg).toMatch(/Gas[^.]*128/)
+    // chat.php (Prompt der KI-Luna) trägt GEFAHR wörtlich, nicht eine ältere Fassung
+    const prompt = readFileSync('public/chat.php', 'utf8')
+    expect(prompt).toContain(GEFAHR)
+    expect(prompt).not.toMatch(/122 bzw\. 112/)
   })
 })
 

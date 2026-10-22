@@ -13,10 +13,21 @@ export const NACHTZEIT = '18 bis 8 Uhr'
 export const WEISS_NICHT = 'Weiß ich nicht'
 /** Pfad der Datenschutzerklärung (Fuß, Formular, Luna) */
 export const DATENSCHUTZ = '/datenschutz/'
-/** Gefahr-Hinweis: Antwort in den häufigen Fragen und eigener Absatz in den Erfolgskarten (Formular und Luna), ein Wortlaut. */
-export const GEFAHR = 'Bei akuter Gefahr wie Rauch, Funken oder Gasgeruch kontaktieren Sie bitte sofort 122 bzw. 112.'
+/**
+ * Gefahr-Hinweis: Antwort in den häufigen Fragen und eigener Absatz in den Erfolgskarten (Formular und Luna), ein Wortlaut;
+ * auch Kern von luna.notruf und Satz im Prompt der KI-Luna (public/chat.php).
+ * nicht im Design (Bauplan M1, Text von Beks freigegeben am 22.10.2026), rechtlich prüfen (Haftung für Ratschläge).
+ */
+export const GEFAHR =
+  'Bei akuter Gefahr rufen Sie bitte sofort den Notruf: bei Gasgeruch den Gasnotruf 128, bei Rauch, Brandgeruch, Funken oder Feuer die Feuerwehr 122, bei Verletzten die Rettung 144. Der Euro-Notruf 112 gilt immer.'
 /** nicht im Design (Bauplan B3, Text wartet auf Freigabe): Abschnitt Anfrage und Luna-Zusammenfassung, ein Wortlaut. */
 export const OHNE_KONTO = 'Ein Konto oder eine Anmeldung brauchen Sie nicht.'
+/**
+ * nicht im Design (Bauplan M4, Text von Beks freigegeben am 22.10.2026), rechtlich prüfen (Datenschutz): Satz direkt über dem Senden-Knopf in
+ * Formular und Luna-Zusammenfassung. Stimmt mit aktivem Partner (public/anfrage.php schickt an genau einen Partner und an fixit247)
+ * und ohne (fixit247 vermittelt von Hand an einen). Keine Löschfrist, bis die Datenschutzerklärung sie nennt.
+ */
+export const WOHIN = 'Ihre Anfrage geht an fixit247 und von dort an einen passenden Fachbetrieb, nicht an mehrere.'
 
 /**
  * Einwilligung zur Weitergabe, gleich in Formular und Luna (Entscheidung vom 14.10.2026: ein Text für dieselbe Weitergabe,
@@ -73,6 +84,11 @@ export const copy = {
 
   /** Abrechnungseinheiten (Leistungen, Preisübersicht, Rechner, Luna) */
   einheit: { stunde: 'pro Stunde', einsatz: 'pro Einsatz' },
+  /**
+   * {stand}: PREISE_STAND aus gewerke.ts, gefüllt mit fuelle() dort, wo der Satz gezeigt wird (Ergebniskarte, Preisübersicht).
+   * nicht im Design (Bauplan M5, Text von Beks freigegeben am 22.10.2026), rechtlich prüfen (Preisangaben).
+   */
+  preisStand: 'Stand der Richtpreise: {stand}.',
   /** Bindewort für Aufzählungen: „Sonntag und Nacht“ */
   und: 'und',
   /** Ort, den Luna aus der PLZ ableitet (Entscheidung 2: nur Wien) */
@@ -425,7 +441,8 @@ export const copy = {
     gewerkNochmal:
       'Das kann ich noch keinem Gewerk zuordnen. Bitte wählen Sie das passende Gewerk oder beschreiben Sie genauer, was nicht funktioniert.',
     kurz: 'Können Sie das Problem in ein paar Worten beschreiben? Zum Beispiel: Unter der Spüle tritt Wasser aus.',
-    notruf: 'Bei akuter Gefahr bitte sofort 122 bzw. 112 kontaktieren. Ich nehme Ihre Anfrage parallel weiter auf.',
+    // Bauplan M1: Kern-Satz GEFAHR, hier mit dem Zusatz, dass Luna die Anfrage weiter aufnimmt
+    notruf: `${GEFAHR} Ich nehme Ihre Anfrage parallel weiter auf.`,
     zusammenfassungIntro: 'Danke. Bitte prüfen Sie Ihre Anfrage und ergänzen Sie, wie der Betrieb Sie erreicht.',
     notiert: 'Notiert. Das nehme ich in die Anfrage auf.',
     ueberspringen: 'Überspringen',

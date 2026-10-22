@@ -1,5 +1,5 @@
 // Prüfregeln für Formular und Luna (SPEC 8 und 9).
-import { WEISS_NICHT, copy } from '../content/copy'
+import { WEISS_NICHT, copy, dringlichkeit, type DringlichkeitId } from '../content/copy'
 import { gewerke } from '../content/gewerke'
 import type { Lead } from './submitLead'
 
@@ -42,11 +42,25 @@ export interface FormularWerte {
   /** freiwillig: leer oder eine gültige Adresse (dann geht eine Bestätigungsmail an die Kundin oder den Kunden) */
   email: string
   beschreibung: string
+  /** gewählte Stufe; ohne Wahl und bei jedem anderen Wert URGENT (wie der Server-Standard) */
+  dringlichkeit: DringlichkeitId
   einwilligung: boolean
 }
 
 export type FormularFeld = keyof FormularWerte
-export const LEERES_FORMULAR: FormularWerte = { name: '', telefon: '', plzOrt: '', gewerk: '', email: '', beschreibung: '', einwilligung: false }
+export const LEERES_FORMULAR: FormularWerte = {
+  name: '',
+  telefon: '',
+  plzOrt: '',
+  gewerk: '',
+  email: '',
+  beschreibung: '',
+  dringlichkeit: 'URGENT',
+  einwilligung: false,
+}
+
+/** Wert der Radiogruppe als Stufe; alles außer ACUTE, URGENT und NORMAL wird zu URGENT. */
+export const zuDringlichkeit = (wert: string): DringlichkeitId => dringlichkeit.find((d) => d.id === wert)?.id ?? 'URGENT'
 
 /** PLZ und Ort; fehlt der Ort, wird er aus der PLZ abgeleitet, wenn das sicher geht (Wien). */
 function plzUndOrt(eingabe: string) {
@@ -73,6 +87,7 @@ export function pruefeFeld(feld: FormularFeld, w: FormularWerte, gewerkIds: read
     case 'einwilligung':
       return w.einwilligung ? null : f.einwilligung
     case 'beschreibung':
+    case 'dringlichkeit':
       return null
   }
 }
@@ -100,7 +115,7 @@ export function formularZuLead(w: FormularWerte, anfrageId: string): Lead {
     ort: ort.ort,
     kategorie: gewerk?.id ?? '',
     bereich: gewerk?.name ?? WEISS_NICHT,
-    dringlichkeit: '',
+    dringlichkeit: w.dringlichkeit,
     wunschtermin: '',
     text: [w.beschreibung.trim(), '(Anfrage über das Formular)'].filter(Boolean).join('\n\n'),
     antworten: {},

@@ -1,4 +1,5 @@
 import { describe, expect, test, vi } from 'vitest'
+import { copy, GEFAHR } from '../content/copy'
 import { katalog } from '../content/fragen'
 import { gewerke } from '../content/gewerke'
 import { ladePlz } from '../lib/plz'
@@ -121,9 +122,7 @@ describe('Freitext und lokale Erkennung', () => {
     expect(z.anfrage.gewerk).toBe('elektro')
     expect(z.anfrage.dringlichkeit).toBe('ACUTE')
     expect(z.anfrage.antworten.gefahr).toBe('Funken')
-    expect(z.verlauf.find((n) => n.von === 'notruf')?.text).toBe(
-      'Bei akuter Gefahr bitte sofort 122 bzw. 112 kontaktieren. Ich nehme Ihre Anfrage parallel weiter auf.',
-    )
+    expect(z.verlauf.find((n) => n.von === 'notruf')?.text).toBe(copy.luna.notruf)
   })
 
   test('Chip „Funken“ bei der Gefahrenfrage', async () => {
@@ -220,6 +219,28 @@ describe('KI-Erfassung (optional)', () => {
     expect(gesendet).not.toMatch(/0664|1234567|@/)
     expect(erfasse.mock.calls[0][0].at(-1)?.content).toBe('Rohrbruch, bitte Maria Huber anrufen: [Nummer entfernt] oder [Nummer entfernt], [E-Mail entfernt]')
     expect(ohneKontakt('PLZ 1020 Wien, seit 2020, am 05.10., Baujahr 2015, Fehler 0815')).toBe('PLZ 1020 Wien, seit 2020, am 05.10., Baujahr 2015, Fehler 0815')
+  })
+
+  test('Notruf (M1): eine KI-Antwort, die nur den Kern-Satz wiederholt, entfällt – nur bei gezeigtem Hinweis', async () => {
+    const liste = await ladePlz()
+    const antwort = (notruf: boolean, reply: string) => {
+      const z = start()
+      z.notruf = notruf
+      uebernimm(z, { reply }, liste)
+      return z
+    }
+    for (const reply of [GEFAHR, `„${GEFAHR}“`, copy.luna.notruf]) {
+      expect(antwort(true, reply).verlauf.map((n) => n.text), reply).not.toContain(reply)
+      expect(antwort(true, reply).ki).toEqual([])
+    }
+    // ohne gezeigten Hinweis bleibt auch der Kern-Satz stehen
+    expect(antwort(false, GEFAHR).verlauf.map((n) => n.text)).toContain(GEFAHR)
+    // andere Antworten bleiben: auch mit Notruf-Satz hinter anderem Inhalt oder mit viel Inhalt dahinter
+    for (const reply of ['Die Vermittlung ist kostenlos.', `Bleiben Sie ruhig. ${GEFAHR}`, `${GEFAHR} ${'Die Vermittlung ist kostenlos. '.repeat(3)}`.trim()]) {
+      const z = antwort(true, reply)
+      expect(z.verlauf.map((n) => n.text), reply).toContain(reply)
+      expect(z.ki.at(-1)).toEqual({ role: 'assistant', content: reply })
+    }
   })
 
   test('fremdes Format, falsches Gewerk, ungültige PLZ und Platzhalter werden ignoriert', async () => {

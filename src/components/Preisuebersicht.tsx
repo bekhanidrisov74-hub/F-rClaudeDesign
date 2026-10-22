@@ -1,6 +1,6 @@
 import { useEffect, useRef, type MouseEvent } from 'react'
-import { copy } from '../content/copy'
-import { anfahrtText, einheit, gewerke, spanne } from '../content/gewerke'
+import { copy, fuelle } from '../content/copy'
+import { anfahrtText, einheit, gewerke, PREISE_STAND, spanne } from '../content/gewerke'
 import { useOverlays } from '../overlays'
 import { Button } from './ui/Button'
 import { CallButton } from './ui/CallButton'
@@ -8,6 +8,7 @@ import { Icon } from './ui/Icon'
 import { IconKreis } from './ui/IconKreis'
 
 const t = copy.preisuebersicht
+const stand = fuelle(copy.preisStand, { stand: PREISE_STAND })
 
 /**
  * Das <dialog> ist selbst die Karte (Anzeige bleibt dem Browser überlassen, sonst wäre das geschlossene Fenster sichtbar).
@@ -78,7 +79,10 @@ export function Preisuebersicht({ aufStartseite = true }: { aufStartseite?: bool
           >
             <Icon name="ui-schliessen" className="size-[20px]" />
           </button>
-          <p className="col-span-2 mt-s3 text-small text-schiefer dialog:col-span-1 dialog:mt-s2 dialog:text-text">{t.lead}</p>
+          {/* Stand im Kopf-Satz (Dialog und Sheet gleich): Hier kostet er keine Zeile, unten schob er bei 768 px Fensterhöhe den Anruf-Knopf unter den Rand. */}
+          <p className="col-span-2 mt-s3 text-small text-schiefer dialog:col-span-1 dialog:mt-s2 dialog:text-text">
+            {t.lead} {stand}
+          </p>
         </div>
 
         {/* ab 640 px: Tabelle */}

@@ -22,7 +22,7 @@ Deshalb gilt:
 
 ## 2. Zustände
 INITIAL → CLASSIFYING → ASKING → LOCATION → SUMMARY → MATCHING → MATCH_FOUND | NO_MATCH → COMPLETED
-Dazu ERROR (Knopf „Erneut versuchen") und EMERGENCY. EMERGENCY ist nur ein Hinweis („Bei akuter Gefahr bitte sofort 122 bzw. 112 kontaktieren. Ich nehme Ihre Anfrage parallel weiter auf."), der Ablauf läuft danach weiter.
+Dazu ERROR (Knopf „Erneut versuchen") und EMERGENCY. EMERGENCY ist nur ein Hinweis („Bei akuter Gefahr rufen Sie bitte sofort den Notruf: bei Gasgeruch den Gasnotruf 128, bei Rauch, Brandgeruch, Funken oder Feuer die Feuerwehr 122, bei Verletzten die Rettung 144. Der Euro-Notruf 112 gilt immer. Ich nehme Ihre Anfrage parallel weiter auf."), der Ablauf läuft danach weiter.
 
 - Fortschrittsanzeige in 4 Schritten: Problem → Details → Ort → Prüfen.
 - Der Zustand liegt in `sessionStorage` (`fixit-luna`). Ein Neuladen setzt das Gespräch fort.

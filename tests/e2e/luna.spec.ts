@@ -1,3 +1,4 @@
+import { copy, GEFAHR, WOHIN } from '../../src/content/copy'
 import { expect, test, type Page } from './test'
 import {
   antworteLuna,
@@ -215,7 +216,7 @@ test('Notruf-Hinweis bei „Funken“, der Ablauf läuft weiter', async ({ page 
   await oeffneLuna(page)
   for (const a of ['Elektro', 'Kein Strom', 'Ein Raum', 'Ja', 'Funken']) await antworteLuna(page, a)
   const c = chat(page)
-  await expect(c.getByRole('alert')).toHaveText('Bei akuter Gefahr bitte sofort 122 bzw. 112 kontaktieren. Ich nehme Ihre Anfrage parallel weiter auf.')
+  await expect(c.getByRole('alert')).toHaveText(copy.luna.notruf)
   // ACUTE ist gesetzt: keine Frage nach der Dringlichkeit, weiter zum Ort
   await expect(c).toContainText('Wie lautet Ihre Postleitzahl?')
 })
@@ -256,6 +257,20 @@ test('Zusammenfassung: Kontaktdaten und Einwilligung sind Pflicht, der erste Feh
   await expect(c.getByRole('checkbox')).toBeFocused()
 })
 
+test('Zusammenfassung: WOHIN steht nach dem Hinweis und über den Knöpfen', async ({ page }) => {
+  await page.goto('/')
+  await lunaBisZusammenfassung(page)
+  const c = chat(page)
+  const satz = c.getByText(WOHIN, { exact: true })
+  await expect(satz).toHaveCount(1)
+  await satz.scrollIntoViewIfNeeded()
+  const s = (await satz.boundingBox())!
+  const hinweis = (await c.getByText(copy.luna.zusammenfassung.hinweis, { exact: true }).boundingBox())!
+  const auftrag = (await c.getByRole('button', { name: 'Auftrag aufgeben' }).boundingBox())!
+  expect(s.y).toBeGreaterThanOrEqual(hinweis.y + hinweis.height)
+  expect(s.y + s.height).toBeLessThanOrEqual(auftrag.y)
+})
+
 test('Auftrag aufgeben: ein POST an den Anfrage-Eingang mit allen Feldern, Erfolg, Neue Anfrage', async ({ page }) => {
   const fehler: string[] = []
   page.on('console', (m) => m.type() === 'error' && fehler.push(m.text()))
@@ -294,7 +309,7 @@ test('Auftrag aufgeben: ein POST an den Anfrage-Eingang mit allen Feldern, Erfol
   // So geht es weiter: Karte h2, darunter h3; ohne E-Mail keine Bestätigungszeile
   await expect(c.getByRole('heading', { level: 3, name: 'So geht es weiter' })).toBeVisible()
   for (const titel of ['Passender Fachbetrieb', 'Rückruf', 'Direkt mit dem Fachbetrieb']) await expect(c.getByRole('listitem').filter({ hasText: titel })).toHaveCount(1)
-  await expect(c).toContainText('Bei akuter Gefahr wie Rauch, Funken oder Gasgeruch kontaktieren Sie bitte sofort 122 bzw. 112.')
+  await expect(c).toContainText(GEFAHR)
   await expect(c).not.toContainText('Eine Bestätigung')
   await expect(c.getByRole('progressbar')).toHaveCount(0)
   // Kontaktdaten nach dem Abschluss nicht in der Sitzung

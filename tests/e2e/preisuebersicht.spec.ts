@@ -1,6 +1,7 @@
 import { expect, test } from './test'
-import { oeffnePreisuebersicht, preisDialog } from './hilfen'
-import { gewerke } from '../../src/content/gewerke'
+import { ergebnis, oeffnePreisuebersicht, preisDialog } from './hilfen'
+import { copy, fuelle } from '../../src/content/copy'
+import { gewerke, PREISE_STAND } from '../../src/content/gewerke'
 
 const schliessen = 'Preisübersicht schließen'
 
@@ -111,4 +112,30 @@ test('Gewerke-Icons: flache SVGs im Lagune-Kreis wie bei den Vorteilen, bündig 
   // ab 640 px Tabelle mit 44-px-Kreisen, darunter die Liste im Sheet mit 40 px
   const breite = info.project.name === 'm390' ? 40 : 44
   for (const k of kreise) expect(k).toEqual({ breite, links: 0, flaeche: 'rgb(190, 240, 246)' })
+})
+
+test('Stand der Richtpreise: im Kopf-Satz von Dialog und Sheet, derselbe Wortlaut wie in der Ergebniskarte', async ({ page }, info) => {
+  const stand = fuelle(copy.preisStand, { stand: PREISE_STAND })
+  await page.goto('/#preisrechner')
+  const karte = ergebnis(page)
+  await expect(karte.getByText(stand, { exact: true })).toBeVisible()
+  await oeffnePreisuebersicht(page)
+  const dialog = preisDialog(page)
+  const sichtbar = dialog.getByText(stand).locator('visible=true')
+  await expect(sichtbar).toHaveCount(1)
+  await expect(sichtbar).toHaveText(`${copy.preisuebersicht.lead} ${stand}`)
+  await expect(sichtbar).toHaveJSProperty('tagName', 'P')
+  // Die Hinweise unten bleiben unverändert
+  if (info.project.name === 'm390') await expect(dialog.getByText(copy.preisuebersicht.hinweisSheet, { exact: true })).toBeVisible()
+  else expect(await dialog.locator('ul:visible').last().locator('li').allTextContents()).toEqual([...copy.preisuebersicht.hinweiseDialog])
+})
+
+test('Preisübersicht bei 1024 × 768: Anruf-Knopf ganz im Dialog, ohne Scrollen', async ({ page }, info) => {
+  test.skip(info.project.name !== 't1024', 'eine niedrige Fensterhöhe genügt')
+  await page.goto('/')
+  await oeffnePreisuebersicht(page)
+  const dialog = preisDialog(page)
+  const rahmen = (await dialog.boundingBox())!
+  const knopf = (await dialog.getByRole('link', { name: /Jetzt anrufen/ }).locator('visible=true').boundingBox())!
+  expect(knopf.y + knopf.height).toBeLessThanOrEqual(rahmen.y + rahmen.height)
 })
