@@ -136,7 +136,8 @@ const SZENARIEN = {
   async s3_stromausfall_luna(page, z) {
     await page.goto(`${BASIS}/`, { waitUntil: 'commit' })
     const c = page.getByRole('dialog', { name: 'Chat mit Luna' })
-    const knopf = page.getByRole('button', { name: 'Chat mit Luna öffnen' })
+    // Seit 19.10.2026 erscheint der schwebende Knopf erst nach dem Hero; die Karte „Nicht sicher? Luna fragen“ ist der frühere Einstieg.
+    const knopf = page.getByRole('link', { name: /Luna fragen/ }).first()
     let tote = 0
     for (;;) {
       await z.tippe(knopf, 'Luna-Knopf')
@@ -207,6 +208,7 @@ const SZENARIEN = {
 const szenarien = []
 for (const gedrosselt of [false, true]) {
   for (const [name, fn] of Object.entries(SZENARIEN)) {
+    if (process.env.NUR && name !== process.env.NUR) continue
     const har = gedrosselt && name === 's1_aussperrung_anruf' ? path.join(aus, 's1-gedrosselt.har') : undefined
     const { ctx, page, anfragen } = await seite({ gedrosselt, har })
     const z = zaehler(page)

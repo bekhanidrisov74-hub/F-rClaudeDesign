@@ -115,7 +115,8 @@
 .hd-hero {
   position: relative;
   max-width: var(--fx-rahmen);
-  height: calc(697 * var(--fx-hd-px));
+  /* min-height: Mit größerem Textabstand (WCAG 1.4.12) wächst der Hero mit, statt Text unter die Vorteile zu schieben */
+  min-height: calc(697 * var(--fx-hd-px));
   margin-inline: auto;
 }
 
@@ -170,6 +171,8 @@
   font-stretch: normal;
   letter-spacing: -0.052em;
   text-wrap: wrap;
+  /* Notbremse für Textabstand und große Schrift: lieber mitten im Wort umbrechen als abschneiden */
+  overflow-wrap: anywhere;
 }
 
 .hd-titel span {
@@ -225,8 +228,8 @@
   display: flex;
   align-items: center;
   gap: var(--fx-hd-s-cta-gap);
-  width: calc(358 * var(--fx-hd-px));
-  height: calc(79 * var(--fx-hd-px));
+  min-width: calc(358 * var(--fx-hd-px));
+  min-height: calc(79 * var(--fx-hd-px));
   box-sizing: border-box;
   padding-left: var(--fx-hd-s-cta-l);
   border-radius: var(--fx-r-pill);
@@ -278,8 +281,8 @@
   display: flex;
   align-items: center;
   gap: var(--fx-hd-s-anfrage-gap);
-  width: calc(288 * var(--fx-hd-px));
-  height: calc(72 * var(--fx-hd-px));
+  min-width: calc(288 * var(--fx-hd-px));
+  min-height: calc(72 * var(--fx-hd-px));
   box-sizing: border-box;
   padding: var(--fx-hd-s-anfrage-o) 0 0 var(--fx-hd-s-anfrage-l);
   border: var(--fx-border) solid var(--fx-hd-rand);
@@ -306,7 +309,7 @@
   align-items: center;
   gap: var(--fx-hd-s-info-gap);
   width: calc(659 * var(--fx-hd-px));
-  height: calc(103 * var(--fx-hd-px));
+  min-height: calc(103 * var(--fx-hd-px));
   box-sizing: border-box;
   margin-top: var(--fx-hd-s-info);
   padding-left: var(--fx-hd-s-info-l);
@@ -357,7 +360,7 @@
   display: flex;
   align-items: flex-start;
   gap: var(--fx-hd-s-vorteil-gap);
-  height: calc(94 * var(--fx-hd-px));
+  min-height: calc(94 * var(--fx-hd-px));
   box-sizing: border-box;
 }
 
@@ -396,7 +399,13 @@
   line-height: calc(24 * var(--fx-hd-px));
   font-weight: 600;
   font-stretch: normal;
-  white-space: nowrap;
+  /* Kein nowrap: Bei größerem Textabstand (WCAG 1.4.12) bricht der Titel um, statt am Rand der Fläche abgeschnitten zu werden. */
+}
+
+/* Wie im Entwurf ragt „Faire & transparente Preise“ über seine Spalte in den rechten Rand: Der letzte Titel darf ihn nutzen und bleibt
+   so ohne Nutzer-Stylesheet einzeilig (alles skaliert mit --fx-hd-px, gilt also ab 1280 px auf jeder Breite). */
+.hd-vorteil:last-child h2 {
+  margin-right: var(--fx-hd-s-vorteile-r-zurueck);
 }
 
 .hd-vorteil p {
@@ -446,7 +455,7 @@
   .hd-hero {
     display: flex;
     flex-direction: column;
-    height: auto;
+    min-height: 0;
   }
 
   /* Entwurf: 280 px hoch, das ist bei 390 px das Seitenverhältnis des Bildes. Breiter wächst es mit, damit der Stephansdom
@@ -479,7 +488,6 @@
 
   .hd-titel .hd-akzent {
     font-size: var(--fx-hd-h1-akzent-handy);
-    white-space: nowrap;
   }
 
   .hd-lead {
@@ -495,12 +503,17 @@
   .hd-cta,
   .hd-anfrage {
     width: 100%;
+    min-width: 0;
+  }
+
+  .hd-cta-text {
+    min-width: 0;
   }
 
   .hd-info {
     gap: var(--fx-s-4);
     width: 100%;
-    height: auto;
+    min-height: 0;
     padding: var(--fx-hd-s-info-handy);
   }
 
@@ -526,15 +539,15 @@
 
   .hd-vorteil,
   .hd-vorteil + .hd-vorteil {
-    height: auto;
+    min-height: 0;
     padding-left: 0;
     border-left: 0;
   }
 
-  /* Unter 390 px passt „Faire & transparente Preise“ nicht in eine Zeile */
-  .hd-vorteil h2 {
-    white-space: normal;
+  .hd-vorteil:last-child h2 {
+    margin-right: 0;
   }
+
 }
 
 /* Tablet quer (nicht im Entwurf): die Vorteile in zwei Spalten statt einer langen Liste */

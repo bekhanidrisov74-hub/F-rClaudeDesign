@@ -1,0 +1,2 @@
+nachher /impressum/  lange Aufgaben 4 Summe>50ms 168 ms Globus gezeichnet: true
+nachher /            lange Aufgaben 4 Summe>50ms 504 ms Globus gezeichnet: false

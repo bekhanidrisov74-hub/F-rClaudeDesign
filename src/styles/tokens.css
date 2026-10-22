@@ -198,6 +198,7 @@
   --fx-hd-s-vorteile-o: calc(29 * var(--fx-hd-px));
   --fx-hd-s-vorteile-o-handy: 36px;
   --fx-hd-s-vorteile-r: calc(80 * var(--fx-hd-px));
+  --fx-hd-s-vorteile-r-zurueck: calc(-1 * var(--fx-hd-s-vorteile-r)); /* letzter Vorteilstitel ragt in den rechten Rand (hero.css) */
   --fx-hd-s-vorteile-u: calc(72 * var(--fx-hd-px));
   --fx-hd-s-vorteile-u-handy: 48px;
   --fx-hd-s-vorteile-l: calc(93 * var(--fx-hd-px));

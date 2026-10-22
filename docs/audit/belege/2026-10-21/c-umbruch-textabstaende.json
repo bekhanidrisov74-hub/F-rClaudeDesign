@@ -1,0 +1,30 @@
+[
+  {
+    "breite": 320,
+    "scrollWidth": 320
+  },
+  {
+    "breite": 640,
+    "scrollWidth": 640
+  },
+  {
+    "breite": 390,
+    "textabstaende": true,
+    "scrollWidth": 398,
+    "abgeschnitten": [
+      "div.hd: Handwerker-\nNotdienst.\nRund um die Uhr.\n",
+      "div.wortmarke: fixit247",
+      "div.wrapper: fixit247"
+    ]
+  },
+  {
+    "breite": 1440,
+    "textabstaende": true,
+    "scrollWidth": 1440,
+    "abgeschnitten": [
+      "div.hd: Handwerker-\nNotdienst.\nRund um die Uhr.\n",
+      "div.wortmarke: fixit247",
+      "div.wrapper: fixit247"
+    ]
+  }
+]

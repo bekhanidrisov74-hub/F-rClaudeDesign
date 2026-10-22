@@ -425,3 +425,20 @@ test('Angaben bleiben beim Ausfüllen erhalten', async ({ page }) => {
   await fuelleFormular(page)
   await expect(anfrage(page).getByLabel(/^PLZ und Ort/)).toHaveValue('1020 Wien')
 })
+
+test('Kachel vor der Hydrierung angetippt: Sprung zum Formular, danach ist das Gewerk vorgewählt (Audit A4)', async ({ page }) => {
+  // App-Bundle zurückhalten: So lange ist die Seite nur vorgerendertes HTML (langsames Netz)
+  let freigeben = () => {}
+  const frei = new Promise<void>((r) => (freigeben = r))
+  await page.route(/\/assets\/index-[^/]+\.js$/, async (route) => {
+    await frei
+    await route.continue()
+  })
+  await page.mainFrame().goto('/', { waitUntil: 'domcontentloaded' })
+  await page.locator('section[aria-labelledby="schnellwahl-titel"] a[data-gewerk="installateur"]').click()
+  await expect(page).toHaveURL(/#anfrage-installateur$/)
+  await expect(page.locator('#anfrage-titel')).toBeInViewport()
+  freigeben()
+  await page.locator('html[data-hydriert]').waitFor({ state: 'attached' })
+  await expect(anfrage(page).getByLabel(/^Gewerk/)).toHaveValue('installateur')
+})

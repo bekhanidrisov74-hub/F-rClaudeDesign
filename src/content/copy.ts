@@ -562,6 +562,8 @@ export const copy = {
       },
     },
     agb: { titel: 'AGB', text: '[AGB folgen]' },
+    // nicht im Design: Seite für unbekannte Adressen (404, Audit-Befund H5), liegt als dist/404.html
+    nichtGefunden: { titel: 'Seite nicht gefunden', text: 'Diese Adresse gibt es auf unserer Website nicht. Auf der Startseite finden Sie alle Wege zur Hilfe.' },
     zurueck: 'Zur Startseite', // nicht im Design
   },
 } as const

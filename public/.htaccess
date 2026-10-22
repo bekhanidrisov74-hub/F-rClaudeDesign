@@ -9,3 +9,6 @@
   RewriteRule ^ https://fixit247.at%{REQUEST_URI} [R=301,L]
 </IfModule>
 AddType text/vcard .vcf
+
+# Unbekannte Pfade: eigene Seite mit Status 404 (dist/404.html aus scripts/prerender.mjs), nie Umleitung auf die Startseite.
+ErrorDocument 404 /404.html

@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import { GEFAHR, copy, fuelle } from '../content/copy'
 import { fragenZu } from '../content/fragen'
-import { PREISE_STAND, anfahrtText, einheit, spanne, type Gewerk } from '../content/gewerke'
+import { PREISE_STAND, anfahrtText, anfrageAnker, einheit, spanne, type Gewerk } from '../content/gewerke'
 import { gewerkText, gewerkseiten } from '../content/gewerkseiten'
 import { Ablauf } from './Ablauf'
 import { Seitenrahmen } from './Seitenrahmen'
@@ -82,8 +82,8 @@ export function GewerkSeite({ gewerk: g }: { gewerk: Gewerk }) {
               Unter 1280 px stehen sie untereinander und füllen die Breite, deshalb hier höchstens 480 px. */}
           <div className="hd-ctas max-w-[480px] hd:max-w-none">
             <CallButton variante="hero" nummer />
-            {/* /?gewerk=…: Die Startseite wählt das Gewerk im Formular vor (AnfrageFormular) */}
-            <a href={`/?gewerk=${g.id}#anfrage`} className="hd-anfrage">
+            {/* /#anfrage-<id>: Die Startseite wählt das Gewerk über den Anker vor (AnfrageFormular, anfrageAnker) */}
+            <a href={`/#${anfrageAnker(g.id)}`} className="hd-anfrage">
               <Icon name="anfrage" className="hd-anfrage-icon" />
               <span className="hd-anfrage-label">{copy.hero.anfrage}</span>
             </a>

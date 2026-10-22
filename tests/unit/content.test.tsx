@@ -3,7 +3,7 @@ import { describe, expect, test, vi } from 'vitest'
 import { existsSync, readFileSync } from 'node:fs'
 import { beschwerdeHref } from '../../src/content/contact'
 import { copy, fuelle, GEFAHR, WOHIN } from '../../src/content/copy'
-import { gewerke, PREISE_STAND, type Gewerk } from '../../src/content/gewerke'
+import { anfrageAnker, gewerke, PREISE_STAND, type Gewerk } from '../../src/content/gewerke'
 import { gewerkseiten, gewerkText, type GewerkSeitenText } from '../../src/content/gewerkseiten'
 import { partner } from '../../src/content/partner'
 import { Fragen } from '../../src/components/Fragen'
@@ -252,7 +252,7 @@ describe('Notfall-Seiten je Gewerk (M7)', () => {
       expect(html.match(/<h1[ >]/g), g.id).toHaveLength(1)
       expect(main, g.id).toContain(gewerkText(g.id).h1)
       expect(main.indexOf('href="tel:'), g.id).toBeGreaterThan(-1)
-      expect(main.indexOf('href="tel:'), g.id).toBeLessThan(main.indexOf(`href="/?gewerk=${g.id}#anfrage"`))
+      expect(main.indexOf('href="tel:'), g.id).toBeLessThan(main.indexOf(`href="/#${anfrageAnker(g.id)}"`))
       // GEFAHR enthält „“ nicht, aber Apostroph-freie Sonderzeichen: renderToString maskiert nur & < > "
       expect(main, g.id).toContain(GEFAHR)
       expect(main, g.id).toContain(`${g.min}–${g.max} €`)

@@ -1,0 +1,252 @@
+[
+  {
+    "breite": 390,
+    "seite": "/",
+    "axe_verstoesse": [],
+    "axe_pruefen": [
+      {
+        "id": "color-contrast",
+        "knoten": 9
+      }
+    ],
+    "ueberlauf_px": 0,
+    "kleine_ziele": [],
+    "scrollbare_bereiche": [
+      {
+        "el": "div.wischreihe",
+        "tabindex": null,
+        "role": null,
+        "label": null,
+        "fokussierbareKinder": 5
+      }
+    ],
+    "bewegung": {
+      "endlos": 0,
+      "canvas": 1,
+      "video": 0
+    }
+  },
+  {
+    "breite": 390,
+    "seite": "/impressum/",
+    "axe_verstoesse": [],
+    "axe_pruefen": [
+      {
+        "id": "color-contrast",
+        "knoten": 5
+      }
+    ],
+    "ueberlauf_px": 0,
+    "kleine_ziele": [],
+    "scrollbare_bereiche": [],
+    "bewegung": {
+      "endlos": 0,
+      "canvas": 1,
+      "video": 0
+    }
+  },
+  {
+    "breite": 768,
+    "seite": "/",
+    "axe_verstoesse": [],
+    "axe_pruefen": [
+      {
+        "id": "color-contrast",
+        "knoten": 5
+      }
+    ],
+    "ueberlauf_px": 0,
+    "kleine_ziele": [],
+    "scrollbare_bereiche": [],
+    "bewegung": {
+      "endlos": 0,
+      "canvas": 1,
+      "video": 0
+    }
+  },
+  {
+    "breite": 768,
+    "seite": "/impressum/",
+    "axe_verstoesse": [],
+    "axe_pruefen": [
+      {
+        "id": "color-contrast",
+        "knoten": 1
+      }
+    ],
+    "ueberlauf_px": 0,
+    "kleine_ziele": [],
+    "scrollbare_bereiche": [],
+    "bewegung": {
+      "endlos": 0,
+      "canvas": 1,
+      "video": 0
+    }
+  },
+  {
+    "breite": 1024,
+    "seite": "/",
+    "axe_verstoesse": [],
+    "axe_pruefen": [
+      {
+        "id": "color-contrast",
+        "knoten": 5
+      }
+    ],
+    "ueberlauf_px": 0,
+    "kleine_ziele": [],
+    "scrollbare_bereiche": [],
+    "bewegung": {
+      "endlos": 0,
+      "canvas": 1,
+      "video": 0
+    }
+  },
+  {
+    "breite": 1024,
+    "seite": "/impressum/",
+    "axe_verstoesse": [],
+    "axe_pruefen": [
+      {
+        "id": "color-contrast",
+        "knoten": 2
+      }
+    ],
+    "ueberlauf_px": 0,
+    "kleine_ziele": [],
+    "scrollbare_bereiche": [],
+    "bewegung": {
+      "endlos": 0,
+      "canvas": 1,
+      "video": 0
+    }
+  },
+  {
+    "breite": 1440,
+    "seite": "/",
+    "axe_verstoesse": [],
+    "axe_pruefen": [
+      {
+        "id": "color-contrast",
+        "knoten": 1
+      }
+    ],
+    "ueberlauf_px": 0,
+    "kleine_ziele": [],
+    "scrollbare_bereiche": [],
+    "bewegung": {
+      "endlos": 0,
+      "canvas": 1,
+      "video": 0
+    }
+  },
+  {
+    "breite": 1440,
+    "seite": "/impressum/",
+    "axe_verstoesse": [],
+    "axe_pruefen": [
+      {
+        "id": "color-contrast",
+        "knoten": 1
+      }
+    ],
+    "ueberlauf_px": 0,
+    "kleine_ziele": [],
+    "scrollbare_bereiche": [],
+    "bewegung": {
+      "endlos": 0,
+      "canvas": 1,
+      "video": 0
+    }
+  },
+  {
+    "breite": 1920,
+    "seite": "/",
+    "axe_verstoesse": [],
+    "axe_pruefen": [
+      {
+        "id": "color-contrast",
+        "knoten": 2
+      }
+    ],
+    "ueberlauf_px": 0,
+    "kleine_ziele": [],
+    "scrollbare_bereiche": [],
+    "bewegung": {
+      "endlos": 0,
+      "canvas": 1,
+      "video": 0
+    }
+  },
+  {
+    "breite": 1920,
+    "seite": "/impressum/",
+    "axe_verstoesse": [],
+    "axe_pruefen": [
+      {
+        "id": "color-contrast",
+        "knoten": 1
+      }
+    ],
+    "ueberlauf_px": 0,
+    "kleine_ziele": [],
+    "scrollbare_bereiche": [],
+    "bewegung": {
+      "endlos": 0,
+      "canvas": 1,
+      "video": 0
+    }
+  },
+  {
+    "breite": 2560,
+    "seite": "/",
+    "axe_verstoesse": [],
+    "axe_pruefen": [
+      {
+        "id": "color-contrast",
+        "knoten": 2
+      }
+    ],
+    "ueberlauf_px": 0,
+    "kleine_ziele": [],
+    "scrollbare_bereiche": [],
+    "bewegung": {
+      "endlos": 0,
+      "canvas": 1,
+      "video": 0
+    }
+  },
+  {
+    "breite": 2560,
+    "seite": "/impressum/",
+    "axe_verstoesse": [],
+    "axe_pruefen": [
+      {
+        "id": "color-contrast",
+        "knoten": 1
+      }
+    ],
+    "ueberlauf_px": 0,
+    "kleine_ziele": [],
+    "scrollbare_bereiche": [],
+    "bewegung": {
+      "endlos": 0,
+      "canvas": 1,
+      "video": 0
+    }
+  },
+  {
+    "reduziert": 390,
+    "bewegung": {
+      "endlos": 0,
+      "canvas": 1
+    }
+  },
+  {
+    "reduziert": 1440,
+    "bewegung": {
+      "endlos": 0,
+      "canvas": 1
+    }
+  }
+]

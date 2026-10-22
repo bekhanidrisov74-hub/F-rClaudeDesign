@@ -1,0 +1,14 @@
+{
+  "verstoesse": [],
+  "zu_pruefen": [
+    {
+      "id": "color-contrast",
+      "knoten": 9,
+      "beispiel": [
+        "#hero-titel > span:nth-child(1)"
+      ],
+      "grund": "Element's background color could not be determined due to a background gradient"
+    }
+  ],
+  "bestanden": 36
+}

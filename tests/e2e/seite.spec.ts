@@ -1,7 +1,7 @@
 import { expect, test } from './test'
 import { copy } from '../../src/content/copy'
 import { DOMAIN } from '../../src/content/contact'
-import { gewerke } from '../../src/content/gewerke'
+import { anfrageAnker, gewerke } from '../../src/content/gewerke'
 import { gewerkText, gewerkseiten } from '../../src/content/gewerkseiten'
 import { partner } from '../../src/content/partner'
 import { SECURITY_TXT_PFAD, securityTxt } from '../../src/lib/securityTxt'
@@ -12,9 +12,11 @@ const RECHTSSEITEN = ['/impressum/', '/datenschutz/', '/agb/']
 /** Notfall-Seiten je Gewerk (Bauplan M7), aus gewerke.ts: ein sechstes Gewerk kommt von selbst dazu */
 const GEWERKSEITEN = gewerke.map((g) => ({ g, pfad: `/${g.seite}/`, text: gewerkText(g.id) }))
 const ALLE = ['/', '/partner-werden/', ...GEWERKSEITEN.map((s) => s.pfad), ...RECHTSSEITEN]
+// /404.html: die Seite, die der Webserver für unbekannte Pfade schickt (public/.htaccess)
+const MIT_404 = [...ALLE, '/404.html']
 const nurEinmal = (name: string) => test.skip(name !== 'm390', 'unabhängig von der Breite, läuft nur einmal')
 
-for (const pfad of ALLE) {
+for (const pfad of MIT_404) {
   test(`${pfad}: keine Fehler, keine fremden Anfragen, keine Cookies`, async ({ page, context }) => {
     const fehler: string[] = []
     const fremd: string[] = []
@@ -133,7 +135,7 @@ for (const { g, pfad } of GEWERKSEITEN) {
     await expect(page.getByRole('heading', { level: 1 })).toHaveText(gewerkText(g.id).h1)
     // Vorauswahl kommt nach dem Seitenwechsel auf der Startseite an
     await page.getByRole('link', { name: 'Anfrage senden', exact: true }).click()
-    await expect(page).toHaveURL(`/?gewerk=${g.id}#anfrage`)
+    await expect(page).toHaveURL(`/#${anfrageAnker(g.id)}`)
     await expect(page.locator('#anfrage').getByLabel(/^Gewerk/)).toHaveValue(g.id)
   })
 }
@@ -150,6 +152,11 @@ test('Platzhalterseiten tragen noindex', async ({ request }, info) => {
 test('unbekannte Seite liefert 404', async ({ request }, info) => {
   nurEinmal(info.project.name)
   expect((await request.get('/gibt-es-nicht')).status()).toBe(404)
+  // Inhalt der 404-Seite (Apache liefert sie per ErrorDocument; vite preview zeigt sie nicht an)
+  const html = await (await request.get('/404.html')).text()
+  expect(html).toContain('Seite nicht gefunden')
+  expect(html).toContain('href="/"')
+  expect(html).not.toContain('og:url')
 })
 
 test('sitemap.xml und robots.txt', async ({ request }, info) => {

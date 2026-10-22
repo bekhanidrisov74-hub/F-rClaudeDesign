@@ -1,5 +1,5 @@
 import { copy, fuelle } from '../content/copy'
-import { anfahrtText, einheit, spanne, type Gewerk } from '../content/gewerke'
+import { anfahrtText, anfrageAnker, einheit, spanne, type Gewerk } from '../content/gewerke'
 import { gewerkseiten } from '../content/gewerkseiten'
 import { Bildflaeche } from './ui/Bildflaeche'
 import { Button } from './ui/Button'
@@ -22,7 +22,7 @@ export function LeistungKarte({ gewerk: g }: { gewerk: Gewerk }) {
         </div>
         <Button
           art="hell"
-          href="#anfrage"
+          href={`#${anfrageAnker(g.id)}`}
           data-gewerk={g.id}
           className="min-h-[54px] w-full gap-s2 rounded-btn-lg px-s2 text-btn dialog:gap-s3 dialog:px-s4"
         >
