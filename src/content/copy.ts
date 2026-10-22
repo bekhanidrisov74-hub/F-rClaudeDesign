@@ -16,14 +16,14 @@ export const DATENSCHUTZ = '/datenschutz/'
 /**
  * Gefahr-Hinweis: Antwort in den häufigen Fragen und eigener Absatz in den Erfolgskarten (Formular und Luna), ein Wortlaut;
  * auch Kern von luna.notruf und Satz im Prompt der KI-Luna (public/chat.php).
- * nicht im Design (Bauplan M1, Text wartet auf Freigabe), rechtlich prüfen (Haftung für Ratschläge).
+ * nicht im Design (Bauplan M1, Text von Beks freigegeben am 22.10.2026), rechtlich prüfen (Haftung für Ratschläge).
  */
 export const GEFAHR =
   'Bei akuter Gefahr rufen Sie bitte sofort den Notruf: bei Gasgeruch den Gasnotruf 128, bei Rauch, Brandgeruch, Funken oder Feuer die Feuerwehr 122, bei Verletzten die Rettung 144. Der Euro-Notruf 112 gilt immer.'
 /** nicht im Design (Bauplan B3, Text wartet auf Freigabe): Abschnitt Anfrage und Luna-Zusammenfassung, ein Wortlaut. */
 export const OHNE_KONTO = 'Ein Konto oder eine Anmeldung brauchen Sie nicht.'
 /**
- * nicht im Design (Bauplan M4, Text wartet auf Freigabe), rechtlich prüfen (Datenschutz): Satz direkt über dem Senden-Knopf in
+ * nicht im Design (Bauplan M4, Text von Beks freigegeben am 22.10.2026), rechtlich prüfen (Datenschutz): Satz direkt über dem Senden-Knopf in
  * Formular und Luna-Zusammenfassung. Stimmt mit aktivem Partner (public/anfrage.php schickt an genau einen Partner und an fixit247)
  * und ohne (fixit247 vermittelt von Hand an einen). Keine Löschfrist, bis die Datenschutzerklärung sie nennt.
  */
@@ -86,7 +86,7 @@ export const copy = {
   einheit: { stunde: 'pro Stunde', einsatz: 'pro Einsatz' },
   /**
    * {stand}: PREISE_STAND aus gewerke.ts, gefüllt mit fuelle() dort, wo der Satz gezeigt wird (Ergebniskarte, Preisübersicht).
-   * nicht im Design (Bauplan M5, Text wartet auf Freigabe), rechtlich prüfen (Preisangaben).
+   * nicht im Design (Bauplan M5, Text von Beks freigegeben am 22.10.2026), rechtlich prüfen (Preisangaben).
    */
   preisStand: 'Stand der Richtpreise: {stand}.',
   /** Bindewort für Aufzählungen: „Sonntag und Nacht“ */
