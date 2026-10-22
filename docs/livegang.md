@@ -36,6 +36,7 @@ Stand: 21.10.2026. Abhaken, was erledigt ist. Wie die KAS-Schritte im Einzelnen 
 - [ ] Impressum, Datenschutzerklärung und AGB. In die Datenschutzerklärung gehören die Speicherung der Anfragen bei ALL-INKL (Auftragsverarbeitung), die Weitergabe an Partnerbetriebe und an OpenAI (Luna).
 - [ ] Datenschutzerklärung: Zweck und Speicherdauer der freiwilligen E-Mail im Anfrageformular (nur für die Bestätigungsmail, Bauplan B1). Offen, rechtlich prüfen.
 - [ ] Rechtlich prüfen: Häufige Frage „Was heißt ‚geprüft‘?“ (`src/content/copy.ts`, Bauplan B5). Der Text muss genau dem Aufnahmeablauf für Partner entsprechen: Gewerbeberechtigung je Gewerk im GISA, Nachweis der Betriebshaftpflichtversicherung, persönliches Gespräch, Pause der Vermittlung bei Beschwerden. Vor dem Livegang muss dieser Ablauf für jeden eingetragenen Partner tatsächlich gelaufen sein.
+- [ ] Rechtlich prüfen: Häufige Frage „Wie wählen Sie den Betrieb aus?“ (`src/content/copy.ts`, Bauplan B4). Sie nennt die Auswahlkriterien aus `passenderPartner()` in `public/anfrage.php`; ändert sich dort die Gewichtung, muss der Text mit. Ob eine Angabe „keine bezahlte Platzierung“ dazugehört, entscheidet Beks.
 - [ ] Partnerbetriebe für das Matching in `fixit247-konfig.php`. Ohne sie gehen alle Anfragen nur an `support@fixit247.at`.
 - [ ] Monatslimit im OpenAI-Konto
 - [ ] Löschfrist für `anfragen-*.jsonl`

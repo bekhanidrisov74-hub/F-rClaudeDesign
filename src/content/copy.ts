@@ -340,6 +340,13 @@ export const copy = {
           'Vor der Aufnahme eines Betriebs prüfen wir seine Gewerbeberechtigung für jedes Gewerk im GISA (Gewerbeinformationssystem Austria), lassen uns die Betriebshaftpflichtversicherung nachweisen und führen ein persönliches Gespräch. Bei Beschwerden pausieren wir die Vermittlung an diesen Betrieb.',
       },
       {
+        // nicht im Design (Bauplan B4, 22.10.2026): die Kriterien aus passenderPartner() und GEWICHTE in public/anfrage.php,
+        // in derselben Reihenfolge; rechtlich prüfen, docs/livegang.md
+        frage: 'Wie wählen Sie den Betrieb aus?',
+        antwort:
+          'Wir vermitteln nur an geprüfte Betriebe mit dem passenden Gewerk, die in Ihrer Gegend arbeiten. Am meisten zählen die Nähe zu Ihrer Postleitzahl und, nachts und am Sonntag, ob der Betrieb einen Notdienst anbietet oder rund um die Uhr erreichbar ist. Danach folgen Spezialisierung, Reaktionszeit, Zuverlässigkeit, Preisniveau und Bewertungen.',
+      },
+      {
         frage: 'Was kostet die Vermittlung?',
         antwort: 'Die Vermittlung ist kostenlos. Sie zahlen nur den Betrieb.',
       },
