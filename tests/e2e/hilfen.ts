@@ -44,12 +44,39 @@ export async function zumRechner(page: Page) {
 export const lunaKnopf = (page: Page) => page.getByRole('button', { name: 'Chat mit Luna öffnen' })
 export const chat = (page: Page) => page.getByRole('dialog', { name: 'Chat mit Luna' })
 
+/**
+ * Scrollt und wartet, bis der Browser das scroll-Ereignis zugestellt hat: Knopf und Anstupser reagieren erst darauf,
+ * und unter Last kommt es bis zu Sekunden nach scrollTo (gemessen bis 8,7 s), länger als ein expect wartet.
+ * `ziel`: Anteil der Scrolltiefe (0 bis 1) oder „vorteile“ (bis die Vorteile nach oben aus dem Bild sind, nie zurück).
+ */
+export async function scrolle(page: Page, ziel: number | 'vorteile') {
+  await page.evaluate(
+    (ziel) =>
+      new Promise<void>((fertig) => {
+        const { scrollHeight } = document.documentElement
+        const unten = document.getElementById('vorteile')?.getBoundingClientRect().bottom ?? 0
+        const y = ziel !== 'vorteile' ? (scrollHeight - innerHeight) * ziel : unten > 0 ? scrollY + unten + 1 : scrollY
+        const vorher = scrollY
+        addEventListener('scroll', () => fertig(), { once: true })
+        window.scrollTo(0, y)
+        if (scrollY === vorher) fertig() // nichts bewegt, also kommt auch kein Ereignis
+      }),
+    ziel,
+  )
+}
+
+/**
+ * Wartet zwei gezeichnete Frames. Bis dahin hat der Browser die Ereignisse seines Rendering-Schritts zugestellt
+ * (matchMedia-change nach einer Größenänderung) und die Seite ihre per requestAnimationFrame verschobene Arbeit erledigt.
+ * Unter Last kommt der nächste Frame mitunter erst nach einer Sekunde.
+ */
+export async function zweiFrames(page: Page) {
+  await page.evaluate(() => new Promise((fertig) => requestAnimationFrame(() => requestAnimationFrame(fertig))))
+}
+
 /** Auf der Startseite erscheint der Knopf erst, wenn die vier Vorteile (#vorteile) nach oben aus dem Bild gescrollt sind. */
 export async function zeigeLunaKnopf(page: Page) {
-  await page.evaluate(() => {
-    const unten = document.getElementById('vorteile')?.getBoundingClientRect().bottom ?? 0
-    if (unten > 0) window.scrollTo(0, window.scrollY + unten + 1)
-  })
+  await scrolle(page, 'vorteile')
   await expect(lunaKnopf(page)).toBeVisible()
 }
 
