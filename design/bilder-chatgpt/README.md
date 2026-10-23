@@ -17,4 +17,4 @@ Herstellerreferenzen zur Plausibilitätsprüfung: [Wera: parallele glatte Schlü
 
 ## Einbau
 
-`node scripts/export-3d.mjs` (Sharp per `SHARP_MODULE_PATH`) hebt das Schwarz der Bilder auf Tiefsee an und schreibt AVIF und WebP bei 480, 800, 1200 und 1254 px nach `public/images/`. Den Bildausschnitt der Karten steuert `bildY` in `src/content/gewerke.ts`, im Hero die `object-position` in `Hero.tsx`. Die vollständige Serie zeigt `KONTAKTBLATT.png`.
+`node scripts/export-3d.mjs` hebt das Schwarz der Bilder auf Tiefsee an und schreibt AVIF und WebP bei 480, 800, 1200 und 1254 px nach `public/images/`. Den Bildausschnitt der Karten steuert `bildY` in `src/content/gewerke.ts`, im Hero die `object-position` in `Hero.tsx`. Die vollständige Serie zeigt `KONTAKTBLATT.png`.

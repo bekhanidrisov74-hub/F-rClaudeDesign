@@ -1,4 +1,4 @@
-import { createRequire } from 'node:module'
+import sharp from 'sharp'
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import assert from 'node:assert/strict'
 
@@ -26,8 +26,6 @@ const entries = [
   ...Object.entries(ui).map(([name,body])=>({name,body,size:24})),
   {name:'luna-signet-glyph',body:`<g transform="translate(-5.333 -5.333) scale(1.3333)">${moon}</g>`,size:32},
 ]
-const require = createRequire(import.meta.url)
-const sharp = require(process.env.SHARP_MODULE_PATH || 'sharp')
 await mkdir('design/icons', {recursive:true})
 const large = []
 const raw = []
