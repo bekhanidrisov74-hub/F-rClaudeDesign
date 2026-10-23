@@ -17,6 +17,7 @@ import { partner } from '../content/partner'
 import plz from '../content/plz.json'
 import { bewerbungZuPayload, type Bewerbung } from '../lib/bewerbung'
 import { buildPayload, type Lead } from '../lib/submitLead'
+import { istFeiertag } from '../lib/zuschlagJetzt'
 
 const basis = readFileSync('public/_basis.php', 'utf8')
 const kopie = (name: string): unknown => JSON.parse(basis.match(new RegExp(`const ${name} = '([^']*)';`))![1])
@@ -164,6 +165,17 @@ describe.skipIf(!phpDa)('Matching (anfrage.php, §26–§29)', { timeout: PHP_ZE
   ])('%s: kein Treffer', (_, partner, req) => expect(finde(partner, req)).toBeNull())
   test('nur werktags erreichbar: Sonntagnacht kein Treffer', () => {
     expect(finde({ ...probe, availability: 'business', emergencyService: false }, {}, '2026-10-18T23:00:00+02:00')).toBeNull()
+  })
+  test('nur werktags erreichbar: am Nationalfeiertag um 10 Uhr kein Treffer, am Tag danach schon', () => {
+    const werktags = { ...probe, availability: 'business', emergencyService: false }
+    expect(finde(werktags, {}, '2026-10-26T10:00:00+01:00')).toBeNull()
+    expect(finde(werktags, {}, '2026-10-27T10:00:00+01:00')?.partner.id).toBe('probe')
+  })
+  test('Feiertage gleich wie src/content/feiertage.ts (2026–2035)', () => {
+    const tage: string[] = []
+    for (let t = Date.UTC(2026, 0, 1); t < Date.UTC(2036, 0, 1); t += 86_400_000) tage.push(new Date(t).toISOString().slice(0, 10))
+    const inTs = tage.filter((d) => istFeiertag({ jahr: +d.slice(0, 4), monat: +d.slice(5, 7), tag: +d.slice(8, 10) }))
+    expect(php('public/anfrage.php', 'array_values(array_filter($e, fn ($d) => feiertag(new DateTimeImmutable($d))))', tage)).toEqual(inTs)
   })
 })
 

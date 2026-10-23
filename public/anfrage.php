@@ -55,10 +55,23 @@ function distanzScore(array $partner, string $plz): float {
   return 0;
 }
 
-/* Nacht (18–08 Uhr) oder Sonntag in Wiener Zeit. Feiertage zählen hier nicht, anders als beim Zuschlag (copy.ts NACHTZEIT). */
+/* Gesetzlicher Feiertag in Österreich, gleiche Liste wie src/content/feiertage.ts (Test hält beide gleich).
+   Ostern selbst gerechnet (Meeus/Jones/Butcher), weil easter_days() die calendar-Erweiterung braucht. */
+function feiertag(DateTimeInterface $tag): bool {
+  if (in_array($tag->format('m-d'), ['01-01', '01-06', '05-01', '08-15', '10-26', '11-01', '12-08', '12-25', '12-26'], true)) return true;
+  $j = (int) $tag->format('Y');
+  $a = $j % 19; $b = intdiv($j, 100); $c = $j % 100; $d = intdiv($b, 4); $e = $b % 4;
+  $f = intdiv($b + 8, 25); $g = intdiv($b - $f + 1, 3); $h = (19 * $a + $b - $d - $g + 15) % 30;
+  $i = intdiv($c, 4); $k = $c % 4; $l = (32 + 2 * $e + 2 * $i - $h - $k) % 7; $m = intdiv($a + 11 * $h + 22 * $l, 451);
+  $ostern = gmmktime(0, 0, 0, intdiv($h + $l - 7 * $m + 114, 31), ($h + $l - 7 * $m + 114) % 31 + 1, $j);
+  $nachOstern = intdiv(gmmktime(0, 0, 0, (int) $tag->format('n'), (int) $tag->format('j'), $j) - $ostern, 86400);
+  return in_array($nachOstern, [1, 39, 50, 60], true);
+}
+
+/* Nacht (18–08 Uhr), Sonntag oder Feiertag in Wiener Zeit, wie beim Zuschlag (copy.ts NACHTZEIT). */
 function ausserhalb(DateTimeInterface $jetzt): bool {
   $h = (int) $jetzt->format('G');
-  return $h >= 18 || $h < 8 || $jetzt->format('N') === '7';
+  return $h >= 18 || $h < 8 || $jetzt->format('N') === '7' || feiertag($jetzt);
 }
 
 function verfuegbarkeitScore(array $partner, array $req, DateTimeInterface $jetzt): float {
