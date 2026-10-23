@@ -8,4 +8,4 @@ Die PNGs bleiben unverändert als Generierungsquellen erhalten. `../ICON-KONTAKT
 
 Die fünf `gewerk-*.png` verarbeitet kein Skript mehr. Die Gewerke-Icons sind seit 17.10.2026 3D-Renders (`../icons-3d/`, SPEC 3).
 
-Reproduzierbare SVG-Ausgabe und Kontaktblätter: `node scripts/prepare-icons.mjs` aus dem Projektverzeichnis, mit Sharp über `SHARP_MODULE_PATH` wie beim Bildexport. Die SVGs sind bewusst aus wenigen geometrischen Flächen nachgezeichnet; es sind keine automatisch eingebetteten PNGs.
+Reproduzierbare SVG-Ausgabe und Kontaktblätter: `node scripts/prepare-icons.mjs` aus dem Projektverzeichnis. Die SVGs sind bewusst aus wenigen geometrischen Flächen nachgezeichnet; es sind keine automatisch eingebetteten PNGs.

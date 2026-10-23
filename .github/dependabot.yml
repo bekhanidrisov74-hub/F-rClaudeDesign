@@ -1,0 +1,11 @@
+# Updates mit Wartezeit (docs/recherche/github-repos.md, 5.1). Sicherheits-Updates kommen ohne Wartezeit.
+# ponytail: keine groups, laut Recherche greift cooldown bei einer Gruppe mit patterns "*" nicht.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      timezone: Europe/Vienna
+    cooldown:
+      default-days: 7

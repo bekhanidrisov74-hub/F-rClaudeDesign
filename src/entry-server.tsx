@@ -1,6 +1,7 @@
 import { renderToString } from 'react-dom/server'
 import { App, normalisiere, seiten, type Seite } from './App'
-import { DOMAIN, istPlatzhalter } from './content/contact'
+import { copy } from './content/copy'
+import { DOMAIN, EMAIL, FIRMA, TELEFON, e164, istPlatzhalter } from './content/contact'
 
 export { DOMAIN } from './content/contact'
 export { VCARD_PFAD, vcardText } from './lib/vcard'
@@ -21,6 +22,33 @@ const brotkrumenJson = (brotkrumen: NonNullable<Seite['brotkrumen']>) =>
     itemListElement: brotkrumen.map((krume, i) => ({ '@type': 'ListItem', position: i + 1, name: krume.name, item: adresse(krume.pfad) })),
   }).replace(/</g, '\\u003c') // „<“ darf im Skript nie vorkommen (</script>)
 
+const bekannt = (wert: string) => (istPlatzhalter(wert) ? undefined : wert)
+
+/**
+ * Strukturierte Daten der Startseite: nur Organization und WebSite (seo.md). LocalBusiness, Plumber oder Service mit
+ * fixit247 als Anbieter würden behaupten, fixit247 repariere selbst. Platzhalter fallen weg (JSON.stringify lässt undefined aus).
+ */
+const startseiteJson = () => {
+  const nummer = e164(TELEFON)
+  return JSON.stringify({
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'Organization',
+        name: copy.kopf.logo,
+        legalName: bekannt(FIRMA),
+        url: adresse('/'),
+        email: bekannt(EMAIL),
+        telephone: nummer ? `+${nummer}` : undefined,
+        description: copy.fuss.text,
+        areaServed: { '@type': 'Country', name: 'Österreich' },
+      },
+      // bestimmt den Seitennamen über dem Suchtreffer
+      { '@type': 'WebSite', name: copy.kopf.logo, url: adresse('/'), inLanguage: 'de-AT' },
+    ],
+  }).replace(/</g, '\\u003c')
+}
+
 const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;')
 
 export function render(pfad: string) {
@@ -40,6 +68,7 @@ export function render(pfad: string) {
     domainBekannt && schluessel !== '/404' ? `<meta property="og:url" content="${esc(url)}" />` : '',
     domainBekannt && !seite.noindex ? `<link rel="canonical" href="${esc(url)}" />` : '',
     domainBekannt && seite.brotkrumen ? `<script type="application/ld+json">${brotkrumenJson(seite.brotkrumen)}</script>` : '',
+    domainBekannt && schluessel === '/' ? `<script type="application/ld+json">${startseiteJson()}</script>` : '',
   ]
     .filter(Boolean)
     .join('\n    ')

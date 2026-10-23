@@ -1,6 +1,6 @@
 import { expect, test } from './test'
 import { copy } from '../../src/content/copy'
-import { DOMAIN } from '../../src/content/contact'
+import { DOMAIN, EMAIL, TELEFON, e164 } from '../../src/content/contact'
 import { anfrageAnker, gewerke } from '../../src/content/gewerke'
 import { gewerkText, gewerkseiten } from '../../src/content/gewerkseiten'
 import { partner } from '../../src/content/partner'
@@ -108,9 +108,19 @@ test('Gewerk-Seiten: Titel und Beschreibung sind alle verschieden, auch von der 
   expect(beschreibungen.size).toBe(GEWERKSEITEN.length + 1)
 })
 
-test('Startseite und Partner-Seite tragen kein JSON-LD', async ({ request }, info) => {
+test('Startseite: JSON-LD nur Organization und WebSite, ohne Platzhalter; Partner-Seite ohne JSON-LD', async ({ request }, info) => {
   nurEinmal(info.project.name)
-  for (const pfad of ['/', '/partner-werden/']) expect(await (await request.get(pfad)).text()).not.toContain('application/ld+json')
+  const html = await (await request.get('/')).text()
+  const json = html.match(/<script type="application\/ld\+json">(.+?)<\/script>/)?.[1]
+  expect(json, 'JSON-LD fehlt').toBeTruthy()
+  const graph: Record<string, unknown>[] = JSON.parse(json!)['@graph']
+  // fixit247 vermittelt nur: kein LocalBusiness, Service o. Ä. (seo.md)
+  expect(graph.map((knoten) => knoten['@type'])).toEqual(['Organization', 'WebSite'])
+  const [org, website] = graph
+  expect(org).toMatchObject({ name: 'fixit247', url: `${DOMAIN}/`, telephone: `+${e164(TELEFON)}`, email: EMAIL, description: copy.fuss.text })
+  expect(website).toMatchObject({ name: 'fixit247', url: `${DOMAIN}/` })
+  expect(json).not.toMatch(/"\[[^"]*\]"/)
+  expect(await (await request.get('/partner-werden/')).text()).not.toContain('application/ld+json')
 })
 
 for (const { g, pfad } of GEWERKSEITEN) {
