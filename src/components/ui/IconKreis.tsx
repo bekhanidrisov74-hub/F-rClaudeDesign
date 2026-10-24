@@ -19,7 +19,12 @@ export function IconKreis({
   dunkel?: boolean
   weiss?: boolean
 }) {
-  const flaeche = dunkel ? 'bg-nacht text-tuerkis-hell' : weiss ? 'bg-weiss text-tiefsee' : 'bg-lagune text-tiefsee'
+  // --fx-icon-licht ist die Kreisfläche: Glanzkanten und Fugen der Icons wirken dort wie ausgeschnitten.
+  const flaeche = dunkel
+    ? 'bg-nacht text-tuerkis-hell [--fx-icon-licht:var(--fx-nacht)]'
+    : weiss
+      ? 'bg-weiss text-tiefsee [--fx-icon-licht:var(--fx-weiss)]'
+      : 'bg-lagune text-tiefsee [--fx-icon-licht:var(--fx-lagune)]'
   return (
     <span aria-hidden="true" className={`flex shrink-0 items-center justify-center rounded-pill ${flaeche} ${className}`}>
       <Icon name={name} className={icon} />

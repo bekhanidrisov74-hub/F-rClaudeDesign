@@ -23,6 +23,10 @@
   --fx-tuerkis-hell: #8FE6EC;   /* Hörer im Kreis der Anruf-Knöpfe */
   --fx-icon-technik: #3F7D88;   /* Ladeanzeige */
   --fx-icon-handwerk: #E8842A;  /* „247“ und Strich im Logo, Ladeanzeige */
+  /* Zweite Ebene der Icons (design/icons): Akzent für Wasser, Funken, Wärme; Licht für Glanzkanten und Fugen.
+     Licht ist die Fläche dahinter, ui/IconKreis setzt es je Kreis. */
+  --fx-icon-akzent: var(--fx-tuerkis);
+  --fx-icon-licht: var(--fx-weiss);
   --fx-abdunklung: rgba(3, 16, 31, 0.6); /* hinter Dialog und Bottom-Sheet */
 
   /* Schrift: Inter wie im Hero (lokal über @fontsource-variable/inter) */
