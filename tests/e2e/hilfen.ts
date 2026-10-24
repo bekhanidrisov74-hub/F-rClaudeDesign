@@ -97,6 +97,56 @@ export async function antworteLuna(page: Page, text: string) {
     await c.getByRole('button', { name: 'Nachricht senden' }).click()
   }
   await expect(c.getByText(text, { exact: true }).last()).toBeVisible()
+  // Die Kundenblase steht schon, während Luna noch antwortet: auf das Ende der Antwort warten
+  await expect(c.locator('[aria-live="polite"]').first()).toHaveAttribute('aria-busy', 'false')
+}
+
+/** Die KI-Attrappe antwortet mit diesen Feldern des Werkzeugs „erfassen“ (statt {} aus tools/lokale-api.ts). */
+export async function kiAntwortet(page: Page, felder: object) {
+  await page.route('**/api/chat', (r) =>
+    r.fulfill({ json: { message: { role: 'assistant', tool_calls: [{ type: 'function', function: { name: 'erfassen', arguments: JSON.stringify(felder) } }] } } }),
+  )
+}
+
+export const KI_PREIS = 'Ein Installateur kostet ca. 95–140 € pro Stunde, dazu 29,90 € Anfahrt.'
+export const KI_RUECKRUF = 'Der Betrieb ruft Sie unter Ihrer Nummer zurück. Eine Uhrzeit kann ich Ihnen nicht zusagen.'
+
+/** Frage mitten im Katalog: Luna antwortet und fragt danach erneut „Was ist das Problem?“ */
+export async function lunaFrage(page: Page) {
+  await oeffneLuna(page)
+  await antworteLuna(page, 'Installateur')
+  await kiAntwortet(page, { absicht: 'frage', reply: KI_PREIS })
+  await antworteLuna(page, 'Was kostet das?')
+  await expect(chat(page).getByText(KI_PREIS)).toBeVisible()
+}
+
+/** Nach dem Senden: Frage unter der Erfolgskarte, Luna antwortet. Die Attrappe antwortet erst ab hier, sonst wäre schon die Beschreibung eine Frage. */
+export async function lunaNachDemSenden(page: Page) {
+  await lunaAbsenden(page)
+  await expect(chat(page).getByText(/Anfragenummer/)).toBeVisible()
+  await kiAntwortet(page, { absicht: 'frage', reply: KI_RUECKRUF })
+  await antworteLuna(page, 'Wann ruft der Betrieb an?')
+  await expect(chat(page).getByText(KI_RUECKRUF)).toBeVisible()
+}
+
+/** Anstupser mit beliebigem Text (Bereich der Seite): erkennbar am Schließen-Knopf */
+export const anstupser = (page: Page) => page.getByRole('status').filter({ has: page.getByRole('button', { name: 'Hinweis schließen' }) })
+
+/** Anstupser, während ein Abschnitt mitten im Bild steht (#anfrage: Formular, #preisrechner: Rechner); braucht die Playwright-Uhr. */
+export async function zeigeAnstupserAm(page: Page, id: 'anfrage' | 'preisrechner') {
+  await page.evaluate(
+    (id) =>
+      new Promise<void>((fertig) => {
+        const el = document.getElementById(id)!
+        const vorher = scrollY
+        addEventListener('scroll', () => fertig(), { once: true })
+        window.scrollTo(0, scrollY + el.getBoundingClientRect().top + el.offsetHeight / 2 - innerHeight / 2)
+        if (scrollY === vorher) fertig()
+      }),
+    id,
+  )
+  await page.clock.fastForward(26_000)
+  await expect(anstupser(page)).toBeVisible()
 }
 
 /** Mitten im Gespräch: Fragenkatalog des Installateurs, Chips zur Frage „Läuft Wasser aus oder tropft es?“ */

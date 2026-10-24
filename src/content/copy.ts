@@ -454,7 +454,16 @@ export const copy = {
     rolle: 'Digitale Assistentin',
     schliessen: 'Chat schließen',
     minimieren: 'Chat minimieren',
-    anstupser: { fett: 'Notfall?', text: 'Ich helfe Ihnen in einer Minute.', schliessen: 'Hinweis schließen' },
+    anstupser: {
+      fett: 'Notfall?',
+      text: 'Ich helfe Ihnen in einer Minute.',
+      schliessen: 'Hinweis schließen',
+      // nicht im Design (Ausbau 24.10.2026 nach dem Impeccable-Chat, Texte von Beks freigegeben am 24.10.2026): je nach Bereich der Seite
+      // Kurz genug für höchstens drei Zeilen in der 286 px breiten Blase am Handy (visual-reviewer, 24.10.2026)
+      formular: { fett: 'Hilfe beim Formular?', text: 'Ich nehme die Anfrage auch hier auf.' },
+      rechner: { fett: 'Fragen zum Preis?', text: 'Ich erkläre Richtpreise und Zuschläge.' },
+      partner: { fett: 'Sie sind Fachbetrieb?', text: 'Ich beantworte Ihre Fragen.' },
+    },
     /** {x}, {n}, {schritt}; vier Schritte laut Aufgabe */
     fortschritt: 'Schritt {x} von {n}: {schritt}',
     schritte: ['Problem', 'Details', 'Ort', 'Prüfen'],
@@ -477,6 +486,11 @@ export const copy = {
     notruf: `${GEFAHR} Ich nehme Ihre Anfrage parallel weiter auf.`,
     zusammenfassungIntro: 'Danke. Bitte prüfen Sie Ihre Anfrage und ergänzen Sie, wie der Betrieb Sie erreicht.',
     notiert: 'Notiert. Das nehme ich in die Anfrage auf.',
+    // nicht im Design (Ausbau 24.10.2026, Texte von Beks freigegeben am 24.10.2026): zweite Blase der Begrüßung (AI Act Art. 50, Audit D6),
+    // Frage ohne KI und Freitext nach dem Senden; {telefon} = TELEFON aus contact.ts
+    kiHinweis: 'Ich bin eine KI. Fragen zu Preisen, Ablauf und fixit247 beantworte ich gern.',
+    frageOhneKi: 'Diese Frage kann ich gerade nicht beantworten. Rufen Sie uns an: {telefon}.',
+    nachDemSenden: 'Gern. Bei Fragen zu Ihrer Anfrage erreichen Sie uns unter {telefon}.',
     ueberspringen: 'Überspringen',
     wunschterminChips: ['Morgen', 'Diese Woche', 'Nächste Woche', 'Nach Absprache'],
     plzFehler: 'Bitte geben Sie eine österreichische Postleitzahl mit vier Ziffern ein, zum Beispiel 1020.',
@@ -549,18 +563,31 @@ export const copy = {
     datenschutz: {
       titel: 'Datenschutz',
       text: '[Datenschutzerklärung folgt]',
-      // nicht im Design: Entwurf für die Bewerbung über /partner-werden/ (21.10.2026), rechtlich prüfen lassen
-      entwurf: {
-        titel: 'Partner-Bewerbungen (Entwurf, rechtlich zu prüfen)',
-        absaetze: [
-          'Zweck: Mit den Angaben aus dem Formular „Partner werden“ prüfen wir Ihre Bewerbung und nehmen Kontakt mit Ihnen auf. Grundlage ist Ihre Einwilligung.',
-          'Daten: Firmenname, Ansprechperson, Telefon, E-Mail, GISA-Zahl, UID-Nummer, Gewerke, Einsatzgebiet, Erreichbarkeit, Ihre Angaben zum Notdienst und zur Zeit bis vor Ort, Ihre Antworten zu Preisen, Versicherung und Zahlungsarten, Ihre Anmerkungen sowie Bewerbungsnummer und Zeitpunkt der Bewerbung.',
-          'Nach der Aufnahme: Nehmen wir Ihren Betrieb auf, nutzen wir Firmenname, Ansprechperson, Telefon, E-Mail, Gewerke, Einsatzgebiet, Erreichbarkeit und Ihre Angaben zum Notdienst, um passende Anfragen von Kundinnen und Kunden an Sie weiterzugeben.',
-          'Speicherort: als Datei auf dem Server unseres Anbieters ALL-INKL.COM in Deutschland und im E-Mail-Postfach von fixit247. ALL-INKL.COM verarbeitet die Angaben nur in unserem Auftrag.',
-          'Speicherdauer: Offene Bewerbungen, bis wir über sie entschieden haben. Angaben von aufgenommenen Betrieben, solange die Partnerschaft besteht. Abgelehnte Bewerbungen löschen wir nach [Frist folgt].',
-          'Widerruf: Sie können Ihre Einwilligung jederzeit widerrufen, per E-Mail oder Telefon. Dann löschen wir Ihre Angaben.',
-        ],
-      },
+      entwuerfe: [
+        {
+          // nicht im Design: Entwurf für die Bewerbung über /partner-werden/ (21.10.2026), rechtlich prüfen lassen
+          titel: 'Partner-Bewerbungen (Entwurf, rechtlich zu prüfen)',
+          absaetze: [
+            'Zweck: Mit den Angaben aus dem Formular „Partner werden“ prüfen wir Ihre Bewerbung und nehmen Kontakt mit Ihnen auf. Grundlage ist Ihre Einwilligung.',
+            'Daten: Firmenname, Ansprechperson, Telefon, E-Mail, GISA-Zahl, UID-Nummer, Gewerke, Einsatzgebiet, Erreichbarkeit, Ihre Angaben zum Notdienst und zur Zeit bis vor Ort, Ihre Antworten zu Preisen, Versicherung und Zahlungsarten, Ihre Anmerkungen sowie Bewerbungsnummer und Zeitpunkt der Bewerbung.',
+            'Nach der Aufnahme: Nehmen wir Ihren Betrieb auf, nutzen wir Firmenname, Ansprechperson, Telefon, E-Mail, Gewerke, Einsatzgebiet, Erreichbarkeit und Ihre Angaben zum Notdienst, um passende Anfragen von Kundinnen und Kunden an Sie weiterzugeben.',
+            'Speicherort: als Datei auf dem Server unseres Anbieters ALL-INKL.COM in Deutschland und im E-Mail-Postfach von fixit247. ALL-INKL.COM verarbeitet die Angaben nur in unserem Auftrag.',
+            'Speicherdauer: Offene Bewerbungen, bis wir über sie entschieden haben. Angaben von aufgenommenen Betrieben, solange die Partnerschaft besteht. Abgelehnte Bewerbungen löschen wir nach [Frist folgt].',
+            'Widerruf: Sie können Ihre Einwilligung jederzeit widerrufen, per E-Mail oder Telefon. Dann löschen wir Ihre Angaben.',
+          ],
+        },
+        {
+          // nicht im Design: Entwurf für den Chat mit Luna (Ausbau 24.10.2026), Wortlaut von Beks freigegeben am 24.10.2026, rechtlich prüfen lassen.
+          // Stimmt mit src/luna/flow.ts (ohneKontakt, nur Fragen nach der Zusammenfassung), ki.ts (Seite) und public/chat.php überein.
+          titel: 'Chat mit Luna, unserer digitalen Assistentin (Entwurf, rechtlich zu prüfen)',
+          absaetze: [
+            'Zweck: Luna ist eine KI. Sie beantwortet Fragen zu fixit247 und hilft Ihnen, eine Anfrage aufzugeben. Damit Luna antworten kann, schicken wir Ihre Nachrichten an einen KI-Dienst.',
+            'Daten: Ihre Nachrichten im Chat, aus denen wir Telefonnummern und E-Mail-Adressen, soweit erkennbar, vorher entfernen, Ihre Angaben im Chat wie Gewerk, Dringlichkeit, Postleitzahl und Antworten auf Lunas Fragen, die Seite, auf der Sie den Chat geöffnet haben, der Schritt im Chat und nach dem Senden, ob ein Betrieb gefunden wurde. Name, Telefon und E-Mail aus der Zusammenfassung gehen nicht an den KI-Dienst, sondern nur mit Ihrer Anfrage an fixit247.',
+            'Empfänger: OpenAI verarbeitet diese Angaben in unserem Auftrag, auch außerhalb der EU. [Vertragspartner, Rechtsgrundlage und Garantien für die Übermittlung ergänzen.]',
+            'Speicherdauer: Der Chat bleibt in Ihrem Browser, bis Sie die Anfrage abschicken oder den Browser-Tab schließen. Auf unserem Server speichern wir die Nachrichten nicht. Gegen Missbrauch zählen wir nur die Aufrufe zu einem Prüfwert Ihrer IP-Adresse; die Zählung beginnt alle 6 Stunden neu. [Speicherdauer bei OpenAI laut Vertrag ergänzen.]',
+          ],
+        },
+      ],
     },
     agb: { titel: 'AGB', text: '[AGB folgen]' },
     // nicht im Design: Seite für unbekannte Adressen (404, Audit-Befund H5), liegt als dist/404.html

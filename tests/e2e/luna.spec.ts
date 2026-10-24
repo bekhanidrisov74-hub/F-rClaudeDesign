@@ -1,22 +1,29 @@
-import { copy, GEFAHR, WOHIN } from '../../src/content/copy'
+import { TELEFON } from '../../src/content/contact'
+import { copy, fuelle, GEFAHR, WOHIN } from '../../src/content/copy'
 import { expect, test, type Page } from './test'
 import {
+  anstupser,
   antworteLuna,
   chat,
   fuelleKontakt,
+  KI_PREIS,
+  KI_RUECKRUF,
+  kiAntwortet,
   lunaAbsenden,
   lunaBisZusammenfassung,
+  lunaFrage,
   lunaImGespraech,
   lunaKnopf,
+  lunaNachDemSenden,
   oeffneLuna,
   preisDialog,
   scrolle,
+  zeigeAnstupserAm,
   zeigeLunaKnopf,
   zweiFrames,
 } from './hilfen'
 
 const handy = (breite: number) => breite < 640
-const anstupser = (page: Page) => page.getByRole('status').filter({ hasText: 'Notfall?' })
 
 /** Gesendete Anfragen an die lokale Attrappe mitschreiben */
 function anfragen(page: Page) {
@@ -503,5 +510,125 @@ test.describe('KI-Erfassung', () => {
     await expect(c.locator('img')).toHaveCount(0)
     expect(await page.evaluate(() => (window as { angriff?: number }).angriff)).toBeUndefined()
     await expect(c).toContainText('Geht es um die Heizung, das Warmwasser oder die Klimaanlage?')
+  })
+})
+
+test.describe('Fragen an Luna (Ausbau 24.10.2026)', () => {
+  test('Begrüßung: die zweite Blase sagt, dass Luna eine KI ist', async ({ page }) => {
+    await page.goto('/')
+    await oeffneLuna(page)
+    await expect(chat(page).locator('[aria-live="polite"]')).toContainText(copy.luna.kiHinweis)
+    // Auch in niedrigen Fenstern (1024 × 768) steht der Begrüßungssatz beim Öffnen ganz im Bild
+    await expect(chat(page).getByText(copy.luna.fragen.gewerk)).toBeInViewport({ ratio: 1 })
+  })
+
+  test('Frage mitten im Katalog: Antwort als Text, danach dieselbe Frage erneut, die Chips bleiben', async ({ page }) => {
+    await page.goto('/')
+    await lunaFrage(page)
+    const c = chat(page)
+    await expect(c.getByText('Was ist das Problem?', { exact: true })).toHaveCount(2)
+    await expect(c.getByRole('group', { name: copy.luna.auswahlAntwort })).toBeVisible()
+    expect(await c.getByText(KI_PREIS).evaluate((el) => el.closest('[aria-live="polite"]') !== null)).toBe(true)
+    // Die Antwort ab der ersten Zeile, obwohl danach Frage und Chips folgen (1024 × 768: Verlauf 421 px)
+    await expect(c.getByText(KI_PREIS)).toBeInViewport({ ratio: 1 })
+  })
+
+  test('fremdes Thema am Anfang: Absage, die Gewerke bleiben zur Auswahl', async ({ page }) => {
+    const absage = 'Dabei kann ich leider nicht helfen, ich beantworte nur Fragen zu fixit247. Worum geht es bei Ihnen?'
+    await kiAntwortet(page, { absicht: 'fremd', reply: absage })
+    await page.goto('/')
+    await oeffneLuna(page)
+    await antworteLuna(page, 'Wie wird morgen das Wetter?')
+    const c = chat(page)
+    await expect(c.getByText(absage)).toBeVisible()
+    await expect(c.getByRole('group', { name: copy.luna.auswahlGewerk })).toBeVisible()
+  })
+
+  test('Notruf-Hinweis ab der ersten Zeile im Bild, auch in niedrigen Fenstern und mit Fokus auf dem ersten Chip', async ({ page }) => {
+    await page.goto('/')
+    await oeffneLuna(page)
+    await antworteLuna(page, 'Es riecht nach Gas in der Küche')
+    await expect(chat(page).getByRole('alert')).toBeInViewport({ ratio: 1 })
+  })
+
+  test('Esc, während Luna noch antwortet: der Fokus geht zum Knopf, nicht verloren', async ({ page }) => {
+    await page.route('**/api/chat', async (r) => {
+      await new Promise((fertig) => setTimeout(fertig, 1500))
+      await r.fulfill({ json: { message: { role: 'assistant', tool_calls: [{ type: 'function', function: { name: 'erfassen', arguments: JSON.stringify({ absicht: 'frage', reply: KI_PREIS }) } }] } } })
+    })
+    await page.goto('/')
+    await oeffneLuna(page)
+    const c = chat(page)
+    await c.getByRole('textbox', { name: copy.luna.eingabe.label }).fill('Was kostet ein Installateur?')
+    await c.getByRole('button', { name: copy.luna.eingabe.senden }).click()
+    await expect(c.locator('[aria-live="polite"]').first()).toHaveAttribute('aria-busy', 'true')
+    await page.keyboard.press('Escape')
+    await expect(lunaKnopf(page)).toBeFocused()
+  })
+
+  test('KI nicht erreichbar: eine Frage bekommt den Hinweis aufs Telefon, die Frage kommt erneut', async ({ page }) => {
+    await page.route('**/api/chat', (r) => r.abort())
+    await page.goto('/')
+    await oeffneLuna(page)
+    await antworteLuna(page, 'Installateur')
+    await antworteLuna(page, 'Was kostet das?')
+    const c = chat(page)
+    await expect(c).toContainText(fuelle(copy.luna.frageOhneKi, { telefon: TELEFON }))
+    await expect(c.getByText('Was ist das Problem?', { exact: true })).toHaveCount(2)
+  })
+
+  test('nach dem Senden: Eingabe offen, Frage und Antwort unter der Erfolgskarte', async ({ page }) => {
+    await page.goto('/')
+    await lunaNachDemSenden(page)
+    const c = chat(page)
+    const neu = (await c.getByRole('button', { name: copy.luna.erfolg.neu }).boundingBox())!
+    const antwort = (await c.getByText(KI_RUECKRUF).boundingBox())!
+    expect(antwort.y).toBeGreaterThan(neu.y)
+    await expect(c.getByText(KI_RUECKRUF)).toBeInViewport()
+    await expect(c.getByRole('textbox', { name: copy.luna.eingabe.label })).toBeEnabled()
+  })
+
+  test('Zusammenfassung: Frage wird unter der Karte beantwortet, keine Ergänzung', async ({ page }) => {
+    await page.goto('/')
+    await lunaBisZusammenfassung(page)
+    await kiAntwortet(page, { absicht: 'frage', reply: KI_PREIS })
+    await antworteLuna(page, 'Was kostet das ungefähr?')
+    const c = chat(page)
+    await expect(c.getByText(KI_PREIS)).toBeInViewport()
+    expect((await c.getByText(KI_PREIS).boundingBox())!.y).toBeGreaterThan((await c.getByRole('heading', { name: 'Ihre Anfrage' }).boundingBox())!.y)
+    await expect(c.getByText(copy.luna.zusammenfassung.felder.zusatz, { exact: true })).toHaveCount(0)
+  })
+
+  test('Wunschtermin am Sonntag: Hinweis auf den Zuschlag vor der Frage nach der PLZ', async ({ page }) => {
+    await page.goto('/')
+    await oeffneLuna(page)
+    for (const a of ['Schlüsseldienst', 'Ausgesperrt', 'Zugefallen', 'Wohnung', 'Ja', 'In den nächsten Tagen', 'Sonntag um 10']) await antworteLuna(page, a)
+    const c = chat(page)
+    await expect(c).toContainText(copy.preisuebersicht.hinweiseDialog[0])
+    await expect(c).toContainText('Wie lautet Ihre Postleitzahl?')
+  })
+
+  test.describe('Anstupser je nach Bereich', () => {
+    const text = (b: { fett: string; text: string }) => `${b.fett} ${b.text}`
+    test('am Formular', async ({ page }) => {
+      await page.clock.install()
+      await page.goto('/')
+      await zeigeAnstupserAm(page, 'anfrage')
+      await expect(anstupser(page)).toContainText(text(copy.luna.anstupser.formular))
+    })
+    test('am Preisrechner', async ({ page }) => {
+      await page.clock.install()
+      await page.goto('/')
+      await zeigeAnstupserAm(page, 'preisrechner')
+      await expect(anstupser(page)).toContainText(text(copy.luna.anstupser.rechner))
+    })
+    test('auf „Partner werden“', async ({ page }) => {
+      await page.clock.install()
+      await page.goto('/partner-werden/')
+      await page.clock.fastForward(26_000)
+      await expect(anstupser(page)).toContainText(text(copy.luna.anstupser.partner))
+      await anstupser(page).getByRole('button', { name: /Fachbetrieb/ }).click()
+      await expect(chat(page)).toBeVisible()
+    })
   })
 })

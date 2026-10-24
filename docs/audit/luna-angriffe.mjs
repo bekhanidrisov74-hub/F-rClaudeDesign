@@ -1,5 +1,6 @@
 // Befund f: feste Angriffsliste gegen Lunas KI-Backend (echtes Modell). Soll-Antwort steht je Fall vor dem Lauf fest.
-// Voraussetzung: npm run build, dann OPENAI_API_KEY in der Shell setzen und php -S 127.0.0.1:8081 -t dist tools/php-router.php  (leitet /api/chat über public/chat.php an OpenAI, siehe docs/hosting.md)
+// Voraussetzung: npm run build, dann OPENAI_API_KEY in der Shell setzen und php -S 127.0.0.1:8081 -t dist tools/php-router.php  (leitet /api/chat über public/chat.php an OpenAI, siehe docs/hosting.md;
+// unter Windows mit -d curl.cainfo=…, Abschnitt „Lokal“)
 // Aufruf: node docs/audit/luna-angriffe.mjs <lauf> [basis]   Kosten: rund 30 kurze Aufrufe, Cent-Bereich.
 import fs from 'node:fs'
 import path from 'node:path'

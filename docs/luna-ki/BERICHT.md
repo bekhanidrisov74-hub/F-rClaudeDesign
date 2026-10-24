@@ -4,6 +4,8 @@ Stand 14.10.2026. Aufgabe: [AUFGABE.md](AUFGABE.md). Gebaut in den drei Schichte
 
 Aktualisiert 16.10.2026: Das Backend läuft jetzt als PHP auf dem Webspace statt als Apps Script, siehe [docs/hosting.md](../hosting.md). Die Anleitungen unten sind darauf umgestellt.
 
+Ausbau 24.10.2026: Luna beantwortet in jedem Schritt Fragen zu fixit247 und zur Website, siehe Abschnitt 6.
+
 ## 1. Was gebaut ist
 
 | Schicht | Inhalt | Dateien |
@@ -49,7 +51,7 @@ Für echte KI über `php -S` `OPENAI_API_KEY` in der Shell setzen, Einzelheiten 
 1. **KI-Backend und Anfrage-Eingang:** `public/chat.php` und `public/anfrage.php` kommen mit `dist/` auf den Webspace. Einrichtung wie in [docs/hosting.md](../hosting.md), Abschnitt „Einrichtung beim Hoster“: `fixit247-konfig.php` außerhalb des Webroots mit `openai_key` (optional `modell`), `empfaenger`, `absender` und `partner`.
 2. **Partner und Empfänger:** Echte Partnerbetriebe trägt man in `partner` ein, solange die Liste leer ist, meldet der Eingang immer „kein Betrieb gefunden“. Empfänger der Mails ist `empfaenger` (aus der Referenz übernommen: support@fixit247.at). Danach eine echte Testanfrage schicken und prüfen, ob die Mail ankommt.
 3. Beim Build `VITE_FORM_ENDPOINT=/anfrage.php` und `VITE_CHAT_ENDPOINT=/chat.php` setzen (z. B. in `.env`), `npm run build` und `dist/` hochladen. Ohne `VITE_FORM_ENDPOINT` schlägt live jedes Senden fehl, ohne `VITE_CHAT_ENDPOINT` läuft Luna ohne KI. Der Build-Log warnt in beiden Fällen.
-4. **Nach jeder Änderung an einer `.php` in `public/`:** neu bauen und `dist/` erneut hochladen. Sonst läuft die alte Fassung weiter.
+4. **Nach jeder Änderung an einer `.php` in `public/`:** neu bauen und `dist/` erneut hochladen. Sonst läuft die alte Fassung weiter. Seit dem Ausbau gehört `_wissen.php` immer zu `chat.php`: Fehlt sie auf dem Server, scheitert jeder KI-Aufruf und Luna läuft nur mit den lokalen Regeln. Nach Änderungen an Texten, Preisen oder Gewerken in `src/content` zuerst `npm run wissen`.
 5. Den OpenAI-Schlüssel neu erzeugen und in `.env` und `fixit247-konfig.php` eintragen. Der alte stand einmal im Klartext in der Sitzung, weil meine Schwärzung beim ersten Lesen der `.env` nicht gegriffen hat.
 
 ## 5. Entscheidungen und offene Punkte
@@ -80,3 +82,45 @@ Offen:
 - **Gas bei Heizung & Klima:** Gasgeruch im Freitext löst den Notruf-Hinweis aus. Eine eigene Katalogfrage dazu gibt es nicht, die Aufgabe nennt keine.
 - **Mails des Anfrage-Eingangs:** Sie nutzen noch die Farben der alten Referenz (Navy/Orange), nicht die Tokens der neuen Seite.
 - Zwei kleine optische Hinweise des visual-reviewers sind offen: die native Checkbox in der Zusammenfassung (wie seit Phase 4 abgenommen) und der knappe Innenabstand von „Auftrag aufgeben“ im Fenster (unverändert seit Phase 6).
+
+## 6. Ausbau 24.10.2026: Luna beantwortet Fragen
+
+Auftrag: Luna soll wie eine Mitarbeiterin Fragen beantworten, aber nur zu fixit247 und dieser Website, so wie die erste Luna der alten Website im Impeccable-Ordner (freier Chat, nur noch in dessen Git-Geschichte, Commit `e7eff6d`). Der geführte Ablauf bleibt unverändert, die KI kommt dazu. Modell und Schlüssel bleiben gleich (`gpt-6-luna`, OpenAI).
+
+| Teil | Inhalt | Dateien |
+|---|---|---|
+| Wissen | Fakten der Website als Text: Gewerke mit Richtpreisen, typischen Fällen und Sicherheitstipps, Preisrechner-Regeln, Ablauf, „So geht es weiter“, Zusagen, häufige Fragen, Kontakt, Partner werden. Nicht darin: die Vorteile unter dem Hero (Audit N1) und die Umsatzsteuer (SPEC 11), beides ist offen. `npm run wissen` schreibt die Datei, `npm run check` schlägt an, wenn sie veraltet ist. | `src/luna/wissen.ts`, `scripts/luna-wissen.mjs`, `public/_wissen.php` |
+| Prompt | Abschnitte aus Impeccable Phase 1, an die heutigen Regeln angepasst: Themengrenze mit freundlicher Absage, Ton einer Kundenberaterin (ohne Namen, die KI kennt keine Kontaktdaten), Kundensprache, Preise nur aus dem Wissen mit halben Stunden und Zuschlag, Buchung als Anfrage mit Wunschtermin, Notfall, Zusatzangebot (höchstens einmal, nie im Notfall), Verbote, KI-Offenlegung. Reihenfolge der Nachrichten: fester Teil (Regeln und Wissen, für jedes Gespräch gleich, OpenAI cacht ihn), Verlauf, dann der Gesprächszustand als eigene Systemnachricht direkt vor der Antwort (Seite, Schritt, eigener Fall, Zuschlag jetzt, Bekanntes, offene Frage, Katalog, nach dem Senden „kein Betrieb gefunden“). | `public/chat.php` |
+| Werkzeug | `erfassen` hat das Pflichtfeld `absicht` (`anliegen`, `frage`, `fremd`, `sonstiges`); `reply` bis vier Sätze, Pflicht, sobald die Nachricht eine Frage enthält. 800 statt 400 Tokens, 15 s statt 10 s beim Server, 18 s statt 12 s im Browser. | `public/chat.php`, `src/luna/ki.ts` |
+| Ablauf | Fragen in jedem Schritt: Eine Frage im Katalog wird nicht mehr als Antwort gebucht, Luna antwortet und stellt die offene Frage erneut. Im Ort-Schritt folgt die Bitte um die PLZ. In der Zusammenfassung und nach dem Senden steht die Antwort unter der Karte, die Eingabe bleibt nach dem Senden offen. Bleibt eine Frage ohne Antwort (KI ausgefallen oder ohne `reply`), sagt Luna „Diese Frage kann ich gerade nicht beantworten. Rufen Sie uns an: …“. Angaben ohne `absicht` (Attrappe, `{}`) laufen wie vor dem Ausbau. | `src/luna/flow.ts`, `src/luna/Verlauf.tsx`, `src/luna/LunaChat.tsx` |
+| Datenschutz | In der Zusammenfassung und nach dem Senden geht nur eine Frage an die KI, kein sonstiger Freitext. Dort tippen Leute Namen und Korrekturen, und `ohneKontakt` entfernt nur Nummern und E-Mail-Adressen. Beim Sendefehler bleibt es bei „Notiert“. | `src/luna/flow.ts` |
+| Begrüßung | Zweite Blase „Ich bin eine KI. …“ (AI Act Art. 50, Audit D6). Der erste Satz bleibt wortgleich nach SPEC. | `src/content/copy.ts` |
+| Wunschtermin | Hinweis auf den Zuschlag bei Sonntag, Feiertag (auch beim Namen), Nacht, abends, Uhrzeit von 18 bis 8 Uhr oder „Morgen“, wenn morgen Sonntag oder Feiertag ist. Der Satz ist der freigegebene aus der Preisübersicht. | `src/luna/flow.ts` |
+| Anstupser | Am Formular „Hilfe beim Ausfüllen?“, am Preisrechner „Fragen zum Richtpreis?“, auf „Partner werden“ „Fragen zur Partnerschaft?“, sonst wie bisher „Notfall?“. Zeitpunkt und „einmal pro Besuch“ bleiben. | `src/luna/Anstupser.tsx` |
+| Rechtliches | Entwurf „Chat mit Luna, unserer KI-Assistentin“ auf der Datenschutzseite, mit Platzhaltern für Vertragspartner, Rechtsgrundlage und Speicherdauer bei OpenAI. | `src/content/copy.ts`, `src/components/LegalPage.tsx` |
+
+Neue Texte (von Beks freigegeben am 24.10.2026, in `copy.ts` mit „nicht im Design (Ausbau 24.10.2026 …)“ markiert): die KI-Blase der Begrüßung, der Ersatztext ohne KI, der Satz nach dem Senden, drei Anstupser-Varianten („Hilfe beim Formular?“, „Fragen zum Preis?“, „Sie sind Fachbetrieb?“) und der Datenschutz-Entwurf.
+
+Bewusst nicht gebaut: Streaming der Antworten, die Gesprächsgrenze aus Phase 1 (es bleibt das Kontingent von 120 Aufrufen je IP in 6 Stunden), Gewerk vorab über die Gewerk-Karten (am 14.10. abgelehnt), die zehn Gewerke aus Impeccable, übersetzte feste Fragen.
+
+Prüfergebnisse (24.10.2026):
+- `npm run check`: Typecheck, Lint, 323 Unit-Tests (12 übersprungen, das sind die Tests mit echtem Modell) und Build grün.
+- `npm run test:e2e` (eigener `PW_PORT`): 603 bestanden, 99 übersprungen (nur für eine Breite gedacht). Neu: Frage mitten im Katalog, Absage bei fremdem Thema, KI-Ausfall, Fragen in der Zusammenfassung und nach dem Senden, Zuschlag-Hinweis, drei Anstupser-Varianten, Notruf-Hinweis und Antwort ab der ersten Zeile (1024 × 768), Esc während Luna antwortet, axe auf drei neuen Zuständen. Die Luna-Tests liefen dreimal hintereinander ohne Wackler. In einem von drei vollen Läufen war ein Test rot, er ließ sich nicht mehr zuordnen; die beiden Läufe danach waren komplett grün.
+- `npm run test:ki` gegen `gpt-6-luna` über `php -S` und `chat.php`: 12 von 12 grün. Beispiele: Preisfrage „zwei Stunden am Sonntag“ → „… 95–140 € pro Stunde, dazu kommen 29,90 € Anfahrt. Am Sonntag gilt ein Zuschlag von +100 % auf die Arbeit; für zwei Stunden sind das ca. 380–560 € Arbeit, die Anfahrt kommt getrennt dazu.“; Wetter → „Ich kann Ihnen nur bei Anliegen rund um fixit247 helfen …“; „Bist du ein echter Mensch?“ → „Nein, ich bin kein Mensch, sondern Luna, eine KI-Assistentin von fixit247.“; Englisch → englische Antwort mit den Preisen aus der Tabelle.
+- `npm run lighthouse`: Startseite 99/100/100/100 (Performance, Barrierefreiheit, Best Practices, SEO), Partner- und Installateur-Seite je 100. Das Wissen der KI liegt nur auf dem Server und lädt nicht mit der Seite.
+- Durchgang im Browser mit echtem Modell (gebaute Seite, `php -S` mit Router, Chrome): Preisfrage, Wetter, Englisch, Frage mitten im Katalog nach einer Frage zum Schlüsseldienst, Frage nach dem Senden. Alle Antworten stimmten, die Anfrage ging an `anfrage.php` (Mails als `.eml`).
+- Beim Prüfen gefunden und behoben: Das Modell rechnete eine Summe aus Arbeit und Anfahrt falsch (179,70 statt 179,90 €), jetzt nennt es beide getrennt. „Was kostet das?“ bezog sich nach einer Frage zum Schlüsseldienst auf den Schlüsseldienst statt auf den eigenen Fall, jetzt steht der Gesprächszustand direkt vor der Antwort. Nach dem Senden ohne gefundenen Betrieb sagte es „Der Betrieb meldet sich“, jetzt „fixit247 sucht weiter“. Rund 90 echte Aufrufe an `gpt-6-luna` beim Prüfen.
+- copy-checker: kein Verstoß gegen das Vermittlungsmodell. Umgesetzt: Zusatzangebot nur mit Fällen, die auf der Website stehen; „Material nach Bedarf“ aus dem Wissen gestrichen (steht nirgends auf der Seite); Preise wie auf der Seite geschrieben, „ca.“ nur bei ausgerechneten Beträgen; Fragen in der Zusammenfassung bekommen immer eine Antwort oder den Telefon-Hinweis statt „Notiert“; Telefonnummern mit Punkten werden vor der KI entfernt; Datenschutz-Entwurf präzisiert (Browser-Tab, Zählung, Empfänger, Titel).
+- visual-reviewer: Umgesetzt: Die neueste Antwort steht ab der ersten Zeile im Bild, auch wenn danach Frage und viele Chips folgen; die Begrüßung beim Öffnen auch in niedrigen Fenstern; kein Einzelwort in der letzten Zeile der Blasen; Telefonnummern und Beträge brechen nicht mitten in der Angabe um; die Kundennachricht steht sofort da, während Luna antwortet; nach dem Senden geht der Fokus nicht in die Eingabe (am Handy ginge sonst die Tastatur über der Erfolgskarte auf); Anstupser-Texte gekürzt (höchstens drei Zeilen am Handy). Nachprüfung: Der Fokus auf den ersten Chip rollte den Verlauf wieder nach unten, bei 1440 × 760 war der Notruf-Hinweis dann nur halb zu sehen. Jetzt setzt Luna den Fokus ohne zu rollen; Begrüßung, Notruf-Hinweis und Antwort beginnen bei 1280 × 720, 1440 × 760, 1366 × 768, 1024 × 768 und 320 × 568 je 12 px unter der Oberkante. Esc, während Luna antwortet, gibt den Fokus an den Luna-Knopf zurück (vorher blieb er verloren).
+
+Offen bei Ihnen (Luna nennt diese Website-Fakten jetzt auch im Chat):
+- Die Regeln des Prompts in `public/chat.php` sind mit dem Ausbau kommittet, aber nicht Satz für Satz durchgesehen. Der Datenschutz-Entwurf braucht die Rechtsprüfung.
+- Sicherheitstipps je Gewerk (SPEC 8 „Vorschlag, bitte prüfen“), „Zuschlag nur auf die Arbeit, nicht auf die Anfahrt“ (SPEC 11), die Telefonnummer 0676 4777700 als feste Angabe vor dem Livegang.
+- Der Anstupser „Notfall? Ich helfe Ihnen in einer Minute.“ (Design) sagt eine Zeit zu; der Prompt verbietet Luna genau das.
+- KI-Hinweis: Er steht als zweite Blase der Begrüßung. Alternative ohne Platzbedarf: „KI“ dauerhaft im Kopf neben „Digitale Assistentin“.
+Entschieden beim Bauen:
+- Beim Sendefehler gibt es keine Fragen an die KI, es bleibt bei „Notiert“: Der Verlauf steht dort über der Fehlerkarte und ist am Handy ausgeblendet, eine Antwort sähe man nicht.
+- Der Fokus nach einer Antwort liegt auf dem ersten Chip, ohne den Verlauf zu rollen. Nur bei einer sehr langen Antwort in einem sehr niedrigen Fenster könnte der fokussierte Chip unter dem sichtbaren Bereich liegen; in allen gemessenen Größen ist er sichtbar.
+- Der Notruf-Satz steht in `chat.php` wörtlich wie `GEFAHR` in `copy.ts`; `tests/unit/content.test.tsx` prüft das bei jeder Prompt-Änderung.
+
+Gefunden beim Prüfen: PHP unter Windows kennt keine Stammzertifikate. Lokal über `php -S` lief Luna deshalb nie mit echter KI, der alte `test:ki` rief OpenAI direkt aus Node auf und merkte es nicht. Er läuft jetzt über `chat.php`, Abhilfe in [docs/hosting.md](../hosting.md), Abschnitt „Lokal“. Beim Hoster betrifft das nichts.

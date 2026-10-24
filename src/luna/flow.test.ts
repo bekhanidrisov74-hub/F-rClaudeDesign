@@ -1,4 +1,5 @@
 import { describe, expect, test, vi } from 'vitest'
+import { TELEFON } from '../content/contact'
 import { copy, GEFAHR } from '../content/copy'
 import { katalog } from '../content/fragen'
 import { gewerke } from '../content/gewerke'
@@ -9,6 +10,7 @@ import {
   auswahl,
   fortschritt,
   gesendet,
+  istFrage,
   kurzfassung,
   mitId,
   offeneFrage,
@@ -18,6 +20,7 @@ import {
   uebernimm,
   zeilen,
   zuLead,
+  zuschlagImTermin,
   type Erfasser,
   type Zustand,
 } from './flow'
@@ -27,6 +30,7 @@ const lauf = async (eingaben: string[], erfasse?: Erfasser, z: Zustand = start()
   return z
 }
 const letzte = (z: Zustand) => z.verlauf[z.verlauf.length - 1].text
+const texte = (z: Zustand) => z.verlauf.map((n) => n.text)
 const KONTAKT = { name: 'Maria Huber', telefon: '0664 1234567', email: '' }
 
 describe('Fragenkatalog', () => {
@@ -208,7 +212,7 @@ describe('KI-Erfassung (optional)', () => {
     expect(z.verlauf.map((n) => n.text)).toContain('Die Vermittlung ist kostenlos.')
     const [verlauf, zustand] = erfasse.mock.calls[0]
     expect(verlauf.at(-1)).toEqual({ role: 'user', content: 'Bei mir ist es seit heute ganz kalt in der Wohnung' })
-    expect(zustand).toEqual({ category: null, urgency: null, postalCode: null, answers: {}, pending: null, questions: [] })
+    expect(zustand).toEqual({ category: null, urgency: null, postalCode: null, answers: {}, pending: null, questions: [], phase: 'INITIAL', match: null })
   })
 
   test('Telefonnummern und E-Mail-Adressen aus dem Freitext gehen nicht an die KI (Audit F1)', async () => {
@@ -219,6 +223,7 @@ describe('KI-Erfassung (optional)', () => {
     expect(gesendet).not.toMatch(/0664|1234567|@/)
     expect(erfasse.mock.calls[0][0].at(-1)?.content).toBe('Rohrbruch, bitte Maria Huber anrufen: [Nummer entfernt] oder [Nummer entfernt], [E-Mail entfernt]')
     expect(ohneKontakt('PLZ 1020 Wien, seit 2020, am 05.10., Baujahr 2015, Fehler 0815')).toBe('PLZ 1020 Wien, seit 2020, am 05.10., Baujahr 2015, Fehler 0815')
+    expect(ohneKontakt('Meine Nummer 0664.123.45.67 bitte')).toBe('Meine Nummer [Nummer entfernt] bitte')
   })
 
   test('Notruf (M1): eine KI-Antwort, die nur den Kern-Satz wiederholt, entfällt – nur bei gezeigtem Hinweis', async () => {
@@ -257,7 +262,7 @@ describe('KI-Erfassung (optional)', () => {
     expect(letzte(z)).toHaveLength(600)
   })
 
-  test('nur bei der ersten Beschreibung und längeren Freitexten, nie nach der Zusammenfassung', async () => {
+  test('nur bei der ersten Beschreibung, Fragen und längeren Freitexten; nach der Zusammenfassung nur Fragen', async () => {
     const erfasse = vi.fn<Erfasser>().mockResolvedValue({})
     let z = await lauf(['Installateur', 'Wasser tritt aus'], erfasse)
     expect(erfasse).not.toHaveBeenCalled()
@@ -270,6 +275,154 @@ describe('KI-Erfassung (optional)', () => {
     z = await lauf(['Bitte vorher anrufen, Maria Huber 0664 1234567'], erfasse, z)
     expect(erfasse).not.toHaveBeenCalled()
     expect(z.anfrage.zusatz).toBe('Bitte vorher anrufen, Maria Huber 0664 1234567')
+    await lauf(['Wann kommt der Betrieb?'], erfasse, z)
+    expect(erfasse).toHaveBeenCalledTimes(1)
+    expect(erfasse.mock.calls[0][1].phase).toBe('SUMMARY')
+  })
+})
+
+describe('Fragen in jedem Schritt (Ausbau 24.10.2026)', () => {
+  const antwortet = (absicht: string, reply = 'Antwort der KI.') => vi.fn<Erfasser>().mockResolvedValue({ absicht, reply })
+  const ausfall = () => vi.fn<Erfasser>().mockResolvedValue(null)
+  const ersatz = `Diese Frage kann ich gerade nicht beantworten. Rufen Sie uns an: ${TELEFON}.`
+
+  test('Begrüßung: Satz laut SPEC, danach der Hinweis, dass Luna eine KI ist', () => {
+    expect(texte(start())).toEqual([copy.luna.fragen.gewerk, copy.luna.kiHinweis])
+  })
+
+  test('istFrage: Fragezeichen, Fragewort, Verb mit Pronomen; Angaben sind keine Fragen', () => {
+    for (const f of ['Was kostet das', 'wie lange dauert es', 'Können Sie auch am Sonntag kommen', 'Gibt es einen Zuschlag', 'Wann?', 'How much is it', 'Is there a fee'])
+      expect(istFrage(f), f).toBe(true)
+    for (const f of ['Wasser tritt aus', 'Wien 1100', 'Ist kaputt', 'Küche', 'Waschmaschine läuft aus', 'Werkstatt im Keller', 'Wohnung'])
+      expect(istFrage(f), f).toBe(false)
+  })
+
+  test('Anfang: Frage beantwortet, die Anfrage bleibt leer, die Gewerke bleiben zur Auswahl', async () => {
+    const z = await lauf(['Was kostet ein Installateur am Sonntag?'], antwortet('frage', 'Am Sonntag gilt +100 % auf die Arbeit.'))
+    expect(z.phase).toBe('INITIAL')
+    expect(z.anfrage).toEqual(start().anfrage)
+    expect(letzte(z)).toBe('Am Sonntag gilt +100 % auf die Arbeit.')
+    expect(auswahl(z)).toEqual(auswahl(start()))
+  })
+
+  test('fremdes Thema: die Absage der KI, sonst nichts', async () => {
+    const z = await lauf(['Wie wird morgen das Wetter?'], antwortet('fremd', 'Dabei kann ich nicht helfen.'))
+    expect(texte(z).slice(2)).toEqual(['Wie wird morgen das Wetter?', 'Dabei kann ich nicht helfen.'])
+  })
+
+  test('mitten im Katalog: die Frage wird keine Antwort, Luna antwortet und fragt erneut', async () => {
+    const erfasse = antwortet('frage', 'Ca. 95–140 € pro Stunde.')
+    const z = await lauf(['Installateur', 'Was kostet das?'], erfasse)
+    expect(z.anfrage.antworten).toEqual({})
+    expect(texte(z).slice(-2)).toEqual(['Ca. 95–140 € pro Stunde.', 'Was ist das Problem?'])
+    expect(erfasse.mock.calls[0][1]).toMatchObject({ phase: 'ASKING', pending: { id: 'was' } })
+  })
+
+  test('KI fällt aus: Ersatztext mit Telefon, die offene Frage kommt erneut', async () => {
+    const z = await lauf(['Installateur', 'Wie lange dauert das?'], ausfall())
+    expect(z.anfrage.antworten).toEqual({})
+    expect(texte(z).slice(-2)).toEqual([ersatz, 'Was ist das Problem?'])
+    // ohne KI genauso
+    expect(texte(await lauf(['Installateur', 'Wie lange dauert das?'])).slice(-2)).toEqual([ersatz, 'Was ist das Problem?'])
+  })
+
+  test('Attrappe {} und fehlende absicht: Angaben wie vor dem Ausbau; eine Frage ohne Antwort bekommt den Ersatztext', async () => {
+    const leer = vi.fn<Erfasser>().mockResolvedValue({})
+    let z = await lauf(['Installateur', 'Es ist unter der Spüle in der Küche'], leer)
+    expect(z.anfrage.antworten.was).toBe('Es ist unter der Spüle in der Küche')
+    expect(texte(z)).not.toContain(ersatz)
+    z = await lauf(['Installateur', 'Was kostet das?'], leer)
+    expect(texte(z).slice(-2)).toEqual([ersatz, 'Was ist das Problem?'])
+    z = await lauf(['Mir ist kalt, ist das schlimm?'], vi.fn<Erfasser>().mockResolvedValue({ absicht: 'unsinn', category: 'shk' }))
+    expect(z.anfrage.gewerk).toBe('shk')
+    expect(z.phase).toBe('ASKING')
+  })
+
+  test('Anliegen mit Frage: Felder übernommen, Antwort gezeigt, der Ablauf geht weiter', async () => {
+    const erfasse = vi.fn<Erfasser>().mockResolvedValue({ absicht: 'anliegen', category: 'shk', reply: 'Ca. 95–140 € pro Stunde.' })
+    const z = await lauf(['Meine Heizung ist kalt, was kostet das?'], erfasse)
+    expect(z.anfrage.gewerk).toBe('shk')
+    expect(texte(z)).toContain('Ca. 95–140 € pro Stunde.')
+    expect(z.phase).toBe('ASKING')
+  })
+
+  test('eine Frage, die eine Schnellantwort nennt, zählt als Antwort', async () => {
+    const z = await lauf(['Installateur', 'Wasser tritt aus', 'Küche?'])
+    expect(z.anfrage.antworten.wo).toBe('Küche')
+  })
+
+  test('Ort-Schritt: Frage beantwortet, dann die Bitte um die PLZ; eine gültige PLZ der KI zählt', async () => {
+    const bisOrt = ['Schlüsseldienst', 'Ausgesperrt', 'Zugefallen', 'Wohnung', 'Ja', 'So schnell wie möglich']
+    let z = await lauf([...bisOrt, 'Warum brauchen Sie die?'], antwortet('frage', 'Damit ein Betrieb aus Ihrer Nähe kommt.'))
+    expect(z.phase).toBe('LOCATION')
+    expect(texte(z).slice(-2)).toEqual(['Damit ein Betrieb aus Ihrer Nähe kommt.', copy.luna.plzFehler])
+    z = await lauf([...bisOrt, 'Warum brauchen Sie die?'], ausfall())
+    expect(texte(z).slice(-2)).toEqual([ersatz, copy.luna.plzFehler])
+    z = await lauf([...bisOrt, 'Wien Favoriten'], vi.fn<Erfasser>().mockResolvedValue({ absicht: 'anliegen', postalCode: '1100' }))
+    expect(z.anfrage).toMatchObject({ plz: '1100', ort: 'Wien' })
+    expect(z.phase).toBe('SUMMARY')
+  })
+
+  test('Zusammenfassung: Frage unter der Karte beantwortet, die Ergänzung bleibt leer', async () => {
+    let z = await lauf(['Installateur', 'Unter der Spüle tritt Wasser aus.', 'Küche', 'Tropft nur', 'Nein', 'So schnell wie möglich', '1020 Wien'])
+    expect(z.phase).toBe('SUMMARY')
+    expect(z.vorKarte).toBe(z.verlauf.length)
+    z = await lauf(['Muss ich zu Hause sein?'], antwortet('frage', 'Ja, der Betrieb kommt zu Ihnen.'), z)
+    expect(z.phase).toBe('SUMMARY')
+    expect(z.anfrage.zusatz).toBe('')
+    expect(texte(z).slice(z.vorKarte)).toEqual(['Muss ich zu Hause sein?', 'Ja, der Betrieb kommt zu Ihnen.'])
+    z = await lauf(['Wie lange dauert es?'], ausfall(), z)
+    expect(letzte(z)).toBe(ersatz)
+    // Keine Antwort der KI: auch dann der Hinweis aufs Telefon, die Frage wird keine Ergänzung
+    z = await lauf(['Kommt der Betrieb heute?'], vi.fn<Erfasser>().mockResolvedValue({}), z)
+    expect(letzte(z)).toBe(ersatz)
+    expect(z.anfrage.zusatz).toBe('')
+  })
+
+  test('nach dem Senden: Fragen an die KI, sonst ein fester Satz ohne KI; beim Sendefehler nur die Ergänzung', async () => {
+    const z = await lauf(['Installateur', 'Unter der Spüle tritt Wasser aus.', 'Küche', 'Tropft nur', 'Nein', 'So schnell wie möglich', '1020 Wien'])
+    const fertig = gesendet(z, 'FOUND')
+    expect(fertig).toMatchObject({ verlauf: [], vorKarte: 0 })
+    const erfasse = antwortet('frage', 'Der Betrieb ruft Sie zurück.')
+    expect(texte(await lauf(['Wann ruft der Betrieb an?'], erfasse, fertig))).toEqual(['Wann ruft der Betrieb an?', 'Der Betrieb ruft Sie zurück.'])
+    expect(erfasse.mock.calls[0][1]).toMatchObject({ phase: 'COMPLETED', match: 'FOUND' })
+    erfasse.mockClear()
+    expect(letzte(await lauf(['Danke, Maria Huber'], erfasse, fertig))).toBe(`Gern. Bei Fragen zu Ihrer Anfrage erreichen Sie uns unter ${TELEFON}.`)
+    expect(erfasse).not.toHaveBeenCalled()
+    const fehler = await lauf(['Wann ruft der Betrieb an?'], erfasse, gesendet(z, null))
+    expect(erfasse).not.toHaveBeenCalled()
+    expect(fehler.anfrage.zusatz).toBe('Wann ruft der Betrieb an?')
+  })
+
+  test('Gefahrenwort in einer Frage: Notruf-Hinweis, aber die Anfrage bleibt unverändert', async () => {
+    const z = await lauf(['Was mache ich bei Gasgeruch?'], antwortet('frage', 'Öffnen Sie die Fenster.'))
+    expect(z.verlauf.filter((n) => n.von === 'notruf')).toHaveLength(1)
+    expect(z.anfrage.dringlichkeit).toBeNull()
+    expect(letzte(z)).toBe('Öffnen Sie die Fenster.')
+  })
+})
+
+describe('Zuschlag beim Wunschtermin', () => {
+  const samstag = new Date('2026-10-24T12:00:00+02:00')
+  const sonntag = new Date('2026-10-25T12:00:00+01:00')
+  const dienstag = new Date('2026-10-27T12:00:00+01:00')
+  test.each([
+    ['Sonntag Vormittag', dienstag, true],
+    ['Montag 20 Uhr', dienstag, true],
+    ['um 7:30 Uhr', dienstag, true],
+    ['am Abend', dienstag, true],
+    ['abends', dienstag, true],
+    ['Christtag', dienstag, true],
+    ['Montag 10 Uhr', dienstag, false],
+    ['Morgen', dienstag, false],
+    ['Morgen', samstag, true],
+    ['morgen früh', sonntag, true], // Montag, 26.10.: Nationalfeiertag
+    ['Diese Woche', samstag, false],
+  ])('„%s“ (%s): %s', (termin, jetzt, erwartet) => expect(zuschlagImTermin(termin, jetzt)).toBe(erwartet))
+
+  test('Hinweis nach dem Wunschtermin, vor der Frage nach der PLZ', async () => {
+    const z = await lauf(['Schlüsseldienst', 'Ausgesperrt', 'Zugefallen', 'Wohnung', 'Ja', 'In den nächsten Tagen', 'Sonntag um 10'])
+    expect(texte(z).slice(-2)).toEqual([copy.preisuebersicht.hinweiseDialog[0], expect.stringContaining('Postleitzahl')])
   })
 })
 

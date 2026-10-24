@@ -9,6 +9,8 @@ import {
   formularErfolg,
   formularSendefehler,
   lunaAbsenden,
+  lunaFrage,
+  lunaNachDemSenden,
   lunaImGespraech,
   lunaBisZusammenfassung,
   oeffneMenue,
@@ -19,6 +21,7 @@ import {
   sendeBewerbungLeer,
   waehleGewerk,
   zeigeAnstupser,
+  zeigeAnstupserAm,
 } from '../e2e/hilfen'
 import { expect } from '../e2e/test'
 
@@ -83,6 +86,9 @@ const ZUSTAENDE: Zustand[] = [
   },
   { name: 'luna-anstupser', pfad: '/', uhr: true, vorbereiten: zeigeAnstupser },
   { name: 'luna-gespraech', pfad: '/', vorbereiten: lunaImGespraech },
+  // Ausbau 24.10.2026: Antwort mitten im Katalog, Anstupser am Formular, Frage nach dem Senden
+  { name: 'luna-frage', pfad: '/', vorbereiten: lunaFrage },
+  { name: 'luna-anstupser-formular', pfad: '/', uhr: true, vorbereiten: (p) => zeigeAnstupserAm(p, 'anfrage') },
   { name: 'luna-zusammenfassung', pfad: '/', vorbereiten: lunaBisZusammenfassung },
   {
     name: 'luna-erfolg',
@@ -92,6 +98,7 @@ const ZUSTAENDE: Zustand[] = [
       await expect(chat(p).getByText(/Anfragenummer/)).toBeVisible()
     },
   },
+  { name: 'luna-nach-senden', pfad: '/', vorbereiten: lunaNachDemSenden },
   {
     name: 'luna-sendefehler',
     pfad: '/?fehler=1',
