@@ -163,7 +163,7 @@ export function Preisrechner() {
 function EinsatzHinweis() {
   return (
     <div className="flex items-start gap-s3 rounded-btn-lg bg-eis px-s4 py-s4 hd:py-s6">
-      <IconKreis name="ui-richtpreis" weiss className="size-[44px]" icon="size-[22px]" />
+      <IconKreis name="ui-richtpreis" weiss className="size-[44px]" icon="size-[26px]" />
       <div className="flex min-w-0 flex-col gap-s1">
         <p className="font-display text-h5 font-bold">{copy.rechner.einsatz.titel}</p>
         <p className="text-small text-schiefer">{copy.rechner.einsatz.text}</p>
@@ -191,7 +191,7 @@ function ZuschlagHinweis({ gewaehlt }: { gewaehlt: string[] }) {
   const text = gewaehlt.length > 2 ? copy.rechner.hinweisAlle : copy.rechner.hinweisMehrere
   return (
     <div className="mt-s3 flex items-start gap-s3 rounded-btn-lg bg-eis px-s4 py-s4">
-      <IconKreis name="ui-info" weiss className="size-[36px]" icon="size-[20px]" />
+      <IconKreis name="ui-info" weiss className="size-[36px]" icon="size-[22px]" />
       <p className="min-w-0 self-center text-text">
         <span className="font-bold">{copy.rechner.hinweisMehrereFett}</span> {fuelle(text, { namen: aufzaehlung(gewaehlt) })}
       </p>

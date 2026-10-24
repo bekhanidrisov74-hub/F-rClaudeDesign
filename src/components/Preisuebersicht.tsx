@@ -105,7 +105,7 @@ export function Preisuebersicht({ aufStartseite = true }: { aufStartseite?: bool
               <tr key={g.id} className="border-t border-linie last:border-b">
                 <th scope="row" className="py-s3 text-left font-normal">
                   <span className="flex items-center gap-s3">
-                    <IconKreis name={g.icon} className="size-[44px]" icon="size-[24px]" />
+                    <IconKreis name={g.icon} className="size-[44px]" icon="size-[26px]" />
                     <span className="font-display text-body font-bold">{g.name}</span>
                   </span>
                 </th>
@@ -122,7 +122,7 @@ export function Preisuebersicht({ aufStartseite = true }: { aufStartseite?: bool
         <ul className="border-t border-linie dialog:hidden">
           {gewerke.map((g) => (
             <li key={g.id} className="flex items-center gap-s3 border-b border-linie py-s2">
-              <IconKreis name={g.icon} className="mr-s1 size-[40px]" icon="size-[22px]" />
+              <IconKreis name={g.icon} className="mr-s1 size-[40px]" icon="size-[24px]" />
               <span className="flex min-w-0 flex-1 flex-col">
                 <span className="font-display text-text leading-tight font-bold">{g.name}</span>
                 <span className="text-small text-schiefer">

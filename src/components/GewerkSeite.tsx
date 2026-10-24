@@ -103,14 +103,14 @@ export function GewerkSeite({ gewerk: g }: { gewerk: Gewerk }) {
           <ul role="list" aria-labelledby="notfall-faelle" className="flex flex-col gap-s3">
             {t.notfall.faelle.map((fall) => (
               <li key={fall} className="flex items-center gap-s3">
-                <IconKreis name={g.icon} weiss className="size-[44px]" icon="size-[22px]" />
+                <IconKreis name={g.icon} weiss className="size-[44px]" icon="size-[26px]" />
                 <span className="text-body">{fall}</span>
               </li>
             ))}
           </ul>
         </div>
         <div className="flex items-start gap-s4 rounded-card-lg border border-linie bg-weiss p-s5 shadow-karte">
-          <IconKreis name="ui-warnung" className="size-[48px]" icon="size-[24px]" />
+          <IconKreis name="ui-warnung" className="size-[48px]" icon="size-[28px]" />
           <div className="flex min-w-0 flex-col gap-s2">
             <h3 className="font-display text-h5 font-semibold">{notfall.notruf}</h3>
             <p className="text-body text-schiefer">{GEFAHR}</p>
@@ -122,7 +122,7 @@ export function GewerkSeite({ gewerk: g }: { gewerk: Gewerk }) {
         <ul role="list" className="flex flex-col gap-s4">
           {tipps.map((tipp) => (
             <li key={tipp} className="flex items-start gap-s4 rounded-card-lg border border-linie bg-weiss p-s5 shadow-karte">
-              <IconKreis name="ui-info" className="size-[44px]" icon="size-[22px]" />
+              <IconKreis name="ui-info" className="size-[44px]" icon="size-[26px]" />
               <span className="pt-s2 text-body">{tipp}</span>
             </li>
           ))}

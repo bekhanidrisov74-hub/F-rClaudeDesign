@@ -44,7 +44,7 @@ export function PartnerSeite() {
             <ul role="list" aria-labelledby="partner-gewerke" className="grid grid-cols-1 gap-y-s3 dialog:flex dialog:flex-wrap dialog:gap-x-s6 dialog:gap-y-s4">
               {gewerke.map((g) => (
                 <li key={g.id} className="flex items-center gap-s3">
-                  <IconKreis name={g.icon} className="size-[48px]" icon="size-[24px]" />
+                  <IconKreis name={g.icon} className="size-[48px]" icon="size-[28px]" />
                   <span className="text-body font-semibold">{g.name}</span>
                 </li>
               ))}
@@ -66,7 +66,7 @@ export function PartnerSeite() {
                 key={punkt.titel}
                 className="flex flex-col gap-s3 rounded-card-lg border border-linie bg-weiss p-s5 shadow-karte nav:row-span-3 nav:grid nav:grid-rows-subgrid"
               >
-                <IconKreis name={punkt.icon} className="size-[56px]" icon="size-[28px]" />
+                <IconKreis name={punkt.icon} className="size-[56px]" icon="size-[34px]" />
                 <h3 className="font-display text-h4">{punkt.titel}</h3>
                 <p className="text-body text-schiefer">{punkt.text}</p>
               </li>

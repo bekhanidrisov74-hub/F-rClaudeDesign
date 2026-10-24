@@ -60,6 +60,8 @@
 }
 
 .hd-anrufen {
+  /* Schallwellen des Hörers auf Türkis in Tiefsee, sonst verschwänden sie in der Fläche */
+  --fx-icon-akzent: var(--fx-hd-tiefsee);
   display: flex;
   align-items: center;
   gap: var(--fx-hd-s-anrufen-gap);

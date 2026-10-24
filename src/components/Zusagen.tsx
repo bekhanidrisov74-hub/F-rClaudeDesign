@@ -30,7 +30,7 @@ function ZusageKarte({ karte, breit }: { karte: (typeof copy.zusagen.karten)[num
             ? 'size-[48px] nav:row-span-3 nav:size-[64px]'
             : 'size-[48px] nav:mb-s4 nav:size-[56px]'
         }
-        icon={breit ? 'size-[24px] nav:size-[32px]' : 'size-[24px] nav:size-[28px]'}
+        icon={breit ? 'size-[28px] nav:size-[38px]' : 'size-[28px] nav:size-[34px]'}
       />
       <h3 className={`font-display text-h4 ${breit ? 'nav:col-start-2' : ''}`}>{karte.titel}</h3>
       <p

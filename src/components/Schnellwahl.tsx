@@ -32,7 +32,7 @@ export function Schnellwahl() {
               data-gewerk={g.id}
               className={`${KACHEL} border-linie bg-weiss shadow-karte hover:border-lagune hover:shadow-karte-hover`}
             >
-              <IconKreis name={g.icon} className="size-[56px] nav:size-[64px]" icon="size-[30px] nav:size-[34px]" />
+              <IconKreis name={g.icon} className="size-[56px] nav:size-[64px]" icon="size-[34px] nav:size-[40px]" />
               <span className="flex flex-col gap-s1">
                 <span className={TITEL}>{g.name}</span>
                 <span className="text-small text-schiefer text-balance max-nav:hidden min-h-[2lh]">{g.schnellwahl}</span>
