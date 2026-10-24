@@ -1,12 +1,16 @@
 // Luna: Zustandsautomat mit Fragenkatalog je Gewerk (docs/luna-ki/AUFGABE.md). Reine Logik ohne React, in Vitest testbar.
 // Der Browser führt das Gespräch: je Schritt genau eine Frage, nie eine, die schon beantwortet ist.
-// Gewerk, PLZ und Dringlichkeit erkennen lokale Regeln. Eine optionale KI (`Erfasser`) ergänzt nur Felder;
-// ihre Antwort ist fremde Eingabe und wird hier geprüft. Kontaktdaten kommen im Zustand nie vor.
+// Gewerk, PLZ und Dringlichkeit erkennen lokale Regeln. Eine optionale KI (`Erfasser`) ergänzt Felder und beantwortet in
+// jedem Schritt Fragen zu fixit247 (Ausbau 24.10.2026); ihre Antwort ist fremde Eingabe und wird hier geprüft.
+// Kontaktdaten kommen im Zustand nie vor.
 import { copy, dringlichkeit, fuelle, GEFAHR, WEISS_NICHT, type DringlichkeitId } from '../content/copy'
+import { TELEFON } from '../content/contact'
+import { BEWEGLICHE_FEIERTAGE, FESTE_FEIERTAGE } from '../content/feiertage'
 import { fragenZu, katalog, type Frage } from '../content/fragen'
 import { gewerke } from '../content/gewerke'
 import { ladePlz } from '../lib/plz'
 import { zufallsnummer, type Lead, type Match } from '../lib/submitLead'
+import { istFeiertag, wienerZeit } from '../lib/zuschlagJetzt'
 
 const t = copy.luna
 
@@ -52,6 +56,8 @@ export interface Zustand {
   /** Je Anfrage einmal, beim ersten Senden vergeben */
   anfrageId: string
   match: Match | null
+  /** Nachrichten vor der Karte (Zusammenfassung bzw. Erfolg); spätere Fragen und Antworten stehen darunter */
+  vorKarte: number
 }
 
 export interface Kontakt {
@@ -68,10 +74,18 @@ export interface KiZustand {
   answers: Record<string, string>
   pending: { id: string; q: string; opts: string[] } | null
   questions: { id: string; q: string }[]
+  /** Schritt, in dem die Nachricht kam: Die KI weiß so, was die Website gerade fragt */
+  phase: Phase
+  /** Nach dem Senden: Hat der Eingang einen Betrieb gefunden? Sonst sucht fixit247 weiter (kein Rückruf „vom Betrieb“ zusagen). */
+  match: Match | null
 }
 
-/** Liefert die Argumente des Werkzeugs „erfassen“ oder {} – darf nie werfen (siehe ki.ts). */
+/** Liefert die Argumente des Werkzeugs „erfassen“ oder null, wenn die KI ausfällt – darf nie werfen (siehe ki.ts). */
 export type Erfasser = (verlauf: KiNachricht[], zustand: KiZustand) => Promise<unknown>
+
+/** Wie die KI die letzte Nachricht einordnet (public/chat.php, Werkzeug „erfassen“) */
+const ABSICHTEN = ['anliegen', 'frage', 'fremd', 'sonstiges'] as const
+type Absicht = (typeof ABSICHTEN)[number]
 
 const KI_NACHRICHTEN = 10
 const KI_ZEICHEN = 1000
@@ -101,6 +115,15 @@ const NORMAL_RE = /nicht eilig|kein notfall|keine eile|nächste woche|nächsten 
 const GENERISCH = /^(ja|nein|weiß nicht|etwas anderes|woanders|kein fehlercode|komplett|teilweise)$/i
 /** Platzhalter, die ein Modell statt einer echten Angabe liefert */
 const LEER_RE = /nicht angegeben|nicht genannt|unbekannt|keine angabe|k\.\s?a\.|^n\/a$|^-+$|^null$|^none$|^leer$/i
+/** Frage statt Angabe: Fragewort am Anfang oder Verb mit Pronomen („Können Sie …“, „Gibt es …“), deutsch und englisch */
+const W_WORT = /^(was|wie|wann|wo|woher|wohin|wer|wen|wem|warum|wieso|weshalb|welche[rsmn]?|wieviel|what|how|when|where|who|why|which)\b/i
+const VERB_FRAGE =
+  /^(kann|kannst|könnt|können|könnten|muss|müssen|darf|dürfen|soll|sollte|sollen|gibt|ist|sind|seid|habt|haben|hat|kommt|kommen|bietet|bieten|macht|machen|nehmt|nehmen|arbeitet|arbeiten|vermittelt|vermitteln|ruft|rufen|zahlt|zahlen|kostet|kosten|can|could|do|does|is|are|will|would)\s+(ich|sie|man|es|das|der|die|ihr|du|wir|mir|mich|euch|ein|eine|einen|i|you|it|there|we|they)\b/i
+/** Wunschtermin mit Zuschlag: Sonntag, Feiertag (auch beim Namen), Nacht oder abends, Uhrzeit zwischen 18 und 8 Uhr */
+const ZUSCHLAG_TERMIN_RE = new RegExp(
+  `sonntag|feiertag|nachts?\\b|abends?\\b|\\b(1[89]|2[0-3]|0?[0-7])([:.]\\d\\d)?\\s*uhr|${[...FESTE_FEIERTAGE, ...BEWEGLICHE_FEIERTAGE].map((f) => f.name).join('|')}`,
+  'i',
+)
 const MARKE_RE =
   /\b(vaillant|viessmann|junkers|buderus|wolf|baxi|weishaupt|hoval|de dietrich|bosch|siemens|miele|aeg|samsung|lg|beko|gorenje|whirlpool|bauknecht|electrolux|zanussi|liebherr|neff|constructa|grundig|daikin|mitsubishi|panasonic|toshiba|fujitsu)\b/i
 const CODE_RE = /\b([A-Z]{1,2}[.\- ]?\d{1,3})(?!\d)/
@@ -112,8 +135,35 @@ const optionRe = (o: string, flags = 'i') =>
 
 const LEER: Anfrage = { gewerk: null, problem: '', antworten: {}, dringlichkeit: null, wunschtermin: null, plz: '', ort: '', zusatz: '' }
 
+/** Begrüßung laut SPEC, dazu der Hinweis, dass Luna eine KI ist (AI Act Art. 50, Audit D6). */
 export function start(): Zustand {
-  return { phase: 'INITIAL', verlauf: [{ von: 'luna', text: t.fragen.gewerk }], anfrage: LEER, notruf: false, ki: [], anfrageId: '', match: null }
+  return {
+    phase: 'INITIAL',
+    verlauf: [
+      { von: 'luna', text: t.fragen.gewerk },
+      { von: 'luna', text: t.kiHinweis },
+    ],
+    anfrage: LEER,
+    notruf: false,
+    ki: [],
+    anfrageId: '',
+    match: null,
+    vorKarte: 0,
+  }
+}
+
+/** Frage statt Angabe: Fragezeichen, Fragewort am Anfang oder Verb mit Pronomen („Können Sie …“). */
+export const istFrage = (text: string) => text.includes('?') || W_WORT.test(text) || VERB_FRAGE.test(text)
+
+/**
+ * Fällt der Wunschtermin auf einen Zuschlag? „Morgen“ prüft den morgigen Tag in Wien.
+ * ponytail: morgen = jetzt + 24 h, an den zwei Tagen der Zeitumstellung um eine Stunde daneben.
+ */
+export function zuschlagImTermin(termin: string, jetzt: Date): boolean {
+  if (ZUSCHLAG_TERMIN_RE.test(termin)) return true
+  if (!/\bmorgen\b/i.test(termin)) return false
+  const morgen = wienerZeit(new Date(jetzt.getTime() + 86_400_000))
+  return morgen.wochentag === 0 || istFeiertag(morgen)
 }
 
 /** Nächste offene Frage: Katalog des Gewerks, dann Dringlichkeit, bei NORMAL der Wunschtermin. */
@@ -157,15 +207,23 @@ export const ANZAHL_SCHRITTE = t.schritte.length
 /** Verarbeitet eine Antwort (Chip-Text oder Freitext) und stellt die nächste Frage. */
 export async function antworte(alt: Zustand, roh: string, erfasse?: Erfasser): Promise<Zustand> {
   const text = roh.trim()
-  if (!text || alt.phase === 'COMPLETED') return alt
+  if (!text) return alt
   const z = structuredClone(alt)
   const a = z.anfrage
   z.verlauf.push({ von: 'nutzer', text })
+  const fragt = istFrage(text)
 
-  // Nach der Zusammenfassung: Ergänzung zur Anfrage, ohne KI (hier stehen Kontaktdaten in der Nähe).
-  if (alt.phase === 'SUMMARY' || alt.phase === 'ERROR') {
-    a.zusatz = `${a.zusatz} ${text}`.trim().slice(0, 500)
-    sage(z, t.notiert)
+  // Zusammenfassung und nach dem Senden: Nur Fragen gehen an die KI. Hier tippen Leute auch Namen und Korrekturen ein, und
+  // ohneKontakt entfernt nur Nummern und E-Mail-Adressen (Kontaktdaten nie an die KI, Aufgabe 5, Audit F1). Eine Frage bekommt
+  // die Antwort der KI oder den Hinweis aufs Telefon; sonst bleibt es bei der Ergänzung bzw. einem festen Satz.
+  // Beim Sendefehler nie: Die Fehlerkarte steht unter dem Verlauf, am Handy ist er ausgeblendet.
+  if (alt.phase === 'SUMMARY' || alt.phase === 'ERROR' || alt.phase === 'COMPLETED') {
+    if (fragt && alt.phase !== 'ERROR') return nurAntwort(alt, z, text, antwortVon(await frageKi(z, text, null, erfasse)) || ohneKi())
+    if (alt.phase === 'COMPLETED') sage(z, fuelle(t.nachDemSenden, { telefon: TELEFON }))
+    else {
+      a.zusatz = `${a.zusatz} ${text}`.trim().slice(0, 500)
+      sage(z, t.notiert)
+    }
     return z
   }
 
@@ -185,6 +243,7 @@ export async function antworte(alt: Zustand, roh: string, erfasse?: Erfasser): P
   }
   if (chip && offen) {
     verbuche(z, offen, chip === t.ueberspringen ? '' : chip)
+    zuschlagHinweis(alt, z)
     return weiter(z, alt.phase)
   }
 
@@ -195,12 +254,14 @@ export async function antworte(alt: Zustand, roh: string, erfasse?: Erfasser): P
   }
   gefahr(z, text)
   const plz = await findePlz(text, alt.phase === 'LOCATION')
-  if (alt.phase === 'LOCATION' && (plz === null || plz === 'unbekannt')) {
-    sage(z, plz === 'unbekannt' ? t.plzUnbekannt : t.plzFehler)
+  if (alt.phase === 'LOCATION' && plz === 'unbekannt') {
+    sage(z, t.plzUnbekannt)
     return z
   }
   if (plz && plz !== 'unbekannt' && !a.plz) Object.assign(a, plz)
-  if (offen) {
+  // Eine Frage („Was kostet das?“) beantwortet die offene Frage nicht, außer sie nennt eine ihrer Antworten.
+  const antwortetOffen = offen !== null && (!fragt || offen.chips.some((o) => optionRe(o).test(text)))
+  if (offen && antwortetOffen) {
     if (offen === DRINGLICHKEIT) a.dringlichkeit ??= NORMAL_RE.test(text) ? 'NORMAL' : 'URGENT'
     else if (offen === WUNSCHTERMIN) a.wunschtermin = text.slice(0, 80)
     else verbuche(z, offen, erkenneAntwort(offen, text))
@@ -208,16 +269,72 @@ export async function antworte(alt: Zustand, roh: string, erfasse?: Erfasser): P
   vorbelegen(z, text)
 
   // Sehr kurze Eingabe ohne erkennbaren Inhalt: nachfragen statt raten.
-  if (erst && !a.gewerk && text.replace(/[^a-zäöüß]/gi, '').length < 4) {
+  if (erst && !fragt && !a.gewerk && text.replace(/[^a-zäöüß]/gi, '').length < 4) {
     sage(z, t.kurz)
     return z
   }
-  // KI nur dort, wo sie etwas beitragen kann: erste Beschreibung und längere Freitexte.
-  if (erfasse && (erst || (offen && text.split(/\s+/).length >= 4))) {
-    z.ki = kuerze([...z.ki, { role: 'user', content: ohneKontakt(text) }])
-    uebernimm(z, await erfasse(z.ki, kiZustand(z, offen)), await ladePlz())
+  // KI nur dort, wo sie etwas beitragen kann: erste Beschreibung, Fragen, längere Freitexte, Ort ohne erkennbare PLZ.
+  const ohnePlz = alt.phase === 'LOCATION' && !a.plz
+  const felder = erst || ohnePlz || (offen && (fragt || text.split(/\s+/).length >= 4)) ? await frageKi(z, text, offen, erfasse) : null
+  if (felder !== null && absichtVon(felder) !== 'anliegen') return nurAntwort(alt, z, text, antwortVon(felder) || ohneKi())
+  if (felder !== null) uebernimm(z, felder, await ladePlz())
+  // Frage, die ohne Antwort bliebe (KI ausgefallen, nicht da oder ohne reply) und auch nichts beantwortet: ehrlich sagen
+  // statt still weiterzufragen; die Anfrage bleibt, wie sie war.
+  const offenBleibt = offen !== null && naechsteFrage(a) === offen
+  if (fragt && !antwortVon(felder) && (erst ? !a.gewerk : offen ? offenBleibt : !a.plz)) return nurAntwort(alt, z, text, ohneKi())
+  if (ohnePlz && !a.plz) {
+    sage(z, t.plzFehler)
+    return z
   }
+  zuschlagHinweis(alt, z)
   return weiter(z, alt.phase)
+}
+
+/** Fragt die KI, falls es sie gibt, und nimmt die Nachricht in ihren Verlauf auf. null = keine KI oder ausgefallen. */
+async function frageKi(z: Zustand, text: string, offen: Frage | null, erfasse?: Erfasser): Promise<unknown> {
+  if (!erfasse) return null
+  z.ki = kuerze([...z.ki, { role: 'user', content: ohneKontakt(text) }])
+  return (await erfasse(z.ki, kiZustand(z, offen))) ?? null
+}
+
+/** Ohne gültige absicht (Attrappe, ältere Antwort) gilt die Nachricht als Anliegen: Luna verhält sich wie vor dem Ausbau. */
+function absichtVon(felder: unknown): Absicht {
+  const absicht = felder && typeof felder === 'object' ? (felder as Record<string, unknown>).absicht : undefined
+  return ABSICHTEN.find((x) => x === absicht) ?? 'anliegen'
+}
+
+/** Antwort der KI als Text, höchstens 600 Zeichen (React escapt sie beim Anzeigen); '' = keine Antwort. */
+function antwortVon(felder: unknown): string {
+  const reply = felder && typeof felder === 'object' ? (felder as Record<string, unknown>).reply : undefined
+  return typeof reply === 'string' ? reply.trim().slice(0, 600) : ''
+}
+
+const ohneKi = () => fuelle(t.frageOhneKi, { telefon: TELEFON })
+
+/**
+ * Nur antworten: Kundennachricht und Antwort kommen in den Verlauf, an der Anfrage ändert sich nichts. Ein Gefahrenwort in
+ * der Frage zeigt trotzdem den Notruf-Hinweis. Danach kommt die offene Frage erneut, im Ort-Schritt die Bitte um die PLZ.
+ */
+function nurAntwort(alt: Zustand, z: Zustand, text: string, antwort: string): Zustand {
+  const n = structuredClone(alt)
+  n.verlauf.push({ von: 'nutzer', text })
+  if (z.notruf) notruf(n)
+  n.ki = z.ki
+  // Den Notruf-Satz zeigt schon der lokale Hinweis – eine Antwort, die nur ihn wiederholt, entfällt.
+  if (!(n.notruf && wiederholtNotruf(antwort))) {
+    sage(n, antwort)
+    n.ki = kuerze([...n.ki, { role: 'assistant', content: antwort }])
+  }
+  const offen = offeneFrage(alt)
+  if (offen) frage(n, offen.frage)
+  else if (alt.phase === 'LOCATION') sage(n, t.plzFehler)
+  return n
+}
+
+/** Hinweis auf den Zuschlag, sobald ein Wunschtermin auf Sonntag, Feiertag oder Nacht fällt (wie im Impeccable-Chat). */
+function zuschlagHinweis(alt: Zustand, z: Zustand) {
+  const termin = z.anfrage.wunschtermin
+  if (alt.anfrage.wunschtermin === null && termin && zuschlagImTermin(termin, new Date())) sage(z, copy.preisuebersicht.hinweiseDialog[0])
 }
 
 /** Nächster Schritt: Gewerk, offene Frage, Ort, Zusammenfassung. */
@@ -239,6 +356,7 @@ function weiter(z: Zustand, vorher: Phase): Zustand {
   } else {
     z.phase = 'SUMMARY'
     sage(z, t.zusammenfassungIntro)
+    z.vorKarte = z.verlauf.length
   }
   return z
 }
@@ -258,7 +376,7 @@ function frage(z: Zustand, text: string) {
 export const ohneKontakt = (text: string) =>
   text
     .replace(/[^\s@]+@[^\s@]+\.[^\s@]+/g, '[E-Mail entfernt]')
-    .replace(/(?:\+|\b0)[\d /()-]{5,}\d/g, (nummer) => (nummer.replace(/\D/g, '').length >= 6 ? '[Nummer entfernt]' : nummer))
+    .replace(/(?:\+|\b0)[\d /().-]{5,}\d/g, (nummer) => (nummer.replace(/\D/g, '').length >= 6 ? '[Nummer entfernt]' : nummer))
 
 const kuerze = (ki: KiNachricht[]) => ki.slice(-KI_NACHRICHTEN).map((m) => ({ ...m, content: m.content.slice(0, KI_ZEICHEN) }))
 
@@ -362,6 +480,8 @@ function kiZustand(z: Zustand, offen: Frage | null): KiZustand {
     answers: Object.fromEntries(Object.entries(a.antworten).map(([id, wert]) => [id, ohneKontakt(wert)])),
     pending: offen ? { id: offen.id, q: offen.frage, opts: [...offen.chips] } : null,
     questions: fragenZu(a.gewerk).map((f) => ({ id: f.id, q: f.frage })),
+    phase: z.phase,
+    match: z.match,
   }
 }
 
@@ -401,7 +521,7 @@ export function uebernimm(z: Zustand, felder: unknown, plzListe: Readonly<Record
     }
   }
   // Ohne Platzhalter-Prüfung: „Das ist mir unbekannt …“ ist eine echte Antwort
-  const reply = typeof f.reply === 'string' ? f.reply.trim().slice(0, 600) : ''
+  const reply = antwortVon(f)
   // Den Notruf-Satz zeigt schon der lokale Hinweis – eine Antwort, die nur ihn wiederholt, entfällt.
   if (reply && !(z.notruf && wiederholtNotruf(reply))) {
     sage(z, reply)
@@ -418,8 +538,9 @@ export function aendern(z: Zustand): Zustand {
 /** Vergibt beim ersten Senden die Anfrage-Id; erneutes Senden behält sie. */
 export const mitId = (z: Zustand): Zustand => (z.anfrageId ? z : { ...z, anfrageId: zufallsnummer() })
 
+/** Nach dem Erfolg zeigt Luna nur noch Kurzfassung und Erfolg; der Verlauf beginnt darunter neu (Fragen danach). */
 export const gesendet = (z: Zustand, match: Match | null): Zustand =>
-  match ? { ...z, phase: 'COMPLETED', match } : { ...z, phase: 'ERROR' }
+  match ? { ...z, phase: 'COMPLETED', match, verlauf: [], vorKarte: 0 } : { ...z, phase: 'ERROR' }
 
 const gewerkName = (a: Anfrage) => gewerke.find((g) => g.id === a.gewerk)?.name ?? WEISS_NICHT
 

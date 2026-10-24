@@ -11,38 +11,65 @@ import { auswahl, offeneFrage, type Kontakt, type Nachricht, type Zustand } from
 
 const t = copy.luna
 
-const BLASE = 'max-w-[86%] break-words rounded-card px-s4 py-s3 text-text'
+const BLASE = 'max-w-[86%] break-words text-pretty rounded-card px-s4 py-s3 text-text'
 const VON: Record<Nachricht['von'], string> = {
   luna: 'self-start rounded-bl-ecke bg-eis text-tiefsee',
   nutzer: 'self-end rounded-br-ecke bg-tiefsee text-weiss',
   notruf: 'self-start rounded-bl-ecke border-2 border-tiefsee bg-weiss font-bold text-tiefsee',
 }
 
+/** data-von: LunaChat zeigt nach einer Antwort die erste Luna-Blase hinter der letzten Kundenblase ab der ersten Zeile. */
 function Blase({ von, children }: { von: Nachricht['von']; children: ReactNode }) {
   if (von === 'notruf')
     return (
       // Notruf-Hinweis (Aufgabe, EMERGENCY): wird sofort vorgelesen, der Ablauf läuft danach weiter.
-      <div role="alert" className={`${BLASE} ${VON.notruf} flex items-start gap-s2`}>
+      <div role="alert" data-von={von} className={`${BLASE} ${VON.notruf} flex items-start gap-s2`}>
         <Icon name="ui-warnung" className="mt-px size-[22px]" />
         <span>{children}</span>
       </div>
     )
-  return <div className={`${BLASE} ${VON[von]}`}>{children}</div>
+  return (
+    <div data-von={von} className={`${BLASE} ${VON[von]}`}>
+      {children}
+    </div>
+  )
 }
+
+/** Geschützte Leerzeichen: Telefonnummern und Angaben wie „140 €“, „100 %“, „8 Uhr“ brechen nicht mitten drin um. */
+const ungetrennt = (text: string) => text.replace(/(?<=\d) (?=\d|€|%|Uhr\b)/g, ' ')
 
 /** Nachrichten als Text: Modell- und Nutzertext sind fremd, React setzt sie nur als Text (nie als HTML). */
 function Nachrichten({ verlauf }: { verlauf: Nachricht[] }) {
   return verlauf.map((n, i) => (
     <Blase key={i} von={n.von}>
-      {n.text}
+      {ungetrennt(n.text)}
     </Blase>
   ))
+}
+
+/** Luna verarbeitet gerade eine Antwort: die Kundennachricht steht schon da (die KI braucht ein paar Sekunden), darunter die Ladeblase. */
+function Laden({ wartet }: { wartet: string | null }) {
+  return (
+    <>
+      {/* aria-hidden: Die Live-Region liest die Kundennachricht mit der Antwort vor, nicht zweimal */}
+      {wartet && (
+        <div aria-hidden="true" className="contents">
+          <Blase von="nutzer">{ungetrennt(wartet)}</Blase>
+        </div>
+      )}
+      <div aria-hidden="true" className={`${BLASE} ${VON.luna} flex`}>
+        <Loader groesse={40} />
+      </div>
+    </>
+  )
 }
 
 interface Props {
   luna: Zustand
   /** Luna verarbeitet gerade eine Antwort */
   denkt: boolean
+  /** Die Nachricht, auf die Luna gerade antwortet (steht schon da, bevor die Antwort kommt) */
+  wartet: string | null
   /** Der scrollende Bereich; LunaChat hält ihn unten */
   ref: Ref<HTMLDivElement>
   /** Chip oder Freitext als Antwort */
@@ -61,8 +88,9 @@ interface Props {
  * Die Region aria-live="polite" ist dauerhaft da; Chips stehen außerhalb, damit sie nicht mitgesprochen werden.
  * Nach dem Senden ersetzt der Erfolg den Verlauf (Screen 09, 12 Mitte). Beim Fehler bleibt er im Fenster
  * sichtbar (Screen 12 rechts), am Handy nicht (Screen 10).
+ * Fragen in der Zusammenfassung und nach dem Senden stehen unter der Karte (luna.vorKarte), dort, wo man gerade liest.
  */
-export function Verlauf({ luna, denkt, ref, onAntwort, kontakt, zusammenfassung, sendend, onErneut, onNeu, onSchliessen }: Props) {
+export function Verlauf({ luna, denkt, wartet, ref, onAntwort, kontakt, zusammenfassung, sendend, onErneut, onNeu, onSchliessen }: Props) {
   const chips = denkt ? [] : auswahl(luna)
   const frage = offeneFrage(luna)
   const gruppe =
@@ -87,17 +115,20 @@ export function Verlauf({ luna, denkt, ref, onAntwort, kontakt, zusammenfassung,
               </div>
               <Blase von="nutzer">{AUFTRAG_AUFGEGEBEN}</Blase>
               <Erfolg luna={luna} kontakt={kontakt} onNeu={onNeu} onSchliessen={onSchliessen} />
+              <Nachrichten verlauf={luna.verlauf} />
+              {denkt && <Laden wartet={wartet} />}
             </>
           ) : (
             luna.phase !== 'ERROR' && (
               <>
-                <Nachrichten verlauf={luna.verlauf} />
-                {denkt && (
-                  <div aria-hidden="true" className={`${BLASE} ${VON.luna} flex`}>
-                    <Loader groesse={40} />
-                  </div>
+                <Nachrichten verlauf={luna.phase === 'SUMMARY' ? luna.verlauf.slice(0, luna.vorKarte) : luna.verlauf} />
+                {luna.phase === 'SUMMARY' && (
+                  <>
+                    <Zusammenfassung anfrage={luna.anfrage} {...zusammenfassung} />
+                    <Nachrichten verlauf={luna.verlauf.slice(luna.vorKarte)} />
+                  </>
                 )}
-                {luna.phase === 'SUMMARY' && <Zusammenfassung anfrage={luna.anfrage} {...zusammenfassung} />}
+                {denkt && <Laden wartet={wartet} />}
               </>
             )
           )}

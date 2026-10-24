@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Icon } from '../components/ui/Icon'
 import { copy } from '../content/copy'
+import { PARTNER_PFAD } from '../content/partner'
 import { useOverlays } from '../overlays'
 
 const t = copy.luna.anstupser
@@ -9,6 +10,24 @@ const t = copy.luna.anstupser
 const SCHLUESSEL = 'fixit-nudge'
 const VERZOEGERUNG = 25_000
 const SCROLLTIEFE = 0.6
+
+type Bereich = 'formular' | 'rechner' | 'partner'
+
+/**
+ * Was beim Einblenden zu sehen ist (Ausbau 24.10.2026, wie im Impeccable-Chat): die Seite „Partner werden“, das Formular
+ * (#anfrage, components/Anfrage) oder der Preisrechner (#preisrechner, components/Preisrechner). Ein Abschnitt zählt, wenn er
+ * über die Mitte des Fensters reicht (40 bis 60 % der Höhe). Sonst null: der Text aus dem Design.
+ */
+function bereich(): Bereich | null {
+  if (location.pathname === PARTNER_PFAD) return 'partner'
+  const mitte = (id: string) => {
+    const r = document.getElementById(id)?.getBoundingClientRect()
+    return !!r && r.top < innerHeight * 0.6 && r.bottom > innerHeight * 0.4
+  }
+  if (mitte('anfrage')) return 'formular'
+  if (mitte('preisrechner')) return 'rechner'
+  return null
+}
 
 // sessionStorage kann im privaten Modus oder bei gesperrten Cookies werfen. Dann bleibt der Hinweis weg.
 function gesehen(): boolean {
@@ -35,6 +54,8 @@ function merke() {
 export function Anstupser({ knopfSichtbar }: { knopfSichtbar: boolean }) {
   const { lunaOffen, oeffneLuna } = useOverlays()
   const [sichtbar, setSichtbar] = useState(false)
+  const [art, setArt] = useState<Bereich | null>(null)
+  const inhalt = art ? t[art] : t
 
   // War der Chat in diesem Besuch offen, kommt der Hinweis nicht mehr.
   useEffect(() => {
@@ -48,6 +69,7 @@ export function Anstupser({ knopfSichtbar }: { knopfSichtbar: boolean }) {
       aufraeumen()
       if (gesehen()) return
       merke()
+      setArt(bereich())
       setSichtbar(true)
     }
     const beiScroll = () => {
@@ -86,8 +108,8 @@ export function Anstupser({ knopfSichtbar }: { knopfSichtbar: boolean }) {
           >
             <Icon name="luna-signet-glyph" className="size-[19px]" />
           </span>
-          <button type="button" onClick={oeffneLuna} className="min-h-[44px] flex-1 cursor-pointer py-s2 text-left text-text">
-            <span className="font-display font-bold">{t.fett}</span> {t.text}
+          <button type="button" onClick={oeffneLuna} className="min-h-[44px] flex-1 cursor-pointer py-s2 text-left text-text text-pretty">
+            <span className="font-display font-bold">{inhalt.fett}</span> {inhalt.text}
           </button>
           <button
             type="button"

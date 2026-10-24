@@ -13,7 +13,7 @@ const SPEICHER = 'fixit-luna'
 function geladen(): Zustand | null {
   try {
     const z = JSON.parse(sessionStorage.getItem(SPEICHER) ?? 'null') as Zustand | null
-    return z && Array.isArray(z.verlauf) && z.anfrage && typeof z.phase === 'string' && z.phase !== 'COMPLETED' ? z : null
+    return z && Array.isArray(z.verlauf) && z.anfrage && typeof z.vorKarte === 'number' && typeof z.phase === 'string' && z.phase !== 'COMPLETED' ? z : null
   } catch {
     return null
   }

@@ -33,14 +33,14 @@ Stand: 21.10.2026. Abhaken, was erledigt ist. Wie die KAS-Schritte im Einzelnen 
 - [ ] Firmenname
 - [ ] Logo-Datei (bis dahin die Wortmarke)
 - [ ] Preise brutto: den Hinweis „[inkl. 20 % USt.]“ bestätigen (SPEC 11)
-- [ ] Impressum, Datenschutzerklärung und AGB. In die Datenschutzerklärung gehören die Speicherung der Anfragen bei ALL-INKL (Auftragsverarbeitung), die Weitergabe an Partnerbetriebe und an OpenAI (Luna).
+- [ ] Impressum, Datenschutzerklärung und AGB. In die Datenschutzerklärung gehören die Speicherung der Anfragen bei ALL-INKL (Auftragsverarbeitung), die Weitergabe an Partnerbetriebe und an OpenAI (Luna). Für Luna steht ein Entwurf in `src/content/copy.ts` (`rechtliches.datenschutz.entwuerfe`, „Chat mit Luna“), mit Platzhaltern für Vertragspartner, Rechtsgrundlage und Speicherdauer bei OpenAI.
 - [ ] Datenschutzerklärung: Zweck und Speicherdauer der freiwilligen E-Mail im Anfrageformular (nur für die Bestätigungsmail, Bauplan B1). Offen, rechtlich prüfen.
 - [ ] Rechtlich prüfen: Häufige Frage „Was heißt ‚geprüft‘?“ (`src/content/copy.ts`, Bauplan B5). Der Text muss genau dem Aufnahmeablauf für Partner entsprechen: Gewerbeberechtigung je Gewerk im GISA, Nachweis der Betriebshaftpflichtversicherung, persönliches Gespräch, Pause der Vermittlung bei Beschwerden. Vor dem Livegang muss dieser Ablauf für jeden eingetragenen Partner tatsächlich gelaufen sein.
 - [ ] Rechtlich prüfen: Häufige Frage „Wie wählen Sie den Betrieb aus?“ (`src/content/copy.ts`, Bauplan B4). Sie nennt die Auswahlkriterien aus `passenderPartner()` in `public/anfrage.php`; ändert sich dort die Gewichtung, muss der Text mit. Ob eine Angabe „keine bezahlte Platzierung“ dazugehört, entscheidet Beks.
 - [ ] Partnerbetriebe für das Matching in `fixit247-konfig.php`. Ohne sie gehen alle Anfragen nur an `support@fixit247.at`.
 - [ ] Monatslimit im OpenAI-Konto
 - [ ] Löschfrist für `anfragen-*.jsonl`
-- [ ] Löschfrist für abgelehnte Partner-Bewerbungen (`fixit247-daten/partner-*.jsonl`). Vorschlag: abgelehnte Bewerbungen nach 6 Monaten löschen. Beks entscheidet. Die Frist kommt danach auch in den Datenschutz-Entwurf (`[Frist folgt]` in `src/content/copy.ts`, `rechtliches.datenschutz.entwurf`).
+- [ ] Löschfrist für abgelehnte Partner-Bewerbungen (`fixit247-daten/partner-*.jsonl`). Vorschlag: abgelehnte Bewerbungen nach 6 Monaten löschen. Beks entscheidet. Die Frist kommt danach auch in den Datenschutz-Entwurf (`[Frist folgt]` in `src/content/copy.ts`, `rechtliches.datenschutz.entwuerfe`).
 - [ ] Rechtstext „Partner-Bewerbungen“ in der Datenschutzerklärung: Der Entwurf steht auf `/datenschutz/` und muss rechtlich geprüft werden.
 - [ ] Ablauf für neue Partner: Jede Bewerbung über `/partner-werden/` kommt als Mail an `support@fixit247.at`, mit Prüfliste (GISA-Abfrage je Gewerk, Versicherungsnachweis, Gespräch) und einem fertigen Eintrag für die Partnerliste mit `partnerStatus` `PENDING`. Den Eintrag in `fixit247-konfig.php` kopieren und erst dann auf `ACTIVE` setzen, wenn die Prüfliste abgehakt ist. Vermittelt wird nur an `ACTIVE`.
 

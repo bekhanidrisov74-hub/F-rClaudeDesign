@@ -10,6 +10,7 @@ Stand: 21.10.2026
   - `anfrage.php` nimmt Formular und Luna entgegen, speichert die Anfrage als Datei und verschickt die Mails. Mit `art=partner` nimmt sie auch Partner-Bewerbungen von `/partner-werden/` an (eigener Zweig ohne Matching und ohne KI).
   - `chat.php` leitet Lunas KI-Anfragen an OpenAI weiter. Der Schlüssel liegt nur auf dem Server.
   - `_basis.php` enthält das Gemeinsame (Kopien aus `src/content`, Konfiguration, Kontingent). Direkt aufgerufen gibt sie nichts aus.
+  - `_wissen.php` enthält die Fakten der Website für Lunas Antworten (FAQ, Preise, Ablauf, Partner werden). Die Datei wird mit `npm run wissen` aus `src/content` erzeugt; `npm run check` schlägt an, wenn sie veraltet ist. Sie muss mit `chat.php` hochgeladen werden.
 - **Endpunkte:** `VITE_FORM_ENDPOINT=/anfrage.php` und `VITE_CHAT_ENDPOINT=/chat.php` stehen in `.env.production` und gelten für jeden `npm run build`. Abweichend nur in `.env.production.local`. Gleiche Herkunft, also keine CORS-Probleme.
 - **Nicht gewählt:** Supabase. Begründung in der Konversation: Anfragen werden nur weitergeleitet, und externe Requests widersprechen den Projektregeln.
 
@@ -60,8 +61,9 @@ Alles als Datei in `fixit247-daten/`, keine Datenbank nötig.
   ```
 
   Der Router leitet `/api/anfrage` und `/api/chat` an die PHP-Dateien. Mit `'mail_ordner' => '/pfad/mails'` in der lokalen Konfiguration landen Mails als `.eml` dort statt bei `mail()`. Für echte KI `OPENAI_API_KEY` in der Shell setzen.
-- `src/luna/backend.test.ts` prüft die Kopien in `_basis.php` immer gegen `src/content`. Mit PHP im PATH zusätzlich Eingangsprüfung, Systemprompt, Matching, Kontingent, Partner-Bewerbung und beide Endpunkte über `php -S`.
+- `src/luna/backend.test.ts` prüft die Kopien in `_basis.php` und `_wissen.php` immer gegen `src/content`. Mit PHP im PATH zusätzlich Eingangsprüfung, Systemprompt, Matching, Kontingent, Partner-Bewerbung und beide Endpunkte über `php -S`. `npm run test:ki` schickt etwa zehn Fragen über `php -S` und `chat.php` an das echte Modell.
 - PHP unter Windows: `winget install --id PHP.PHP.8.4 -e`, dann im PHP-Ordner `php.ini-development` nach `php.ini` kopieren und `extension_dir = "ext"`, `extension=curl`, `extension=mbstring`, `extension=openssl` aktivieren.
+- PHP unter Windows kennt keine Stammzertifikate. curl bricht dann jede HTTPS-Verbindung zu OpenAI ab („unable to get local issuer certificate“), und Luna antwortet ohne KI. `npm run test:ki` gibt PHP deshalb die Stammzertifikate von Node mit. Für `php -S` von Hand einmal `node -e "require('fs').writeFileSync('ca.pem', require('tls').rootCertificates.join('\n'))"` und dann `php -d curl.cainfo=ca.pem -S …`. Beim Hoster (Linux) ist das nicht nötig.
 
 ## Offen
 
