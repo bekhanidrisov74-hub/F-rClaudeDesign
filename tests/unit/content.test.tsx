@@ -218,8 +218,11 @@ describe('Notfall-Seiten je Gewerk (M7)', () => {
         { name: g.name, pfad: `/${g.seite}` },
       ])
     }
-    // keine Seite ohne Gewerk: außer den bisherigen nur die der Gewerke
-    expect(Object.keys(seiten).filter((p) => seiten[p].brotkrumen)).toEqual(gewerke.map((g) => `/${g.seite}`))
+    // Brotkrumen haben nur die Seiten der Gewerke und der Ratgeber (B7)
+    expect(Object.keys(seiten).filter((p) => seiten[p].brotkrumen)).toEqual([
+      ...gewerke.map((g) => `/${g.seite}`),
+      '/serioese-notdienste-erkennen',
+    ])
   })
 
   test('eigener Titel und eigene Beschreibung je Seite, Marke am Ende, Beschreibung verschieden von der Startseite', async () => {

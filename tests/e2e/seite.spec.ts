@@ -4,6 +4,7 @@ import { DOMAIN, EMAIL, TELEFON, e164 } from '../../src/content/contact'
 import { anfrageAnker, gewerke } from '../../src/content/gewerke'
 import { gewerkText, gewerkseiten } from '../../src/content/gewerkseiten'
 import { partner } from '../../src/content/partner'
+import { RATGEBER_PFAD, ratgeber } from '../../src/content/ratgeber'
 import { SECURITY_TXT_PFAD, securityTxt } from '../../src/lib/securityTxt'
 import { VCARD_PFAD, vcardText } from '../../src/lib/vcard'
 
@@ -11,7 +12,7 @@ import { VCARD_PFAD, vcardText } from '../../src/lib/vcard'
 const RECHTSSEITEN = ['/impressum/', '/datenschutz/', '/agb/']
 /** Notfall-Seiten je Gewerk (Bauplan M7), aus gewerke.ts: ein sechstes Gewerk kommt von selbst dazu */
 const GEWERKSEITEN = gewerke.map((g) => ({ g, pfad: `/${g.seite}/`, text: gewerkText(g.id) }))
-const ALLE = ['/', '/partner-werden/', ...GEWERKSEITEN.map((s) => s.pfad), ...RECHTSSEITEN]
+const ALLE = ['/', '/partner-werden/', RATGEBER_PFAD, ...GEWERKSEITEN.map((s) => s.pfad), ...RECHTSSEITEN]
 // /404.html: die Seite, die der Webserver für unbekannte Pfade schickt (public/.htaccess)
 const MIT_404 = [...ALLE, '/404.html']
 const nurEinmal = (name: string) => test.skip(name !== 'm390', 'unabhängig von der Breite, läuft nur einmal')
@@ -95,6 +96,34 @@ for (const { g, pfad, text } of GEWERKSEITEN)
     ])
   })
 
+test(`${RATGEBER_PFAD}: eigener Titel und eigene Beschreibung, kanonisch, indexierbar, H1, BreadcrumbList im vorgerenderten HTML`, async ({ request }, info) => {
+  nurEinmal(info.project.name)
+  const antwort = await request.get(RATGEBER_PFAD)
+  expect(antwort.status()).toBe(200)
+  const html = await antwort.text()
+  expect(html).toContain(`<title>${ratgeber.meta.titel}</title>`)
+  expect(html.match(/<meta name="description" content="([^"]*)" \/>/)?.[1]).toBe(ratgeber.meta.beschreibung)
+  expect(html).toContain(`<link rel="canonical" href="${DOMAIN}${RATGEBER_PFAD}" />`)
+  expect(html).not.toContain('noindex')
+  const h1 = html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/)?.[1].replace(/<[^>]+>/g, '').trim()
+  expect(h1).toBe(ratgeber.h1)
+  expect(html).not.toMatch(/FAQPage|LocalBusiness|"Service"|Plumber|Locksmith|Electrician|HVACBusiness|AggregateRating|HowTo|Article/)
+  expect(jsonLd(html).itemListElement).toEqual([
+    { '@type': 'ListItem', position: 1, name: gewerkseiten.brotkrumen.start, item: `${DOMAIN}/` },
+    { '@type': 'ListItem', position: 2, name: ratgeber.name, item: `${DOMAIN}${RATGEBER_PFAD}` },
+  ])
+})
+
+test(`${RATGEBER_PFAD}: im Fuß verlinkt, Brotkrumen führen zur Startseite`, async ({ page }) => {
+  await page.goto('/')
+  await page.locator('footer').getByRole('link', { name: ratgeber.name, exact: true }).click()
+  await expect(page).toHaveURL(RATGEBER_PFAD)
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(ratgeber.h1)
+  const krumen = page.getByRole('navigation', { name: gewerkseiten.brotkrumen.label })
+  await expect(krumen.locator('[aria-current="page"]')).toHaveText(ratgeber.name)
+  await expect(krumen.getByRole('link', { name: gewerkseiten.brotkrumen.start })).toHaveAttribute('href', '/')
+})
+
 test('Gewerk-Seiten: Titel und Beschreibung sind alle verschieden, auch von der Startseite', async ({ request }, info) => {
   nurEinmal(info.project.name)
   const titel = new Set<string>()
@@ -177,9 +206,9 @@ test('sitemap.xml und robots.txt', async ({ request }, info) => {
   expect(xml).toContain('<urlset')
   expect(xml).toContain('<loc>https://fixit247.at/</loc>')
   expect(xml).toContain('<loc>https://fixit247.at/partner-werden/</loc>')
-  for (const { pfad } of GEWERKSEITEN) expect(xml).toContain(`<loc>${DOMAIN}${pfad}</loc>`)
-  // Startseite, Partner-Seite und eine Seite je Gewerk, keine Rechtsseite
-  expect(xml.match(/<loc>/g)).toHaveLength(2 + GEWERKSEITEN.length)
+  for (const pfad of [RATGEBER_PFAD, ...GEWERKSEITEN.map((s) => s.pfad)]) expect(xml).toContain(`<loc>${DOMAIN}${pfad}</loc>`)
+  // Startseite, Partner-Seite, Ratgeber und eine Seite je Gewerk, keine Rechtsseite
+  expect(xml.match(/<loc>/g)).toHaveLength(3 + GEWERKSEITEN.length)
   for (const rechtsseite of ['impressum', 'datenschutz', 'agb']) expect(xml).not.toContain(rechtsseite)
   const robots = await request.get('/robots.txt')
   expect(await robots.text()).toContain('User-agent: *')

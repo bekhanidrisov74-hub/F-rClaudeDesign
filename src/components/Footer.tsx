@@ -3,6 +3,7 @@ import { EMAIL, FIRMA, TELEFON, WHATSAPP, mailHref, telHref, whatsappHref } from
 import { gewerke } from '../content/gewerke'
 import { gewerkseiten } from '../content/gewerkseiten'
 import { PARTNER_PFAD, partner } from '../content/partner'
+import { RATGEBER_PFAD, ratgeber } from '../content/ratgeber'
 import { VCARD_PFAD, vcardText } from '../lib/vcard'
 import { Globus } from './ui/Globus'
 import { Icon } from './ui/Icon'
@@ -79,6 +80,11 @@ export function Footer() {
                 <li className="flex">
                   <a href={PARTNER_PFAD} className={LINK}>
                     {partner.einstieg.fuss}
+                  </a>
+                </li>
+                <li className="flex">
+                  <a href={RATGEBER_PFAD} className={LINK}>
+                    {ratgeber.name}
                   </a>
                 </li>
               </ul>

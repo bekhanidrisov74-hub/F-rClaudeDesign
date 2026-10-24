@@ -26,6 +26,12 @@ export const DATENSCHUTZ = '/datenschutz/'
  */
 export const GEFAHR =
   'Bei akuter Gefahr rufen Sie bitte sofort den Notruf: bei Gasgeruch den Gasnotruf 128, bei Rauch, Brandgeruch, Funken oder Feuer die Feuerwehr 122, bei Verletzten die Rettung 144. Der Euro-Notruf 112 gilt immer.'
+/**
+ * Was „geprüft“ heißt: Antwort in den häufigen Fragen und Lead im Ratgeber (Bauplan B7), ein Wortlaut.
+ * nicht im Design (Bauplan B5, Inhalt von Beks vom 21.10.2026, nichts darüber hinaus; rechtlich prüfen, docs/livegang.md)
+ */
+export const GEPRUEFT =
+  'Vor der Aufnahme eines Betriebs prüfen wir seine Gewerbeberechtigung für jedes Gewerk im GISA (Gewerbeinformationssystem Austria), lassen uns die Betriebshaftpflichtversicherung nachweisen und führen ein persönliches Gespräch. Bei Beschwerden pausieren wir die Vermittlung an diesen Betrieb.'
 /** nicht im Design (Bauplan B3, Text wartet auf Freigabe): Abschnitt Anfrage und Luna-Zusammenfassung, ein Wortlaut. */
 export const OHNE_KONTO = 'Ein Konto oder eine Anmeldung brauchen Sie nicht.'
 /**
@@ -368,8 +374,7 @@ export const copy = {
       {
         // nicht im Design (Bauplan B5, Inhalt von Beks vom 21.10.2026, nichts darüber hinaus; rechtlich prüfen, docs/livegang.md)
         frage: 'Was heißt „geprüft“?',
-        antwort:
-          'Vor der Aufnahme eines Betriebs prüfen wir seine Gewerbeberechtigung für jedes Gewerk im GISA (Gewerbeinformationssystem Austria), lassen uns die Betriebshaftpflichtversicherung nachweisen und führen ein persönliches Gespräch. Bei Beschwerden pausieren wir die Vermittlung an diesen Betrieb.',
+        antwort: GEPRUEFT,
       },
       {
         // nicht im Design (Bauplan B4, 22.10.2026): die Kriterien aus passenderPartner() und GEWICHTE in public/anfrage.php,

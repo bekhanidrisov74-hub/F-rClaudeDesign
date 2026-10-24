@@ -76,6 +76,7 @@ const ZUSTAENDE: Zustand[] = [
   // Notfall-Seiten je Gewerk (Bauplan M7): zwei genügen, alle teilen sich Aufbau und Bausteine
   { name: 'gewerk-installateur', pfad: '/installateur/' },
   { name: 'gewerk-schluesseldienst', pfad: '/schluesseldienst/' },
+  { name: 'ratgeber', pfad: '/serioese-notdienste-erkennen/' },
   { name: 'partner-fehler', pfad: '/partner-werden/', vorbereiten: sendeBewerbungLeer },
   { name: 'partner-erfolg', pfad: '/partner-werden/', vorbereiten: bewerbungErfolg },
   { name: 'partner-sendefehler', pfad: '/partner-werden/?fehler=1', vorbereiten: bewerbungSendefehler },

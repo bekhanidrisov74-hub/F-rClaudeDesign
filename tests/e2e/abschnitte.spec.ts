@@ -248,7 +248,7 @@ async function bedienelemente(page: Page) {
 
 const GEWERKSEITEN = gewerke.map((g) => `/${g.seite}/`)
 
-for (const pfad of ['/', '/partner-werden/', ...GEWERKSEITEN, '/impressum/'])
+for (const pfad of ['/', '/partner-werden/', '/serioese-notdienste-erkennen/', ...GEWERKSEITEN, '/impressum/'])
   test(`${pfad}: Touch-Ziele mindestens 44 × 44 px`, async ({ page }) => {
     await page.goto(pfad)
     const zuKlein = (await bedienelemente(page)).filter((e) => e.b < 44 || e.h < 44)
