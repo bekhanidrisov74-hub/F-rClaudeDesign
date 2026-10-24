@@ -1,43 +1,14 @@
-import type { ReactNode } from 'react'
 import { GEFAHR, copy, fuelle } from '../content/copy'
 import { fragenZu } from '../content/fragen'
 import { PREISE_STAND, anfahrtText, anfrageAnker, einheit, spanne, type Gewerk } from '../content/gewerke'
 import { gewerkText, gewerkseiten } from '../content/gewerkseiten'
 import { Ablauf } from './Ablauf'
 import { Seitenrahmen } from './Seitenrahmen'
+import { Abschnitt, Brotkrumen } from './Unterseite'
 import { Button } from './ui/Button'
 import { CallButton } from './ui/CallButton'
 import { Icon } from './ui/Icon'
 import { IconKreis } from './ui/IconKreis'
-
-/** Zweispaltiger Abschnitt (Titel und Lead links, Inhalt rechts) wie „Was wir von Partnern erwarten“; ab 920 px bleibt die linke Spalte stehen. */
-function Abschnitt({
-  id,
-  flaeche,
-  titel,
-  lead,
-  children,
-}: {
-  id: string
-  flaeche: 'kalk' | 'eis'
-  titel: string
-  lead: string
-  children: ReactNode
-}) {
-  return (
-    <section id={id} aria-labelledby={`${id}-titel`} className={flaeche === 'eis' ? 'bg-eis text-tiefsee' : 'bg-kalk'}>
-      <div className="wrapper grid gap-s6 pt-section pb-section-end nav:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] nav:gap-s8">
-        <div className="flex flex-col gap-s4 nav:sticky nav:top-[calc(var(--fx-kopf)+var(--fx-s-6))] nav:gap-s3 nav:self-start">
-          <h2 id={`${id}-titel`} className="text-h2 break-words hyphens-auto">
-            {titel}
-          </h2>
-          <p className="text-lead text-schiefer">{lead}</p>
-        </div>
-        <div className="flex flex-col gap-s5">{children}</div>
-      </div>
-    </section>
-  )
-}
 
 /**
  * Notfall-Seite eines Gewerks (/installateur/ …, Bauplan M7). Für diese Seiten gibt es keinen Entwurf in design/; Raster und Bausteine
@@ -47,7 +18,7 @@ function Abschnitt({
  */
 export function GewerkSeite({ gewerk: g }: { gewerk: Gewerk }) {
   const t = gewerkText(g.id)
-  const { brotkrumen, notfall, bis, fragen, preis, ablauf } = gewerkseiten
+  const { notfall, bis, fragen, preis, ablauf } = gewerkseiten
   // Bei Heizung und Klima sind beide Tipps derselbe Satz
   const tipps = [...new Set([g.tipp, g.tippErfolg])]
   // Ein Gewerk ohne Fragenkatalog (fragen.ts) bekommt keinen leeren Abschnitt
@@ -57,19 +28,7 @@ export function GewerkSeite({ gewerk: g }: { gewerk: Gewerk }) {
     <Seitenrahmen aufStartseite={false}>
       <section id="einstieg" aria-labelledby="einstieg-titel" className="bg-kalk">
         <div className="wrapper pt-s4 pb-section-end nav:pt-s5">
-          <nav aria-label={brotkrumen.label}>
-            <ol role="list" className="flex flex-wrap items-center text-small text-schiefer">
-              <li className="flex items-center">
-                <a href="/" className="inline-flex min-h-[44px] min-w-[44px] items-center underline underline-offset-4 hover:decoration-tuerkis">
-                  {brotkrumen.start}
-                </a>
-                <span aria-hidden="true" className="px-s2">
-                  ›
-                </span>
-              </li>
-              <li aria-current="page">{g.name}</li>
-            </ol>
-          </nav>
+          <Brotkrumen aktuell={g.name} />
 
           <div className="mt-s4 flex max-w-[680px] flex-col gap-s4 nav:mt-s5 nav:gap-s5">
             <h1 id="einstieg-titel" className="text-h1 break-words hyphens-auto">

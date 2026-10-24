@@ -25,7 +25,7 @@ import {
 } from '../e2e/hilfen'
 import { expect } from '../e2e/test'
 
-const HOEHE: Record<number, number> = { 390: 844, 1024: 768, 1440: 900, 1920: 1080, 2560: 1440 }
+const HOEHE: Record<number, number> = { 390: 844, 768: 1024, 1024: 768, 1440: 900, 1920: 1080, 2560: 1440 }
 const ALLE = [390, 1024, 1440, 1920, 2560]
 const MITTAG = new Date('2026-10-20T12:00:00+02:00')
 
@@ -111,6 +111,7 @@ const ZUSTAENDE: Zustand[] = [
   { name: 'formular-erfolg', pfad: '/#anfrage', element: anfrage, vorbereiten: formularErfolg },
   { name: 'formular-sendefehler', pfad: '/?fehler=1#anfrage', element: anfrage, vorbereiten: formularSendefehler },
   { name: 'partner', pfad: '/partner-werden/', ganzeSeite: true, vorbereiten: ganzeSeite },
+  { name: 'ratgeber', pfad: '/serioese-notdienste-erkennen/', breiten: [390, 768, 1024, 1440, 1920, 2560], ganzeSeite: true, vorbereiten: ganzeSeite },
   // Fehler: das Formular; Erfolg: der Abschnitt mit Dank und Seitenkasten
   { name: 'partner-fehler', pfad: '/partner-werden/', breiten: [390, 1440], element: (p) => bewerbung(p).locator('form'), vorbereiten: sendeBewerbungLeer },
   { name: 'partner-erfolg', pfad: '/partner-werden/', breiten: [390, 1440], element: bewerbung, vorbereiten: bewerbungErfolg },

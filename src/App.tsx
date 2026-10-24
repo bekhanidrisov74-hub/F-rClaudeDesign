@@ -3,11 +3,13 @@ import { copy, fuelle } from './content/copy'
 import { gewerke } from './content/gewerke'
 import { gewerkseiten, gewerkText } from './content/gewerkseiten'
 import { partner } from './content/partner'
+import { RATGEBER_PFAD, ratgeber } from './content/ratgeber'
 import { OverlayProvider } from './overlays'
 import { Startseite } from './components/Startseite'
 import { GewerkSeite } from './components/GewerkSeite'
 import { LegalPage } from './components/LegalPage'
 import { PartnerSeite } from './components/PartnerSeite'
+import { RatgeberSeite } from './components/RatgeberSeite'
 
 export interface Seite {
   titel: string
@@ -41,6 +43,15 @@ export const seiten: Record<string, Seite> = {
       ]
     }),
   ),
+  [RATGEBER_PFAD.slice(0, -1)]: {
+    titel: ratgeber.meta.titel,
+    beschreibung: ratgeber.meta.beschreibung,
+    brotkrumen: [
+      { name: gewerkseiten.brotkrumen.start, pfad: '/' },
+      { name: ratgeber.name, pfad: RATGEBER_PFAD.slice(0, -1) },
+    ],
+    inhalt: () => <RatgeberSeite />,
+  },
   '/impressum': {
     titel: fuelle(copy.meta.unterseite, { seite: rechtliches.impressum.titel }),
     beschreibung: copy.meta.beschreibung,
